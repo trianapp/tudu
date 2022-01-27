@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
@@ -24,6 +25,7 @@ import app.trian.tudu.ui.pages.dashbboard.PageProfile
 import app.trian.tudu.ui.theme.TuduTheme
 import dagger.hilt.android.AndroidEntryPoint
 
+@ExperimentalMaterial3Api
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
@@ -39,39 +41,55 @@ class MainActivity : ComponentActivity() {
                 ) {
                     NavHost(
                         navController = navHostController,
-                        startDestination = Routes.LOGIN
+                        startDestination = Routes.SPLASH
                     ){
                         composable(Routes.SPLASH){
-                            PagesSplash()
+                            PagesSplash(
+                                navHostController=navHostController
+                            )
                         }
                         composable(Routes.ONBOARD){
-                            PagesOnboard()
+                            PagesOnboard(
+                                navHostController=navHostController
+                            )
                         }
                         composable(Routes.LOGIN){
-                            PagesLogin()
+                            PagesLogin(
+                                navHostController=navHostController
+                            )
                         }
                         composable(Routes.REGISTER){
-                            PagesRegister()
+                            PagesRegister(
+                                navHostController=navHostController
+                            )
                         }
                         navigation(route=Routes.DASHBOARD, startDestination = Routes.Dashboard.HOME){
                             composable(route=Routes.Dashboard.HOME){
                                 BasePagesDashboard {
-                                    PageHome()
+                                    PageHome(
+                                         navHostController=navHostController
+                                    )
                                 }
                             }
                             composable(route=Routes.Dashboard.CALENDER){
                                 BasePagesDashboard {
-                                    PageCalender()
+                                    PageCalender(
+                                         navHostController=navHostController
+                                    )
                                 }
                             }
                             composable(route=Routes.Dashboard.PROFILE){
                                 BasePagesDashboard {
-                                    PageProfile()
+                                    PageProfile(
+                                         navHostController=navHostController
+                                    )
                                 }
                             }
                         }
                         composable(Routes.CATEGORY){
-                            PagesCategoryManagement()
+                            PagesCategoryManagement(
+                                 navHostController=navHostController
+                            )
                         }
                     }
                 }
