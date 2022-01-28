@@ -65,21 +65,21 @@ class MainActivity : ComponentActivity() {
                         }
                         navigation(route=Routes.DASHBOARD, startDestination = Routes.Dashboard.HOME){
                             composable(route=Routes.Dashboard.HOME){
-                                BasePagesDashboard {
+                                BasePagesDashboard(navHostController = navHostController) {
                                     PageHome(
                                          navHostController=navHostController
                                     )
                                 }
                             }
                             composable(route=Routes.Dashboard.CALENDER){
-                                BasePagesDashboard {
+                                BasePagesDashboard(navHostController = navHostController) {
                                     PageCalender(
                                          navHostController=navHostController
                                     )
                                 }
                             }
                             composable(route=Routes.Dashboard.PROFILE){
-                                BasePagesDashboard {
+                                BasePagesDashboard(navHostController = navHostController) {
                                     PageProfile(
                                          navHostController=navHostController
                                     )
