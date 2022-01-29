@@ -10,11 +10,13 @@ import kotlinx.coroutines.flow.Flow
  * created_at 28/01/22 - 20.25
  * site https://trian.app
  */
-
+@SuppressWarnings(
+    RoomWarnings.CURSOR_MISMATCH
+)
 @Dao
 interface AttachmentDao {
-    @Query("SELECT * FROM attachment WHERE attachmentTaskId=:taskId")
-    fun getListAttachmentByTaskId(taskId:String):Flow<List<Attachment>>
+    @Query("SELECT * FROM tb_attachment WHERE attachmentTaskId=:taskId")
+    fun getListAttachmentByTaskId(taskId:Int):List<Attachment>
 
     @Insert
     fun insertNewAttachment(attachment: Attachment)

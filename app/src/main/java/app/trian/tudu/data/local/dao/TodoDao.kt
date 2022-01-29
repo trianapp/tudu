@@ -10,10 +10,13 @@ import kotlinx.coroutines.flow.Flow
  * created_at 28/01/22 - 20.27
  * site https://trian.app
  */
+@SuppressWarnings(
+    RoomWarnings.CURSOR_MISMATCH
+)
 @Dao
 interface TodoDao {
 
-    @Query("SELECT * FROM todo WHERE todoTaskId =:taskId")
+    @Query("SELECT * FROM tb_todo WHERE todoTaskId =:taskId")
     fun getListTodoByTask(taskId:String):Flow<List<Todo>>
 
     @Insert

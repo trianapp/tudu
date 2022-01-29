@@ -11,17 +11,17 @@ import androidx.room.PrimaryKey
  * site https://trian.app
  */
 
-@Entity
+@Entity(tableName = "tb_todo")
 data class Todo(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var id:Long,
+    var id:Long?=null,
     @ColumnInfo(name = "name")
     var name:String,
     @ColumnInfo(name = "done")
     var done:Boolean,
     @ColumnInfo(name = "todoTaskId")
-    var task_id:Long,
+    var task_id:String,
     @ColumnInfo(name = "created_at")
     var created_at:Long,
     @ColumnInfo(name = "updated_at")

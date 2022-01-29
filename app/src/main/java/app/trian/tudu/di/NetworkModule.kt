@@ -2,7 +2,13 @@ package app.trian.tudu.di
 
 import app.trian.tudu.common.DefaultDispatcherProvider
 import app.trian.tudu.common.DispatcherProvider
+import app.trian.tudu.data.local.dao.AttachmentDao
+import app.trian.tudu.data.local.dao.CategoryDao
+import app.trian.tudu.data.local.dao.TaskDao
+import app.trian.tudu.data.local.dao.TodoDao
+import app.trian.tudu.data.repository.TaskRepositoryImpl
 import app.trian.tudu.data.repository.UserRepositoryImpl
+import app.trian.tudu.data.repository.design.TaskRepository
 import app.trian.tudu.data.repository.design.UserRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -41,5 +47,22 @@ object NetworkModule {
             dispatcherProvider,
             firebaseAuth
         )
+
+    @Provides
+    fun provideTaskRepository(
+        dispatcherProvider: DispatcherProvider,
+        taskDao:TaskDao,
+        todoDao: TodoDao,
+        attachmentDao: AttachmentDao,
+        categoryDao: CategoryDao,
+        firestore: FirebaseFirestore
+    ):TaskRepository =TaskRepositoryImpl(
+        dispatcherProvider,
+        taskDao,
+        todoDao,
+        attachmentDao,
+        categoryDao,
+        firestore
+    )
 
 }

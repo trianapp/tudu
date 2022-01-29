@@ -64,7 +64,7 @@ class MainActivity : ComponentActivity() {
                             composable(route=Routes.Dashboard.HOME){
                                 BasePagesDashboard(router = navHostController) {
                                     PageHome(
-                                         navHostController=navHostController
+                                         router=navHostController
                                     )
                                 }
                             }

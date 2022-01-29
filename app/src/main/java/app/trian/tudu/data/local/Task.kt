@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey
  * site https://trian.app
  */
 
-@Entity
+@Entity(tableName = "tb_task")
 data class Task(
     @PrimaryKey
     @ColumnInfo(name = "taskId")

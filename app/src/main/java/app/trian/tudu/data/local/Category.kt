@@ -10,11 +10,11 @@ import androidx.room.PrimaryKey
  * created_at 28/01/22 - 10.28
  * site https://trian.app
  */
-@Entity
+@Entity(tableName = "tb_category")
 data class Category(
     @PrimaryKey
     @ColumnInfo(name = "categoryId")
-    var categoryId:Long,
+    var categoryId:String,
     @ColumnInfo(name = "name")
     var name:String,
     @ColumnInfo(name = "created_at")

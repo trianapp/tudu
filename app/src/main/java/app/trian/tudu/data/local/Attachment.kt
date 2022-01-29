@@ -10,11 +10,11 @@ import androidx.room.PrimaryKey
  * created_at 28/01/22 - 10.28
  * site https://trian.app
  */
-@Entity
+@Entity(tableName = "tb_attachment")
 data class Attachment(
     @PrimaryKey
     @ColumnInfo(name = "id")
-    var id:Long,
+    var id:String,
     @ColumnInfo(name = "name")
     var name:String,
     @ColumnInfo(name = "url")
@@ -22,7 +22,7 @@ data class Attachment(
     @ColumnInfo(name = "asset")
     var asset:String,
     @ColumnInfo(name = "attachmentTaskId")
-    var task_id:Long,
+    var task_id:String,
     @ColumnInfo(name = "created_at")
     var created_at:Long,
     @ColumnInfo(name = "updated_at")

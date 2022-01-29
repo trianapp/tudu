@@ -10,14 +10,17 @@ import kotlinx.coroutines.flow.Flow
  * created_at 28/01/22 - 20.27
  * site https://trian.app
  */
+@SuppressWarnings(
+    RoomWarnings.CURSOR_MISMATCH
+)
 @Dao
 interface CategoryDao {
 
-    @Query("SELECT * FROM Category")
-    fun getListCategory():Flow<List<Category>>
+    @Query("SELECT * FROM tb_category")
+    fun getListCategory():List<Category>
 
-    @Insert
-    fun insertNewCategory(category: Category)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertNewCategory(category: Category):Long
 
 
     @Update
