@@ -14,7 +14,7 @@ import androidx.room.PrimaryKey
 data class Category(
     @PrimaryKey
     @ColumnInfo(name = "categoryId")
-    var categoryId:String,
+    var categoryId:String="",
     @ColumnInfo(name = "name")
     var name:String,
     @ColumnInfo(name = "created_at")

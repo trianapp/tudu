@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.Flow
 interface CategoryDao {
 
     @Query("SELECT * FROM tb_category")
-    fun getListCategory():List<Category>
+    fun getListCategory():Flow<List<Category>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertNewCategory(category: Category):Long
