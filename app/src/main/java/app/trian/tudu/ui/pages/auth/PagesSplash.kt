@@ -30,7 +30,6 @@ fun PagesSplash(
     val userViewModel = hiltViewModel<UserViewModel>()
     LaunchedEffect(key1 = Unit, block = {
         //cek if user already logged in
-        delay(2000)
         userViewModel.userAlreadyLogin {
             if(it){
                 router.navigate(Routes.DASHBOARD){

@@ -24,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.common.Routes
+import app.trian.tudu.ui.component.AppbarHome
 import app.trian.tudu.ui.component.BottomSheetInputNewTask
 import app.trian.tudu.ui.component.ItemTask
 import app.trian.tudu.ui.theme.TuduTheme
@@ -72,6 +73,11 @@ fun PageHome(
 
     BasePagesDashboard(
         modalBottomSheetState=modalBottomSheetState,
+        topAppbar = {
+                    AppbarHome {
+                        router.navigate(Routes.CATEGORY)
+                    }
+        },
         sheetContent={
             BottomSheetInputNewTask(
                 onSubmit = {

@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 fun BasePagesDashboard(
     router: NavHostController,
     modalBottomSheetState:ModalBottomSheetState,
+    topAppbar:@Composable ()->Unit={},
     sheetContent:@Composable ()->Unit={},
     content:@Composable ()->Unit
 ) {
@@ -34,6 +35,7 @@ fun BasePagesDashboard(
         }
     ) {
         Scaffold(
+            topBar = topAppbar,
             bottomBar = {
                 TuduBottomNavigation(router = router)
             }

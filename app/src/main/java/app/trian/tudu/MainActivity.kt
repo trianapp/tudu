@@ -8,10 +8,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
@@ -23,7 +19,6 @@ import androidx.navigation.navArgument
 import app.trian.tudu.common.Routes
 import app.trian.tudu.ui.pages.auth.*
 import app.trian.tudu.ui.pages.category.PagesCategoryManagement
-import app.trian.tudu.ui.pages.dashbboard.BasePagesDashboard
 import app.trian.tudu.ui.pages.dashbboard.PageCalender
 import app.trian.tudu.ui.pages.dashbboard.PageHome
 import app.trian.tudu.ui.pages.dashbboard.PageProfile
@@ -97,7 +92,7 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(Routes.CATEGORY){
                             PagesCategoryManagement(
-                                 navHostController=navHostController
+                                 router=navHostController
                             )
                         }
                     }
