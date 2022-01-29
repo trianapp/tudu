@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun BasePagesDashboard(
     router: NavHostController,
-    modalBottomSheetState:ModalBottomSheetState= rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden),
+    modalBottomSheetState:ModalBottomSheetState,
     sheetContent:@Composable ()->Unit={},
     content:@Composable ()->Unit
 ) {
