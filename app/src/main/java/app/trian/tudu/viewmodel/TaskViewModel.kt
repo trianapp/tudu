@@ -5,14 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.trian.tudu.data.local.Category
 import app.trian.tudu.data.local.Task
+import app.trian.tudu.data.local.Todo
 import app.trian.tudu.data.repository.design.TaskRepository
 import app.trian.tudu.data.repository.design.UserRepository
 import app.trian.tudu.domain.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import logcat.logcat
 import javax.inject.Inject
 
 /**
@@ -30,14 +29,29 @@ class TaskViewModel @Inject constructor() : ViewModel() {
     private var _listTask = MutableLiveData<List<Task>>()
     val listTask get() = _listTask
 
-    private var _detailtask = MutableLiveData<DataState<Task>>()
-    val detailtask get() = _detailtask
+    private var _detailTask = MutableLiveData<DataState<Task>>()
+    val detailTask get() = _detailTask
+
+    private var _listTodo = MutableLiveData<List<Todo>>()
+    val listTodo get() = _listTodo
+
+    private var _listCategory = MutableLiveData<List<Category>>()
+    val listCategory get() = _listCategory
+
+
 
 
     fun getListTask()=viewModelScope.launch {
         taskRepository.getListTask().collect {
             result->
             _listTask.value = result
+        }
+    }
+
+    fun getListCategory()=viewModelScope.launch {
+        taskRepository.getListCategory().collect {
+            result->
+            _listCategory.value = result
         }
     }
 
@@ -63,9 +77,22 @@ class TaskViewModel @Inject constructor() : ViewModel() {
     fun getTaskById(taskId:String)=viewModelScope.launch{
         taskRepository.getTaskById(taskId).collect {
             result->
-            _detailtask.value = result
+            _detailTask.value = result
 
         }
     }
+
+    fun addNewCategory(categoryName:String)=viewModelScope.launch {
+        val category = Category(
+            name = categoryName,
+            created_at = 0,
+            updated_at = 0
+        )
+        taskRepository.addCategory(category).collect {
+
+        }
+    }
+
+
 
 }

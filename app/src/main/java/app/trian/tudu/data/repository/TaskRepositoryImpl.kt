@@ -26,6 +26,7 @@ class TaskRepositoryImpl(
 ):TaskRepository {
     companion object{
         const val TASK_COLLECTION = "TASK"
+        const val CATEGORY_COLLECTION = "CATEGORY"
     }
     override suspend fun getListTask(): Flow<List<Task>> = taskDao.getListTask().flowOn(dispatcherProvider.io())
     override suspend fun getTaskById(taskId: String): Flow<DataState<Task>> = flow<DataState<Task>> {
@@ -50,40 +51,16 @@ class TaskRepositoryImpl(
         emit(DataState.onData(task))
     }.flowOn(dispatcherProvider.io())
 
-    override suspend fun updateTask(task: Task): Flow<DataState<Task>> {
-        TODO("Not yet implemented")
-    }
 
-    override suspend fun deleteTask(task: Task): Flow<DataState<Task>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun addTodoToTask(todo: Todo): Flow<DataState<Todo>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun editTodo(todo: Todo): Flow<DataState<Todo>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun deleteTodo(todo: Todo): Flow<DataState<Todo>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun addAttachment(attachment: Attachment): Flow<DataState<Attachment>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun editAttachment(attachment: Attachment): Flow<DataState<Attachment>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun deleteAttachment(attachment: Attachment): Flow<DataState<Attachment>> {
-        TODO("Not yet implemented")
-    }
 
     override suspend fun addCategory(category: Category): Flow<DataState<Category>> = flow {
+        val idFromFireStore = firestore.collection(CATEGORY_COLLECTION).document().id
+        category.apply {
+            categoryId = idFromFireStore
+        }
         categoryDao.insertNewCategory(category)
         emit(DataState.onData(category))
     }.flowOn(dispatcherProvider.io())
+
+    override suspend fun getListCategory(): Flow<List<Category>> = categoryDao.getListCategory().flowOn(dispatcherProvider.io())
 }
