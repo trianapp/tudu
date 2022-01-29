@@ -13,7 +13,7 @@ fun BasePagesDashboard(
     content:@Composable ()->Unit
 ) {
     Scaffold(bottomBar ={
-        TuduBottomNavigation(navHostController = router)
+        TuduBottomNavigation(router = router)
     }) {
         content.invoke()
     }

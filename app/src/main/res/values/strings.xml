@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Tudu</string>
+
+    <string name="nav_item_home">Home</string>
+    <string name="nav_item_calendar">Calendar</string>
+    <string name="nav_item_profile">Profile</string>
+
 </resources>

@@ -13,7 +13,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
 /**
- * Module dependency injection
+ * Module dependency injection for firebase
  * author Trian Damai
  * created_at 28/01/22 - 10.30
  * site https://trian.app

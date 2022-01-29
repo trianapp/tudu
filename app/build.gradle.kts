@@ -129,10 +129,14 @@ dependencies {
     implementation("com.google.firebase:firebase-storage-ktx")
     implementation("com.google.firebase:firebase-messaging-ktx")
 
+    //allow use await() in firebase task
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.4.1")
 
     //logcat
     implementation("com.squareup.logcat:logcat:0.1")
+
+    //icon
+    implementation("br.com.devsrsouza.compose.icons.android:octicons:1.0.0")
 }
 
 
