@@ -7,6 +7,7 @@ import app.trian.tudu.data.local.Category
 import app.trian.tudu.data.local.Task
 import app.trian.tudu.data.repository.design.TaskRepository
 import app.trian.tudu.data.repository.design.UserRepository
+import app.trian.tudu.domain.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
@@ -28,6 +29,9 @@ class TaskViewModel @Inject constructor() : ViewModel() {
 
     private var _listTask = MutableLiveData<List<Task>>()
     val listTask get() = _listTask
+
+    private var _detailtask = MutableLiveData<DataState<Task>>()
+    val detailtask get() = _detailtask
 
 
     fun getListTask()=viewModelScope.launch {
@@ -54,6 +58,14 @@ class TaskViewModel @Inject constructor() : ViewModel() {
 
         }
 
+    }
+
+    fun getTaskById(taskId:String)=viewModelScope.launch{
+        taskRepository.getTaskById(taskId).collect {
+            result->
+            _detailtask.value = result
+
+        }
     }
 
 }

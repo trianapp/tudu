@@ -19,6 +19,9 @@ interface TaskDao {
     @Query("SELECT * FROM tb_task ORDER BY created_at ASC")
     fun getListTask():Flow<List<Task>>
 
+    @Query("SELECT * FROM tb_task WHERE taskId=:taskId")
+    fun getTaskById(taskId:String):Task?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertNewTask(task:Task)
 

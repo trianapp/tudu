@@ -13,6 +13,7 @@ object Routes {
     const val REGISTER = "REGISTER"
     const val DASHBOARD = "DASHBOARD"
     const val CATEGORY = "CATEGORY"
+    const val DETAIL_TASK = "DETAIL_TASK"
     object Dashboard{
         const val HOME = "DASHBOARD_HOME"
         const val CALENDER = "DASHBOARD_CALENDER"

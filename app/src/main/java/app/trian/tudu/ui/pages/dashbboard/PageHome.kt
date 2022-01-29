@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import app.trian.tudu.common.Routes
 import app.trian.tudu.ui.component.BottomSheetInputNewTask
 import app.trian.tudu.ui.component.ItemTask
 import app.trian.tudu.ui.theme.TuduTheme
@@ -93,6 +94,9 @@ fun PageHome(
                         task = data,
                         onDone = {
 
+                        },
+                        onDetail = {
+                            router.navigate("${Routes.DETAIL_TASK}/${it.taskId}")
                         }
                     )
                 }

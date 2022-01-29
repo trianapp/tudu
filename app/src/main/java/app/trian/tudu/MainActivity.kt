@@ -14,10 +14,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import app.trian.tudu.common.Routes
 import app.trian.tudu.ui.pages.auth.*
 import app.trian.tudu.ui.pages.category.PagesCategoryManagement
@@ -25,6 +27,7 @@ import app.trian.tudu.ui.pages.dashbboard.BasePagesDashboard
 import app.trian.tudu.ui.pages.dashbboard.PageCalender
 import app.trian.tudu.ui.pages.dashbboard.PageHome
 import app.trian.tudu.ui.pages.dashbboard.PageProfile
+import app.trian.tudu.ui.pages.task.PageDetailTask
 import app.trian.tudu.ui.theme.TuduTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -80,6 +83,17 @@ class MainActivity : ComponentActivity() {
                                 PageProfile(router=navHostController)
 
                             }
+                        }
+                        composable(
+                            "${Routes.DETAIL_TASK}/{taskId}",
+                            arguments = listOf(
+                                navArgument("taskId"){
+                                    type = NavType.StringType
+                                }
+                            )
+                        ){
+
+                            PageDetailTask(router = navHostController)
                         }
                         composable(Routes.CATEGORY){
                             PagesCategoryManagement(

@@ -28,6 +28,16 @@ class TaskRepositoryImpl(
         const val TASK_COLLECTION = "TASK"
     }
     override suspend fun getListTask(): Flow<List<Task>> = taskDao.getListTask().flowOn(dispatcherProvider.io())
+    override suspend fun getTaskById(taskId: String): Flow<DataState<Task>> = flow<DataState<Task>> {
+        emit(DataState.LOADING)
+        val task = taskDao.getTaskById(taskId)
+        if(task == null){
+            emit(DataState.onFailure("Task not found !"))
+        }else{
+            emit(DataState.onData(task))
+        }
+    }.flowOn(dispatcherProvider.io())
+
 
     override suspend fun createNewTask(task: Task): Flow<DataState<Task>> =flow{
         val idFromFireStore = firestore.collection(TASK_COLLECTION).document().id

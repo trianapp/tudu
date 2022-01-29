@@ -1,6 +1,7 @@
 package app.trian.tudu.ui.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Checkbox
@@ -31,7 +32,8 @@ fun ItemTask(
     modifier:Modifier=Modifier,
     task:Task,
     onMark:()->Unit={},
-    onDone:(done:Boolean)->Unit={}
+    onDone:(done:Boolean)->Unit={},
+    onDetail:(task:Task)->Unit={}
 ) {
     var done by remember {
         mutableStateOf(task.done)
@@ -47,6 +49,9 @@ fun ItemTask(
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.surface)
                 .clip(RoundedCornerShape(10.dp))
+                .clickable {
+                    onDetail(task)
+                }
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
