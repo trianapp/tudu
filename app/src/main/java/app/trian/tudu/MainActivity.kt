@@ -13,10 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.common.Routes
-import app.trian.tudu.ui.pages.auth.PagesLogin
-import app.trian.tudu.ui.pages.auth.PagesOnboard
-import app.trian.tudu.ui.pages.auth.PagesRegister
-import app.trian.tudu.ui.pages.auth.PagesSplash
+import app.trian.tudu.ui.pages.auth.*
 import app.trian.tudu.ui.pages.category.PagesCategoryManagement
 import app.trian.tudu.ui.pages.dashbboard.BasePagesDashboard
 import app.trian.tudu.ui.pages.dashbboard.PageCalender
@@ -45,43 +42,43 @@ class MainActivity : ComponentActivity() {
                     ){
                         composable(Routes.SPLASH){
                             PagesSplash(
-                                navHostController=navHostController
+                                router=navHostController
                             )
                         }
                         composable(Routes.ONBOARD){
                             PagesOnboard(
-                                navHostController=navHostController
+                                router=navHostController
                             )
                         }
                         composable(Routes.LOGIN){
-                            PagesLogin(
-                                navHostController=navHostController
+                            PageLogin(
+                                router=navHostController
                             )
                         }
                         composable(Routes.REGISTER){
                             PagesRegister(
-                                navHostController=navHostController
+                                router=navHostController
                             )
                         }
                         navigation(route=Routes.DASHBOARD, startDestination = Routes.Dashboard.HOME){
                             composable(route=Routes.Dashboard.HOME){
-                                BasePagesDashboard(navHostController = navHostController) {
+                                BasePagesDashboard(router = navHostController) {
                                     PageHome(
                                          navHostController=navHostController
                                     )
                                 }
                             }
                             composable(route=Routes.Dashboard.CALENDER){
-                                BasePagesDashboard(navHostController = navHostController) {
+                                BasePagesDashboard(router = navHostController) {
                                     PageCalender(
                                          navHostController=navHostController
                                     )
                                 }
                             }
                             composable(route=Routes.Dashboard.PROFILE){
-                                BasePagesDashboard(navHostController = navHostController) {
+                                BasePagesDashboard(router = navHostController) {
                                     PageProfile(
-                                         navHostController=navHostController
+                                         router=navHostController
                                     )
                                 }
                             }
