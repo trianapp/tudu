@@ -43,6 +43,23 @@ fun PageLogin(
         userViewModel.loggedInWithEmailAndPassword(email,password){
             success, message ->
             Toast.makeText(ctx,"login $success $message",Toast.LENGTH_LONG).show()
+            if(success){
+                router.navigate(Routes.DASHBOARD){
+                    launchSingleTop=true
+                    popUpTo(Routes.LOGIN){
+                        inclusive=true
+                    }
+                    popUpTo(Routes.ONBOARD){
+                        inclusive=true
+                    }
+                    popUpTo(Routes.SPLASH){
+                        inclusive=true
+                    }
+                    popUpTo(Routes.REGISTER){
+                        inclusive=true
+                    }
+                }
+            }
         }
     }
 

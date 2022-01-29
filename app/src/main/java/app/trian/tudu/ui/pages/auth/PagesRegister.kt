@@ -39,6 +39,9 @@ fun PagesRegister(
     fun processRegister(){
         userViewModel.registerWithEmailAndPassword(email,password){
             success, message ->
+            if(success){
+                router.popBackStack()
+            }
             Toast.makeText(ctx,"login $success $message", Toast.LENGTH_LONG).show()
         }
     }
