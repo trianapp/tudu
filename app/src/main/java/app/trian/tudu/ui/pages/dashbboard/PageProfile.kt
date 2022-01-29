@@ -5,7 +5,7 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun PageProfile(
-    navHostController: NavHostController
+    router: NavHostController
 ){
 
 }

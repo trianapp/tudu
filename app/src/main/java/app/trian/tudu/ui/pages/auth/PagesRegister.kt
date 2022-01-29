@@ -1,33 +1,87 @@
 package app.trian.tudu.ui.pages.auth
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
+import android.widget.Toast
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.Scaffold
+import androidx.compose.material.TextField
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.common.Routes
 import app.trian.tudu.ui.theme.TuduTheme
+import app.trian.tudu.viewmodel.UserViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
 fun PagesRegister(
-    navHostController: NavHostController
+    modifier: Modifier=Modifier,
+    router: NavHostController
 ) {
-    val coroutine = rememberCoroutineScope()
-    LaunchedEffect(key1 = Unit, block = {
-        coroutine.launch {
-            delay(1000)
-            navHostController.navigate(Routes.ONBOARD)
+    val ctx = LocalContext.current
+    val userViewModel = hiltViewModel<UserViewModel>()
+
+    var email by remember {
+        mutableStateOf("")
+    }
+    var password by remember {
+        mutableStateOf("")
+    }
+
+    fun processRegister(){
+        userViewModel.registerWithEmailAndPassword(email,password){
+            success, message ->
+            Toast.makeText(ctx,"login $success $message", Toast.LENGTH_LONG).show()
         }
-    })
+    }
+
+    Scaffold {
+        Column(
+            modifier = modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            TextField(
+                value =email ,
+                onValueChange ={
+                    email=it
+                }
+            )
+            Spacer(modifier = modifier.height(10.dp))
+            TextField(
+                value = password,
+                onValueChange ={
+                    password=it
+                }
+            )
+            Spacer(modifier = modifier.height(10.dp))
+            Button(onClick =::processRegister
+            ) {
+                Text(text = "Daftar")
+            }
+            Spacer(modifier = modifier.height(10.dp))
+
+            Button(onClick = {
+                router.popBackStack()
+            }) {
+                Text(text = "Masuk")
+            }
+        }
+    }
 }
 
 @Preview
 @Composable
 fun PreviewPagesRegister(){
     TuduTheme {
-        PagesRegister(rememberNavController())
+        PagesRegister(router=rememberNavController())
     }
 }

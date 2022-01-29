@@ -6,14 +6,14 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import app.trian.tudu.ui.component.TuduBottomNavigation
 
-@OptIn(ExperimentalMaterial3Api::class)
+@ExperimentalMaterial3Api
 @Composable
 fun BasePagesDashboard(
-    navHostController: NavHostController,
+    router: NavHostController,
     content:@Composable ()->Unit
 ) {
     Scaffold(bottomBar ={
-        TuduBottomNavigation(navHostController = navHostController)
+        TuduBottomNavigation(navHostController = router)
     }) {
         content.invoke()
     }
