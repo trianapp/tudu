@@ -15,9 +15,9 @@ import androidx.room.PrimaryKey
 data class Task(
     @PrimaryKey
     @ColumnInfo(name = "taskId")
-    var taskId:String,
+    var taskId:String="dummy",
     @ColumnInfo(name = "uid")
-    var uid:String,
+    var uid:String="dummy",
     @ColumnInfo(name = "name")
     var name:String,
     @ColumnInfo(name = "deadline")

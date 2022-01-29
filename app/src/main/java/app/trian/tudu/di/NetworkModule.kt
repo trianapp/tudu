@@ -55,14 +55,16 @@ object NetworkModule {
         todoDao: TodoDao,
         attachmentDao: AttachmentDao,
         categoryDao: CategoryDao,
-        firestore: FirebaseFirestore
+        firestore: FirebaseFirestore,
+        firebaseAuth: FirebaseAuth
     ):TaskRepository =TaskRepositoryImpl(
         dispatcherProvider,
         taskDao,
         todoDao,
         attachmentDao,
         categoryDao,
-        firestore
+        firestore,
+        firebaseAuth
     )
 
 }

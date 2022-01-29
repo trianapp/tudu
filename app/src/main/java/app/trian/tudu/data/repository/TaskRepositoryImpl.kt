@@ -8,6 +8,7 @@ import app.trian.tudu.data.local.dao.TaskDao
 import app.trian.tudu.data.local.dao.TodoDao
 import app.trian.tudu.data.repository.design.TaskRepository
 import app.trian.tudu.domain.DataState
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -20,7 +21,8 @@ class TaskRepositoryImpl(
     private val todoDao: TodoDao,
     private val attachmentDao: AttachmentDao,
     private val categoryDao: CategoryDao,
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val firebaseAuth: FirebaseAuth
 ):TaskRepository {
     companion object{
         const val TASK_COLLECTION = "TASK"
@@ -29,8 +31,10 @@ class TaskRepositoryImpl(
 
     override suspend fun createNewTask(task: Task): Flow<DataState<Task>> =flow{
         val idFromFireStore = firestore.collection(TASK_COLLECTION).document().id
+        val user = firebaseAuth.currentUser
         task.apply {
             taskId=idFromFireStore
+            uid = user?.uid ?: ""
         }
         taskDao.insertNewTask(task)
         emit(DataState.onData(task))

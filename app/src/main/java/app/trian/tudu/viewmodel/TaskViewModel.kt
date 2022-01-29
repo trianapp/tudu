@@ -37,17 +37,15 @@ class TaskViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun addNewTask()=viewModelScope.launch {
+    fun addNewTask(taskName:String)=viewModelScope.launch {
 
         val task = Task(
-            taskId="iniasna",
-            uid="iniuid",
-            name="task pertama",
+            name=taskName,
             deadline=0,
             done=false,
             done_at=0,
-            note="ini",
-            category_id="b",
+            note="",
+            category_id="",
             created_at=0,
             updated_at=1
         )
