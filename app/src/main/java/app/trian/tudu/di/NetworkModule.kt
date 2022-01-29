@@ -1,17 +1,45 @@
 package app.trian.tudu.di
 
+import app.trian.tudu.common.DefaultDispatcherProvider
+import app.trian.tudu.common.DispatcherProvider
 import app.trian.tudu.data.repository.UserRepositoryImpl
 import app.trian.tudu.data.repository.design.UserRepository
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
+/**
+ * Module dependency injection
+ * author Trian Damai
+ * created_at 28/01/22 - 10.30
+ * site https://trian.app
+ */
 @Module
 @InstallIn(value = [SingletonComponent::class])
 object NetworkModule {
     @Provides
-    fun provideUserRepository():UserRepository{
-        return UserRepositoryImpl()
-    }
+    fun provideDispatcher():DispatcherProvider= DefaultDispatcherProvider()
+
+    @Provides
+    fun provideFirestore():FirebaseFirestore = FirebaseFirestore.getInstance()
+
+    @Provides
+    fun provideFirebaseAuth():FirebaseAuth = FirebaseAuth.getInstance()
+
+    @Provides
+    fun provideFirebaseStorage():FirebaseStorage = FirebaseStorage.getInstance()
+
+    @Provides
+    fun provideUserRepository(
+        dispatcherProvider: DispatcherProvider,
+        firebaseAuth: FirebaseAuth
+    ):UserRepository =UserRepositoryImpl(
+            dispatcherProvider,
+            firebaseAuth
+        )
+
 }
