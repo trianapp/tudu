@@ -5,7 +5,7 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import app.trian.tudu.ui.component.BottomSheetInputNewTask
+import app.trian.tudu.ui.component.task.BottomSheetInputNewTask
 
 @ExperimentalMaterialApi
 @Composable

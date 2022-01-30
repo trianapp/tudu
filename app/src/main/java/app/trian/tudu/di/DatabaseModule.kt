@@ -39,7 +39,7 @@ object DatabaseModule {
                 //after db created
                 enableWriteAheadLogging()
                 beginTransaction()
-                val currentTime = Clock.System.now()
+                val currentTime = Clock.System.now().toEpochMilliseconds()
 
                 try {
                     execSQL("""

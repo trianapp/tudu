@@ -1,6 +1,5 @@
-package app.trian.tudu.ui.component
+package app.trian.tudu.ui.component.task
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.OutlinedTextField
@@ -15,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import app.trian.tudu.ui.theme.TuduTheme
 import compose.icons.Octicons
 import compose.icons.octicons.Eye16
-import compose.icons.octicons.Eye24
 
 /**
  * FormInpit
