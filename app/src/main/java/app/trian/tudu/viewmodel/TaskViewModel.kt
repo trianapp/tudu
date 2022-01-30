@@ -12,6 +12,7 @@ import app.trian.tudu.domain.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import logcat.logcat
 import javax.inject.Inject
 
 /**
@@ -55,6 +56,14 @@ class TaskViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun getListTodo(taskId:String)=viewModelScope.launch {
+         taskRepository.getListTodo(taskId).collect {
+             result->
+             _listTodo.value = result
+         }
+    }
+
+
     fun addNewTask(taskName:String)=viewModelScope.launch {
 
         val task = Task(
@@ -80,6 +89,7 @@ class TaskViewModel @Inject constructor() : ViewModel() {
             _detailTask.value = result
 
         }
+        getListTodo(taskId)
     }
 
     fun addNewCategory(categoryName:String)=viewModelScope.launch {
@@ -93,6 +103,29 @@ class TaskViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun addNewTodo(todoName:String,taskId: String)=viewModelScope.launch {
+        val todo = Todo(
+            name = todoName,
+            done = false,
+            task_id = taskId,
+            created_at = 0,
+            updated_at = 0
+        )
 
+        taskRepository.addTodo(todo).collect {  }
+    }
+
+    fun updateTodo(todo: Todo)=viewModelScope.launch {
+        taskRepository.updateTodo(todo).collect {  }
+    }
+    fun doneTodo(todo: Todo)=viewModelScope.launch {
+        todo.apply {
+            done = true
+        }
+        taskRepository.updateTodo(todo).collect{}
+    }
+    fun deleteTodo(todo: Todo)=viewModelScope.launch {
+        taskRepository.deleteTodo(todo).collect {  }
+    }
 
 }

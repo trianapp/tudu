@@ -27,6 +27,7 @@ class TaskRepositoryImpl(
     companion object{
         const val TASK_COLLECTION = "TASK"
         const val CATEGORY_COLLECTION = "CATEGORY"
+        const val TODO_COLLECTION = "TODO"
     }
     override suspend fun getListTask(): Flow<List<Task>> = taskDao.getListTask().flowOn(dispatcherProvider.io())
     override suspend fun getTaskById(taskId: String): Flow<DataState<Task>> = flow<DataState<Task>> {
@@ -51,6 +52,23 @@ class TaskRepositoryImpl(
         emit(DataState.onData(task))
     }.flowOn(dispatcherProvider.io())
 
+    override suspend fun getListTodo(taskId: String): Flow<List<Todo>> = todoDao.getListTodoByTask(taskId).flowOn(dispatcherProvider.io())
+    override suspend fun addTodo(todo: Todo): Flow<Todo> =flow{
+        todoDao.insertTodoTask(todo)
+
+        emit(todo)
+    }.flowOn(dispatcherProvider.io())
+
+    override suspend fun updateTodo(todo: Todo): Flow<Todo> = flow{
+        todoDao.updateTodoTask(todo)
+        emit(todo)
+    }.flowOn(dispatcherProvider.io())
+
+    override suspend fun deleteTodo(todo: Todo): Flow<Todo> = flow{
+        todoDao.deleteTodoTask(todo)
+        emit(todo)
+        logcat("tes aja") { todo.toString() }
+    }.flowOn(dispatcherProvider.io())
 
 
     override suspend fun addCategory(category: Category): Flow<DataState<Category>> = flow {
