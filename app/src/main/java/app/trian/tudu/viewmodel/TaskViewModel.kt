@@ -12,6 +12,7 @@ import app.trian.tudu.domain.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 import logcat.logcat
 import javax.inject.Inject
 
@@ -49,6 +50,13 @@ class TaskViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun getListTaskByCategory(categoryId:String)=viewModelScope.launch {
+        taskRepository.getListTaskByCategory(categoryId).collect {
+            result->
+            _listTask.value = result
+        }
+    }
+
     fun getListCategory()=viewModelScope.launch {
         taskRepository.getListCategory().collect {
             result->
@@ -65,17 +73,8 @@ class TaskViewModel @Inject constructor() : ViewModel() {
 
 
     fun addNewTask(taskName:String)=viewModelScope.launch {
-
-        val task = Task(
-            name=taskName,
-            deadline=0,
-            done=false,
-            done_at=0,
-            note="",
-            category_id="",
-            created_at=0,
-            updated_at=1
-        )
+        val currentTime = Clock.System.now()
+        val task = Task(name=taskName, deadline=0, done=false, done_at=0, note="", category_id="AzkIA", created_at=currentTime.toEpochMilliseconds(), updated_at=currentTime.toEpochMilliseconds())
 
         taskRepository.createNewTask(task).collect {
 

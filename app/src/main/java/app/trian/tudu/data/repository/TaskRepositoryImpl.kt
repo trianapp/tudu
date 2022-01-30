@@ -30,6 +30,8 @@ class TaskRepositoryImpl(
         const val TODO_COLLECTION = "TODO"
     }
     override suspend fun getListTask(): Flow<List<Task>> = taskDao.getListTask().flowOn(dispatcherProvider.io())
+    override suspend fun getListTaskByCategory(categoryId: String): Flow<List<Task>> =taskDao.getListTaskByCategory(categoryId).flowOn(dispatcherProvider.io())
+
     override suspend fun getTaskById(taskId: String): Flow<DataState<Task>> = flow<DataState<Task>> {
         emit(DataState.LOADING)
         val task = taskDao.getTaskById(taskId)
@@ -67,7 +69,6 @@ class TaskRepositoryImpl(
     override suspend fun deleteTodo(todo: Todo): Flow<Todo> = flow{
         todoDao.deleteTodoTask(todo)
         emit(todo)
-        logcat("tes aja") { todo.toString() }
     }.flowOn(dispatcherProvider.io())
 
 

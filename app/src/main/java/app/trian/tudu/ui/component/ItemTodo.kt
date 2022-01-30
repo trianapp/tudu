@@ -4,12 +4,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.Checkbox
-import androidx.compose.material.Icon
-import androidx.compose.material.IconToggleButton
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import app.trian.tudu.data.local.Todo
 import app.trian.tudu.ui.theme.TuduTheme
@@ -45,14 +44,15 @@ fun ItemTodo(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Checkbox(
-                checked = todo.done,
+            RadioButton(
+                selected = todo.done,
                 enabled = true,
-                onCheckedChange = {
+                onClick = {
                     onDone(todo.apply { done = !todo.done })
                 }
             )
-            BasicTextField(
+            TextField(
+                modifier=modifier.fillMaxWidth(fraction = 0.9f),
                 value = todoName,
                 onValueChange = {
                     todoName = it
@@ -62,6 +62,14 @@ fun ItemTodo(
 
                 },
                 maxLines=1,
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    backgroundColor = Color.Transparent,
+                ),
+                placeholder = {
+                    Text("Input Sub Task")
+                }
             )
         }
         IconToggleButton(

@@ -1,6 +1,5 @@
 package app.trian.tudu.ui.pages.dashbboard
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,7 +23,7 @@ import app.trian.tudu.common.gridItems
 import app.trian.tudu.common.hideKeyboard
 import app.trian.tudu.data.local.Category
 import app.trian.tudu.ui.component.AppbarHome
-import app.trian.tudu.ui.component.BottomSheetInputNewTask
+import app.trian.tudu.ui.component.task.BottomSheetInputNewTask
 import app.trian.tudu.ui.component.ItemTaskGrid
 import app.trian.tudu.ui.component.ItemTaskRow
 import app.trian.tudu.ui.component.header.HeaderTask
@@ -82,14 +81,19 @@ fun PageHome(
                     router.navigate(Routes.CATEGORY)
                 },
                 onSelectCategory = {
-
+                    if(it.name == "All"){
+                        taskViewModel.getListTask()
+                    }else {
+                        taskViewModel.getListTaskByCategory(it.categoryId)
+                    }
                 }
             )
         },
         sheetContent={
             BottomSheetInputNewTask(
                 onSubmit = {
-                    taskViewModel.addNewTask(it)
+                    taskName,category,todo->
+                    taskViewModel.addNewTask(taskName)
                     scope.launch {
                         modalBottomSheetState.hide()
                         ctx.hideKeyboard()
