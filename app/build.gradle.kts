@@ -140,7 +140,7 @@ dependencies {
     implementation("br.com.devsrsouza.compose.icons.android:feather:1.0.0")
 
     //datetime
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
+    implementation("joda-time:joda-time:2.10.13")
 
     //system ui controller
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.1-alpha")
