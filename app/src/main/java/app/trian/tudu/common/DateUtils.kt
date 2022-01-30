@@ -11,7 +11,7 @@ import org.joda.time.DateTime
 
 fun Long.toReadableDate():String{
     val date = DateTime(this).toLocalDateTime()
-    return date.toString()
+    return date.toString("d MMMM, yyyy")
 }
 
 fun getNowMillis ()= DateTime.now().millis
