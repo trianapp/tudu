@@ -31,8 +31,8 @@ fun TuduBottomNavigation(
     )
 
     BottomNavigation(
-        backgroundColor = MaterialTheme.colorScheme.surface,
-        contentColor = MaterialTheme.colorScheme.onBackground
+        backgroundColor = MaterialTheme.colorScheme.background,
+        contentColor = MaterialTheme.colorScheme.primary
     ) {
         val navBackStackEntry by router.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route

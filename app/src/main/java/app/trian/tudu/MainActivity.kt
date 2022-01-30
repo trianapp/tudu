@@ -8,6 +8,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
@@ -24,6 +25,7 @@ import app.trian.tudu.ui.pages.dashbboard.PageHome
 import app.trian.tudu.ui.pages.dashbboard.PageProfile
 import app.trian.tudu.ui.pages.task.PageDetailTask
 import app.trian.tudu.ui.theme.TuduTheme
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalComposeUiApi
@@ -36,6 +38,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navHostController = rememberNavController()
+            val systemUiController = rememberSystemUiController()
+            val uiColor = MaterialTheme.colorScheme.background
+
+            LaunchedEffect(key1 = Unit, block = {
+                systemUiController.setSystemBarsColor(
+                    color = uiColor,
+                    darkIcons = true
+                )
+            })
             TuduTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -53,8 +64,8 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(Routes.ONBOARD){
                             PagesOnboard(
-                                router=navHostController
-                            )
+                                router=navHostController,
+                                )
                         }
                         composable(Routes.LOGIN){
                             PageLogin(
