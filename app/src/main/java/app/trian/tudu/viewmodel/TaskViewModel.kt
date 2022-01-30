@@ -12,8 +12,6 @@ import app.trian.tudu.domain.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
-import logcat.logcat
 import javax.inject.Inject
 
 /**
@@ -72,11 +70,11 @@ class TaskViewModel @Inject constructor() : ViewModel() {
     }
 
 
-    fun addNewTask(taskName:String)=viewModelScope.launch {
-        val currentTime = Clock.System.now()
-        val task = Task(name=taskName, deadline=0, done=false, done_at=0, note="", category_id="AzkIA", created_at=currentTime.toEpochMilliseconds(), updated_at=currentTime.toEpochMilliseconds())
-
-        taskRepository.createNewTask(task).collect {
+    fun addNewTask(
+        task:Task,
+        todo:List<Todo>
+    )=viewModelScope.launch {
+        taskRepository.createNewTask(task,todo).collect {
 
         }
 

@@ -43,7 +43,9 @@ class TaskRepositoryImpl(
     }.flowOn(dispatcherProvider.io())
 
 
-    override suspend fun createNewTask(task: Task): Flow<DataState<Task>> =flow{
+    override suspend fun createNewTask(task: Task,todo:List<Todo>): Flow<DataState<Task>> =flow{
+
+        //get id before inserting into database
         val idFromFireStore = firestore.collection(TASK_COLLECTION).document().id
         val user = firebaseAuth.currentUser
         task.apply {
@@ -51,6 +53,16 @@ class TaskRepositoryImpl(
             uid = user?.uid ?: ""
         }
         taskDao.insertNewTask(task)
+        //after insert task start insert todos if there exist
+        if(todo.isNotEmpty()){
+            val todos = todo.map {
+                it.apply {
+                    task_id = idFromFireStore
+                }
+
+            }
+            todoDao.insertBatchTodo(todos)
+        }
         emit(DataState.onData(task))
     }.flowOn(dispatcherProvider.io())
 

@@ -23,6 +23,7 @@ import app.trian.tudu.common.gridItems
 import app.trian.tudu.common.hideKeyboard
 import app.trian.tudu.data.local.Category
 import app.trian.tudu.ui.component.AppbarHome
+import app.trian.tudu.ui.component.DialogFormCategory
 import app.trian.tudu.ui.component.task.BottomSheetInputNewTask
 import app.trian.tudu.ui.component.ItemTaskGrid
 import app.trian.tudu.ui.component.ItemTaskRow
@@ -64,6 +65,9 @@ fun PageHome(
     var listType by remember {
         mutableStateOf(HeaderTask.ROW)
     }
+    var shouldShowDialogAddCategory by remember {
+        mutableStateOf(false)
+    }
 
 
 
@@ -71,6 +75,16 @@ fun PageHome(
         taskViewModel.getListTask()
         taskViewModel.getListCategory()
     })
+
+    DialogFormCategory(
+        show = shouldShowDialogAddCategory,
+        onHide = {
+            shouldShowDialogAddCategory = false
+        },
+        onSubmit = {
+            taskViewModel.addNewCategory(it)
+        }
+    )
 
     BasePagesDashboard(
         modalBottomSheetState=modalBottomSheetState,
@@ -91,13 +105,17 @@ fun PageHome(
         },
         sheetContent={
             BottomSheetInputNewTask(
+                listCategory = listCategory,
                 onSubmit = {
-                    taskName,category,todo->
-                    taskViewModel.addNewTask(taskName)
+                    task,todo->
+                    taskViewModel.addNewTask(task,todo)
                     scope.launch {
                         modalBottomSheetState.hide()
                         ctx.hideKeyboard()
                     }
+                },
+                onAddCategory = {
+                    shouldShowDialogAddCategory = true
                 }
             )
         },
@@ -105,7 +123,8 @@ fun PageHome(
     ) {
         Box(modifier = modifier.padding(bottom = 60.dp)) {
             LazyColumn(
-                modifier = modifier.fillMaxSize()
+                modifier = modifier
+                    .fillMaxSize()
                     .padding(horizontal = 30.dp)
             ) {
                 item{
