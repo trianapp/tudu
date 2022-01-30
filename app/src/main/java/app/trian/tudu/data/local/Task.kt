@@ -28,6 +28,12 @@ data class Task(
     var done_at:Long,
     @ColumnInfo(name = "note")
     var note:String,
+    @ColumnInfo(name="color")
+    var color:String,
+    @ColumnInfo(name="second_color")
+    var secondColor:String,
+    @ColumnInfo(name = "reminder")
+    var reminder:Boolean,
     @ColumnInfo(name = "taskCategoryId")
     var category_id:String,
     @ColumnInfo(name = "created_at")

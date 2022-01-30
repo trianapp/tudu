@@ -19,8 +19,15 @@ interface TodoDao {
     @Query("SELECT * FROM tb_todo WHERE todoTaskId =:taskId")
     fun getListTodoByTask(taskId:String):Flow<List<Todo>>
 
-    @Insert
+    @Insert(
+        onConflict = OnConflictStrategy.REPLACE
+    )
     fun insertTodoTask(todo: Todo)
+
+    @Insert(
+        onConflict = OnConflictStrategy.REPLACE
+    )
+    fun insertBatchTodo(todos:List<Todo>)
 
     @Update
     fun updateTodoTask(todo: Todo)

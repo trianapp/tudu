@@ -25,3 +25,17 @@ val RedGoogle = Color(0xFFE8453C)
 
 val Inactivebackground = Color(0xFFEAEBFA)
 val InactiveText = Color(0xFF000000).copy(alpha =0.5f )
+
+object HexToJetpackColor{
+    fun getColor(colorString: String): Color {
+        return Color(android.graphics.Color.parseColor("#" + colorString))
+    }
+    val Blue = "567DF4"
+    val SecondBlue = "EEF7FE"
+    val Yellow = "FFDE6C"
+    val SecondYellow = "FFFBEC"
+    val Red = "F45656"
+    val SecondRed = "FEEEEE"
+    val Green = "34DEDE"
+    val SecondGreen = "F0FFFF"
+}

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import app.trian.tudu.common.getNowMillis
 import app.trian.tudu.data.local.TuduDatabase
 import app.trian.tudu.data.local.dao.AttachmentDao
 import app.trian.tudu.data.local.dao.CategoryDao
@@ -14,7 +15,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.datetime.Clock
+import org.joda.time.DateTime
 
 /**
  * Dependency Injection for database module
@@ -39,7 +40,7 @@ object DatabaseModule {
                 //after db created
                 enableWriteAheadLogging()
                 beginTransaction()
-                val currentTime = Clock.System.now().toEpochMilliseconds()
+                val currentTime = getNowMillis()
 
                 try {
                     execSQL("""
