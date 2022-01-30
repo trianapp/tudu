@@ -20,3 +20,5 @@ val BackgroundDark = Color(0xFF191A32)
 val OnBackgroundDark = Color(0xFF999CAD)
 val SurfaceDark = Color(0xFF151529)
 val OnSurfaceDark = Color(0xFF000000)
+
+val RedGoogle = Color(0xFFE8453C)
