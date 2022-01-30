@@ -22,3 +22,6 @@ val SurfaceDark = Color(0xFF151529)
 val OnSurfaceDark = Color(0xFF000000)
 
 val RedGoogle = Color(0xFFE8453C)
+
+val Inactivebackground = Color(0xFFEAEBFA)
+val InactiveText = Color(0xFF000000).copy(alpha =0.5f )
