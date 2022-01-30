@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import app.trian.tudu.R
 import app.trian.tudu.ui.component.AppbarAuth
 import app.trian.tudu.ui.component.ButtonPrimary
 import app.trian.tudu.ui.component.task.FormInput
@@ -78,7 +80,7 @@ fun PagesRegister(
             verticalArrangement = Arrangement.Top
         ) {
             Text(
-                text = "Create your account",
+                text = stringResource(R.string.title_register),
                 style = TextStyle(
                     fontSize = 22.sp,
                     fontWeight = FontWeight.SemiBold
@@ -86,14 +88,14 @@ fun PagesRegister(
             )
             Row {
                 Text(
-                    text = "Do you already have account? ",
+                    text = stringResource(R.string.label_already_have_account),
                     style = TextStyle(
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Light
                     )
                 )
                 Text(
-                    text = "Sign in",
+                    text = stringResource(id = R.string.btn_signin),
                     modifier=modifier.clickable {
                         router.popBackStack()
                     },
@@ -113,9 +115,9 @@ fun PagesRegister(
                 FormInput(
                     initialValue = username,
                     label = {
-                        Text(text = "Username")
+                        Text(text = stringResource(R.string.label_input_username))
                     },
-                    placeholder = "Your username",
+                    placeholder = stringResource(R.string.placeholder_input_username),
                     onChange = {
                         username = it
                     }
@@ -124,9 +126,9 @@ fun PagesRegister(
                 FormInput(
                     initialValue = email,
                     label = {
-                        Text(text = "Email")
+                        Text(text = stringResource(id = R.string.label_input_email))
                     },
-                    placeholder = "Your username",
+                    placeholder = stringResource(id = R.string.placeholder_input_email),
                     onChange = {
                         email = it
                     }
@@ -135,10 +137,10 @@ fun PagesRegister(
                 FormInput(
                     initialValue = password,
                     label = {
-                        Text(text = "Password")
+                        Text(text = stringResource(id = R.string.label_input_password))
                     },
                     showPassword = true,
-                    placeholder = "Your username",
+                    placeholder = stringResource(id = R.string.placeholder_input_password),
                     onChange = {
                         password = it
                     }
@@ -153,10 +155,10 @@ fun PagesRegister(
                     onCheckedChange ={ },
                     modifier=modifier.clip(CircleShape)
                 )
-                Text(text = "I accept Terms of use and Privacy Policy")
+                Text(text = stringResource(R.string.text_license_agreement))
             }
             Spacer(modifier = modifier.height(20.dp))
-            ButtonPrimary(text = "Continue"){
+            ButtonPrimary(text = stringResource(R.string.btn_continue)){
                 processRegister()
             }
         }

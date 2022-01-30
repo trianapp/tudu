@@ -21,7 +21,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import app.trian.tudu.common.toReadableDate
 import app.trian.tudu.data.local.Task
+import app.trian.tudu.ui.theme.HexToJetpackColor
 import app.trian.tudu.ui.theme.TuduTheme
 import compose.icons.Octicons
 import compose.icons.octicons.Milestone16
@@ -52,7 +54,7 @@ fun ItemTaskRow(
             modifier= modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(10.dp))
-                .background(MaterialTheme.colorScheme.surface)
+                .background(HexToJetpackColor.getColor(task.secondColor))
                 .clickable {
                     onDetail(task)
                 }
@@ -78,14 +80,16 @@ fun ItemTaskRow(
                         text = task.name,
                         style = TextStyle(
                             fontSize = 20.sp,
-                            fontWeight = FontWeight.SemiBold
+                            fontWeight = FontWeight.SemiBold,
+                            color = HexToJetpackColor.getColor(task.color)
                         )
                     )
                     Text(
-                        text = "November 22,2020",
+                        text = task.created_at.toReadableDate(),
                         style = TextStyle(
                             fontSize = 16.sp,
-                            fontWeight = FontWeight.Light
+                            fontWeight = FontWeight.Light,
+                            color = HexToJetpackColor.getColor(task.color)
                         )
                     )
                 }
@@ -136,7 +140,7 @@ fun ItemTaskGrid(
                     bottomEnd = 10.dp,
                     bottomStart = 10.dp
                 ))
-                .background(MaterialTheme.colorScheme.surface)
+                .background(HexToJetpackColor.getColor(task.secondColor))
                 .padding(
                     all = 10.dp
                 ),
@@ -165,14 +169,16 @@ fun ItemTaskGrid(
                     text = task.name,
                     style = TextStyle(
                         fontSize = 20.sp,
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
+                        color = HexToJetpackColor.getColor(task.color)
                     )
                 )
                 Text(
-                    text = "November 22,2020",
+                    text= task.created_at.toReadableDate(),
                     style = TextStyle(
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Light
+                        fontWeight = FontWeight.Light,
+                        color = HexToJetpackColor.getColor(task.color)
                     )
                 )
             }
@@ -191,6 +197,9 @@ fun PreviewItemTaskRow(){
         done_at=0,
         note="ini",
         category_id="b",
+        color = HexToJetpackColor.Red,
+        secondColor = HexToJetpackColor.SecondRed,
+        reminder = false,
         created_at=0,
         updated_at=1
     )
@@ -213,6 +222,9 @@ fun PreviewItemTaskGrid(){
         done_at=0,
         note="ini",
         category_id="b",
+        color = HexToJetpackColor.Blue,
+        secondColor = HexToJetpackColor.SecondBlue,
+        reminder=false,
         created_at=0,
         updated_at=1
     )

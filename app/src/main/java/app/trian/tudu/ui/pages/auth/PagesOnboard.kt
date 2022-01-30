@@ -12,6 +12,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -59,7 +60,7 @@ fun PagesOnboard(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Better way to manage",
+                    text = stringResource(R.string.title_onboard),
                     style = TextStyle(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Normal
@@ -69,7 +70,7 @@ fun PagesOnboard(
                     Text(
                         modifier = modifier
                             .align(Alignment.TopCenter),
-                        text = "your task.",
+                        text = stringResource(R.string.subtitle_onboard),
                         style = TextStyle(
                             fontSize = 36.sp,
                             fontWeight = FontWeight.Normal,
@@ -87,19 +88,19 @@ fun PagesOnboard(
             }
             Spacer(modifier = modifier.height(10.dp))
             Column {
-                ButtonPrimary(text = "Sign In"){
+                ButtonPrimary(text = stringResource(id = R.string.btn_signin)){
                     router.navigate(Routes.LOGIN){
                         launchSingleTop=true
                     }
                 }
                 Spacer(modifier = modifier.height(16.dp))
-                ButtonSecondary(text = "Create New Account"){
+                ButtonSecondary(text = stringResource(R.string.btn_create_new_account)){
                     router.navigate(Routes.REGISTER){
                         launchSingleTop=true
                     }
                 }
                 Spacer(modifier = modifier.height(16.dp))
-                ButtonGoogle(text = "Continue With google"){
+                ButtonGoogle(text = stringResource(id = R.string.btn_login_google)){
 
                 }
 

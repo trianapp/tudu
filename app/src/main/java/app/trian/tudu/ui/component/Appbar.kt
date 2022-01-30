@@ -8,8 +8,10 @@ import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import app.trian.tudu.R
 import app.trian.tudu.data.local.Category
 import app.trian.tudu.ui.component.tab.TabBarHome
 import app.trian.tudu.ui.theme.TuduTheme
@@ -33,7 +35,7 @@ fun AppbarHome(
     Column {
         TopAppBar(
             title = {
-                Text(text = "Your Tudu List")
+                Text(text = stringResource(R.string.title_appbar_home))
             },
             backgroundColor = MaterialTheme.colorScheme.background,
             navigationIcon = {

@@ -9,7 +9,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import app.trian.tudu.R
 import app.trian.tudu.data.local.Todo
 import app.trian.tudu.ui.theme.TuduTheme
 import compose.icons.Octicons
@@ -62,13 +64,14 @@ fun ItemTodo(
 
                 },
                 maxLines=1,
+                singleLine=true,
                 colors = TextFieldDefaults.textFieldColors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     backgroundColor = Color.Transparent,
                 ),
                 placeholder = {
-                    Text("Input Sub Task")
+                    Text(stringResource(id = R.string.placeholder_input_todo))
                 }
             )
         }

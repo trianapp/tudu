@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import app.trian.tudu.R
 import app.trian.tudu.common.Routes
 import app.trian.tudu.ui.component.AppbarAuth
 import app.trian.tudu.ui.component.ButtonGoogle
@@ -46,12 +48,12 @@ fun PageLogin(
 
     fun processLoggedIn(){
         if(email.isBlank() || password.isBlank()){
-            Toast.makeText(ctx,"Please fille email and password!",Toast.LENGTH_SHORT).show()
+            Toast.makeText(ctx,ctx.getString(R.string.validation_login),Toast.LENGTH_SHORT).show()
             return
         }
         userViewModel.loggedInWithEmailAndPassword(email,password){
             success, message ->
-            Toast.makeText(ctx,"login $success $message",Toast.LENGTH_LONG).show()
+            Toast.makeText(ctx,ctx.getString(R.string.signin_success),Toast.LENGTH_LONG).show()
             if(success){
                 router.navigate(Routes.DASHBOARD){
                     launchSingleTop=true
@@ -93,14 +95,14 @@ fun PageLogin(
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text = "Sign in your account",
+                    text = stringResource(R.string.title_sign_in),
                     style = TextStyle(
                         fontSize = 22.sp,
                         fontWeight = FontWeight.SemiBold,
                     )
                 )
                 Text(
-                    text = "login to write a tudu list for you",
+                    text = stringResource(R.string.subtitle_signin),
                     style = TextStyle(
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Light,
@@ -110,10 +112,10 @@ fun PageLogin(
                 Spacer(modifier = modifier.height(36.dp))
                 FormInput(
                     label = {
-                        Text(text = "Email")
+                        Text(text = stringResource(R.string.label_input_email))
                     },
                     initialValue = email,
-                    placeholder = "example@triap.app",
+                    placeholder = stringResource(R.string.placeholder_input_email),
                     onChange = {
                         email=it
                     }
@@ -121,17 +123,17 @@ fun PageLogin(
                 Spacer(modifier = modifier.height(10.dp))
                 FormInput(
                     label = {
-                        Text(text = "Password")
+                        Text(text = stringResource(R.string.label_input_password))
                     },
                     initialValue = password,
-                    placeholder = "Your password",
+                    placeholder = stringResource(R.string.placeholder_input_password),
                     onChange = {
                         password = it
                     }
                 )
                 Spacer(modifier = modifier.height(30.dp))
 
-                ButtonPrimary(text = "Sign In"){
+                ButtonPrimary(text = stringResource(R.string.btn_signin)){
                     processLoggedIn()
                 }
                 Spacer(modifier = modifier.height(10.dp))
@@ -141,11 +143,11 @@ fun PageLogin(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Forget password?"
+                        text = stringResource(R.string.label_forgot_password)
                     )
                     Spacer(modifier = modifier.width(6.dp))
                     Text(
-                        text = "Reset here",
+                        text = stringResource(R.string.btn_reset_here),
                         style = TextStyle(
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Normal,
@@ -161,7 +163,7 @@ fun PageLogin(
                 Column(
                     modifier = modifier.padding(horizontal = 36.dp)
                 ) {
-                    ButtonGoogle(text = "Continue With Google")
+                    ButtonGoogle(text = stringResource(R.string.btn_login_google))
                     Spacer(modifier = modifier.height(20.dp))
                     Row(
                         modifier=modifier.fillMaxWidth(),
@@ -169,11 +171,11 @@ fun PageLogin(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Don't have account?"
+                            text = stringResource(R.string.label_dont_have_account)
                         )
                         Spacer(modifier = modifier.width(6.dp))
                         Text(
-                            text = "Create one",
+                            text = stringResource(R.string.btn_create_account),
                             style = TextStyle(
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Normal,

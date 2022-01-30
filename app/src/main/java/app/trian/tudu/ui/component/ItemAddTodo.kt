@@ -7,8 +7,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import app.trian.tudu.R
 import app.trian.tudu.ui.theme.TuduTheme
 import compose.icons.Octicons
 import compose.icons.octicons.Plus16
@@ -38,7 +40,7 @@ fun ItemAddTodo(
             verticalAlignment = Alignment.CenterVertically
         ){
             Icon(imageVector = Octicons.Plus16, contentDescription = "")
-            Text(text = "Add sub task")
+            Text(text = stringResource(R.string.placeholder_input_todo))
         }
     }
 }

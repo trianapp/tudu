@@ -10,9 +10,11 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import app.trian.tudu.R
 import app.trian.tudu.ui.theme.TuduTheme
 import logcat.logcat
 
@@ -52,7 +54,7 @@ fun ScreenDialogFormCategory(
     }
     fun submit(){
         if(categoryName.isBlank()){
-            Toast.makeText(ctx,"Category must not blank",Toast.LENGTH_LONG).show()
+            Toast.makeText(ctx,ctx.getString(R.string.blank_validation,"Category"),Toast.LENGTH_LONG).show()
         }else{
             onSubmit(categoryName)
             onHide()
@@ -65,12 +67,12 @@ fun ScreenDialogFormCategory(
             .padding(horizontal = 16.dp, vertical = 16.dp)
     ) {
         Column {
-            Text(text = "Create new category")
+            Text(text = stringResource(R.string.title_create_new_cateogory))
             TextField(
                 modifier=modifier.fillMaxWidth(),
                 value = categoryName,
                 placeholder = {
-                    Text(text = "Input here")
+                    Text(text = stringResource(R.string.placeholder_input_category))
                 },
                 onValueChange ={
                     categoryName = it
@@ -83,10 +85,10 @@ fun ScreenDialogFormCategory(
                 TextButton(onClick = {
                     onHide()
                 }) {
-                    Text(text = "Cancel")
+                    Text(text = stringResource(R.string.btn_cancel))
                 }
                 TextButton(onClick = { submit() }) {
-                    Text(text = "Save")
+                    Text(text = stringResource(R.string.btn_save))
                 }
             }
         }
