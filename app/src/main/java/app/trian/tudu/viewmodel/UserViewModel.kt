@@ -49,11 +49,12 @@ class UserViewModel @Inject constructor():ViewModel() {
     }
 
     fun registerWithEmailAndPassword(
+        username:String,
         email:String,
         password:String,
         callback: (success: Boolean,message:String) -> Unit
     )=viewModelScope.launch {
-        userRepository.registerBasic(email, password).collect {
+        userRepository.registerBasic(username,email, password).collect {
             result->
             when(result){
                 DataState.LOADING -> {}

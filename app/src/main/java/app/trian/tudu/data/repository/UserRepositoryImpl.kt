@@ -5,6 +5,7 @@ import app.trian.tudu.data.repository.design.UserRepository
 import app.trian.tudu.domain.DataState
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.userProfileChangeRequest
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -40,10 +41,16 @@ class UserRepositoryImpl(
         }
     }.flowOn(dispatcherProvider.io())
 
-    override suspend fun registerBasic(email:String,password:String): Flow<DataState<FirebaseUser>> =flow {
+    override suspend fun registerBasic(username:String,email:String,password:String): Flow<DataState<FirebaseUser>> =flow {
         emit(DataState.LOADING)
         try {
             val authenticate = firebaseAuth.createUserWithEmailAndPassword(email,password).await()
+            //
+            val user = firebaseAuth.currentUser
+            val profileChange = userProfileChangeRequest {
+                displayName = username
+            }
+            user!!.updateProfile(profileChange)
             emit(DataState.onData(authenticate.user!!))
         }catch (e:Exception){
             emit(DataState.onFailure("register failed ${e.message}"))
