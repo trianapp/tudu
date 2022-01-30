@@ -2,6 +2,8 @@ package app.trian.tudu.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import app.trian.tudu.data.local.TuduDatabase
 import app.trian.tudu.data.local.dao.AttachmentDao
 import app.trian.tudu.data.local.dao.CategoryDao
@@ -12,6 +14,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.datetime.Clock
 
 /**
  * Dependency Injection for database module
@@ -31,6 +34,31 @@ object DatabaseModule {
         TuduDatabase::class.java,
         TuduDatabase.DB_NAME
     ).fallbackToDestructiveMigration()
+        .addCallback(object:RoomDatabase.Callback(){
+            override fun onCreate(db: SupportSQLiteDatabase) = db.run {
+                //after db created
+                enableWriteAheadLogging()
+                beginTransaction()
+                val currentTime = Clock.System.now()
+
+                try {
+                    execSQL("""
+                            INSERT INTO 
+                        tb_category(categoryId,name,created_at,updated_at) 
+                            VALUES
+                        ('AzkIA','Work','$currentTime','$currentTime'),
+                        ('KLaIZ','Personal','$currentTime','$currentTime'),
+                        ('MaNZA','Wishlist','$currentTime','$currentTime'),
+                        ('BeLaD','Birthday','$currentTime','$currentTime'),
+                        ('XaZzA','Home Work','$currentTime','$currentTime')
+                        """.trimIndent()
+                    )
+                    setTransactionSuccessful()
+                }finally {
+                    endTransaction()
+                }
+            }
+        })
         .build()
 
     @Provides

@@ -1,9 +1,11 @@
 package app.trian.tudu.ui.pages.dashbboard
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -63,6 +65,8 @@ fun PageHome(
     var listType by remember {
         mutableStateOf(HeaderTask.ROW)
     }
+
+
 
     LaunchedEffect(key1 = Unit, block = {
         taskViewModel.getListTask()
@@ -131,6 +135,7 @@ fun PageHome(
 
             }
             FloatingActionButton(
+                backgroundColor=MaterialTheme.colorScheme.primary,
                 modifier = modifier
                     .align(Alignment.BottomEnd),
                 onClick = {
@@ -139,7 +144,11 @@ fun PageHome(
                     }
                 }
             ) {
-                Icon(imageVector = Octicons.Plus16, contentDescription = "")
+                Icon(
+                    imageVector = Octicons.Plus16,
+                    contentDescription = "",
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
             }
         }
     }

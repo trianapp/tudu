@@ -8,12 +8,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 
 import androidx.navigation.compose.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import app.trian.tudu.R
 import app.trian.tudu.common.Routes
+import app.trian.tudu.ui.theme.InactiveText
 import app.trian.tudu.ui.theme.TuduTheme
 import compose.icons.Octicons
 import compose.icons.octicons.Calendar16
@@ -40,7 +42,12 @@ fun TuduBottomNavigation(
             val selected = currentRoute == it.route
             BottomNavigationItem(
                 label={
-                      Text(text = stringResource(id = it.name))
+                      Text(
+                          text = stringResource(id = it.name),
+                          style = TextStyle(
+                              color = if(selected) MaterialTheme.colorScheme.primary else InactiveText
+                          )
+                      )
                 },
                 selected = selected,
                 onClick = {
@@ -50,7 +57,7 @@ fun TuduBottomNavigation(
 
                 },
                 selectedContentColor = MaterialTheme.colorScheme.primary,
-                unselectedContentColor = MaterialTheme.colorScheme.onPrimary,
+                unselectedContentColor = InactiveText,
                 icon = {
                     Icon(
                         imageVector = it.icon,
