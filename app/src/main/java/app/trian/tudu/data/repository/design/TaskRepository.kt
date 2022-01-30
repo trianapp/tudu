@@ -9,6 +9,7 @@ interface TaskRepository {
     suspend fun getListTaskByCategory(categoryId:String):Flow<List<Task>>
     suspend fun getTaskById(taskId:String):Flow<DataState<Task>>
     suspend fun createNewTask(task: Task,todo:List<Todo>):Flow<DataState<Task>>
+    suspend fun updateTask(task: Task):Flow<Task>
 
     suspend fun getListTodo(taskId:String):Flow<List<Todo>>
     suspend fun addTodo(todo: Todo):Flow<Todo>

@@ -1,4 +1,4 @@
-package app.trian.tudu.ui.pages.task
+ package app.trian.tudu.ui.pages.task
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.material.Scaffold
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -26,6 +27,7 @@ import app.trian.tudu.data.local.Todo
 import app.trian.tudu.domain.DataState
 import app.trian.tudu.ui.component.ItemAddTodo
 import app.trian.tudu.ui.component.ItemTodo
+import app.trian.tudu.ui.component.task.ScreenDetailTask
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.TaskViewModel
 import compose.icons.Octicons
@@ -47,6 +49,7 @@ fun PageDetailTask(
     val taskViewModel = hiltViewModel<TaskViewModel>()
     val detailTask by taskViewModel.detailTask.observeAsState(initial = DataState.LOADING)
     val listTodo by taskViewModel.listTodo.observeAsState(initial = emptyList())
+    val listCategory by taskViewModel.listCategory.observeAsState(initial = emptyList())
     var taskId by remember {
         mutableStateOf("")
     }
@@ -63,11 +66,11 @@ fun PageDetailTask(
     fun updateTodo(todo: Todo){
         taskViewModel.updateTodo(todo)
     }
-    fun doneTodo(todo: Todo){
-        taskViewModel.doneTodo(todo)
-    }
     fun deleteTodo(todo: Todo){
         taskViewModel.deleteTodo(todo)
+    }
+    fun updateTask(task: Task){
+        taskViewModel.updateTask(task)
     }
 
     LaunchedEffect(key1 = Unit, block = {
@@ -79,16 +82,21 @@ fun PageDetailTask(
     Scaffold(
         topBar = {
             TopAppBar(
+                backgroundColor = MaterialTheme.colorScheme.background,
+                elevation = 0.dp,
                 navigationIcon = {
-                                 IconToggleButton(checked = false, onCheckedChange = {}) {
-                                     Icon(
-                                         imageVector = Octicons.ArrowLeft16,
-                                         contentDescription = ""
-                                     )
-                                 }
+                    IconToggleButton(
+                        checked = false, onCheckedChange = {
+                            router.popBackStack()
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Octicons.ArrowLeft16,
+                            contentDescription = ""
+                        )
+                    }
                 },
                 title = {
-                    Text(text = "Detail")
 
                 }
             )
@@ -107,56 +115,25 @@ fun PageDetailTask(
                 }
             }
             is DataState.onData -> {
-                var taskName by remember {
-                    mutableStateOf(TextFieldValue(text = (detailTask as DataState.onData<Task>).data.name))
-                }
-                Box(
-                    modifier = modifier.padding(horizontal = 16.dp)
-                ) {
-                    Column(
-                        modifier=modifier.fillMaxSize(),
-                        horizontalAlignment = Alignment.Start,
-                        verticalArrangement = Arrangement.Top
-                    ) {
-                        Text(text = "Category")
-                        Spacer(modifier = modifier.height(16.dp))
-                        BasicTextField(
-                            modifier=modifier.fillMaxWidth(),
-                            value = taskName,
-                            onValueChange = {
-                                taskName = it
+                val task =  (detailTask as DataState.onData<Task>).data
+                ScreenDetailTask(
+                    task =task,
+                    category = listCategory.filter { it.categoryId == task.category_id }.lastOrNull(),
+                    todo = listTodo,
+                    updateTask = {
 
-                            },
-                            textStyle = TextStyle(
-                                fontSize = 22.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        )
-                        LazyColumn(content = {
-                            items(listTodo){
-                                    data->
-                                ItemTodo(
-                                    todo = data,
-                                    onDone = {
-                                             doneTodo(it)
-                                    },
-                                    onChange = {
-                                        updateTodo(it)
-                                    },
-                                    onDelete = {
-                                        deleteTodo(it)
-                                    }
-                                )
-                            }
-                            item {
-                                ItemAddTodo {
-                                    addPlainTodo()
-                                }
-                            }
-                        })
+                    },
+                    addNewTodo = {
+                        addPlainTodo()
+                    },
+                    updateTodo = {
+                        updateTodo(it)
+                    },
+                    deleteTodo = {
+                        deleteTodo(it)
 
-                    }
-                }
+                    },
+                )
             }
             is DataState.onFailure -> {
                 Column(

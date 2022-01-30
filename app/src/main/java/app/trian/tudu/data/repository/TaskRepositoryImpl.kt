@@ -66,6 +66,11 @@ class TaskRepositoryImpl(
         emit(DataState.onData(task))
     }.flowOn(dispatcherProvider.io())
 
+    override suspend fun updateTask(task: Task): Flow<Task> =flow<Task> {
+        taskDao.updateTask(task)
+        emit(task)
+    }.flowOn(dispatcherProvider.io())
+
     override suspend fun getListTodo(taskId: String): Flow<List<Todo>> = todoDao.getListTodoByTask(taskId).flowOn(dispatcherProvider.io())
     override suspend fun addTodo(todo: Todo): Flow<Todo> =flow{
         todoDao.insertTodoTask(todo)

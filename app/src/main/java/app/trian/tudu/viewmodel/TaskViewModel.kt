@@ -38,6 +38,9 @@ class TaskViewModel @Inject constructor() : ViewModel() {
     private var _listCategory = MutableLiveData<List<Category>>()
     val listCategory get() = _listCategory
 
+    private var _category = MutableLiveData<Category>()
+    val category get() = _category
+
 
 
 
@@ -62,6 +65,8 @@ class TaskViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+
+
     fun getListTodo(taskId:String)=viewModelScope.launch {
          taskRepository.getListTodo(taskId).collect {
              result->
@@ -80,12 +85,19 @@ class TaskViewModel @Inject constructor() : ViewModel() {
 
     }
 
+    fun updateTask(
+        task: Task
+    )=viewModelScope.launch {
+        taskRepository.updateTask(task).collect {  }
+    }
+
     fun getTaskById(taskId:String)=viewModelScope.launch{
         taskRepository.getTaskById(taskId).collect {
             result->
             _detailTask.value = result
 
         }
+        getListCategory()
         getListTodo(taskId)
     }
 
@@ -114,12 +126,6 @@ class TaskViewModel @Inject constructor() : ViewModel() {
 
     fun updateTodo(todo: Todo)=viewModelScope.launch {
         taskRepository.updateTodo(todo).collect {  }
-    }
-    fun doneTodo(todo: Todo)=viewModelScope.launch {
-        todo.apply {
-            done = true
-        }
-        taskRepository.updateTodo(todo).collect{}
     }
     fun deleteTodo(todo: Todo)=viewModelScope.launch {
         taskRepository.deleteTodo(todo).collect {  }
