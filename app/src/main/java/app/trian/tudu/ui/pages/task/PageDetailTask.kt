@@ -121,7 +121,7 @@ fun PageDetailTask(
                     category = listCategory.filter { it.categoryId == task.category_id }.lastOrNull(),
                     todo = listTodo,
                     updateTask = {
-
+                        updateTask(it)
                     },
                     addNewTodo = {
                         addPlainTodo()
