@@ -137,6 +137,7 @@ dependencies {
 
     //icon
     implementation("br.com.devsrsouza.compose.icons.android:octicons:1.0.0")
+    implementation("br.com.devsrsouza.compose.icons.android:feather:1.0.0")
 
     //datetime
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
