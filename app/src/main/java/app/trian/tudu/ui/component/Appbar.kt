@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import app.trian.tudu.R
 import app.trian.tudu.data.local.Category
 import app.trian.tudu.ui.component.tab.TabBarHome
+import app.trian.tudu.ui.theme.HexToJetpackColor
 import app.trian.tudu.ui.theme.TuduTheme
 import compose.icons.Octicons
 import compose.icons.octicons.ArrowLeft16
@@ -85,27 +86,32 @@ fun PreviewAppbarHome(){
                Category(
                    name = "All",
                    created_at = 0,
-                   updated_at = 0
+                   updated_at = 0,
+                   color = HexToJetpackColor.Blue,
                ),
                Category(
                    name = "Wishlist",
                    created_at = 0,
-                   updated_at = 0
+                   updated_at = 0,
+                   color = HexToJetpackColor.Blue,
                ),
                Category(
                    name = "Tugas",
                    created_at = 0,
-                   updated_at = 0
+                   updated_at = 0,
+                   color = HexToJetpackColor.Blue,
                ),
                Category(
                    name = "Kerjaan",
                    created_at = 0,
-                   updated_at = 0
+                   updated_at = 0,
+                   color = HexToJetpackColor.Blue,
                ),
                Category(
                    name = "Cobaan",
                    created_at = 0,
-                   updated_at = 0
+                   updated_at = 0,
+                   color = HexToJetpackColor.Blue,
                )
            ))
        }
