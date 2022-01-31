@@ -26,7 +26,9 @@ android {
     //
     lint {
         baseline = file("lint-baseline.xml")
+        abortOnError =false
     }
+
 
 
     buildTypes {
