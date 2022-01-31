@@ -31,6 +31,11 @@ class UserRepositoryImpl(
         }
     }.flowOn(dispatcherProvider.io())
 
+    override suspend fun getCurrentUser(): Flow<FirebaseUser?> = flow{
+        val user = firebaseAuth.currentUser
+        emit(user)
+    }
+
     override suspend fun loginBasic(email: String, password: String): Flow<DataState<FirebaseUser>> = flow {
         emit(DataState.LOADING)
         try {

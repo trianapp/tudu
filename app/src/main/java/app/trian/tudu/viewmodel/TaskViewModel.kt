@@ -9,6 +9,7 @@ import app.trian.tudu.data.local.Todo
 import app.trian.tudu.data.repository.design.TaskRepository
 import app.trian.tudu.data.repository.design.UserRepository
 import app.trian.tudu.domain.DataState
+import app.trian.tudu.ui.theme.HexToJetpackColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -41,6 +42,15 @@ class TaskViewModel @Inject constructor() : ViewModel() {
     private var _category = MutableLiveData<Category>()
     val category get() = _category
 
+    private var _allTaskCount = MutableLiveData<Int>(0)
+    val allTaskCount get() = _allTaskCount
+
+    private var _completedTaskCount = MutableLiveData<Int>(0)
+    val completedTaskCount get() = _completedTaskCount
+
+    private var _unCompleteTaskCount = MutableLiveData<Int>(0)
+    val unCompleteTaskCount get() = _unCompleteTaskCount
+
 
 
 
@@ -50,6 +60,7 @@ class TaskViewModel @Inject constructor() : ViewModel() {
             _listTask.value = result
         }
     }
+
 
     fun getListTaskByCategory(categoryId:String)=viewModelScope.launch {
         taskRepository.getListTaskByCategory(categoryId).collect {
@@ -66,7 +77,6 @@ class TaskViewModel @Inject constructor() : ViewModel() {
     }
 
 
-
     fun getListTodo(taskId:String)=viewModelScope.launch {
          taskRepository.getListTodo(taskId).collect {
              result->
@@ -74,6 +84,14 @@ class TaskViewModel @Inject constructor() : ViewModel() {
          }
     }
 
+    fun calculateTaskCount()=viewModelScope.launch {
+        taskRepository.getListTask().collect{
+            tasks->
+            _allTaskCount.value = tasks.size
+            _completedTaskCount.value = tasks.filter { it.done }.size
+            _unCompleteTaskCount.value = tasks.filter { !it.done }.size
+        }
+    }
 
     fun addNewTask(
         task:Task,
@@ -105,7 +123,8 @@ class TaskViewModel @Inject constructor() : ViewModel() {
         val category = Category(
             name = categoryName,
             created_at = 0,
-            updated_at = 0
+            updated_at = 0,
+            color = HexToJetpackColor.Blue
         )
         taskRepository.addCategory(category).collect {
 
