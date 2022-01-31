@@ -63,20 +63,9 @@ class DatabaseTest {
 
     @Test
     fun `should insert new category`() = runBlocking {
-        val category = Category(
-            id=0,
-            name = "",
-            created_at = 0,
-            updated_at = 0
-        )
 
-        `when`(categoryDao.insert(category)).thenAnswer {
-            category
-        }
 
-        val cat = categoryDao.insert(category)
 
-        assertEquals(cat,category)
     }
 
     @Test
