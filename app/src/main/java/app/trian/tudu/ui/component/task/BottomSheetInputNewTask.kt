@@ -43,6 +43,7 @@ import app.trian.tudu.data.local.Task
 import app.trian.tudu.data.local.Todo
 import app.trian.tudu.ui.component.ItemAddTodo
 import app.trian.tudu.ui.component.ItemTodo
+import app.trian.tudu.ui.component.dialog.DropdownPickCategory
 import app.trian.tudu.ui.theme.HexToJetpackColor
 import app.trian.tudu.ui.theme.Inactivebackground
 import app.trian.tudu.ui.theme.TuduTheme
@@ -68,9 +69,6 @@ fun BottomSheetInputNewTask(
         taskName:Task,
         todo:List<Todo>
     )->Unit={ _,_-> },
-    onPickCategory:()->Unit={},
-    onAddTodo:()->Unit={},
-    onHide:()->Unit={},
     onAddCategory: ()->Unit={}
 ){
     val ctx = LocalContext.current
@@ -84,7 +82,7 @@ fun BottomSheetInputNewTask(
         mutableStateOf(TextFieldValue(text = ""))
     }
     var categoryId by remember {
-        mutableStateOf(Category(name = ctx.getString(R.string.no_category), created_at = 0, updated_at = 0))
+        mutableStateOf(Category(name = ctx.getString(R.string.no_category), created_at = 0, updated_at = 0, color = HexToJetpackColor.Blue))
     }
     var todos by remember {
         mutableStateOf<List<Todo>>(mutableListOf())
@@ -141,44 +139,14 @@ fun BottomSheetInputNewTask(
             categoryId = Category(
                 name = ctx.getString(R.string.no_category),
                 updated_at = 0,
-                created_at = 0
+                created_at = 0,
+                color = HexToJetpackColor.Blue
             )
             todos = mutableListOf()
         }
     }
 
-    DropdownMenu(
-        expanded = showDropDownPickCategory,
-        onDismissRequest = {
-            showDropDownPickCategory=false
-        }
-    ) {
-        listCategory.forEach {
-            DropdownMenuItem(
-                onClick = {
-                    categoryId = it
-                    showDropDownPickCategory=false
-                }
-            ) {
-                Text(text = it.name)
-            }
-        }
-        DropdownMenuItem(
-            onClick = {
-                onAddCategory()
-                showDropDownPickCategory=false
-            }
-        ) {
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(imageVector = Octicons.Plus16, contentDescription = "")
-                Spacer(modifier = modifier.width(6.dp))
-                Text(text = stringResource(R.string.create_new_category))
-            }
-        }
-    }
+
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -277,6 +245,19 @@ fun BottomSheetInputNewTask(
 
                         }
                 ){
+                    DropdownPickCategory(
+                        show = showDropDownPickCategory,
+                        listCategory = listCategory,
+                        onAddCategory = {
+                            onAddCategory()
+                        },
+                        onHide = {
+                            showDropDownPickCategory = false
+                        },
+                        onPick = {
+                            categoryId = it
+                        }
+                    )
                     Text(
                         text = categoryId.name
                     )
