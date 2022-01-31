@@ -23,6 +23,12 @@ android {
         }
     }
 
+    //
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
+
+
     buildTypes {
         release {
 //            minifyEnabled(false)
