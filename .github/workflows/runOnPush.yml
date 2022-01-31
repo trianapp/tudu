@@ -20,7 +20,7 @@ jobs:
       - name: Copy CI gradle.properties
         run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
       - name: Set up JDK 11
-        uses: actions/setup-kotlin@v1
+        uses: fwilhe2/setup-kotlin@main
         with:
           java-version: 11
       - name: Generate Cache key
