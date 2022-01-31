@@ -18,9 +18,10 @@ import app.trian.tudu.data.local.dao.TodoDao
         Task::class,
         Category::class,
         Attachment::class,
-        Todo::class
+        Todo::class,
+        AppSetting::class
     ],
-    version = 10,
+    version = 11,
     exportSchema = false
 )
 abstract class TuduDatabase :RoomDatabase(){
@@ -29,6 +30,6 @@ abstract class TuduDatabase :RoomDatabase(){
     abstract fun attachmentDao(): AttachmentDao
     abstract fun categoryDao():CategoryDao
     companion object{
-        const val DB_NAME = "DB_NAME"
+        const val DB_NAME = "TUDU_APP"
     }
 }
