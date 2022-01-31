@@ -23,11 +23,12 @@ import app.trian.tudu.common.gridItems
 import app.trian.tudu.common.hideKeyboard
 import app.trian.tudu.data.local.Category
 import app.trian.tudu.ui.component.AppbarHome
-import app.trian.tudu.ui.component.DialogFormCategory
+import app.trian.tudu.ui.component.dialog.DialogFormCategory
 import app.trian.tudu.ui.component.task.BottomSheetInputNewTask
 import app.trian.tudu.ui.component.ItemTaskGrid
 import app.trian.tudu.ui.component.ItemTaskRow
 import app.trian.tudu.ui.component.header.HeaderTask
+import app.trian.tudu.ui.theme.HexToJetpackColor
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.TaskViewModel
 import compose.icons.Octicons
@@ -46,7 +47,8 @@ fun PageHome(
     val listCategory by taskViewModel.listCategory.observeAsState(initial = listOf(Category(
         name = "All",
         created_at = 0,
-        updated_at = 0
+        updated_at = 0,
+        color = HexToJetpackColor.Blue
     )))
 
     val scope = rememberCoroutineScope()
@@ -138,7 +140,13 @@ fun PageHome(
                     HeaderTask.GRID -> {
                         gridItems(listTask, columnCount = 2) {
                                 data  ->
-                            ItemTaskGrid(task = data)
+                            ItemTaskGrid(
+                                task = data,
+                                onDone = {},
+                                onDetail = {
+                                    router.navigate("${Routes.DETAIL_TASK}/${it.taskId}")
+                                }
+                            )
                         }
                     }
                     HeaderTask.ROW -> {

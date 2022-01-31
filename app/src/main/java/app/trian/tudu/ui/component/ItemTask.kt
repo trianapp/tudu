@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -78,6 +79,9 @@ fun ItemTaskRow(
                 ) {
                     Text(
                         text = task.name,
+                        maxLines=1,
+                        modifier=modifier.fillMaxWidth(fraction = 0.8f),
+                        overflow= TextOverflow.Ellipsis,
                         style = TextStyle(
                             fontSize = 20.sp,
                             fontWeight = FontWeight.SemiBold,
@@ -141,6 +145,9 @@ fun ItemTaskGrid(
                     bottomStart = 10.dp
                 ))
                 .background(HexToJetpackColor.getColor(task.secondColor))
+                .clickable {
+                    onDetail(task)
+                }
                 .padding(
                     all = 10.dp
                 ),
@@ -167,6 +174,8 @@ fun ItemTaskGrid(
             ) {
                 Text(
                     text = task.name,
+                    maxLines=1,
+                    overflow= TextOverflow.Ellipsis,
                     style = TextStyle(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold,

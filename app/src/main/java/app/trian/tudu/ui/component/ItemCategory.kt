@@ -9,13 +9,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.trian.tudu.data.local.Category
+import app.trian.tudu.ui.component.dialog.DropdownActionItemCategory
+import app.trian.tudu.ui.theme.HexToJetpackColor
 import app.trian.tudu.ui.theme.TuduTheme
 import compose.icons.Octicons
 import compose.icons.octicons.Dot16
@@ -31,8 +33,15 @@ import compose.icons.octicons.Quote16
 @Composable
 fun ItemCategory(
     modifier:Modifier=Modifier,
-    category: Category
+    category: Category,
+    onEdit:(category:Category)->Unit={},
+    onDelete:(category:Category)->Unit={},
+    onHide:(category:Category)->Unit={}
 ) {
+    var showDropdownAction by remember {
+        mutableStateOf(false)
+    }
+
     Box(modifier = modifier
         .fillMaxWidth()
         .padding(horizontal = 16.dp, vertical = 4.dp)
@@ -50,7 +59,7 @@ fun ItemCategory(
                     modifier = modifier
                         .size(8.dp)
                         .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primary)
+                        .background(HexToJetpackColor.getColor(category.color))
                 )
                 Spacer(modifier = modifier.width(16.dp))
                 Text(text = category.name)
@@ -59,9 +68,20 @@ fun ItemCategory(
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "0")
+                Text(text = "${category.usedCount}")
                 Spacer(modifier = modifier.width(16.dp))
-                IconToggleButton(checked = false, onCheckedChange ={}) {
+                IconToggleButton(
+                    checked = showDropdownAction,
+                    onCheckedChange ={
+                    showDropdownAction=true
+                }) {
+                    DropdownActionItemCategory(
+                        show = showDropdownAction,
+                        onHide = {onHide(category)},
+                        onDelete = {onDelete(category)},
+                        onEdit = {onEdit(category)},
+                        onDismiss = {showDropdownAction=false}
+                    )
                     Icon(imageVector = Octicons.Quote16, contentDescription = "")
                 }
             }
@@ -81,6 +101,7 @@ fun PreviewItemCategory(){
         ItemCategory(category = Category(
             categoryId = "ini id",
             name = "Wishlist",
+            color = HexToJetpackColor.Blue,
             created_at = 0,
             updated_at = 0
         )

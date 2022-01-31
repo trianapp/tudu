@@ -21,7 +21,7 @@ import app.trian.tudu.data.local.dao.TodoDao
         Todo::class,
         AppSetting::class
     ],
-    version = 11,
+    version = 12,
     exportSchema = false
 )
 abstract class TuduDatabase :RoomDatabase(){
