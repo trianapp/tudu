@@ -6,6 +6,8 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  APP_PATH: app
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -30,4 +32,18 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew assembleDebug lintDebug --stacktrace
+
+      - name: Upload build output(APKs)
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-outputs
+          path: ${{env.APP_PATH}}/build/outputs
+
+      - name: Upload build reports
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-reports
+          path: ${{env.APP_PATH}}/build/reports
+
