@@ -39,16 +39,20 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navHostController = rememberNavController()
             val systemUiController = rememberSystemUiController()
-            val uiColor = MaterialTheme.colorScheme.background
 
-            LaunchedEffect(key1 = Unit, block = {
-                systemUiController.setSystemBarsColor(
-                    color = uiColor,
-                    darkIcons = true
-                )
-            })
+
+
             TuduTheme {
                 // A surface container using the 'background' color from the theme
+                val uiColor = MaterialTheme.colorScheme.background
+                val primaryColor = MaterialTheme.colorScheme.primary
+                LaunchedEffect(key1 = Unit, block = {
+                    systemUiController.setSystemBarsColor(
+                        color = uiColor,
+                        darkIcons = true
+                    )
+                })
+
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -86,10 +90,18 @@ class MainActivity : ComponentActivity() {
                                 PageHome(router=navHostController)
                             }
                             composable(route=Routes.Dashboard.CALENDER){
+                                systemUiController.setSystemBarsColor(
+                                    color = uiColor,
+                                    darkIcons = true
+                                )
                                 PageCalender(navHostController=navHostController)
 
                             }
                             composable(route=Routes.Dashboard.PROFILE){
+                                systemUiController.setSystemBarsColor(
+                                    color = primaryColor,
+                                    darkIcons = false
+                                )
                                 PageProfile(router=navHostController)
 
                             }

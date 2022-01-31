@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import app.trian.tudu.common.customTabIndicatorOffset
 import app.trian.tudu.data.local.Category
 import app.trian.tudu.ui.component.category.ItemTabCategory
+import app.trian.tudu.ui.theme.HexToJetpackColor
 import app.trian.tudu.ui.theme.InactiveText
 import app.trian.tudu.ui.theme.Inactivebackground
 import app.trian.tudu.ui.theme.TuduTheme
@@ -62,7 +63,8 @@ fun TabBarHome(
                         category = Category(
                             name = "All",
                             created_at = 0,
-                            updated_at = 0
+                            updated_at = 0,
+                            color = HexToJetpackColor.Blue
                         ),
                         selected = selectedTab == 0,
                         onSelect = {
@@ -105,22 +107,26 @@ fun PreviewTabHome() {
                 Category(
                     name = "Wishlist",
                     created_at = 0,
-                    updated_at = 0
+                    updated_at = 0,
+                    color = HexToJetpackColor.Blue
                 ),
                 Category(
                     name = "Tugas",
                     created_at = 0,
-                    updated_at = 0
+                    updated_at = 0,
+                    color = HexToJetpackColor.Blue
                 ),
                 Category(
                     name = "Kerjaan",
                     created_at = 0,
-                    updated_at = 0
+                    updated_at = 0,
+                    color = HexToJetpackColor.Blue
                 ),
                 Category(
                     name = "Cobaan",
                     created_at = 0,
-                    updated_at = 0
+                    updated_at = 0,
+                    color = HexToJetpackColor.Blue
                 )
             ),
 
