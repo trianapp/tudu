@@ -45,13 +45,13 @@ object DatabaseModule {
                 try {
                     execSQL("""
                             INSERT INTO 
-                        tb_category(categoryId,name,created_at,updated_at) 
+                        tb_category(categoryId,name,color,used_count,created_at,updated_at) 
                             VALUES
-                        ('AzkIA','Work','$currentTime','$currentTime'),
-                        ('KLaIZ','Personal','$currentTime','$currentTime'),
-                        ('MaNZA','Wishlist','$currentTime','$currentTime'),
-                        ('BeLaD','Birthday','$currentTime','$currentTime'),
-                        ('XaZzA','Home Work','$currentTime','$currentTime')
+                        ('AzkIA','Work','567DF4',0,'$currentTime','$currentTime'),
+                        ('KLaIZ','Personal','567DF4',0,'$currentTime','$currentTime'),
+                        ('MaNZA','Wishlist','567DF4',0,'$currentTime','$currentTime'),
+                        ('BeLaD','Birthday','567DF4',0,'$currentTime','$currentTime'),
+                        ('XaZzA','Home Work','567DF4',0,'$currentTime','$currentTime')
                         """.trimIndent()
                     )
                     setTransactionSuccessful()
