@@ -17,6 +17,10 @@ data class Category(
     var categoryId:String="",
     @ColumnInfo(name = "name")
     var name:String,
+    @ColumnInfo(name="color")
+    var color:String,
+    @ColumnInfo(name="used_count")
+    var usedCount:Int=0,
     @ColumnInfo(name = "created_at")
     var created_at:Long,
     @ColumnInfo(name = "updated_at")

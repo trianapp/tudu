@@ -380,7 +380,8 @@ fun PreviewScreenDetailTask() {
             category = Category(
                 name = "No Category",
                 created_at = 0,
-                updated_at = 0
+                updated_at = 0,
+                color = HexToJetpackColor.Blue
             )
         )
     }

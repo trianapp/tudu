@@ -7,11 +7,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.trian.tudu.ui.theme.TuduTheme
 import compose.icons.Octicons
 import compose.icons.octicons.Plus16
+import app.trian.tudu.R
 
 /**
  * ItemAddCategory
@@ -38,7 +40,7 @@ fun ItemAddCategory(
             verticalAlignment = Alignment.CenterVertically
         ){
             Icon(imageVector = Octicons.Plus16, contentDescription = "")
-            Text(text = "Create New")
+            Text(text = stringResource(id = R.string.create_new_category))
         }
     }
 }

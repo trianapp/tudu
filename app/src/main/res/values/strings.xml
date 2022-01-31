@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Tudu</string>
+    <string name="btn_edit">Edit</string>
+    <string name="btn_delete">Delete</string>
+    <string name="btn_hide">Hide</string>
 
     <string name="nav_item_home">Home</string>
     <string name="nav_item_calendar">Calendar</string>
@@ -45,5 +48,12 @@
     <string name="label_reminder">Reminder</string>
     <string name="label_note">Note</string>
     <string name="btn_add_note">ADD</string>
+    <string name="title_category_management">Categories Management</string>
+    <string name="subtitle_category_management">Category display on homepage</string>
+    <string name="title_page_profile">My Profile</string>
+    <string name="placeholder_unknown">Unknown</string>
+    <string name="label_total_task">Total Task</string>
+    <string name="label_complete_task">Completed</string>
+    <string name="label_uncomplete_task">Pending</string>
 
 </resources>

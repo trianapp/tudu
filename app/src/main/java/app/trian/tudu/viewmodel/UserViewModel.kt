@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.trian.tudu.data.repository.design.UserRepository
 import app.trian.tudu.domain.DataState
+import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
@@ -21,6 +22,10 @@ import javax.inject.Inject
 class UserViewModel @Inject constructor():ViewModel() {
     @Inject  lateinit var userRepository: UserRepository
 
+    private var _currentUser = MutableLiveData<FirebaseUser?>(null)
+    val currentUser get() = _currentUser
+
+
     /**
      * cek id user already logged in ?
      * we user firebase auth
@@ -31,6 +36,13 @@ class UserViewModel @Inject constructor():ViewModel() {
             .collect {
                callback(it)
             }
+    }
+
+    fun getCurrentUser()=viewModelScope.launch {
+        userRepository.getCurrentUser().collect{
+            result->
+            _currentUser.value=result
+        }
     }
 
     fun loggedInWithEmailAndPassword(
