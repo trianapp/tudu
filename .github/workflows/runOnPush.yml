@@ -40,13 +40,6 @@ jobs:
           name: build-outputs
           path: ${{env.APP_PATH}}/build/outputs
 
-      - name: Upload build reports
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: build-reports
-          path: ${{env.APP_PATH}}/build/reports
-
   test_android:
     needs: build
     runs-on: macos-latest

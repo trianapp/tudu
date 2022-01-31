@@ -17,7 +17,7 @@ android {
         versionCode =1
         versionName ="1.0"
 
-        testInstrumentationRunner ="androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -66,9 +66,6 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview:1.2.0-alpha02")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
     implementation("androidx.activity:activity-compose:1.4.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.2.0-alpha02")
     debugImplementation("androidx.compose.ui:ui-tooling:1.2.0-alpha02")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.2.0-alpha02")
@@ -110,6 +107,7 @@ dependencies {
     //https://developer.android.com/jetpack/compose/navigation
     implementation("androidx.navigation:navigation-compose:2.5.0-alpha01")
 
+
     //supaya bisa inject viewModel ke navigation
     //https://developer.android.com/jetpack/compose/libraries#hilt
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
@@ -138,7 +136,7 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging-ktx")
 
     //allow use await() in firebase task
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.4.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.0")
 
     //logcat
     implementation("com.squareup.logcat:logcat:0.1")
@@ -153,6 +151,18 @@ dependencies {
     //system ui controller
         //
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.1-alpha")
+
+
+//    local unit test
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("com.google.truth:truth:1.1")
+//    instrumentation test
+    androidTestImplementation("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.38.1")
+    androidTestImplementation("androidx.arch.core:core-testing:2.1.0")
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
+    androidTestImplementation("com.google.truth:truth:1.1")
 }
 
 
