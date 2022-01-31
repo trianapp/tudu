@@ -93,6 +93,8 @@ class DatabaseTest {
         val category = Category(
             categoryId = "Azka",
             name = "Wishlist",
+            color = HexToJetpackColor.Blue,
+            usedCount = 0,
             created_at = 0,
             updated_at = 0
         )
@@ -117,7 +119,8 @@ class DatabaseTest {
             done = false,
             task_id = "aXkAs",
             created_at = 0,
-            updated_at = 0
+            updated_at = 0,
+
         )
 
         val todoDao = tuduDatabase.todoDao()
