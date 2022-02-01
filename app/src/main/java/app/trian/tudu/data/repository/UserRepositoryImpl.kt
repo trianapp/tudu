@@ -3,8 +3,12 @@ package app.trian.tudu.data.repository
 import app.trian.tudu.common.DispatcherProvider
 import app.trian.tudu.data.repository.design.UserRepository
 import app.trian.tudu.domain.DataState
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 
 import kotlinx.coroutines.flow.Flow
@@ -63,13 +67,17 @@ class UserRepositoryImpl(
 
     }.flowOn(dispatcherProvider.io())
 
-    override suspend fun loginGoogle(): Flow<DataState<String>> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun loginGoogle(idToken:String): Flow<DataState<FirebaseUser>> =flow {
+        emit(DataState.LOADING)
+        try {
+            val credential = GoogleAuthProvider.getCredential(idToken,null)
+            val authenticate = firebaseAuth.signInWithCredential(credential).await()
+            emit(DataState.onData(authenticate.user!!))
+        }catch (e:Exception){
+            emit(DataState.onFailure(e.message ?: "unknown error"))
+        }
+    }.flowOn(dispatcherProvider.io())
 
-    override suspend fun registerGoogle(): Flow<DataState<String>> {
-        TODO("Not yet implemented")
-    }
 
     override suspend fun signOut(callback: () -> Unit) {
         firebaseAuth.signOut()
