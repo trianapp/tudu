@@ -1,23 +1,29 @@
 package app.trian.tudu.ui.pages.task
 
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.data.local.Task
 import app.trian.tudu.domain.DataState
+import app.trian.tudu.ui.component.task.ScreenInputNote
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.TaskViewModel
 import compose.icons.Octicons
@@ -36,8 +42,16 @@ fun PageInputNote(
     router: NavHostController
 ) {
     val taskViewModel = hiltViewModel<TaskViewModel>()
-
     val detailTask by taskViewModel.detailTask.observeAsState(initial = DataState.LOADING)
+
+    fun updateTask(task: Task){
+        taskViewModel.updateTask(task)
+    }
+    LaunchedEffect(key1 = Unit, block = {
+        val taskId = router.currentBackStackEntry?.arguments?.getString("taskId") ?: ""
+        taskViewModel.getTaskById(taskId)
+    })
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -72,7 +86,18 @@ fun PageInputNote(
             )
         }
     ) {
-
+       when(detailTask){
+           DataState.LOADING -> {}
+           is DataState.onData -> {
+               ScreenInputNote(
+                   task = (detailTask as DataState.onData<Task>).data,
+                   onEdit = {
+                       updateTask(it)
+                   }
+               )
+           }
+           is DataState.onFailure -> {}
+       }
     }
 }
 

@@ -345,7 +345,7 @@ fun ScreenDetailTask(
                     Box (
                         modifier=modifier
                             .clickable {
-                                onEditNote("${Routes.DETAIL_TASK}/${task.taskId}")
+                                onEditNote("${Routes.ADD_NOTE}/${task.taskId}")
                             }
                             .padding(
                                 horizontal = 20.dp,
