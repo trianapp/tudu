@@ -23,6 +23,7 @@ import app.trian.tudu.ui.pages.category.PagesCategoryManagement
 import app.trian.tudu.ui.pages.dashbboard.PageCalender
 import app.trian.tudu.ui.pages.dashbboard.PageHome
 import app.trian.tudu.ui.pages.dashbboard.PageProfile
+import app.trian.tudu.ui.pages.setting.PageSetting
 import app.trian.tudu.ui.pages.task.PageDetailTask
 import app.trian.tudu.ui.theme.TuduTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -87,7 +88,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable(Routes.SETTING){
-
+                            PageSetting(router = navHostController)
                         }
                         navigation(route=Routes.DASHBOARD, startDestination = Routes.Dashboard.HOME){
                             composable(route=Routes.Dashboard.HOME){
