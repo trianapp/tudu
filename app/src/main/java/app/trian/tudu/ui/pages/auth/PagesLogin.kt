@@ -119,6 +119,7 @@ fun PageLogin(
                     onChange = {
                         email=it
                     }
+
                 )
                 Spacer(modifier = modifier.height(10.dp))
                 FormInput(
@@ -129,7 +130,8 @@ fun PageLogin(
                     placeholder = stringResource(R.string.placeholder_input_password),
                     onChange = {
                         password = it
-                    }
+                    },
+                    showPasswordObsecure = true
                 )
                 Spacer(modifier = modifier.height(30.dp))
 
