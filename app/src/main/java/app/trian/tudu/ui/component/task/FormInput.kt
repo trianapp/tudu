@@ -27,7 +27,7 @@ fun FormInput(
     initialValue:String="",
     placeholder:String="",
     label: @Composable ()->Unit={},
-    showPassword:Boolean=false,
+    shoPasswordObsecure:Boolean=false,
     onChange:(value:String)->Unit={}
 ) {
     var value by remember {
@@ -52,7 +52,7 @@ fun FormInput(
             ),
             shape = RoundedCornerShape(10.dp),
             trailingIcon = {
-                if(showPassword){
+                if(shoPasswordObsecure){
                     Icon(imageVector = Octicons.Eye16, contentDescription = "")
                 }
             }
@@ -66,7 +66,7 @@ fun FormInput(
 fun PreviewFormInput() {
     TuduTheme {
         FormInput(
-            showPassword = true
+            shoPasswordObsecure = true
         )
     }
 }

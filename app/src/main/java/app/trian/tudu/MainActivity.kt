@@ -81,6 +81,14 @@ class MainActivity : ComponentActivity() {
                                 router=navHostController
                             )
                         }
+                        composable(Routes.CHANGE_PASSWORD){
+                            PageChangePassword(
+                                router = navHostController
+                            )
+                        }
+                        composable(Routes.SETTING){
+
+                        }
                         navigation(route=Routes.DASHBOARD, startDestination = Routes.Dashboard.HOME){
                             composable(route=Routes.Dashboard.HOME){
                                 systemUiController.setSystemBarsColor(

@@ -14,6 +14,8 @@ object Routes {
     const val DASHBOARD = "DASHBOARD"
     const val CATEGORY = "CATEGORY"
     const val DETAIL_TASK = "DETAIL_TASK"
+    const val CHANGE_PASSWORD = "CHANGE_PASSWORD"
+    const val SETTING = "SETTING"
     object Dashboard{
         const val HOME = "DASHBOARD_HOME"
         const val CALENDER = "DASHBOARD_CALENDER"
