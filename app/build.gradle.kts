@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
+    id("io.github.reactivecircus.app-versioning") version "1.0.0"
     kotlin("android")
     kotlin("kapt")
 
@@ -169,4 +170,9 @@ dependencies {
 // Allow references to generated code
 kapt {
     correctErrorTypes = true
+}
+
+//configure versioning
+appVersioning{
+
 }
