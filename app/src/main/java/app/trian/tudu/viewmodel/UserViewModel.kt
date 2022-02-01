@@ -75,6 +75,14 @@ class UserViewModel @Inject constructor():ViewModel() {
             }
         }
     }
+
+    fun signOut(
+        callback:()->Unit={}
+    )=viewModelScope.launch{
+        userRepository.signOut {
+
+        }
+    }
 }
 
 
