@@ -125,6 +125,10 @@ fun PageDetailTask(
                         deleteTodo(it)
 
                     },
+                    onEditNote = {
+
+                        router.navigate(it)
+                    }
                 )
             }
             is DataState.onFailure -> {
