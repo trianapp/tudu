@@ -7,7 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavHostController
 import app.trian.tudu.ui.component.TuduBottomNavigation
+import app.trian.tudu.ui.component.drawer.DrawerContent
 import kotlinx.coroutines.launch
+import logcat.logcat
 
 @SuppressLint("ServiceCast")
 @ExperimentalMaterialApi
@@ -22,8 +24,12 @@ fun BasePagesDashboard(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     ModalDrawer(
+        drawerState=drawerState,
         drawerContent = {
-
+            DrawerContent(
+                onClick = {},
+                onNavigate = {}
+            )
         }
     ) {
         ModalBottomSheetLayout(
@@ -38,6 +44,9 @@ fun BasePagesDashboard(
                     TuduBottomNavigation(
                         router = router,
                         onButton = {
+                            logcat("tes aja") {
+                                "ini button"
+                            }
                             scope.launch {
                                 drawerState.open()
                             }
