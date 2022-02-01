@@ -29,6 +29,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
+import app.trian.tudu.common.Routes
+import app.trian.tudu.common.signOut
 import app.trian.tudu.ui.component.customShape.CurveShape
 import app.trian.tudu.ui.component.task.BottomSheetInputNewTask
 import app.trian.tudu.ui.theme.TuduTheme
@@ -68,7 +70,7 @@ fun PageProfile(
         },
         onLogout = {
             userViewModel.signOut{
-
+                router.signOut()
             }
         },
         modalBottomSheetState=modalBottomSheetState

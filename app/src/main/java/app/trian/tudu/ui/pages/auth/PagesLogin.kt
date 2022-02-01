@@ -25,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
 import app.trian.tudu.common.GoogleAuthContract
 import app.trian.tudu.common.Routes
+import app.trian.tudu.common.signInInSuccess
 import app.trian.tudu.ui.component.AppbarAuth
 import app.trian.tudu.ui.component.ButtonGoogle
 import app.trian.tudu.ui.component.ButtonPrimary
@@ -61,21 +62,7 @@ fun PageLogin(
     )
 
     fun goToDashboard(){
-        router.navigate(Routes.DASHBOARD){
-            launchSingleTop=true
-            popUpTo(Routes.LOGIN){
-                inclusive=true
-            }
-            popUpTo(Routes.ONBOARD){
-                inclusive=true
-            }
-            popUpTo(Routes.SPLASH){
-                inclusive=true
-            }
-            popUpTo(Routes.REGISTER){
-                inclusive=true
-            }
-        }
+        router.signInInSuccess()
     }
 
     fun processLoggedIn(){

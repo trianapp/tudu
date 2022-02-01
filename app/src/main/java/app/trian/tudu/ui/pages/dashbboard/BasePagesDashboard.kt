@@ -33,19 +33,7 @@ fun BasePagesDashboard(
         show = showDialogLogout,
         onConfirm = {
             showDialogLogout = false
-            scope.launch {
-                onLogout()
-                delay(500)
-                router.navigate(Routes.LOGIN){
-                    launchSingleTop=true
-                    popUpTo(Routes.DASHBOARD){
-                        inclusive=true
-                    }
-                    popUpTo(Routes.CATEGORY){
-                        inclusive=true
-                    }
-                }
-            }
+            onLogout()
         },
         onDismiss = {
             showDialogLogout=false
