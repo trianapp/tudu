@@ -173,6 +173,8 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-storage-ktx")
     implementation("com.google.firebase:firebase-messaging-ktx")
+    //google auth
+    implementation("com.google.android.gms:play-services-auth:20.0.1")
 
     //allow use await() in firebase task
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.0")
