@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.sp
 import app.trian.tudu.data.local.Task
+import app.trian.tudu.ui.theme.InactiveText
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -56,7 +57,7 @@ fun ScreenInputNote(
                         style = TextStyle(
                             fontSize = 36.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color.Black
+                            color = InactiveText
                         )
                     )
                 },
