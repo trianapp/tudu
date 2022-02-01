@@ -18,6 +18,7 @@ import app.trian.tudu.ui.theme.HexToJetpackColor
 import app.trian.tudu.ui.theme.TuduTheme
 import compose.icons.Octicons
 import compose.icons.octicons.ArrowLeft16
+import compose.icons.octicons.ArrowLeft24
 import compose.icons.octicons.Home16
 import compose.icons.octicons.Share24
 
@@ -77,7 +78,27 @@ fun AppbarAuth(
         title = {}
     )
 }
-
+@Composable
+fun AppbarBasic(
+    title:String,
+    onBackPressed: () -> Unit={}
+){
+    TopAppBar(
+        backgroundColor = MaterialTheme.colorScheme.background,
+        elevation = 0.dp,
+        navigationIcon = {
+            IconToggleButton(checked = false, onCheckedChange = {onBackPressed()}) {
+                androidx.compose.material3.Icon(
+                    imageVector = Octicons.ArrowLeft24,
+                    contentDescription = ""
+                )
+            }
+        },
+        title = {
+            Text(text = title)
+        }
+    )
+}
 @Preview
 @Composable
 fun PreviewAppbarHome(){
@@ -116,4 +137,12 @@ fun PreviewAppbarHome(){
            ))
        }
 
+}
+
+@Preview
+@Composable
+fun PreviewAppbarBasic(){
+    TuduTheme {
+        AppbarBasic(title = "Change password")
+    }
 }
