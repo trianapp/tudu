@@ -6,10 +6,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconToggleButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,8 +16,6 @@ import app.trian.tudu.ui.component.AppbarBasic
 import app.trian.tudu.ui.component.ButtonPrimary
 import app.trian.tudu.ui.component.task.FormInput
 import app.trian.tudu.ui.theme.TuduTheme
-import compose.icons.Octicons
-import compose.icons.octicons.ArrowLeft24
 
 /**
  * Page Password
@@ -51,7 +45,7 @@ fun PageChangePassword(
                     Text(text = "Current Password")
                 },
                 placeholder = "Input current password",
-                shoPasswordObsecure = true
+                showPasswordObsecure = true
             )
             Spacer(modifier = modifier.height(16.dp))
             FormInput(
@@ -59,7 +53,7 @@ fun PageChangePassword(
                     Text(text = "New Password")
                 },
                 placeholder = "Input new password",
-                shoPasswordObsecure = true
+                showPasswordObsecure = true
             )
             Spacer(modifier = modifier.height(16.dp))
             FormInput(
@@ -67,7 +61,7 @@ fun PageChangePassword(
                     Text(text = "Confirm Password")
                 },
                 placeholder = "Confirm new password",
-                shoPasswordObsecure = true
+                showPasswordObsecure = true
             )
             Spacer(modifier = modifier.height(30.dp))
             ButtonPrimary(text = "Save Changes"){
