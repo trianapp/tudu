@@ -123,7 +123,7 @@ fun DrawerContent(
                         onClick(
                             ItemMenuDrawer(
                                 name = "",
-                                route = "",
+                                route = "logout",
                                 type = "button"
                             )
                     )
