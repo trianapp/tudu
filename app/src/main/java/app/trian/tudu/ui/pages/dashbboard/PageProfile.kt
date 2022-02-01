@@ -66,6 +66,11 @@ fun PageProfile(
         sheetContent={
             BottomSheetInputNewTask()
         },
+        onLogout = {
+            userViewModel.signOut{
+
+            }
+        },
         modalBottomSheetState=modalBottomSheetState
     ) {
         Scaffold(

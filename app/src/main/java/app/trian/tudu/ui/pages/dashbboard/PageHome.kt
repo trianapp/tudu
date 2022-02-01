@@ -33,6 +33,7 @@ import app.trian.tudu.ui.component.task.ScreenListTask
 import app.trian.tudu.ui.theme.HexToJetpackColor
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.TaskViewModel
+import app.trian.tudu.viewmodel.UserViewModel
 import compose.icons.Octicons
 import compose.icons.octicons.Plus16
 import kotlinx.coroutines.launch
@@ -45,6 +46,7 @@ fun PageHome(
     router: NavHostController,
 ){
     val taskViewModel = hiltViewModel<TaskViewModel>()
+    val userViewModel = hiltViewModel<UserViewModel>()
     val listTask by taskViewModel.listTask.observeAsState(initial = emptyList())
     val listCategory by taskViewModel.listCategory.observeAsState(initial = listOf(Category(
         name = "All",
@@ -106,6 +108,11 @@ fun PageHome(
                     }
                 }
             )
+        },
+        onLogout = {
+            userViewModel.signOut{
+
+            }
         },
         sheetContent={
             BottomSheetInputNewTask(
