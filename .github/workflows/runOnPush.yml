@@ -1,8 +1,8 @@
 name: Android-CI
 
 on:
-#  push:
-#    branches: [ main ]
+  push:
+    branches: [ ci ]
   pull_request:
     branches: [ main ]
 
