@@ -36,3 +36,20 @@ platform :android do
     upload_to_play_store
   end
 end
+
+#Firebase
+
+platform :android do
+    desc "Deploy firebase"
+    lane :distribute do
+       # build_android_app() # build_android_app is a built-in fastlane action.
+        gradle(task: "clean bundleRelease")
+        firebase_app_distribution(
+            app: "1:496234949728:android:db6d88a9bd59b383d96705",
+            testers: "trian@gmail.com",
+            release_notes: "Lots of amazing new features to test out!",
+            android_artifact_type: "AAB"
+        )
+
+    end
+end
