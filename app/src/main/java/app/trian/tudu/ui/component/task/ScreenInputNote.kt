@@ -52,7 +52,7 @@ fun ScreenInputNote(
                 },
                 placeholder={
                     Text(
-                        text = noteState.text,
+                        text = noteState.text.ifBlank { "Input note here" },
                         style = TextStyle(
                             fontSize = 36.sp,
                             fontWeight = FontWeight.Bold,
