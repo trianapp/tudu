@@ -36,6 +36,7 @@ import app.trian.tudu.data.local.Todo
 import app.trian.tudu.ui.component.ItemAddTodo
 import app.trian.tudu.ui.component.ItemTodo
 import app.trian.tudu.ui.theme.HexToJetpackColor
+import app.trian.tudu.ui.theme.InactiveText
 import app.trian.tudu.ui.theme.Inactivebackground
 import app.trian.tudu.ui.theme.TuduTheme
 import compose.icons.Octicons
@@ -145,11 +146,11 @@ fun ScreenDetailTask(
                         },
                         placeholder={
                             Text(
-                                text = taskName.text,
+                                text = taskName.text.ifBlank { stringResource(R.string.placeholder_input_task) },
                                 style = TextStyle(
                                     fontSize = 36.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = Color.Black
+                                    color = InactiveText
                                 )
                             )
                         },
