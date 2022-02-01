@@ -1,3 +1,7 @@
+import java.time.Instant
+import org.gradle.language.nativeplatform.internal.BuildType
+import java.util.Properties
+import java.io.FileInputStream
 plugins {
     id("com.android.application")
     id("dagger.hilt.android.plugin")
@@ -8,11 +12,32 @@ plugins {
 
 }
 
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
+val enableAppVersioning = providers
+    .environmentVariable("ENABLE_APP_VERSIONING")
+    .forUseAtConfigurationTime()
+    .getOrElse("true").toBoolean()
+
+//https://github.com/triandamai/streamlined/blob/main/app/build.gradle.kts
+appVersioning{
+    enabled.set(enableAppVersioning)
+    overrideVersionCode{
+        _,_,_ ->
+        Instant.now().epochSecond.toInt()
+    }
+    overrideVersionName { gitTag, _, _ ->
+        "${gitTag.rawTagName} (${gitTag.commitHash})"
+    }
+}
+
 android {
     compileSdk =32
 
     defaultConfig {
-        applicationId ="app.trian.tudu"
+        applicationId = Version.applicationId
         minSdk =21
         targetSdk =32
         versionCode =1
@@ -22,6 +47,20 @@ android {
             useSupportLibrary = true
         }
     }
+    signingConfigs {
+        named(BuildType.RELEASE.name){
+
+                val filePath = keystoreProperties.getProperty("storeFile")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+                storeFile = file(filePath)
+                storePassword = keystoreProperties.getProperty("storePassword")
+
+
+        }
+    }
+
+
 
     //
     lint {
@@ -33,7 +72,7 @@ android {
 
     buildTypes {
         release {
-//            minifyEnabled(false)
+           // isMinifyEnabled=false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -169,9 +208,4 @@ dependencies {
 // Allow references to generated code
 kapt {
     correctErrorTypes = true
-}
-
-//configure versioning
-appVersioning{
-
 }
