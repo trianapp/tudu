@@ -28,6 +28,8 @@ import app.trian.tudu.ui.component.task.BottomSheetInputNewTask
 import app.trian.tudu.ui.component.ItemTaskGrid
 import app.trian.tudu.ui.component.ItemTaskRow
 import app.trian.tudu.ui.component.header.HeaderTask
+import app.trian.tudu.ui.component.task.ScreenEmptyTask
+import app.trian.tudu.ui.component.task.ScreenListTask
 import app.trian.tudu.ui.theme.HexToJetpackColor
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.TaskViewModel
@@ -123,52 +125,40 @@ fun PageHome(
         },
         router = router,
     ) {
-        Box(modifier = modifier.padding(bottom = 60.dp)) {
-            LazyColumn(
-                modifier = modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 30.dp)
-            ) {
-                item{
-                    HeaderTask(
-                        onListTypeChange = {
+        Box(
+            modifier = modifier
+                .padding(bottom = 60.dp)
+                .fillMaxSize()
+        ) {
+            when(listTask.isEmpty()){
+                true->{
+                    ScreenEmptyTask{
+                        scope.launch {
+                            modalBottomSheetState.show()
+                        }
+                    }
+                }
+                false->{
+                    ScreenListTask(
+                        listType = listType,
+                        listTask = listTask,
+                        onDetail = {
+                            router.navigate("${Routes.DETAIL_TASK}/${it.taskId}")
+                        },
+                        onDone = {
+
+                        },
+                        onChangeListType = {
                             listType = it
                         }
                     )
                 }
-                when(listType){
-                    HeaderTask.GRID -> {
-                        gridItems(listTask, columnCount = 2) {
-                                data  ->
-                            ItemTaskGrid(
-                                task = data,
-                                onDone = {},
-                                onDetail = {
-                                    router.navigate("${Routes.DETAIL_TASK}/${it.taskId}")
-                                }
-                            )
-                        }
-                    }
-                    HeaderTask.ROW -> {
-                        items(listTask) { data ->
-                            ItemTaskRow(
-                                task = data,
-                                onDone = {
-
-                                },
-                                onDetail = {
-                                    router.navigate("${Routes.DETAIL_TASK}/${it.taskId}")
-                                }
-                            )
-                        }
-                    }
-                }
-
             }
             FloatingActionButton(
                 backgroundColor=MaterialTheme.colorScheme.primary,
                 modifier = modifier
-                    .align(Alignment.BottomEnd),
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 30.dp),
                 onClick = {
                     scope.launch {
                         modalBottomSheetState.show()
