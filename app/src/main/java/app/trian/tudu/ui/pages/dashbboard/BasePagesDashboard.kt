@@ -28,7 +28,9 @@ fun BasePagesDashboard(
         drawerContent = {
             DrawerContent(
                 onClick = {},
-                onNavigate = {}
+                onNavigate = {
+                    router.navigate(it)
+                }
             )
         }
     ) {

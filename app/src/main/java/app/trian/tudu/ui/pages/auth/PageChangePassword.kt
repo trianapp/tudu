@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import app.trian.tudu.ui.component.AppbarBasic
 import app.trian.tudu.ui.component.ButtonPrimary
 import app.trian.tudu.ui.component.task.FormInput
 import app.trian.tudu.ui.theme.TuduTheme
@@ -36,20 +37,7 @@ fun PageChangePassword(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                backgroundColor = MaterialTheme.colorScheme.background,
-                navigationIcon = {
-                    IconToggleButton(checked = false, onCheckedChange = {}) {
-                        Icon(
-                            imageVector = Octicons.ArrowLeft24,
-                            contentDescription = ""
-                        )
-                    }
-                },
-                title = {
-                    Text(text = "Change Password")
-                }
-            )
+            AppbarBasic(title = "Change Password")
         }
     ) {
         Column(
