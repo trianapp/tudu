@@ -104,7 +104,7 @@ class MainActivity : ComponentActivity() {
                                     color = uiColor,
                                     darkIcons = true
                                 )
-                                PageCalender(navHostController=navHostController)
+                                PageCalender(router=navHostController)
 
                             }
                             composable(route=Routes.Dashboard.PROFILE){

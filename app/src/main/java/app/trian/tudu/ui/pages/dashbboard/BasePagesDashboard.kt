@@ -2,12 +2,14 @@ package app.trian.tudu.ui.pages.dashbboard
 
 import android.annotation.SuppressLint
 import androidx.compose.material.*
+import androidx.compose.runtime.*
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavHostController
+import app.trian.tudu.common.Routes
 import app.trian.tudu.ui.component.TuduBottomNavigation
+import app.trian.tudu.ui.component.dialog.DialogLogout
 import app.trian.tudu.ui.component.drawer.DrawerContent
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import logcat.logcat
 
@@ -19,15 +21,37 @@ fun BasePagesDashboard(
     modalBottomSheetState:ModalBottomSheetState,
     topAppbar:@Composable ()->Unit={},
     sheetContent:@Composable ()->Unit={},
+    onLogout:()->Unit={},
     content:@Composable ()->Unit
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    var showDialogLogout by remember {
+        mutableStateOf(false)
+    }
+    DialogLogout(
+        show = showDialogLogout,
+        onConfirm = {
+            showDialogLogout = false
+            onLogout()
+        },
+        onDismiss = {
+            showDialogLogout=false
+        },
+        onCancel = {
+            showDialogLogout=false
+        }
+    )
+
     ModalDrawer(
         drawerState=drawerState,
         drawerContent = {
             DrawerContent(
-                onClick = {},
+                onClick = {
+                    if(it.route == "logout"){
+                        showDialogLogout=true
+                    }
+                },
                 onNavigate = {
                     router.navigate(it)
                 }

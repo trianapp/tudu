@@ -1,5 +1,7 @@
 package app.trian.tudu.ui.pages.auth
 
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -11,6 +13,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -18,18 +21,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
+import app.trian.tudu.common.GoogleAuthContract
 import app.trian.tudu.common.Routes
+import app.trian.tudu.common.signInInSuccess
 import app.trian.tudu.ui.component.ButtonGoogle
 import app.trian.tudu.ui.component.ButtonPrimary
 import app.trian.tudu.ui.component.ButtonSecondary
 import app.trian.tudu.ui.theme.TuduTheme
+import app.trian.tudu.viewmodel.UserViewModel
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.google.android.gms.common.api.ApiException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import logcat.logcat
 
 
 @Composable
@@ -37,8 +47,28 @@ fun PagesOnboard(
     modifier: Modifier=Modifier,
     router:NavHostController
 ){
+    val userViewModel = hiltViewModel<UserViewModel>()
+    val ctx = LocalContext.current
 
+    fun goToDashboard(){
+        router.signInInSuccess()
+    }
 
+    val googleAuthLauncher = rememberLauncherForActivityResult(
+        contract = GoogleAuthContract(),
+        onResult = {
+                task->
+            userViewModel.logInWithGoogle(task){
+                success, message ->
+                if(success){
+                    Toast.makeText(ctx,ctx.getString(R.string.signin_success),Toast.LENGTH_LONG).show()
+                    goToDashboard()
+                }else{
+                    Toast.makeText(ctx,ctx.getString(R.string.signin_failed,message),Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    )
 
     Scaffold {
         Column(
@@ -101,7 +131,7 @@ fun PagesOnboard(
                 }
                 Spacer(modifier = modifier.height(16.dp))
                 ButtonGoogle(text = stringResource(id = R.string.btn_login_google)){
-
+                    googleAuthLauncher.launch(AUTH_GOOGLE_CODE)
                 }
 
             }

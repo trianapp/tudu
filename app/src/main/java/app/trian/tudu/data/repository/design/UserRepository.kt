@@ -13,9 +13,8 @@ interface UserRepository {
     suspend fun loginBasic(email:String,password:String):Flow<DataState<FirebaseUser>>
     suspend fun registerBasic(username:String,email:String,password:String):Flow<DataState<FirebaseUser>>
 
-    suspend fun loginGoogle():Flow<DataState<String>>
+    suspend fun loginGoogle(idToken:String):Flow<DataState<FirebaseUser>>
 
-    suspend fun registerGoogle():Flow<DataState<String>>
 
     suspend fun signOut(callback:()->Unit)
 }
