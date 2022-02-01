@@ -1,9 +1,6 @@
  package app.trian.tudu.ui.pages.task
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.MaterialTheme
@@ -11,13 +8,9 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -25,16 +18,13 @@ import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.data.local.Task
 import app.trian.tudu.data.local.Todo
 import app.trian.tudu.domain.DataState
-import app.trian.tudu.ui.component.ItemAddTodo
-import app.trian.tudu.ui.component.ItemTodo
 import app.trian.tudu.ui.component.task.ScreenDetailTask
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.TaskViewModel
 import compose.icons.Octicons
 import compose.icons.octicons.ArrowLeft16
-import compose.icons.octicons.X16
 
-/**
+ /**
  * Detail task
  * author Trian Damai
  * created_at 29/01/22 - 17.28
@@ -45,38 +35,39 @@ fun PageDetailTask(
     modifier: Modifier = Modifier,
     router: NavHostController
 ) {
-    val currentBackStack = router.currentBackStackEntryAsState()
-    val taskViewModel = hiltViewModel<TaskViewModel>()
-    val detailTask by taskViewModel.detailTask.observeAsState(initial = DataState.LOADING)
-    val listTodo by taskViewModel.listTodo.observeAsState(initial = emptyList())
-    val listCategory by taskViewModel.listCategory.observeAsState(initial = emptyList())
-    var taskId by remember {
-        mutableStateOf("")
-    }
+     val ctx = LocalContext.current
+     val currentBackStack = router.currentBackStackEntryAsState()
+     val taskViewModel = hiltViewModel<TaskViewModel>()
+     val detailTask by taskViewModel.detailTask.observeAsState(initial = DataState.LOADING)
+     val completeTodo by taskViewModel.completeTodo.observeAsState(initial = emptyList())
+     val unCompleteTodo by taskViewModel.unCompleteTodo.observeAsState(initial = emptyList())
+     val listCategory by taskViewModel.listCategory.observeAsState(initial = emptyList())
+     var taskId by remember { mutableStateOf("") }
 
-
-
-    fun addPlainTodo(){
+     fun addPlainTodo(){
         taskViewModel.addNewTodo(
             "",
             taskId
         )
-    }
+     }
 
-    fun updateTodo(todo: Todo){
+     fun updateTodo(todo: Todo){
         taskViewModel.updateTodo(todo)
-    }
-    fun deleteTodo(todo: Todo){
+     }
+     fun deleteTodo(todo: Todo){
         taskViewModel.deleteTodo(todo)
-    }
-    fun updateTask(task: Task){
+     }
+     fun updateTask(task: Task){
         taskViewModel.updateTask(task)
-    }
+     }
+
 
     LaunchedEffect(key1 = Unit, block = {
         taskId = currentBackStack.value?.arguments?.getString("taskId") ?: ""
         taskViewModel.getTaskById(taskId)
         taskViewModel.getListTodo(taskId)
+
+
     })
 
     Scaffold(
@@ -119,7 +110,8 @@ fun PageDetailTask(
                 ScreenDetailTask(
                     task =task,
                     category = listCategory.filter { it.categoryId == task.category_id }.lastOrNull(),
-                    todo = listTodo,
+                    completeTodo = completeTodo,
+                    unCompleteTodo=unCompleteTodo,
                     updateTask = {
                         updateTask(it)
                     },
