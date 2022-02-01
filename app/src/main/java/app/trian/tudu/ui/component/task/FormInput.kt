@@ -6,14 +6,20 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconToggleButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import app.trian.tudu.ui.theme.InactiveText
 import app.trian.tudu.ui.theme.TuduTheme
 import compose.icons.Octicons
 import compose.icons.octicons.Eye16
+import compose.icons.octicons.EyeClosed16
 
 /**
  * FormInpit
@@ -27,11 +33,14 @@ fun FormInput(
     initialValue:String="",
     placeholder:String="",
     label: @Composable ()->Unit={},
-    showPassword:Boolean=false,
+    showPasswordObsecure:Boolean=false,
     onChange:(value:String)->Unit={}
 ) {
     var value by remember {
         mutableStateOf(TextFieldValue(text = initialValue))
+    }
+    var visible by remember {
+        mutableStateOf(!showPasswordObsecure)
     }
     Column(
         modifier = modifier.fillMaxWidth()
@@ -40,6 +49,7 @@ fun FormInput(
         Spacer(modifier = modifier.height(8.dp))
         OutlinedTextField(
             modifier=modifier.fillMaxWidth(),
+            visualTransformation=if(visible) VisualTransformation.None else PasswordVisualTransformation(),
             value = value,
             placeholder = {
                 Text(text = placeholder)
@@ -52,8 +62,16 @@ fun FormInput(
             ),
             shape = RoundedCornerShape(10.dp),
             trailingIcon = {
-                if(showPassword){
-                    Icon(imageVector = Octicons.Eye16, contentDescription = "")
+                if(showPasswordObsecure){
+                    IconToggleButton(checked = visible, onCheckedChange = {
+                        visible = !visible
+                    }) {
+                        Icon(
+                            imageVector = if(visible) Octicons.Eye16 else Octicons.EyeClosed16,
+                            contentDescription = "",
+                            tint = if (visible) InactiveText else MaterialTheme.colorScheme.primary
+                        )
+                    }
                 }
             }
         )
@@ -66,7 +84,7 @@ fun FormInput(
 fun PreviewFormInput() {
     TuduTheme {
         FormInput(
-            showPassword = true
+            showPasswordObsecure = true
         )
     }
 }

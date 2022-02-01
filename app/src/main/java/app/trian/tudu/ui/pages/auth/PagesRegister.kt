@@ -139,7 +139,7 @@ fun PagesRegister(
                     label = {
                         Text(text = stringResource(id = R.string.label_input_password))
                     },
-                    showPassword = true,
+                    showPasswordObsecure = true,
                     placeholder = stringResource(id = R.string.placeholder_input_password),
                     onChange = {
                         password = it

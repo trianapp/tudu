@@ -49,7 +49,7 @@ fun TuduBottomNavigation(
                           )
                       )
                 },
-                selected = selected,
+                selected = if(it.type == "button") false else selected,
                 onClick = {
                     if(it.type == "button"){
                         onButton()
@@ -82,9 +82,8 @@ sealed class BottomNavigationScreenItem(
     ){
     object Drawer:BottomNavigationScreenItem(
         R.string.nav_item_home,
-        Octicons.Versions24,
-
-        Routes.Dashboard.HOME,
+        Octicons.ThreeBars16,
+        "",
         type = "button"
     )
     object Home:BottomNavigationScreenItem(
