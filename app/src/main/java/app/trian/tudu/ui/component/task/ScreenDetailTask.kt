@@ -1,5 +1,7 @@
 package app.trian.tudu.ui.component.task
 
+import android.app.DatePickerDialog
+import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -25,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.trian.tudu.R
+import app.trian.tudu.common.Routes
 import app.trian.tudu.common.toReadableDate
 import app.trian.tudu.data.local.Category
 import app.trian.tudu.data.local.Task
@@ -32,12 +36,14 @@ import app.trian.tudu.data.local.Todo
 import app.trian.tudu.ui.component.ItemAddTodo
 import app.trian.tudu.ui.component.ItemTodo
 import app.trian.tudu.ui.theme.HexToJetpackColor
+import app.trian.tudu.ui.theme.InactiveText
 import app.trian.tudu.ui.theme.Inactivebackground
 import app.trian.tudu.ui.theme.TuduTheme
 import compose.icons.Octicons
 import compose.icons.octicons.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.joda.time.DateTime
 
 /**
  * Screen Detail Task
@@ -50,31 +56,49 @@ fun ScreenDetailTask(
     modifier: Modifier=Modifier,
     task: Task,
     category: Category?,
-    todo:List<Todo> = emptyList(),
+    completeTodo:List<Todo> = emptyList(),
+    unCompleteTodo:List<Todo> = emptyList(),
     updateTask:(task:Task)->Unit={},
     addNewTodo:()->Unit={},
     updateTodo:(todo:Todo)->Unit={},
-    deleteTodo:(todo:Todo)->Unit={}
+    deleteTodo:(todo:Todo)->Unit={},
+    onEditNote:(route:String)->Unit={}
 ) {
     val scope = rememberCoroutineScope()
+    val ctx = LocalContext.current
     var taskName by remember {
         mutableStateOf(TextFieldValue(text = task.name))
     }
-    var deadline by remember {
+    var deadlineState by remember {
         mutableStateOf(task.deadline)
     }
-    var reminder by remember {
+    var reminderState by remember {
         mutableStateOf(task.reminder)
     }
+    val date = DateTime(task.deadline)
 
     fun update(){
         scope.launch {
             delay(800)
-            updateTask(task.apply { name=taskName.text })
+            updateTask(
+                task.apply {
+                    name=taskName.text
+                    deadline = deadlineState
+                    done = reminderState
+
+                }
+            )
         }
     }
+    val datePickerDialog = DatePickerDialog(ctx,{
+            _: DatePicker, year:Int, month:Int, day:Int->
+        val date = DateTime(year,(month+1),day,0,0)
+        deadlineState = date.millis
+        update()
+    },date.year,date.monthOfYear,date.dayOfMonth)
 
-        Column(
+
+    Column(
             modifier=modifier.fillMaxSize(),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top
@@ -97,8 +121,16 @@ fun ScreenDetailTask(
                         )
                         .clickable { }
                 ) {
-                    Text(text = category?.name ?: stringResource(id = R.string.no_category))
-                    Icon(imageVector = Octicons.ChevronDown16, contentDescription = "")
+                    Text(
+                        text = category?.name ?: stringResource(id = R.string.no_category),
+                        style= TextStyle(
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
+                    )
+                    Icon(
+                        imageVector = Octicons.ChevronDown16,
+                        contentDescription = ""
+                    )
                 }
             }
             LazyColumn(content = {
@@ -114,11 +146,11 @@ fun ScreenDetailTask(
                         },
                         placeholder={
                             Text(
-                                text = taskName.text,
+                                text = taskName.text.ifBlank { stringResource(R.string.placeholder_input_task) },
                                 style = TextStyle(
                                     fontSize = 36.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = Color.Black
+                                    color = InactiveText
                                 )
                             )
                         },
@@ -150,7 +182,7 @@ fun ScreenDetailTask(
                         )
                     }
                 }
-                items(todo.filter { !it.done }){
+                items(unCompleteTodo){
                         data->
                     Box (
                         modifier=modifier.padding(
@@ -199,7 +231,7 @@ fun ScreenDetailTask(
                         Spacer(modifier = modifier.height(10.dp))
                     }
                 }
-                items(todo.filter { it.done }){
+                items(completeTodo){
                         data->
                     Box (
                         modifier=modifier.padding(
@@ -254,8 +286,11 @@ fun ScreenDetailTask(
                                         horizontal = 10.dp,
                                         vertical = 2.dp
                                     )
+                                    .clickable {
+                                        datePickerDialog.show()
+                                    }
                             ) {
-                                Text(text = task.created_at.toReadableDate())
+                                Text(text = deadlineState.toReadableDate())
                             }
                         }
                     }
@@ -294,10 +329,13 @@ fun ScreenDetailTask(
                                         horizontal = 10.dp,
                                         vertical = 2.dp
                                     )
+                                    .clickable {
+                                        reminderState=!reminderState
+                                        update()
+                                    }
                             ) {
-                                Text(text = if(task.reminder) stringResource(R.string.reminder_yes) else stringResource(
-                                                                    R.string.reminder_no)
-                                                                )
+                                Text(text = if(reminderState) stringResource(R.string.reminder_yes)
+                                else stringResource(R.string.reminder_no))
                             }
                         }
                     }
@@ -305,11 +343,15 @@ fun ScreenDetailTask(
                 }
                 item {
                     Divider()
-                    Spacer(modifier = modifier.height(16.dp))
                     Box (
-                        modifier=modifier.padding(
-                            horizontal = 20.dp
-                        )
+                        modifier=modifier
+                            .clickable {
+                                onEditNote("${Routes.ADD_NOTE}/${task.taskId}")
+                            }
+                            .padding(
+                                horizontal = 20.dp,
+                                vertical = 16.dp
+                            )
                     ) {
                         Row(
                             modifier=modifier.fillMaxWidth(),
@@ -351,7 +393,6 @@ fun ScreenDetailTask(
                             }
                         }
                     }
-                    Spacer(modifier = modifier.height(16.dp))
                     Divider()
                 }
             })

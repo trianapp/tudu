@@ -25,6 +25,7 @@ import app.trian.tudu.ui.pages.dashbboard.PageHome
 import app.trian.tudu.ui.pages.dashbboard.PageProfile
 import app.trian.tudu.ui.pages.setting.PageSetting
 import app.trian.tudu.ui.pages.task.PageDetailTask
+import app.trian.tudu.ui.pages.task.PageInputNote
 import app.trian.tudu.ui.theme.TuduTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
@@ -123,8 +124,17 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         ){
-
                             PageDetailTask(router = navHostController)
+                        }
+                        composable(
+                            "${Routes.ADD_NOTE}/{taskId}",
+                            arguments = listOf(
+                                navArgument("taskId"){
+                                    type = NavType.StringType
+                                }
+                            )
+                        ){
+                            PageInputNote(router = navHostController)
                         }
                         composable(Routes.CATEGORY){
                             PagesCategoryManagement(
