@@ -8,10 +8,12 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.sp
+import app.trian.tudu.R
 import app.trian.tudu.data.local.Task
 import app.trian.tudu.ui.theme.InactiveText
 import kotlinx.coroutines.delay
@@ -53,7 +55,7 @@ fun ScreenInputNote(
                 },
                 placeholder={
                     Text(
-                        text = noteState.text.ifBlank { "Input note here" },
+                        text = noteState.text.ifBlank { stringResource(R.string.placeholder_input_note) },
                         style = TextStyle(
                             fontSize = 36.sp,
                             fontWeight = FontWeight.Bold,
