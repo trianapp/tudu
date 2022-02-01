@@ -188,3 +188,19 @@ fun drawCurve(size: Size, cornerRadius: Float): Path {
         close()
     }
 }
+
+class TriangleEdgeShape(val offset: Int) : Shape {
+
+    override fun createOutline(
+        size: Size,
+        layoutDirection: LayoutDirection,
+        density: Density
+    ): Outline {
+        val trianglePath = Path().apply {
+            moveTo(x = 0f, y = size.height-offset)
+            lineTo(x = 0f, y = size.height)
+            lineTo(x = 0f + offset, y = size.height)
+        }
+        return Outline.Generic(path = trianglePath)
+    }
+}
