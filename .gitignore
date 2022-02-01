@@ -115,3 +115,5 @@ lint/tmp/
 /play_config.json
 /play_config.json.b64
 /firebase_credentials.json
+
+Gemfile.lock
