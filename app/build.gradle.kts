@@ -49,6 +49,7 @@ android {
     }
     signingConfigs {
 
+        //https://github.com/onmyway133/blog/issues/285
         create("release"){
 
                 val filePath = keystoreProperties.getProperty("storeFile")
@@ -59,6 +60,7 @@ android {
         }
     }
     buildTypes {
+
         getByName("release") {
             // isMinifyEnabled=false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")

@@ -21,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.common.Routes
 import app.trian.tudu.common.gridItems
 import app.trian.tudu.common.hideKeyboard
+import app.trian.tudu.common.signOut
 import app.trian.tudu.data.local.Category
 import app.trian.tudu.ui.component.AppbarHome
 import app.trian.tudu.ui.component.dialog.DialogFormCategory
@@ -111,7 +112,7 @@ fun PageHome(
         },
         onLogout = {
             userViewModel.signOut{
-
+                router.signOut()
             }
         },
         sheetContent={
