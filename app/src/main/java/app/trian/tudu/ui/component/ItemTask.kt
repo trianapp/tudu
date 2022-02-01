@@ -41,8 +41,8 @@ import compose.icons.octicons.Milestone24
 fun ItemTaskRow(
     modifier:Modifier=Modifier,
     task:Task,
-    onMark:()->Unit={},
-    onDone:(done:Boolean)->Unit={},
+    onMark:(task:Task)->Unit={},
+    onDone:(task:Task)->Unit={},
     onDetail:(task:Task)->Unit={}
 ) {
     Box(modifier = modifier
@@ -102,7 +102,7 @@ fun ItemTaskRow(
             RadioButton(
                 selected  = task.done,
                 onClick = {
-                    onDone(!task.done)
+                    onDone(task.apply {  done =!task.done})
                 }
             )
 
@@ -115,8 +115,8 @@ fun ItemTaskGrid(
     modifier: Modifier=Modifier,
     task:Task,
     index:Int=0,
-    onMark:()->Unit={},
-    onDone:(done:Boolean)->Unit={},
+    onMark:(task:Task)->Unit={},
+    onDone:(task:Task)->Unit={},
     onDetail:(task:Task)->Unit={}
 ){
     val ctx = LocalContext.current
@@ -163,7 +163,9 @@ fun ItemTaskGrid(
                 RadioButton(
                     selected = task.done,
                     onClick = {
-                        onDone(!task.done)
+                        onDone(task.apply {
+                            done = !task.done
+                        })
                     }
                 )
             }
