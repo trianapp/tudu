@@ -56,5 +56,7 @@
     <string name="label_total_task">Total Task</string>
     <string name="label_complete_task">Completed</string>
     <string name="label_uncomplete_task">Pending</string>
+    <string name="placeholder_input_note">Input note here…</string>
+    <string name="placeholder_input_task">Input task here…</string>
 
 </resources>

@@ -11,7 +11,6 @@ import app.trian.tudu.data.repository.design.UserRepository
 import app.trian.tudu.domain.DataState
 import app.trian.tudu.ui.theme.HexToJetpackColor
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,8 +32,11 @@ class TaskViewModel @Inject constructor() : ViewModel() {
     private var _detailTask = MutableLiveData<DataState<Task>>()
     val detailTask get() = _detailTask
 
-    private var _listTodo = MutableLiveData<List<Todo>>()
-    val listTodo get() = _listTodo
+    private var _completeTodo = MutableLiveData<List<Todo>>()
+    val completeTodo get() = _completeTodo
+
+    private var _unCompleteTodo = MutableLiveData<List<Todo>>()
+    val unCompleteTodo get() = _unCompleteTodo
 
     private var _listCategory = MutableLiveData<List<Category>>()
     val listCategory get() = _listCategory
@@ -80,7 +82,8 @@ class TaskViewModel @Inject constructor() : ViewModel() {
     fun getListTodo(taskId:String)=viewModelScope.launch {
          taskRepository.getListTodo(taskId).collect {
              result->
-             _listTodo.value = result
+             _completeTodo.value = result.filter { it.done }
+             _unCompleteTodo.value = result.filter { !it.done }
          }
     }
 
