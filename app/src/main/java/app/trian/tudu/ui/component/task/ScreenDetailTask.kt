@@ -75,7 +75,7 @@ fun ScreenDetailTask(
     var reminderState by remember {
         mutableStateOf(task.reminder)
     }
-    val date = DateTime(task.deadline)
+    val date = DateTime(deadlineState)
 
     fun update(){
         scope.launch {
