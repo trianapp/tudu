@@ -108,7 +108,7 @@ lint/tmp/
 # lint/reports/
 
 
-/keystore.properties
+#/keystore.properties
 /app/todo_keystore.jks
 /secrets/todo_keystore.jks.
 /secrets/todo_keystore.jks.b64
