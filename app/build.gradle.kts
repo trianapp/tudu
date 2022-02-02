@@ -53,8 +53,6 @@ android {
 
         //https://github.com/onmyway133/blog/issues/285
         create("release"){
-
-
                 val filePath = keystoreProperties.getProperty("storeFile")
                 keyAlias = keystoreProperties.getProperty("keyAlias")
                 keyPassword = keystoreProperties.getProperty("keyPassword")
@@ -70,7 +68,6 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         getByName("debug"){
-            applicationIdSuffix=".debug"
             signingConfig =null
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
