@@ -109,7 +109,9 @@ class TaskViewModel @Inject constructor() : ViewModel() {
     fun updateTask(
         task: Task
     )=viewModelScope.launch {
-        taskRepository.updateTask(task).collect {  }
+        taskRepository.updateTask(task).collect {
+
+        }
     }
 
     fun getTaskById(taskId:String)=viewModelScope.launch{

@@ -36,7 +36,7 @@
     <string name="subtitle_onboard">your task.</string>
     <string name="btn_create_new_account">Create New Account</string>
     <string name="title_register">Create your account</string>
-    <string name="label_already_have_account">\"Do you already have account? \"</string>
+    <string name="label_already_have_account">"Do you already have account?"</string>
     <string name="label_input_username">Username</string>
     <string name="placeholder_input_username">Your username</string>
     <string name="text_license_agreement">I accept Terms of use and Privacy Policy</string>
@@ -58,5 +58,6 @@
     <string name="label_uncomplete_task">Pending</string>
     <string name="placeholder_input_note">Input note here…</string>
     <string name="placeholder_input_task">Input task here…</string>
+    <string name="signin_failed">"Sign in failed %1$s"</string>
 
 </resources>

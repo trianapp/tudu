@@ -51,7 +51,7 @@ fun ScreenListTask(
                     ItemTaskGrid(
                         task = data,
                         onDone = {
-                                 onDone(it)
+                            onDone(it)
                         },
                         onDetail = {
                             onDetail(it)
