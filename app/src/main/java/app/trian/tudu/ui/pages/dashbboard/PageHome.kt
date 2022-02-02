@@ -23,6 +23,7 @@ import app.trian.tudu.common.gridItems
 import app.trian.tudu.common.hideKeyboard
 import app.trian.tudu.common.signOut
 import app.trian.tudu.data.local.Category
+import app.trian.tudu.data.local.Task
 import app.trian.tudu.ui.component.AppbarHome
 import app.trian.tudu.ui.component.dialog.DialogFormCategory
 import app.trian.tudu.ui.component.task.BottomSheetInputNewTask
@@ -37,7 +38,9 @@ import app.trian.tudu.viewmodel.TaskViewModel
 import app.trian.tudu.viewmodel.UserViewModel
 import compose.icons.Octicons
 import compose.icons.octicons.Plus16
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import logcat.logcat
 
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
@@ -55,6 +58,7 @@ fun PageHome(
         updated_at = 0,
         color = HexToJetpackColor.Blue
     )))
+    val currentUser by userViewModel.currentUser.observeAsState()
 
     val scope = rememberCoroutineScope()
     val ctx = LocalContext.current
@@ -75,12 +79,21 @@ fun PageHome(
     var shouldShowDialogAddCategory by remember {
         mutableStateOf(false)
     }
-
+    fun signOut(){
+        scope.launch(Dispatchers.Main) {
+            router.signOut()
+        }
+    }
+    fun updateTask(task:Task){
+        taskViewModel.updateTask(task)
+        taskViewModel.getListTask()
+    }
 
 
     LaunchedEffect(key1 = Unit, block = {
         taskViewModel.getListTask()
         taskViewModel.getListCategory()
+        userViewModel.getCurrentUser()
     })
 
     DialogFormCategory(
@@ -95,6 +108,7 @@ fun PageHome(
 
     BasePagesDashboard(
         modalBottomSheetState=modalBottomSheetState,
+        currentUser = currentUser,
         topAppbar = {
             AppbarHome(
                 dataCategory = listCategory,
@@ -112,7 +126,7 @@ fun PageHome(
         },
         onLogout = {
             userViewModel.signOut{
-                router.signOut()
+                signOut()
             }
         },
         sheetContent={
@@ -154,7 +168,7 @@ fun PageHome(
                             router.navigate("${Routes.DETAIL_TASK}/${it.taskId}")
                         },
                         onDone = {
-
+                            updateTask(it)
                         },
                         onChangeListType = {
                             listType = it

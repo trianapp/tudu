@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.trian.tudu.common.Routes
 import app.trian.tudu.ui.theme.TuduTheme
+import com.google.firebase.auth.FirebaseUser
 import compose.icons.Octicons
 import compose.icons.octicons.LogoGithub16
 import compose.icons.octicons.SignOut24
@@ -30,6 +31,7 @@ import compose.icons.octicons.SignOut24
 @Composable
 fun DrawerContent(
     modifier: Modifier=Modifier,
+    currentUser: FirebaseUser?,
     onClick: (item: ItemMenuDrawer) -> Unit={},
     onNavigate:(route:String)->Unit={}
 ) {
@@ -84,7 +86,7 @@ fun DrawerContent(
                 )
             )
             Text(
-                text = "Putri Aling" ,
+                text = currentUser?.displayName ?: "Unknown",
                 style = TextStyle(
                     fontSize = 36.sp,
                     fontWeight = FontWeight.Bold
@@ -204,7 +206,9 @@ data class ItemMenuDrawer(
 @Composable
 fun PreviewDrawerContent() {
     TuduTheme {
-        DrawerContent()
+        DrawerContent(
+            currentUser = null
+        )
     }
 }
 

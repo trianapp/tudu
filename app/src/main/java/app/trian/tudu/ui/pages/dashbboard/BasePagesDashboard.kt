@@ -9,6 +9,7 @@ import app.trian.tudu.common.Routes
 import app.trian.tudu.ui.component.TuduBottomNavigation
 import app.trian.tudu.ui.component.dialog.DialogLogout
 import app.trian.tudu.ui.component.drawer.DrawerContent
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import logcat.logcat
@@ -19,6 +20,7 @@ import logcat.logcat
 fun BasePagesDashboard(
     router: NavHostController,
     modalBottomSheetState:ModalBottomSheetState,
+    currentUser:FirebaseUser?,
     topAppbar:@Composable ()->Unit={},
     sheetContent:@Composable ()->Unit={},
     onLogout:()->Unit={},
@@ -47,6 +49,7 @@ fun BasePagesDashboard(
         drawerState=drawerState,
         drawerContent = {
             DrawerContent(
+                currentUser = currentUser,
                 onClick = {
                     if(it.route == "logout"){
                         showDialogLogout=true
