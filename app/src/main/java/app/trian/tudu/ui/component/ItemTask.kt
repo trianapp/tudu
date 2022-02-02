@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,6 +46,9 @@ fun ItemTaskRow(
     onDone:(task:Task)->Unit={},
     onDetail:(task:Task)->Unit={}
 ) {
+    var isDone by remember {
+        mutableStateOf(task.done)
+    }
     Box(modifier = modifier
         .fillMaxWidth()
         .padding(
@@ -85,11 +89,12 @@ fun ItemTaskRow(
                         style = TextStyle(
                             fontSize = 20.sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = HexToJetpackColor.getColor(task.color)
+                            color = HexToJetpackColor.getColor(task.color),
+                            textDecoration = if(isDone) TextDecoration.LineThrough else TextDecoration.None
                         )
                     )
                     Text(
-                        text = task.created_at.toReadableDate(),
+                        text = task.deadline.toReadableDate(),
                         style = TextStyle(
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Light,
@@ -100,9 +105,13 @@ fun ItemTaskRow(
 
             }
             RadioButton(
-                selected  = task.done,
+                selected  = isDone,
                 onClick = {
-                    onDone(task.apply {  done =!task.done})
+                    isDone = !isDone
+                    val taskUpdated = task.apply{
+                        done = isDone
+                    }
+                    onDone(taskUpdated)
                 }
             )
 
@@ -126,8 +135,11 @@ fun ItemTaskGrid(
             LocalDensity.current.density
     val paddingStart = if((index%2) ==0) 0.dp else 6.dp
     val paddingEnd = if((index%2) ==0) 6.dp else 0.dp
+    var isDone by remember {
+        mutableStateOf(task.done)
+    }
     Box(modifier = modifier
-        .width(((currentWidth/2)))
+        .width(((currentWidth / 2)))
         .padding(
             top = 6.dp,
             bottom = 6.dp,
@@ -137,13 +149,15 @@ fun ItemTaskGrid(
         )
     ){
         Column(
-            modifier=modifier
-                .clip(RoundedCornerShape(
-                    topStart = 10.dp,
-                    topEnd = 10.dp,
-                    bottomEnd = 10.dp,
-                    bottomStart = 10.dp
-                ))
+            modifier= modifier
+                .clip(
+                    RoundedCornerShape(
+                        topStart = 10.dp,
+                        topEnd = 10.dp,
+                        bottomEnd = 10.dp,
+                        bottomStart = 10.dp
+                    )
+                )
                 .background(HexToJetpackColor.getColor(task.secondColor))
                 .clickable {
                     onDetail(task)
@@ -161,11 +175,13 @@ fun ItemTaskGrid(
             ) {
                 Icon(imageVector = Octicons.Milestone24, contentDescription = "")
                 RadioButton(
-                    selected = task.done,
+                    selected = isDone,
                     onClick = {
-                        onDone(task.apply {
-                            done = !task.done
-                        })
+                        isDone = !isDone
+                        val taskUpdated = task.apply{
+                            done = isDone
+                        }
+                        onDone(taskUpdated)
                     }
                 )
             }
@@ -181,11 +197,12 @@ fun ItemTaskGrid(
                     style = TextStyle(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color = HexToJetpackColor.getColor(task.color)
+                        color = HexToJetpackColor.getColor(task.color),
+                        textDecoration = if(isDone) TextDecoration.LineThrough else TextDecoration.None
                     )
                 )
                 Text(
-                    text= task.created_at.toReadableDate(),
+                    text= task.deadline.toReadableDate(),
                     style = TextStyle(
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Light,
