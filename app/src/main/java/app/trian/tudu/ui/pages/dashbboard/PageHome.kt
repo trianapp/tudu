@@ -37,6 +37,7 @@ import app.trian.tudu.viewmodel.TaskViewModel
 import app.trian.tudu.viewmodel.UserViewModel
 import compose.icons.Octicons
 import compose.icons.octicons.Plus16
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @ExperimentalComposeUiApi
@@ -76,7 +77,11 @@ fun PageHome(
     var shouldShowDialogAddCategory by remember {
         mutableStateOf(false)
     }
-
+    fun signOut(){
+        scope.launch(Dispatchers.Main) {
+            router.signOut()
+        }
+    }
 
 
     LaunchedEffect(key1 = Unit, block = {
@@ -115,7 +120,7 @@ fun PageHome(
         },
         onLogout = {
             userViewModel.signOut{
-                router.signOut()
+                signOut()
             }
         },
         sheetContent={
