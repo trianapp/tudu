@@ -34,6 +34,24 @@ jobs:
       - name: Make Gradle executable
         run: chmod +x ./gradlew
 
+      - name: Install bundle
+        run: |
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+      - name: Configure Keystore
+        run: |
+          echo "$ANDROID_KEYSTORE_FILE" > keystore.jks.b64
+          base64 -d -i keystore.jks.b64 > app/keystore.jks
+          echo "storeFile=keystore.jks" >> keystore.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> keystore.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> keystore.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> keystore.properties
+        env:
+          ANDROID_KEYSTORE_FILE: ${{ secrets.ANDROID_KEYSTORE_FILE }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+
       - name: Build with Gradle
         run: ./gradlew assembleDebug lintDebug --stacktrace
 
@@ -67,15 +85,34 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+        #keystore
+      - name: Install bundle
+        run: |
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+      - name: Configure Keystore
+        run: |
+          echo "$ANDROID_KEYSTORE_FILE" > keystore.jks.b64
+          base64 -d -i keystore.jks.b64 > app/keystore.jks
+          echo "storeFile=keystore.jks" >> keystore.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> keystore.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> keystore.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> keystore.properties
+        env:
+          ANDROID_KEYSTORE_FILE: ${{ secrets.ANDROID_KEYSTORE_FILE }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
       - name: Run unit test
         run: ./gradlew test --stacktrace
-      - name: Run instrumentation tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: ${{ matrix.api-level }}
-          arch: x86
-          disable-animations: true
-          script: ./gradlew connectedCheck --stacktrace
+    #disable
+#      - name: Run instrumentation tests
+#        uses: reactivecircus/android-emulator-runner@v2
+#        with:
+#          api-level: ${{ matrix.api-level }}
+#          arch: x86
+#          disable-animations: true
+#          script: ./gradlew connectedCheck --stacktrace
       - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v2
