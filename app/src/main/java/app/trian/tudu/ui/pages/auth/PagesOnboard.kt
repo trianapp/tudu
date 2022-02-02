@@ -28,6 +28,7 @@ import app.trian.tudu.R
 import app.trian.tudu.common.GoogleAuthContract
 import app.trian.tudu.common.Routes
 import app.trian.tudu.common.signInInSuccess
+import app.trian.tudu.common.signInInSuccessOnboard
 import app.trian.tudu.ui.component.ButtonGoogle
 import app.trian.tudu.ui.component.ButtonPrimary
 import app.trian.tudu.ui.component.ButtonSecondary
@@ -51,7 +52,7 @@ fun PagesOnboard(
     val ctx = LocalContext.current
 
     fun goToDashboard(){
-        router.signInInSuccess()
+        router.signInInSuccessOnboard()
     }
 
     val googleAuthLauncher = rememberLauncherForActivityResult(
