@@ -57,13 +57,17 @@ fun PageLogin(
                 task->
             userViewModel.logInWithGoogle(task){
                     success, message ->
+                if(success){
+                    Toast.makeText(ctx,ctx.getString(R.string.signin_success),Toast.LENGTH_LONG).show()
+                    router.signInInSuccess()
+                }else{
+                    Toast.makeText(ctx,ctx.getString(R.string.signin_failed,message),Toast.LENGTH_LONG).show()
+                }
             }
         }
     )
 
-    fun goToDashboard(){
-        router.signInInSuccess()
-    }
+
 
     fun processLoggedIn(){
         if(email.isBlank() || password.isBlank()){
@@ -74,7 +78,7 @@ fun PageLogin(
             success, message ->
             if(success){
                 Toast.makeText(ctx,ctx.getString(R.string.signin_success),Toast.LENGTH_LONG).show()
-                goToDashboard()
+                router.signInInSuccess()
             }else{
                 Toast.makeText(ctx,ctx.getString(R.string.signin_failed,message),Toast.LENGTH_LONG).show()
             }
