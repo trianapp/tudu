@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - 'app/**'
-    branches: [ prod ]
+    branches: [ main ]
 
 jobs:
   deploy:
