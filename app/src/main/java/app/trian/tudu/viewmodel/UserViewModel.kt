@@ -5,11 +5,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.trian.tudu.data.repository.design.UserRepository
 import app.trian.tudu.domain.DataState
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 /**
@@ -45,7 +49,7 @@ class UserViewModel @Inject constructor():ViewModel() {
         }
     }
 
-    fun loggedInWithEmailAndPassword(
+    fun logInWithEmailAndPassword(
         email:String,
         password:String,
         callback: (success: Boolean,message:String) -> Unit
@@ -54,10 +58,37 @@ class UserViewModel @Inject constructor():ViewModel() {
             result->
             when(result){
                 DataState.LOADING -> {}
-                is DataState.onData -> {callback(true,"Sukses")}
+                is DataState.onData -> {callback(true,"Sign In Success")}
                 is DataState.onFailure -> {callback(false,result.message)}
             }
         }
+    }
+    
+    fun logInWithGoogle(
+        credential:Task<GoogleSignInAccount>?,
+        callback: (success: Boolean, message: String) -> Unit
+    )=viewModelScope.launch {
+        try {
+            if(credential != null) {
+                val account = credential.await()
+                userRepository.loginGoogle(account.idToken!!).collect { auth ->
+                    when (auth) {
+                        DataState.LOADING -> {}
+                        is DataState.onData -> {
+                            callback(true, "Sign in success")
+                        }
+                        is DataState.onFailure -> {
+                            callback(false, auth.message)
+                        }
+                    }
+                }
+            }else{
+                callback(false,"User don;t have credential")
+            }
+        }catch (e:Exception){
+            callback(false,e.message ?: "Unknown")
+        }
+
     }
 
     fun registerWithEmailAndPassword(
@@ -74,6 +105,12 @@ class UserViewModel @Inject constructor():ViewModel() {
                 is DataState.onFailure -> {callback(false,result.message)}
             }
         }
+    }
+
+    fun signOut(
+        callback:()->Unit={}
+    )=viewModelScope.launch{
+        userRepository.signOut(callback = callback)
     }
 }
 

@@ -30,3 +30,7 @@ fun Context.showKeyboard(){
     }
     imm.hideSoftInputFromWindow(view.windowToken,1)
 }
+
+fun Context.restartActivity(){
+
+}
