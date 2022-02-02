@@ -34,4 +34,7 @@ interface TodoDao {
 
     @Delete
     fun deleteTodoTask(todo: Todo)
+
+    @Query("DELETE  FROM tb_todo")
+    fun deleteAll()
 }

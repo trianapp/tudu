@@ -11,7 +11,6 @@ import androidx.navigation.NavHostController
  */
 
 fun NavHostController.signOut(){
-    val nav =this
     navigate(Routes.LOGIN){
         popUpTo(Routes.Dashboard.HOME){
             inclusive=true
