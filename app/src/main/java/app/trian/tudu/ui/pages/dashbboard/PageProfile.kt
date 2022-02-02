@@ -65,6 +65,7 @@ fun PageProfile(
     })
     BasePagesDashboard(
         router = router,
+        currentUser = currentUser,
         sheetContent={
             BottomSheetInputNewTask()
         },

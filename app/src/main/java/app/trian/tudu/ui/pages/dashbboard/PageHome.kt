@@ -55,6 +55,7 @@ fun PageHome(
         updated_at = 0,
         color = HexToJetpackColor.Blue
     )))
+    val currentUser by userViewModel.currentUser.observeAsState()
 
     val scope = rememberCoroutineScope()
     val ctx = LocalContext.current
@@ -81,6 +82,7 @@ fun PageHome(
     LaunchedEffect(key1 = Unit, block = {
         taskViewModel.getListTask()
         taskViewModel.getListCategory()
+        userViewModel.getCurrentUser()
     })
 
     DialogFormCategory(
@@ -95,6 +97,7 @@ fun PageHome(
 
     BasePagesDashboard(
         modalBottomSheetState=modalBottomSheetState,
+        currentUser = currentUser,
         topAppbar = {
             AppbarHome(
                 dataCategory = listCategory,
