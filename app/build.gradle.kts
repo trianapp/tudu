@@ -13,9 +13,7 @@ plugins {
 
 }
 
-val keystorePropertiesFile = rootProject.file("keystore.properties")
-val keystoreProperties = Properties()
-keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
 
 val enableAppVersioning = providers
     .environmentVariable("ENABLE_APP_VERSIONING")
@@ -52,6 +50,10 @@ android {
 
         //https://github.com/onmyway133/blog/issues/285
         create("release"){
+            val keystorePropertiesFile = rootProject.file("keystore.properties")
+            val keystoreProperties = Properties()
+            keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
                 val filePath = keystoreProperties.getProperty("storeFile")
                 keyAlias = keystoreProperties.getProperty("keyAlias")
                 keyPassword = keystoreProperties.getProperty("keyPassword")
