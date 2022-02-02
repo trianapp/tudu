@@ -90,12 +90,19 @@ fun ScreenDetailTask(
             )
         }
     }
+    fun getMonth(month:Int):Int{
+        if(month <1){
+            return month
+        }
+        return month -1
+    }
     val datePickerDialog = DatePickerDialog(ctx,{
             _: DatePicker, year:Int, month:Int, day:Int->
         val date = DateTime(year,(month+1),day,0,0)
         deadlineState = date.millis
         update()
-    },date.year,date.monthOfYear,date.dayOfMonth)
+    },date.year,getMonth(date.monthOfYear),date.dayOfMonth)
+
 
 
     Column(
