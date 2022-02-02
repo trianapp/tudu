@@ -23,6 +23,7 @@ import app.trian.tudu.common.gridItems
 import app.trian.tudu.common.hideKeyboard
 import app.trian.tudu.common.signOut
 import app.trian.tudu.data.local.Category
+import app.trian.tudu.data.local.Task
 import app.trian.tudu.ui.component.AppbarHome
 import app.trian.tudu.ui.component.dialog.DialogFormCategory
 import app.trian.tudu.ui.component.task.BottomSheetInputNewTask
@@ -39,6 +40,7 @@ import compose.icons.Octicons
 import compose.icons.octicons.Plus16
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import logcat.logcat
 
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
@@ -81,6 +83,10 @@ fun PageHome(
         scope.launch(Dispatchers.Main) {
             router.signOut()
         }
+    }
+    fun updateTask(task:Task){
+        taskViewModel.updateTask(task)
+        taskViewModel.getListTask()
     }
 
 
@@ -162,7 +168,7 @@ fun PageHome(
                             router.navigate("${Routes.DETAIL_TASK}/${it.taskId}")
                         },
                         onDone = {
-
+                            updateTask(it)
                         },
                         onChangeListType = {
                             listType = it

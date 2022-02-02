@@ -1,8 +1,6 @@
 package app.trian.tudu.ui.component
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -10,7 +8,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import app.trian.tudu.R
 import app.trian.tudu.data.local.Todo
 import app.trian.tudu.ui.theme.TuduTheme
@@ -42,20 +43,23 @@ fun ItemTodo(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Row(
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
+        Box(
         ) {
             RadioButton(
                 selected = todo.done,
                 enabled = true,
                 onClick = {
                     onDone(todo.apply { done = !todo.done })
-                }
+                },
+                modifier = modifier.align(Alignment.CenterStart)
             )
             TextField(
-                modifier=modifier.fillMaxWidth(fraction = 0.9f),
+                modifier=modifier
+                    .fillMaxWidth(fraction = 0.9f)
+                    .align(Alignment.CenterStart)
+                    .padding(start = 30.dp),
                 value = todoName,
+                enabled = !todo.done,
                 onValueChange = {
                     todoName = it
                     scope.launch {
@@ -69,10 +73,19 @@ fun ItemTodo(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     backgroundColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent
                 ),
                 placeholder = {
-                    Text(stringResource(id = R.string.placeholder_input_todo))
-                }
+                    Text(
+                        stringResource(id = R.string.placeholder_input_todo),
+                        style= TextStyle(
+                            textDecoration = if(todo.done) TextDecoration.LineThrough else TextDecoration.None
+                        )
+                    )
+                },
+                textStyle = TextStyle(
+                    textDecoration = if(todo.done) TextDecoration.LineThrough else TextDecoration.None
+                )
             )
         }
         IconToggleButton(
@@ -97,7 +110,7 @@ fun PreviewItemTodo() {
         ItemTodo(
             todo = Todo(
                name = "ini todo",
-               done = false,
+               done = true,
                 task_id = "",
                created_at = 0,
                updated_at = 0
