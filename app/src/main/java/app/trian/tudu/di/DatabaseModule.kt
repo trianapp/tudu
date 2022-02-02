@@ -38,26 +38,26 @@ object DatabaseModule {
         .addCallback(object:RoomDatabase.Callback(){
             override fun onCreate(db: SupportSQLiteDatabase) = db.run {
                 //after db created
-                enableWriteAheadLogging()
-                beginTransaction()
-                val currentTime = getNowMillis()
-
-                try {
-                    execSQL("""
-                            INSERT INTO 
-                        tb_category(categoryId,name,color,used_count,created_at,updated_at) 
-                            VALUES
-                        ('AzkIA','Work','567DF4',0,'$currentTime','$currentTime'),
-                        ('KLaIZ','Personal','567DF4',0,'$currentTime','$currentTime'),
-                        ('MaNZA','Wishlist','567DF4',0,'$currentTime','$currentTime'),
-                        ('BeLaD','Birthday','567DF4',0,'$currentTime','$currentTime'),
-                        ('XaZzA','Home Work','567DF4',0,'$currentTime','$currentTime')
-                        """.trimIndent()
-                    )
-                    setTransactionSuccessful()
-                }finally {
-                    endTransaction()
-                }
+//                enableWriteAheadLogging()
+//                beginTransaction()
+//                val currentTime = getNowMillis()
+//
+//                try {
+//                    execSQL("""
+//                            INSERT INTO
+//                        tb_category(categoryId,name,color,used_count,created_at,updated_at)
+//                            VALUES
+//                        ('AzkIA','Work','567DF4',0,'$currentTime','$currentTime'),
+//                        ('KLaIZ','Personal','567DF4',0,'$currentTime','$currentTime'),
+//                        ('MaNZA','Wishlist','567DF4',0,'$currentTime','$currentTime'),
+//                        ('BeLaD','Birthday','567DF4',0,'$currentTime','$currentTime'),
+//                        ('XaZzA','Home Work','567DF4',0,'$currentTime','$currentTime')
+//                        """.trimIndent()
+//                    )
+//                    setTransactionSuccessful()
+//                }finally {
+//                    endTransaction()
+//                }
             }
         })
         .build()
