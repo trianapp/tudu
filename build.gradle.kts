@@ -17,7 +17,3 @@ tasks.create<Delete>("cleanRp"){
         rootProject.buildDir
     )
 }
-
-//task clean(type: Delete) {
-//    delete rootProject.buildDir
-//}
