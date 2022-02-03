@@ -38,3 +38,5 @@
 -dontwarn com.google.firebase.crashlytics.**
 
 -dontwarn kotlinx.coroutines.flow.**
+
+-keep class com.google.firebase.analytics.connector.AnalyticsConnectorImpl { *; }
