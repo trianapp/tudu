@@ -1,5 +1,6 @@
 package app.trian.tudu.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -69,6 +70,7 @@ class UserViewModel @Inject constructor():ViewModel() {
         callback: (success: Boolean, message: String) -> Unit
     )=viewModelScope.launch {
         try {
+            Log.e("tas",credential?.await()?.displayName?:"")
             if(credential != null) {
                 val account = credential.await()
                 userRepository.loginGoogle(account.idToken!!).collect { auth ->
@@ -83,7 +85,7 @@ class UserViewModel @Inject constructor():ViewModel() {
                     }
                 }
             }else{
-                callback(false,"User don;t have credential")
+                callback(false,"User don't have credential")
             }
         }catch (e:Exception){
             callback(false,e.message ?: "Unknown")

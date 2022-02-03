@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "496234949728-s833svnp3m5jos29dv5ip4t6mvb4ck1m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.trian.tudu",
+            "certificate_hash": "76c17b074428ce23021377924b5a5f21d813b902"
+          }
+        },
+        {
           "client_id": "496234949728-hdu85od2mv4gfvhbjff5ldbqkm7epcog.apps.googleusercontent.com",
           "client_type": 3
         }
