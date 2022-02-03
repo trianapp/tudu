@@ -1,5 +1,6 @@
 package app.trian.tudu.ui.pages.auth
 
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.Image
@@ -61,6 +62,7 @@ fun PagesOnboard(
                 task->
             userViewModel.logInWithGoogle(task){
                 success, message ->
+
                 if(success){
                     Toast.makeText(ctx,ctx.getString(R.string.signin_success),Toast.LENGTH_LONG).show()
                     goToDashboard()
