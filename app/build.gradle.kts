@@ -8,6 +8,7 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
     id("io.github.reactivecircus.app-versioning") version "1.0.0"
+    id("com.google.firebase.crashlytics")
     kotlin("android")
     kotlin("kapt")
 
@@ -50,6 +51,12 @@ android {
         }
     }
     signingConfigs {
+        // It's not necessary to specify, but I like to keep the debug keystore
+        // in SCM so all our debug builds (on all workstations) use the same
+        // key for convenience
+//        create("debug") {
+//            storeFile =file("debug.keystore")
+//        }
 
         //https://github.com/onmyway133/blog/issues/285
         create("release"){
@@ -63,12 +70,13 @@ android {
     buildTypes {
 
         getByName("release") {
-            isMinifyEnabled=false
             signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled=true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         getByName("debug"){
-            signingConfig =null
+            signingConfig = signingConfigs.getByName("debug")
+            isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -176,11 +184,12 @@ dependencies {
 
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:29.0.4"))
-    implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-storage-ktx")
     implementation("com.google.firebase:firebase-messaging-ktx")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation("com.google.firebase:firebase-analytics-ktx")
     //google auth
     implementation("com.google.android.gms:play-services-auth:20.0.1")
 
