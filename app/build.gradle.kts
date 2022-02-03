@@ -42,7 +42,7 @@ android {
     defaultConfig {
         applicationId = Version.applicationId
         minSdk =21
-        targetSdk =32
+        targetSdk =29
         versionCode =1
         versionName ="1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -72,6 +72,7 @@ android {
         getByName("release") {
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled=true
+            isDebuggable=true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         getByName("debug"){
@@ -80,6 +81,8 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+
+
 
 
 
