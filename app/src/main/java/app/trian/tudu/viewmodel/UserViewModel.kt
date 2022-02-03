@@ -70,7 +70,6 @@ class UserViewModel @Inject constructor():ViewModel() {
         callback: (success: Boolean, message: String) -> Unit
     )=viewModelScope.launch {
         try {
-            Log.e("tas",credential?.await()?.displayName?:"")
             if(credential != null) {
                 val account = credential.await()
                 userRepository.loginGoogle(account.idToken!!).collect { auth ->
