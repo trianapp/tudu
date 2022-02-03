@@ -11,7 +11,6 @@ buildscript {
         classpath("com.google.firebase:firebase-crashlytics-gradle:2.8.1")
     }
 }
-(")")
 plugins {
     id("com.android.application") version "7.2.0-beta01" apply false
     id("com.android.library") version "7.2.0-beta01" apply false
