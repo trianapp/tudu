@@ -38,6 +38,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        throw RuntimeException("hege")
         setContent {
             val navHostController = rememberNavController()
             val systemUiController = rememberSystemUiController()
