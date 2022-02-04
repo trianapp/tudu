@@ -9,6 +9,7 @@
 /.idea/assetWizardSettings.xml
 .idea/misc.xml
 .idea/
+.idea/*
 
 .settings
 .classpath
