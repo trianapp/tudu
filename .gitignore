@@ -15,6 +15,13 @@
 .classpath
 .project
 
+.idea/misc.xml
+.idea/
+
+.settings
+.classpath
+.project
+
 .DS_Store
 /build
 /captures
