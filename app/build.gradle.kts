@@ -6,8 +6,8 @@ import java.io.FileInputStream
 plugins {
     id("com.android.application")
     id("dagger.hilt.android.plugin")
-    id("com.google.gms.google-services")
     id("io.github.reactivecircus.app-versioning") version "1.0.0"
+    id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     kotlin("android")
     kotlin("kapt")

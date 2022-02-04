@@ -28,6 +28,7 @@ import app.trian.tudu.ui.pages.task.PageDetailTask
 import app.trian.tudu.ui.pages.task.PageInputNote
 import app.trian.tudu.ui.theme.TuduTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.google.firebase.FirebaseApp
 import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalComposeUiApi
@@ -38,6 +39,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(this)
         setContent {
             val navHostController = rememberNavController()
             val systemUiController = rememberSystemUiController()
