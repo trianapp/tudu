@@ -6,6 +6,7 @@ import app.trian.tudu.common.DefaultDispatcherProvider
 import app.trian.tudu.common.DispatcherProvider
 import app.trian.tudu.data.repository.design.TaskRepository
 import com.google.firebase.FirebaseApp
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.HiltAndroidApp
@@ -29,8 +30,7 @@ class MainApplication:MultiDexApplication(){
         super.onCreate()
         AndroidLogcatLogger.installOnDebuggableApp(this, minPriority = LogPriority.VERBOSE)
         FirebaseApp.initializeApp(this)
-        Firebase.crashlytics.setCrashlyticsCollectionEnabled(true)
-        Firebase.crashlytics.didCrashOnPreviousExecution()
+        FirebaseCrashlytics.getInstance()
 
     }
 }
