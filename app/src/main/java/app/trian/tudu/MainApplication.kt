@@ -16,6 +16,12 @@ import logcat.AndroidLogcatLogger
 import logcat.LogPriority
 import javax.inject.Inject
 
+/**
+ * main application
+ * author Trian Damai
+ * created_at 04/02/22 - 17.25
+ * site https://trian.app
+ */
 @HiltAndroidApp
 class MainApplication:MultiDexApplication(){
 
