@@ -123,9 +123,10 @@ dependencies {
 
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.compose.ui:ui:1.2.0-alpha02")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha04")
     implementation("androidx.compose.material:material:1.2.0-alpha02")
     implementation("androidx.compose.ui:ui-tooling-preview:1.2.0-alpha02")
+   // https://stackoverflow.com/questions/68224361/jetpack-compose-cant-preview-after-updating-to-1-0-0-rc01
+    implementation("androidx.compose.ui:ui-tooling:1.2.0-alpha02")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
     implementation("androidx.activity:activity-compose:1.4.0")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.2.0-alpha02")

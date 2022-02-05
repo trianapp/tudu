@@ -6,7 +6,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -40,8 +39,8 @@ fun ButtonPrimary(
         ),
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary
+            backgroundColor = MaterialTheme.colors.primary,
+            contentColor = MaterialTheme.colors.onPrimary
         ),
         shape = RoundedCornerShape(10.dp)
     ) {
@@ -64,7 +63,7 @@ fun ButtonGoogle(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
             backgroundColor = RedGoogle,
-            contentColor = MaterialTheme.colorScheme.onPrimary
+            contentColor = MaterialTheme.colors.onPrimary
         ),
         shape = RoundedCornerShape(10.dp)
     ) {
@@ -88,11 +87,11 @@ fun ButtonSecondary(
         ),
         onClick = onClick,
         colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = MaterialTheme.colorScheme.primary
+            contentColor = MaterialTheme.colors.primary
         ),
         border= BorderStroke(
             width = 2.dp,
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.colors.primary
         ),
         shape = RoundedCornerShape(10.dp)
     ) {

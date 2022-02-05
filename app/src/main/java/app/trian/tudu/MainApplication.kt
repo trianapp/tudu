@@ -15,6 +15,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import logcat.AndroidLogcatLogger
 import logcat.LogPriority
+import logcat.logcat
 import javax.inject.Inject
 
 /**
@@ -29,8 +30,14 @@ class MainApplication:MultiDexApplication(){
     override fun onCreate() {
         super.onCreate()
         AndroidLogcatLogger.installOnDebuggableApp(this, minPriority = LogPriority.VERBOSE)
-        FirebaseApp.initializeApp(this)
-        FirebaseCrashlytics.getInstance()
+        try {
+            FirebaseApp.initializeApp(this)
+            FirebaseCrashlytics.getInstance()
+        }catch (e:Exception){
+            Firebase.crashlytics.recordException(e)
+            logcat { e.message.toString() }
+        }
+
 
     }
 }

@@ -3,7 +3,6 @@
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.Scaffold
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -73,7 +72,7 @@ fun PageDetailTask(
     Scaffold(
         topBar = {
             TopAppBar(
-                backgroundColor = MaterialTheme.colorScheme.background,
+                backgroundColor = MaterialTheme.colors.background,
                 elevation = 0.dp,
                 navigationIcon = {
                     IconToggleButton(

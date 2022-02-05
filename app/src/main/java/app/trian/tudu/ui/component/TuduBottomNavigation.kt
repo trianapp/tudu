@@ -1,10 +1,6 @@
 package app.trian.tudu.ui.component
 
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -33,8 +29,8 @@ fun TuduBottomNavigation(
     )
 
     BottomNavigation(
-        backgroundColor = MaterialTheme.colorScheme.background,
-        contentColor = MaterialTheme.colorScheme.primary
+        backgroundColor = MaterialTheme.colors.background,
+        contentColor = MaterialTheme.colors.primary
     ) {
         val navBackStackEntry by router.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -45,7 +41,7 @@ fun TuduBottomNavigation(
                       Text(
                           text = stringResource(id = it.name),
                           style = TextStyle(
-                              color = if(selected) MaterialTheme.colorScheme.primary else InactiveText
+                              color = if(selected) MaterialTheme.colors.primary else InactiveText
                           )
                       )
                 },
@@ -60,13 +56,13 @@ fun TuduBottomNavigation(
                     }
 
                 },
-                selectedContentColor = MaterialTheme.colorScheme.primary,
+                selectedContentColor = MaterialTheme.colors.primary,
                 unselectedContentColor = InactiveText,
                 icon = {
                     Icon(
                         imageVector = it.icon,
                         contentDescription = "",
-                        tint =if(selected) MaterialTheme.colorScheme.primary else InactiveText
+                        tint =if(selected) MaterialTheme.colors.primary else InactiveText
                     )
                 }
             )

@@ -5,9 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -33,13 +32,11 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
-@ExperimentalMaterial3Api
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        FirebaseApp.initializeApp(this)
         setContent {
             val navHostController = rememberNavController()
             val systemUiController = rememberSystemUiController()
@@ -48,8 +45,8 @@ class MainActivity : ComponentActivity() {
 
             TuduTheme {
                 // A surface container using the 'background' color from the theme
-                val uiColor = MaterialTheme.colorScheme.background
-                val primaryColor = MaterialTheme.colorScheme.primary
+                val uiColor = MaterialTheme.colors.background
+                val primaryColor = MaterialTheme.colors.primary
                 LaunchedEffect(key1 = Unit, block = {
                     systemUiController.setSystemBarsColor(
                         color = uiColor,
@@ -59,7 +56,7 @@ class MainActivity : ComponentActivity() {
 
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colors.background
                 ) {
                     NavHost(
                         navController = navHostController,
