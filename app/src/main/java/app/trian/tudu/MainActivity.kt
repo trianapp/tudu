@@ -26,6 +26,7 @@ import app.trian.tudu.ui.pages.dashbboard.PageProfile
 import app.trian.tudu.ui.pages.setting.PageSetting
 import app.trian.tudu.ui.pages.task.PageDetailTask
 import app.trian.tudu.ui.pages.task.PageInputNote
+import app.trian.tudu.ui.pages.task.PageSearchTask
 import app.trian.tudu.ui.theme.TuduTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.firebase.FirebaseApp
@@ -65,31 +66,55 @@ class MainActivity : ComponentActivity() {
                         startDestination = Routes.SPLASH
                     ){
                         composable(Routes.SPLASH){
+                            systemUiController.setSystemBarsColor(
+                                color = uiColor,
+                                darkIcons = !useDark
+                            )
                             PagesSplash(
                                 router=navHostController
                             )
                         }
                         composable(Routes.ONBOARD){
+                            systemUiController.setSystemBarsColor(
+                                color = uiColor,
+                                darkIcons = !useDark
+                            )
                             PagesOnboard(
                                 router=navHostController,
                                 )
                         }
                         composable(Routes.LOGIN){
+                            systemUiController.setSystemBarsColor(
+                                color = uiColor,
+                                darkIcons = !useDark
+                            )
                             PageLogin(
                                 router=navHostController
                             )
                         }
                         composable(Routes.REGISTER){
+                            systemUiController.setSystemBarsColor(
+                                color = uiColor,
+                                darkIcons = !useDark
+                            )
                             PagesRegister(
                                 router=navHostController
                             )
                         }
                         composable(Routes.CHANGE_PASSWORD){
+                            systemUiController.setSystemBarsColor(
+                                color = uiColor,
+                                darkIcons = !useDark
+                            )
                             PageChangePassword(
                                 router = navHostController
                             )
                         }
                         composable(Routes.SETTING){
+                            systemUiController.setSystemBarsColor(
+                                color = uiColor,
+                                darkIcons = !useDark
+                            )
                             PageSetting(router = navHostController)
                         }
                         navigation(route=Routes.DASHBOARD, startDestination = Routes.Dashboard.HOME){
@@ -125,6 +150,10 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         ){
+                            systemUiController.setSystemBarsColor(
+                                color = uiColor,
+                                darkIcons = !useDark
+                            )
                             PageDetailTask(router = navHostController)
                         }
                         composable(
@@ -135,9 +164,24 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         ){
+                            systemUiController.setSystemBarsColor(
+                                color = uiColor,
+                                darkIcons = !useDark
+                            )
                             PageInputNote(router = navHostController)
                         }
+                        composable(Routes.SEARCH_TASK){
+                            systemUiController.setSystemBarsColor(
+                                color = uiColor,
+                                darkIcons = !useDark
+                            )
+                            PageSearchTask(router = navHostController)
+                        }
                         composable(Routes.CATEGORY){
+                            systemUiController.setSystemBarsColor(
+                                color = uiColor,
+                                darkIcons = !useDark
+                            )
                             PagesCategoryManagement(
                                  router=navHostController
                             )

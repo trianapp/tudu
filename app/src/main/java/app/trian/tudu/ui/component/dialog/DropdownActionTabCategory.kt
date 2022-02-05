@@ -33,7 +33,7 @@ fun DropdownActionTabCategory(
         R.string.option_sort
     )
     DropdownMenu(
-        modifier=modifier.background(MaterialTheme.colors.background),
+        modifier=modifier.background(MaterialTheme.colors.surface),
         expanded =show,
         onDismissRequest = onDismiss,
     ) {
@@ -44,7 +44,7 @@ fun DropdownActionTabCategory(
                 Text(
                     text = stringResource(id = it),
                     style = TextStyle(
-                        color = MaterialTheme.colors.onBackground
+                        color = MaterialTheme.colors.onSurface
                     )
                 )
             }

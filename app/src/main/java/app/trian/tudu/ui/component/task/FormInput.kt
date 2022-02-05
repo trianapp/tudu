@@ -62,6 +62,8 @@ fun FormInput(
                 onChange(it.text)
             },
             colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = MaterialTheme.colors.primary,
+                unfocusedBorderColor = MaterialTheme.colors.onBackground
             ),
             shape = RoundedCornerShape(10.dp),
             trailingIcon = {
@@ -86,10 +88,12 @@ fun FormInput(
 }
 
 @Preview(
-    uiMode = UI_MODE_NIGHT_YES
+    uiMode = UI_MODE_NIGHT_YES,
+    showBackground = true
 )
 @Preview(
-    uiMode = UI_MODE_NIGHT_NO
+    uiMode = UI_MODE_NIGHT_NO,
+    showBackground = true
 )
 @Composable
 fun PreviewFormInput() {
