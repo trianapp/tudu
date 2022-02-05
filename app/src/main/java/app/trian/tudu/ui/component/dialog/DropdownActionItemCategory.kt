@@ -6,12 +6,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
@@ -57,7 +59,12 @@ fun DropdownActionItemCategory(
                 onDismiss()
             }
         ) {
-            Text(text = stringResource(id = R.string.btn_edit))
+            Text(
+                text = stringResource(id = R.string.btn_edit),
+                style = TextStyle(
+                    color=MaterialTheme.colors.onBackground
+                )
+            )
         }
         DropdownMenuItem(
             onClick = {
@@ -65,7 +72,12 @@ fun DropdownActionItemCategory(
                 onDismiss()
             }
         ) {
-            Text(text = stringResource(id = R.string.btn_hide))
+            Text(
+                text = stringResource(id = R.string.btn_hide),
+                style = TextStyle(
+                    color= MaterialTheme.colors.onBackground
+                )
+            )
         }
         DropdownMenuItem(
             onClick = {
@@ -73,7 +85,12 @@ fun DropdownActionItemCategory(
                 onDismiss()
             }
         ) {
-            Text(text = stringResource(id = R.string.btn_delete))
+            Text(
+                text = stringResource(id = R.string.btn_delete),
+                style = TextStyle(
+                    color=MaterialTheme.colors.onBackground
+                )
+            )
         }
     }
 }

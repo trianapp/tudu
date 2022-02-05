@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -55,13 +56,13 @@ fun ScreenDialogFormCategory(
 ) {
     val ctx = LocalContext.current
     var categoryName by remember {
-        mutableStateOf("")
+        mutableStateOf(TextFieldValue(text = ""))
     }
     fun submit(){
-        if(categoryName.isBlank()){
+        if(categoryName.text.isBlank()){
             Toast.makeText(ctx,ctx.getString(R.string.blank_validation,"Category"),Toast.LENGTH_LONG).show()
         }else{
-            onSubmit(categoryName)
+            onSubmit(categoryName.text)
             onHide()
         }
     }
@@ -104,7 +105,9 @@ fun ScreenDialogFormCategory(
                         )
                     },
                     onValueChange ={
-                        categoryName = it
+                        if(categoryName.text.length <=50) {
+                            categoryName = it
+                        }
                     },
                     colors = TextFieldDefaults.textFieldColors(
                         focusedIndicatorColor = Color.Transparent,
@@ -123,7 +126,10 @@ fun ScreenDialogFormCategory(
                     ),
                 )
                 Text(
-                    text = "0/50",
+                    text = stringResource(
+                        R.string.input_category_count,
+                        categoryName.text.length
+                    ),
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.BottomEnd)
@@ -144,10 +150,20 @@ fun ScreenDialogFormCategory(
                 TextButton(onClick = {
                     onHide()
                 }) {
-                    Text(text = stringResource(R.string.btn_cancel))
+                    Text(
+                        text = stringResource(R.string.btn_cancel),
+                        style = TextStyle(
+                            color=MaterialTheme.colors.primary.copy(alpha = 0.6f)
+                        )
+                    )
                 }
                 TextButton(onClick = { submit() }) {
-                    Text(text = stringResource(R.string.btn_save))
+                    Text(
+                        text = stringResource(R.string.btn_save),
+                        style = TextStyle(
+                            color=MaterialTheme.colors.primary
+                        )
+                    )
                 }
             }
         }
