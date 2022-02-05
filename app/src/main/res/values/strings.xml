@@ -64,6 +64,9 @@
     <string name="option_sort">Sort</string>
     <string name="category_all">All</string>
     <string name="btn_logout">Logout</string>
+    <string name="text_confirmation_signout">Are you sure sign out from app?</string>
+    <string name="btn_signout">Sign out</string>
+    <string name="input_category_count">%1$s/50</string>
 
 
 </resources>

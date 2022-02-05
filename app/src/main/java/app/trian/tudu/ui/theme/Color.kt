@@ -26,6 +26,8 @@ val RedGoogle = Color(0xFFE8453C)
 val Inactivebackground = Color(0xFFEAEBFA)
 val InactiveText = Color(0xFF000000).copy(alpha =0.5f )
 
+val ScrimColor = Color.DarkGray.copy(alpha = 0.5f)
+
 object HexToJetpackColor{
     fun getColor(colorString: String): Color {
         return Color(android.graphics.Color.parseColor("#" + colorString))
