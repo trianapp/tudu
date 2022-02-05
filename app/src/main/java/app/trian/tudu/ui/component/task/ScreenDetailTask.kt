@@ -8,12 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -121,7 +116,7 @@ fun ScreenDetailTask(
                                 bottomEnd = 10.dp
                             )
                         )
-                        .background(MaterialTheme.colorScheme.primary)
+                        .background(MaterialTheme.colors.primary)
                         .padding(
                             vertical = 10.dp,
                             horizontal = 16.dp
@@ -131,7 +126,7 @@ fun ScreenDetailTask(
                     Text(
                         text = category?.name ?: stringResource(id = R.string.no_category),
                         style= TextStyle(
-                            color = MaterialTheme.colorScheme.onPrimary
+                            color = MaterialTheme.colors.onPrimary
                         )
                     )
                     Icon(

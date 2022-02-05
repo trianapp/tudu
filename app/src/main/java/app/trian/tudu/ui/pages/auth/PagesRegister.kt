@@ -7,8 +7,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -102,7 +102,7 @@ fun PagesRegister(
                     style = TextStyle(
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Normal,
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colors.primary
                     )
                 )
             }

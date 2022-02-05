@@ -1,11 +1,7 @@
 package app.trian.tudu.ui.component
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material3.IconToggleButton
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -39,7 +35,7 @@ fun AppbarHome(
             title = {
                 Text(text = stringResource(R.string.title_appbar_home))
             },
-            backgroundColor = MaterialTheme.colorScheme.background,
+            backgroundColor = MaterialTheme.colors.background,
             navigationIcon = {
                 IconToggleButton(checked = false, onCheckedChange = {}) {
                     Icon(imageVector =Octicons.Home16 , contentDescription = "")
@@ -63,13 +59,13 @@ fun AppbarAuth(
     onBackPressed:()->Unit={}
 ){
     TopAppBar(
-        backgroundColor = MaterialTheme.colorScheme.background,
+        backgroundColor = MaterialTheme.colors.background,
         elevation = 0.dp,
         navigationIcon = {
             IconToggleButton(checked = false, onCheckedChange = {
                 onBackPressed()
             }) {
-                androidx.compose.material3.Icon(
+                Icon(
                     imageVector = Octicons.ArrowLeft16,
                     contentDescription = ""
                 )
@@ -84,11 +80,11 @@ fun AppbarBasic(
     onBackPressed: () -> Unit={}
 ){
     TopAppBar(
-        backgroundColor = MaterialTheme.colorScheme.background,
+        backgroundColor = MaterialTheme.colors.background,
         elevation = 0.dp,
         navigationIcon = {
             IconToggleButton(checked = false, onCheckedChange = {onBackPressed()}) {
-                androidx.compose.material3.Icon(
+                Icon(
                     imageVector = Octicons.ArrowLeft24,
                     contentDescription = ""
                 )

@@ -8,7 +8,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -88,7 +88,7 @@ fun PageProfile(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    backgroundColor = MaterialTheme.colorScheme.primary,
+                    backgroundColor = MaterialTheme.colors.primary,
                     elevation = 0.dp,
                     navigationIcon = {
                         IconToggleButton(checked = false, onCheckedChange = {
@@ -97,7 +97,7 @@ fun PageProfile(
                             Icon(
                                 imageVector = Octicons.ArrowLeft24,
                                 contentDescription = "",
-                                tint = MaterialTheme.colorScheme.onPrimary
+                                tint = MaterialTheme.colors.onPrimary
                             )
                         }
                     },
@@ -107,7 +107,7 @@ fun PageProfile(
                                 style = TextStyle(
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onPrimary
+                                    color = MaterialTheme.colors.onPrimary
                                 )
                             )
                     },
@@ -116,7 +116,7 @@ fun PageProfile(
                             Icon(
                                 imageVector = Octicons.Gear16,
                                 contentDescription = "",
-                                tint = MaterialTheme.colorScheme.onPrimary
+                                tint = MaterialTheme.colors.onPrimary
                             )
                         }
                     }
@@ -135,7 +135,7 @@ fun PageProfile(
                                 bottomEndPercent = 100
                             )
                         )
-                        .background(MaterialTheme.colorScheme.primary)
+                        .background(MaterialTheme.colors.primary)
                 ){
 
                 }

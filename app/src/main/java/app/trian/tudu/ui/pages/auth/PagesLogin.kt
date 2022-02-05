@@ -6,9 +6,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
-import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.Text
+import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -164,7 +165,7 @@ fun PageLogin(
                         style = TextStyle(
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Normal,
-                            color = MaterialTheme.colorScheme.primary
+                            color = MaterialTheme.colors.primary
                         )
                     )
                 }
@@ -194,7 +195,7 @@ fun PageLogin(
                             style = TextStyle(
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Normal,
-                                color = MaterialTheme.colorScheme.primary
+                                color = MaterialTheme.colors.primary
                             )
                         )
                     }

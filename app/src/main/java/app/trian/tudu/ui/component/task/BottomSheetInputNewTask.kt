@@ -15,9 +15,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
-import androidx.compose.material3.IconToggleButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -157,7 +154,7 @@ fun BottomSheetInputNewTask(
                     topEnd = 10.dp
                 )
             )
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colors.background)
     ) {
         Column(
             modifier = modifier
@@ -272,7 +269,7 @@ fun BottomSheetInputNewTask(
                     Icon(
                         imageVector = Octicons.Calendar24,
                         contentDescription = "",
-                        tint=if(deadline > 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
+                        tint=if(deadline > 0) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground
                     )
                 }
                 IconToggleButton(
@@ -291,7 +288,7 @@ fun BottomSheetInputNewTask(
                     Icon(
                         imageVector = Octicons.GitMerge24,
                         contentDescription = "",
-                        tint=if(todos.isNotEmpty()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
+                        tint=if(todos.isNotEmpty()) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground
                     )
                 }
                 IconToggleButton(
@@ -304,7 +301,7 @@ fun BottomSheetInputNewTask(
                     Icon(
                         imageVector = Octicons.Clock24,
                         contentDescription = "",
-                        tint=if(setReminder) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
+                        tint=if(setReminder) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground
                     )
                 }
                 IconToggleButton(
@@ -316,7 +313,7 @@ fun BottomSheetInputNewTask(
                     Icon(
                         imageVector = Octicons.PaperAirplane24,
                         contentDescription = "",
-                        tint=MaterialTheme.colorScheme.onBackground
+                        tint=MaterialTheme.colors.onBackground
                     )
                 }
             }

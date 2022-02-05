@@ -1,10 +1,10 @@
 package app.trian.tudu.ui.component.header
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconToggleButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconToggleButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -76,7 +76,7 @@ fun HeaderTask(
                     contentDescription = "",
                     tint = when(selected){
                         HeaderTask.GRID -> Color.DarkGray
-                        HeaderTask.ROW -> MaterialTheme.colorScheme.primary
+                        HeaderTask.ROW -> MaterialTheme.colors.primary
                     }
                 )
             }
@@ -92,7 +92,7 @@ fun HeaderTask(
                     imageVector = FeatherIcons.Grid,
                     contentDescription = "",
                     tint = when(selected){
-                        HeaderTask.GRID -> MaterialTheme.colorScheme.primary
+                        HeaderTask.GRID -> MaterialTheme.colors.primary
                         HeaderTask.ROW -> Color.DarkGray
                     }
                 )

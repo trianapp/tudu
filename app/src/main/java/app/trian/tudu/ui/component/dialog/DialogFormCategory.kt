@@ -4,11 +4,7 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -78,7 +74,7 @@ fun ScreenDialogFormCategory(
                 bottomStart = 10.dp,
                 bottomEnd = 10.dp
             ))
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colors.background)
             .padding(horizontal = 16.dp, vertical = 16.dp)
     ) {
         Column {

@@ -2,12 +2,7 @@ package app.trian.tudu.ui.component.task
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconToggleButton
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -69,7 +64,7 @@ fun FormInput(
                         Icon(
                             imageVector = if(visible) Octicons.Eye16 else Octicons.EyeClosed16,
                             contentDescription = "",
-                            tint = if (visible) InactiveText else MaterialTheme.colorScheme.primary
+                            tint = if (visible) InactiveText else MaterialTheme.colors.primary
                         )
                     }
                 }

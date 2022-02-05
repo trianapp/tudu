@@ -3,9 +3,9 @@ package app.trian.tudu.ui.component.drawer
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -177,7 +177,7 @@ fun ItemDrawer(
             Box(modifier = modifier
                 .height(30.dp)
                 .width(4.dp)
-                .background(MaterialTheme.colorScheme.primary)
+                .background(MaterialTheme.colors.primary)
             )
             Spacer(modifier = modifier.width(26.dp))
         }else{
