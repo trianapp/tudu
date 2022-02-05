@@ -13,12 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import app.trian.tudu.R
 import app.trian.tudu.common.customTabIndicatorOffset
 import app.trian.tudu.data.local.Category
 import app.trian.tudu.ui.component.category.ItemTabCategory
+import app.trian.tudu.ui.component.dialog.DropdownActionTabCategory
 import app.trian.tudu.ui.theme.HexToJetpackColor
 import app.trian.tudu.ui.theme.InactiveText
 import app.trian.tudu.ui.theme.Inactivebackground
@@ -37,17 +40,20 @@ import compose.icons.octicons.Home16
 fun TabBarHome(
     modifier: Modifier=Modifier,
     tabData:List<Category> = listOf(),
-    onCategoryManagement:()->Unit={},
+    onOptionMenuClicked:(menu:Int)->Unit={},
     onSelect:(category:Category)->Unit={},
 ) {
 
     var selectedTab by remember {
         mutableStateOf(0)
     }
+    var showDropDownOptionCategory by remember {
+        mutableStateOf(false)
+    }
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(end = 30.dp),
+            .padding(end = 20.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -62,7 +68,7 @@ fun TabBarHome(
 
                     ItemTabCategory(
                         category = Category(
-                            name = "All",
+                            name = stringResource(R.string.category_all),
                             created_at = 0,
                             updated_at = 0,
                             color = HexToJetpackColor.Blue
@@ -90,10 +96,23 @@ fun TabBarHome(
             }
         })
 
-        IconToggleButton(checked = false, onCheckedChange = {
-            onCategoryManagement()
-        }) {
+        IconToggleButton(
+            checked = false,
+            onCheckedChange = {
+                showDropDownOptionCategory=true
+            }
+        ) {
             Icon(imageVector = Octicons.Grabber16, contentDescription = "")
+            DropdownActionTabCategory(
+                show =showDropDownOptionCategory ,
+                onDismiss = {
+                            showDropDownOptionCategory = false
+                },
+                onSelected = {
+                    onOptionMenuClicked(it)
+                    showDropDownOptionCategory=false
+                }
+            )
         }
 
     }

@@ -3,12 +3,15 @@ package app.trian.tudu.ui.pages.dashbboard
 import android.annotation.SuppressLint
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 
 import androidx.navigation.NavHostController
 import app.trian.tudu.common.Routes
 import app.trian.tudu.ui.component.TuduBottomNavigation
 import app.trian.tudu.ui.component.dialog.DialogLogout
 import app.trian.tudu.ui.component.drawer.DrawerContent
+import app.trian.tudu.ui.theme.ScrimColor
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -59,13 +62,17 @@ fun BasePagesDashboard(
                     router.navigate(it)
                 }
             )
-        }
+        },
+        drawerElevation = 0.dp,
+        scrimColor = ScrimColor
     ) {
         ModalBottomSheetLayout(
             sheetState =modalBottomSheetState,
             sheetContent = {
                 sheetContent.invoke()
-            }
+            },
+            scrimColor = ScrimColor,
+            sheetBackgroundColor = Color.Transparent
         ) {
             Scaffold(
                 topBar = topAppbar,

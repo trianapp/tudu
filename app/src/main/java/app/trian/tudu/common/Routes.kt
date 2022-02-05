@@ -13,6 +13,7 @@ object Routes {
     const val REGISTER = "REGISTER"
     const val DASHBOARD = "DASHBOARD"
     const val CATEGORY = "CATEGORY"
+    const val SEARCH_TASK = "SEARCH_TASK"
     const val DETAIL_TASK = "DETAIL_TASK"
     const val ADD_NOTE = "ADD_NOTE"
     const val CHANGE_PASSWORD = "CHANGE_PASSWORD"

@@ -109,6 +109,7 @@ fun PageDetailTask(
                 ScreenDetailTask(
                     task =task,
                     category = listCategory.filter { it.categoryId == task.category_id }.lastOrNull(),
+                    listCategory=listCategory,
                     completeTodo = completeTodo,
                     unCompleteTodo=unCompleteTodo,
                     updateTask = {

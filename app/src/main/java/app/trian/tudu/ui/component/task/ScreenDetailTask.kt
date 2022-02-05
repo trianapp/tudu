@@ -30,6 +30,7 @@ import app.trian.tudu.data.local.Task
 import app.trian.tudu.data.local.Todo
 import app.trian.tudu.ui.component.ItemAddTodo
 import app.trian.tudu.ui.component.ItemTodo
+import app.trian.tudu.ui.component.dialog.DropdownPickCategory
 import app.trian.tudu.ui.theme.HexToJetpackColor
 import app.trian.tudu.ui.theme.InactiveText
 import app.trian.tudu.ui.theme.Inactivebackground
@@ -51,6 +52,7 @@ fun ScreenDetailTask(
     modifier: Modifier=Modifier,
     task: Task,
     category: Category?,
+    listCategory:List<Category> = emptyList(),
     completeTodo:List<Todo> = emptyList(),
     unCompleteTodo:List<Todo> = emptyList(),
     updateTask:(task:Task)->Unit={},
@@ -71,6 +73,9 @@ fun ScreenDetailTask(
         mutableStateOf(task.reminder)
     }
     val date = DateTime(deadlineState)
+    var showDropdownCategory by remember {
+        mutableStateOf(false)
+    }
 
     fun update(){
         scope.launch {
@@ -101,7 +106,9 @@ fun ScreenDetailTask(
 
 
     Column(
-            modifier=modifier.fillMaxSize(),
+            modifier= modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.background),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top
         ) {
@@ -121,7 +128,9 @@ fun ScreenDetailTask(
                             vertical = 10.dp,
                             horizontal = 16.dp
                         )
-                        .clickable { }
+                        .clickable {
+                            showDropdownCategory = true
+                        }
                 ) {
                     Text(
                         text = category?.name ?: stringResource(id = R.string.no_category),
@@ -132,6 +141,18 @@ fun ScreenDetailTask(
                     Icon(
                         imageVector = Octicons.ChevronDown16,
                         contentDescription = ""
+                    )
+
+                    DropdownPickCategory(
+                        show = showDropdownCategory,
+                        listCategory = listCategory,
+                        onPick = {
+
+                        },
+                        buttonAddCategory = {},
+                        onHide = {
+                            showDropdownCategory=false
+                        }
                     )
                 }
             }
@@ -256,7 +277,10 @@ fun ScreenDetailTask(
                 }
                 item {
                     Spacer(modifier = modifier.height(16.dp))
-                    Divider()
+                    Divider(
+                        color = Inactivebackground,
+                        thickness = 1.dp
+                    )
                     Spacer(modifier = modifier.height(16.dp))
                     Box (
                         modifier=modifier.padding(
@@ -299,7 +323,10 @@ fun ScreenDetailTask(
                     Spacer(modifier = modifier.height(16.dp))
                 }
                 item {
-                    Divider()
+                    Divider(
+                        color = Inactivebackground,
+                        thickness = 1.dp
+                    )
                     Spacer(modifier = modifier.height(16.dp))
                     Box (
                         modifier=modifier.padding(
@@ -332,7 +359,7 @@ fun ScreenDetailTask(
                                         vertical = 2.dp
                                     )
                                     .clickable {
-                                        reminderState=!reminderState
+                                        reminderState = !reminderState
                                         update()
                                     }
                             ) {
@@ -344,9 +371,12 @@ fun ScreenDetailTask(
                     Spacer(modifier = modifier.height(16.dp))
                 }
                 item {
-                    Divider()
+                    Divider(
+                        color = Inactivebackground,
+                        thickness = 1.dp
+                    )
                     Box (
-                        modifier=modifier
+                        modifier= modifier
                             .clickable {
                                 onEditNote("${Routes.ADD_NOTE}/${task.taskId}")
                             }
@@ -395,7 +425,10 @@ fun ScreenDetailTask(
                             }
                         }
                     }
-                    Divider()
+                    Divider(
+                        color = Inactivebackground,
+                        thickness = 1.dp
+                    )
                 }
             })
         }

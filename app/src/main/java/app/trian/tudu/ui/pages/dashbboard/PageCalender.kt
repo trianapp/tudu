@@ -1,7 +1,9 @@
 package app.trian.tudu.ui.pages.dashbboard
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
@@ -12,9 +14,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -64,12 +70,29 @@ fun PageCalender(
         },
         modalBottomSheetState=modalBottomSheetState
     ) {
-        Column(modifier = modifier.fillMaxWidth()) {
+        Column(
+            modifier = modifier.fillMaxWidth().fillMaxHeight(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+
+        ) {
             Image(
                 painter = painterResource(id = R.drawable.bg_page_calendar_empty),
                 contentDescription = "")
-            Text(text = "Under Construction")
-            Text(text = "We're working o it!")
+            Text(
+                text = "Under Construction",
+                style= TextStyle(
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            )
+            Text(
+                text = "We're working o it!",
+                style= TextStyle(
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Normal
+                )
+            )
         }
     }
 

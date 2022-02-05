@@ -1,18 +1,18 @@
 package app.trian.tudu.ui.component.dialog
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
@@ -37,7 +37,33 @@ fun DropdownPickCategory(
     listCategory:List<Category>,
     onPick:(category:Category)->Unit={},
     onHide:()->Unit={},
-    onAddCategory:()->Unit={}
+    onAddCategory:()->Unit={},
+    buttonAddCategory:@Composable ()->Unit={
+        DropdownMenuItem(
+            onClick = {
+                onAddCategory()
+                onHide()
+            }
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Octicons.Plus16,
+                    contentDescription = "",
+                    tint=MaterialTheme.colors.onBackground
+                )
+                Spacer(modifier = modifier.width(6.dp))
+                Text(
+                    text = stringResource(R.string.create_new_category),
+                    style = TextStyle(
+                        color=MaterialTheme.colors.onBackground
+                    )
+                )
+            }
+        }
+    }
 ){
     val ctx = LocalContext.current
     DropdownMenu(
@@ -52,7 +78,8 @@ fun DropdownPickCategory(
             excludeFromSystemGesture = true,
             clippingEnabled = true,
             securePolicy = SecureFlagPolicy.SecureOff
-        )
+        ),
+        modifier = modifier.background(MaterialTheme.colors.background)
     ) {
         DropdownMenuItem(
             onClick = {
@@ -66,7 +93,12 @@ fun DropdownPickCategory(
                 onHide()
             }
         ) {
-            Text(text = stringResource(id = R.string.no_category))
+            Text(
+                text = stringResource(id = R.string.no_category),
+                style= TextStyle(
+                    color = MaterialTheme.colors.onBackground
+                )
+                )
         }
         listCategory.forEach {
             DropdownMenuItem(
@@ -75,24 +107,16 @@ fun DropdownPickCategory(
                     onHide()
                 }
             ) {
-                Text(text = it.name)
+                Text(
+                    text = it.name,
+                    style = TextStyle(
+                        color=MaterialTheme.colors.onBackground
+                    )
+                )
             }
         }
-        DropdownMenuItem(
-            onClick = {
-                onAddCategory()
-                onHide()
-            }
-        ) {
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(imageVector = Octicons.Plus16, contentDescription = "")
-                Spacer(modifier = modifier.width(6.dp))
-                Text(text = stringResource(R.string.create_new_category))
-            }
-        }
+        buttonAddCategory.invoke()
+
     }
 }
 

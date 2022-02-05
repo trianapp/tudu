@@ -9,11 +9,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import app.trian.tudu.R
 import app.trian.tudu.common.Routes
 import app.trian.tudu.ui.theme.TuduTheme
 import com.google.firebase.auth.FirebaseUser
@@ -67,7 +69,7 @@ fun DrawerContent(
     )
 
     Column(
-        modifier=modifier.fillMaxHeight(),
+        modifier=modifier.fillMaxHeight().background(MaterialTheme.colors.background),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
@@ -82,14 +84,16 @@ fun DrawerContent(
                 text = "Hi!",
                 style = TextStyle(
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colors.onBackground
                 )
             )
             Text(
                 text = currentUser?.displayName ?: "Unknown",
                 style = TextStyle(
                     fontSize = 36.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colors.onBackground
                 )
             )
         }
@@ -134,19 +138,28 @@ fun DrawerContent(
                     )
             ) {
                 Spacer(modifier = modifier.width(30.dp))
-                Icon(imageVector = Octicons.SignOut24, contentDescription = "")
+                Icon(
+                    imageVector = Octicons.SignOut24,
+                    contentDescription = "",
+                    tint = MaterialTheme.colors.onBackground
+                )
                 Spacer(modifier = modifier.width(10.dp))
                 Text(
-                    text = "Logout",
+                    text = stringResource(R.string.btn_logout),
                     style = TextStyle(
                         fontSize = 20.sp,
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colors.onBackground
                     )
                 )
             }
             Spacer(modifier = modifier.height(30.dp))
             Text(
                 text = "Version 1.0.1",
+                style=TextStyle(
+                    color = MaterialTheme.colors.onBackground
+
+                ),
                 modifier=modifier.padding(
                             vertical = 10.dp,
                             horizontal = 30.dp
@@ -188,7 +201,8 @@ fun ItemDrawer(
             text = item.name,
             style = TextStyle(
                 fontSize = 20.sp,
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colors.onBackground
             )
         )
     }

@@ -10,9 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import app.trian.tudu.R
 import app.trian.tudu.ui.theme.TuduTheme
 
 /**
@@ -32,8 +35,7 @@ fun DialogLogout(
         Dialog(onDismissRequest = { onDismiss() }) {
             ScreenDialogLogout(
                 onCancel = onCancel,
-                onConfirm = onConfirm,
-                onDismiss = onDismiss
+                onConfirm = onConfirm
             )
         }
     }
@@ -43,13 +45,12 @@ fun DialogLogout(
 fun ScreenDialogLogout(
     modifier: Modifier=Modifier,
     onCancel: () -> Unit,
-    onConfirm: () -> Unit,
-    onDismiss: () -> Unit
+    onConfirm: () -> Unit
 ) {
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(10.dp))
-            .background(MaterialTheme.colors.surface)
+            .background(MaterialTheme.colors.background)
     ) {
         Column(
             modifier = modifier
@@ -61,17 +62,34 @@ fun ScreenDialogLogout(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = "Are you sure sign out from app?")
+            Text(
+                text = stringResource(R.string.text_confirmation_signout),
+                style = TextStyle(
+                    color=MaterialTheme.colors.onBackground
+                )
+            )
             Row(
-                modifier = modifier.fillMaxWidth().wrapContentHeight(),
+                modifier = modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.Bottom
             ) {
                 TextButton(onClick = { onCancel() }) {
-                    Text(text = "Cancel")
+                    Text(
+                        text = stringResource(id = R.string.btn_cancel),
+                        style = TextStyle(
+                            color=MaterialTheme.colors.primary.copy(alpha = 0.6f)
+                        )
+                    )
                 }
                 TextButton(onClick = { onConfirm() }) {
-                    Text(text = "Sign out")
+                    Text(
+                        text = stringResource(R.string.btn_signout),
+                        style = TextStyle(
+                            color=MaterialTheme.colors.primary
+                        )
+                    )
                 }
             }
         }
@@ -84,7 +102,6 @@ fun PreviewDialogLogout(){
     TuduTheme {
         ScreenDialogLogout(
             onCancel = {},
-            onDismiss = {},
             onConfirm = {}
         )
     }
