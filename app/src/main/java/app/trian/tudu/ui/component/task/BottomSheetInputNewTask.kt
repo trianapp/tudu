@@ -187,12 +187,12 @@ fun BottomSheetInputNewTask(
                         style = TextStyle(
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color.Black
+                            color = MaterialTheme.colors.onBackground
                         )
                     )
                 },
                 textStyle = TextStyle(
-                    color = Color.Black,
+                    color = MaterialTheme.colors.onBackground,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                 )

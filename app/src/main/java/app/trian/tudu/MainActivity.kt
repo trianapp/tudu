@@ -3,6 +3,7 @@ package app.trian.tudu
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
@@ -47,10 +48,11 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 val uiColor = MaterialTheme.colors.background
                 val primaryColor = MaterialTheme.colors.primary
+                val useDark = isSystemInDarkTheme()
                 LaunchedEffect(key1 = Unit, block = {
                     systemUiController.setSystemBarsColor(
                         color = uiColor,
-                        darkIcons = true
+                        darkIcons = !useDark
                     )
                 })
 
@@ -94,14 +96,14 @@ class MainActivity : ComponentActivity() {
                             composable(route=Routes.Dashboard.HOME){
                                 systemUiController.setSystemBarsColor(
                                     color = uiColor,
-                                    darkIcons = true
+                                    darkIcons = !useDark
                                 )
                                 PageHome(router=navHostController)
                             }
                             composable(route=Routes.Dashboard.CALENDER){
                                 systemUiController.setSystemBarsColor(
                                     color = uiColor,
-                                    darkIcons = true
+                                    darkIcons = !useDark
                                 )
                                 PageCalender(router=navHostController)
 
@@ -109,7 +111,7 @@ class MainActivity : ComponentActivity() {
                             composable(route=Routes.Dashboard.PROFILE){
                                 systemUiController.setSystemBarsColor(
                                     color = primaryColor,
-                                    darkIcons = false
+                                    darkIcons = !useDark
                                 )
                                 PageProfile(router=navHostController)
 

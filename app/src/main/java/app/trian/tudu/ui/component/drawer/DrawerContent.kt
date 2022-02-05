@@ -138,7 +138,11 @@ fun DrawerContent(
                     )
             ) {
                 Spacer(modifier = modifier.width(30.dp))
-                Icon(imageVector = Octicons.SignOut24, contentDescription = "")
+                Icon(
+                    imageVector = Octicons.SignOut24,
+                    contentDescription = "",
+                    tint = MaterialTheme.colors.onBackground
+                )
                 Spacer(modifier = modifier.width(10.dp))
                 Text(
                     text = stringResource(R.string.btn_logout),
@@ -152,6 +156,10 @@ fun DrawerContent(
             Spacer(modifier = modifier.height(30.dp))
             Text(
                 text = "Version 1.0.1",
+                style=TextStyle(
+                    color = MaterialTheme.colors.onBackground
+
+                ),
                 modifier=modifier.padding(
                             vertical = 10.dp,
                             horizontal = 30.dp

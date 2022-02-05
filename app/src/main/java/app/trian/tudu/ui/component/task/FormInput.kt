@@ -1,10 +1,13 @@
 package app.trian.tudu.ui.component.task
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
@@ -47,7 +50,12 @@ fun FormInput(
             visualTransformation=if(visible) VisualTransformation.None else PasswordVisualTransformation(),
             value = value,
             placeholder = {
-                Text(text = placeholder)
+                Text(
+                    text = placeholder,
+                    style= TextStyle(
+                        color = MaterialTheme.colors.onBackground
+                    )
+                )
             },
             onValueChange = {
                 value = it
@@ -68,13 +76,21 @@ fun FormInput(
                         )
                     }
                 }
-            }
+            },
+            textStyle = TextStyle(
+                color= MaterialTheme.colors.onBackground
+            )
         )
         Spacer(modifier = modifier.height(10.dp))
     }
 }
 
-@Preview
+@Preview(
+    uiMode = UI_MODE_NIGHT_YES
+)
+@Preview(
+    uiMode = UI_MODE_NIGHT_NO
+)
 @Composable
 fun PreviewFormInput() {
     TuduTheme {

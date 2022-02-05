@@ -37,7 +37,33 @@ fun DropdownPickCategory(
     listCategory:List<Category>,
     onPick:(category:Category)->Unit={},
     onHide:()->Unit={},
-    onAddCategory:()->Unit={}
+    onAddCategory:()->Unit={},
+    buttonAddCategory:@Composable ()->Unit={
+        DropdownMenuItem(
+            onClick = {
+                onAddCategory()
+                onHide()
+            }
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Octicons.Plus16,
+                    contentDescription = "",
+                    tint=MaterialTheme.colors.onBackground
+                )
+                Spacer(modifier = modifier.width(6.dp))
+                Text(
+                    text = stringResource(R.string.create_new_category),
+                    style = TextStyle(
+                        color=MaterialTheme.colors.onBackground
+                    )
+                )
+            }
+        }
+    }
 ){
     val ctx = LocalContext.current
     DropdownMenu(
@@ -89,30 +115,8 @@ fun DropdownPickCategory(
                 )
             }
         }
-        DropdownMenuItem(
-            onClick = {
-                onAddCategory()
-                onHide()
-            }
-        ) {
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Octicons.Plus16,
-                    contentDescription = "",
-                tint=MaterialTheme.colors.onBackground
-                    )
-                Spacer(modifier = modifier.width(6.dp))
-                Text(
-                    text = stringResource(R.string.create_new_category),
-                    style = TextStyle(
-                        color=MaterialTheme.colors.onBackground
-                    )
-                )
-            }
-        }
+        buttonAddCategory.invoke()
+
     }
 }
 

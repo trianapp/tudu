@@ -1,5 +1,7 @@
 package app.trian.tudu.ui.component
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -41,7 +43,7 @@ fun TuduBottomNavigation(
                       Text(
                           text = stringResource(id = it.name),
                           style = TextStyle(
-                              color = if(selected) MaterialTheme.colors.primary else InactiveText
+                              color = if(selected) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground
                           )
                       )
                 },
@@ -62,7 +64,7 @@ fun TuduBottomNavigation(
                     Icon(
                         imageVector = it.icon,
                         contentDescription = "",
-                        tint =if(selected) MaterialTheme.colors.primary else InactiveText
+                        tint  = if(selected) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground
                     )
                 }
             )
@@ -105,7 +107,12 @@ sealed class BottomNavigationScreenItem(
     )
 }
 
-@Preview
+@Preview(
+    uiMode=UI_MODE_NIGHT_YES
+)
+@Preview(
+    uiMode=UI_MODE_NIGHT_NO
+)
 @Composable
 fun PreviewTuduBottomNavigation(){
     TuduTheme {
