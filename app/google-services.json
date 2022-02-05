@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "496234949728-1po98t5mjicg3jbqavshu86ilg3dr30o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.trian.tudu",
+            "certificate_hash": "90398e21b3e3cb37dcb02d7ab5239b6c44173686"
+          }
+        },
+        {
           "client_id": "496234949728-o5kq3bacsk8eibvchp7j0l46bem1f4gb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

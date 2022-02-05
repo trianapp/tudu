@@ -1,9 +1,13 @@
 package app.trian.tudu.ui.component.task
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,8 +38,9 @@ fun ScreenListTask(
 ) {
     LazyColumn(
         modifier = modifier
+            .background(MaterialTheme.colors.background)
             .fillMaxSize()
-            .padding(horizontal = 30.dp)
+            .padding(horizontal = 20.dp)
     ) {
         item{
             HeaderTask(
@@ -79,10 +84,15 @@ fun ScreenListTask(
     }
 }
 
-@Preview
+@Preview(
+    uiMode=UI_MODE_NIGHT_NO
+)
+@Preview(
+    uiMode = UI_MODE_NIGHT_YES
+)
 @Composable
-fun PreviewScreenListtask(){
+fun PreviewScreenListTask(){
     TuduTheme {
-
+        ScreenListTask(listType = HeaderTask.ROW, listTask = listOf())
     }
 }

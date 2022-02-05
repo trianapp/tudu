@@ -16,7 +16,6 @@ import compose.icons.Octicons
 import compose.icons.octicons.ArrowLeft16
 import compose.icons.octicons.ArrowLeft24
 import compose.icons.octicons.Home16
-import compose.icons.octicons.Share24
 
 /**
  * App bar home
@@ -27,7 +26,7 @@ import compose.icons.octicons.Share24
 @Composable
 fun AppbarHome(
     dataCategory:List<Category> = listOf(),
-    onCategoryManagement:()->Unit={},
+    onOptionMenuSelected:(menu:Int)->Unit={},
     onSelectCategory:(category:Category)->Unit={}
 ) {
     Column {
@@ -45,10 +44,8 @@ fun AppbarHome(
         )
         TabBarHome(
             tabData = dataCategory,
-            onCategoryManagement=onCategoryManagement,
-            onSelect = {
-                onSelectCategory(it)
-            }
+            onOptionMenuClicked=onOptionMenuSelected,
+            onSelect =onSelectCategory
         )
     }
 

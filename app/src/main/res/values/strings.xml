@@ -59,5 +59,10 @@
     <string name="placeholder_input_note">Input note here…</string>
     <string name="placeholder_input_task">Input task here…</string>
     <string name="signin_failed">"Sign in failed %1$s"</string>
+    <string name="option_category_management">Category Management</string>
+    <string name="option_search">Search</string>
+    <string name="option_sort">Sort</string>
+    <string name="category_all">All</string>
+
 
 </resources>

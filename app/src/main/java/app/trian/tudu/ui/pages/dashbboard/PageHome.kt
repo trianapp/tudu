@@ -1,8 +1,6 @@
 package app.trian.tudu.ui.pages.dashbboard
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
@@ -18,17 +16,16 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import app.trian.tudu.R
 import app.trian.tudu.common.Routes
-import app.trian.tudu.common.gridItems
 import app.trian.tudu.common.hideKeyboard
 import app.trian.tudu.common.signOut
 import app.trian.tudu.data.local.Category
 import app.trian.tudu.data.local.Task
 import app.trian.tudu.ui.component.AppbarHome
 import app.trian.tudu.ui.component.dialog.DialogFormCategory
+import app.trian.tudu.ui.component.dialog.DialogSortingTask
 import app.trian.tudu.ui.component.task.BottomSheetInputNewTask
-import app.trian.tudu.ui.component.ItemTaskGrid
-import app.trian.tudu.ui.component.ItemTaskRow
 import app.trian.tudu.ui.component.header.HeaderTask
 import app.trian.tudu.ui.component.task.ScreenEmptyTask
 import app.trian.tudu.ui.component.task.ScreenListTask
@@ -40,7 +37,6 @@ import compose.icons.Octicons
 import compose.icons.octicons.Plus16
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import logcat.logcat
 
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
@@ -79,6 +75,10 @@ fun PageHome(
     var shouldShowDialogAddCategory by remember {
         mutableStateOf(false)
     }
+
+    var shouldShowDialogPickSortTask by remember {
+        mutableStateOf(false)
+    }
     fun signOut(){
         scope.launch(Dispatchers.Main) {
             router.signOut()
@@ -106,14 +106,33 @@ fun PageHome(
         }
     )
 
+    DialogSortingTask(
+        show = shouldShowDialogPickSortTask,
+        onDismiss = {shouldShowDialogPickSortTask=false},
+        onConfirm = {
+
+        }
+    )
+
     BasePagesDashboard(
         modalBottomSheetState=modalBottomSheetState,
         currentUser = currentUser,
         topAppbar = {
             AppbarHome(
                 dataCategory = listCategory,
-                onCategoryManagement = {
-                    router.navigate(Routes.CATEGORY)
+                onOptionMenuSelected = {
+                    when(it){
+                        R.string.option_category_management->{
+                            router.navigate(Routes.CATEGORY)
+                        }
+                        R.string.option_search->{
+                            router.navigate(Routes.SEARCH_TASK)
+                        }
+                        R.string.option_sort->{
+                            shouldShowDialogPickSortTask=true
+                        }
+                    }
+
                 },
                 onSelectCategory = {
                     if(it.name == "All"){

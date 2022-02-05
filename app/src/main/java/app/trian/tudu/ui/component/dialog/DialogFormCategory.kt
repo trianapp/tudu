@@ -86,12 +86,22 @@ fun ScreenDialogFormCategory(
                 )
             )
             Spacer(modifier = modifier.height(16.dp))
-            Box {
+            Box (
+                modifier = modifier.clip(RoundedCornerShape(10.dp))
+                    .background(MaterialTheme.colors.surface)
+                    ){
                 TextField(
-                    modifier=modifier.fillMaxWidth().align(Alignment.TopCenter),
+                    modifier=modifier
+                        .fillMaxWidth()
+                        .align(Alignment.TopCenter),
                     value = categoryName,
                     placeholder = {
-                        Text(text = stringResource(R.string.placeholder_input_category))
+                        Text(
+                            text = stringResource(R.string.placeholder_input_category),
+                            style=TextStyle(
+                                color = MaterialTheme.colors.onBackground
+                            )
+                        )
                     },
                     onValueChange ={
                         categoryName = it
@@ -110,7 +120,7 @@ fun ScreenDialogFormCategory(
                         topEnd = 10.dp,
                         bottomStart = 10.dp,
                         bottomEnd = 10.dp
-                    )
+                    ),
                 )
                 Text(
                     text = "0/50",
