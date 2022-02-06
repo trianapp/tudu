@@ -178,8 +178,8 @@ fun BottomSheetInputNewTask(
                 colors = TextFieldDefaults.textFieldColors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    textColor = Color.Black,
-                    cursorColor = Color.Black
+                    textColor = MaterialTheme.colors.onSurface,
+                    cursorColor = MaterialTheme.colors.onSurface
                 ),
                 placeholder = {
                     Text(
@@ -187,12 +187,12 @@ fun BottomSheetInputNewTask(
                         style = TextStyle(
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colors.onBackground
+                            color = MaterialTheme.colors.onSurface
                         )
                     )
                 },
                 textStyle = TextStyle(
-                    color = MaterialTheme.colors.onBackground,
+                    color = MaterialTheme.colors.onSurface,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                 )
