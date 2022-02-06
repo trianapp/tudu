@@ -80,9 +80,6 @@ fun BasePagesDashboard(
                     TuduBottomNavigation(
                         router = router,
                         onButton = {
-                            logcat("tes aja") {
-                                "ini button"
-                            }
                             scope.launch {
                                 drawerState.open()
                             }
