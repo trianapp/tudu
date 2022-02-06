@@ -10,5 +10,7 @@ data class AppSetting(
     var idSetting:String="",
     var listType:Int,
     var lastSync:Long,
+    var dateFormat:String,
+    var timeFormat:String
 
 )
