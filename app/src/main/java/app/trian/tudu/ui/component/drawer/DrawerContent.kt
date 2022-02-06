@@ -40,27 +40,27 @@ fun DrawerContent(
     val menu = listOf(
         ItemMenuDrawer(
             name = "Give Rating",
-            route = ""
+            route = "rating_app"
         ),
         ItemMenuDrawer(
             name = "Theme",
-            route = ""
+            route = "theme"
         ),
         ItemMenuDrawer(
             name = "Widget",
-            route = ""
+            route = "widget"
         ),
         ItemMenuDrawer(
             name = "Donate",
-            route = ""
+            route = "donate"
         ),
         ItemMenuDrawer(
             name = "Feedback",
-            route = ""
+            route = "feedback"
         ),
         ItemMenuDrawer(
             name = "FAQ",
-            route = ""
+            route = "faq"
         ),
         ItemMenuDrawer(
             name = "Settings",
@@ -73,9 +73,6 @@ fun DrawerContent(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Column {
-
-        }
 
         Column(
             modifier=modifier.padding(horizontal = 30.dp)

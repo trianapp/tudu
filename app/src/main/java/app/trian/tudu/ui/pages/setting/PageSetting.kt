@@ -1,5 +1,7 @@
 package app.trian.tudu.ui.pages.setting
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -8,7 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,6 +26,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.common.Routes
 import app.trian.tudu.ui.component.AppbarBasic
+import app.trian.tudu.ui.component.dialog.DialogDateFormat
+import app.trian.tudu.ui.component.dialog.DialogTimeFormat
 import app.trian.tudu.ui.theme.HexToJetpackColor
 import app.trian.tudu.ui.theme.TuduTheme
 import com.squareup.okhttp.Route
@@ -35,6 +39,12 @@ fun PageSetting(
     modifier: Modifier = Modifier,
     router: NavHostController
 ) {
+    var showDialogDateFormt by remember {
+        mutableStateOf(false)
+    }
+    var showDialogTimeFormat by remember {
+        mutableStateOf(false)
+    }
     val menus = listOf(
         ItemSetting(
             name = "Account Setting",
@@ -74,7 +84,7 @@ fun PageSetting(
             children = listOf(
                 SubItemSetting(
                     name = "Date Format",
-                    route = "",
+                    route = "date_format",
                     type = "button",
                     color = HexToJetpackColor.getColor(HexToJetpackColor.Blue),
                     icon = Octicons.Calendar24,
@@ -82,7 +92,7 @@ fun PageSetting(
                 ),
                 SubItemSetting(
                     name = "Time Format",
-                    route = "",
+                    route = "time_format",
                     type = "button",
                     color = HexToJetpackColor.getColor(HexToJetpackColor.Blue),
                     icon = Octicons.Clock24,
@@ -120,6 +130,21 @@ fun PageSetting(
             )
         )
     )
+
+    DialogDateFormat(
+        show = showDialogDateFormt,
+        onDismiss = {
+                    showDialogDateFormt=false
+        },
+        onConfirm = {}
+    )
+    DialogTimeFormat(
+        show = showDialogTimeFormat,
+        onDismiss = {
+                    showDialogTimeFormat=false
+        },
+        onConfirm = {}
+    )
     Scaffold(
         topBar ={
             AppbarBasic(title = "Settings"){
@@ -135,7 +160,17 @@ fun PageSetting(
                 menu->
                 ItemParentSetting(
                     item = menu,
-                    onClick = {},
+                    onClick = {
+                        when(it){
+                            "time_format"->{
+                                showDialogTimeFormat=true
+                            }
+                            "date_format"->{
+                                showDialogDateFormt=true
+                            }
+                            else->{}
+                        }
+                    },
                     onNavigate = {
                         router.navigate(it)
                     }
@@ -165,7 +200,7 @@ fun ItemParentSetting(
             ),
             modifier = modifier
                 .fillMaxWidth()
-                .padding(horizontal = 30.dp)
+                .padding(horizontal = 20.dp)
         )
         Spacer(modifier = modifier.height(10.dp))
         item.children.forEach {
@@ -185,58 +220,64 @@ fun ItemChildSetting(
     onNavigate:(route:String)->Unit={},
     onClick:(route:String)->Unit={}
 ){
-    Row(
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.fillMaxWidth().clickable {
-            if(itemSetting.type == "link"){
+    Column(
+        modifier = modifier.clickable {
+            if (itemSetting.type == "link") {
                 onNavigate(itemSetting.route)
-            }else{
+            } else {
                 onClick(itemSetting.route)
             }
         }
     ) {
-        Spacer(modifier =modifier.width(30.dp))
-        Box(
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
-                .size(60.dp)
-                .clip(CircleShape)
-                .background(itemSetting.color)
-        ){
-            Icon(
-                imageVector = Octicons.Person24,
-                contentDescription = "",
-                modifier=modifier.align(Alignment.Center),
-                tint = MaterialTheme.colors.background
-            )
+                .fillMaxWidth()
+
+        ) {
+            Spacer(modifier =modifier.width(20.dp))
+            Box(
+                modifier = modifier
+                    .size(60.dp)
+                    .clip(CircleShape)
+                    .background(itemSetting.color)
+            ){
+                Icon(
+                    imageVector = Octicons.Person24,
+                    contentDescription = "",
+                    modifier=modifier.align(Alignment.Center),
+                    tint = MaterialTheme.colors.background
+                )
+            }
+            Spacer(modifier =modifier.width(16.dp))
+            Column(
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = itemSetting.name,
+                    maxLines=1,
+                    overflow= TextOverflow.Ellipsis,
+                    style = TextStyle(
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Normal
+                    )
+                )
+                Text(
+                    text = itemSetting.description,
+                    maxLines=1,
+                    overflow= TextOverflow.Ellipsis,
+                    style = TextStyle(
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Light
+                    )
+                )
+            }
         }
-        Spacer(modifier =modifier.width(16.dp))
-       Column(
-           verticalArrangement = Arrangement.SpaceBetween
-       ) {
-           Text(
-               text = itemSetting.name,
-               maxLines=1,
-               overflow= TextOverflow.Ellipsis,
-               style = TextStyle(
-                   fontSize = 18.sp,
-                   fontWeight = FontWeight.Normal
-               )
-           )
-           Text(
-               text = itemSetting.description,
-               maxLines=1,
-               overflow= TextOverflow.Ellipsis,
-               style = TextStyle(
-                   fontSize = 14.sp,
-                   fontWeight = FontWeight.Light
-               )
-           )
-       }
+        Spacer(modifier = modifier.height(10.dp))
     }
-    Spacer(modifier = modifier.height(5.dp))
     Divider()
-    Spacer(modifier = modifier.height(10.dp))
+    Spacer(modifier = modifier.height(20.dp))
 }
 data class ItemSetting(
     var name:String,
@@ -250,7 +291,12 @@ data class SubItemSetting(
     var icon:ImageVector,
     var color: Color
 )
-@Preview
+@Preview(
+    uiMode=UI_MODE_NIGHT_NO
+)
+@Preview(
+    uiMode=UI_MODE_NIGHT_YES
+)
 @Composable
 fun PreviewPageSetting() {
     TuduTheme {

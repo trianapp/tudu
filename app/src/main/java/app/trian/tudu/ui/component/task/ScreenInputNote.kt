@@ -1,7 +1,9 @@
 package app.trian.tudu.ui.component.task
 
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -47,7 +49,7 @@ fun ScreenInputNote(
     LazyColumn(content = {
         item {
             TextField(
-                modifier=modifier.fillMaxWidth(),
+                modifier=modifier.fillMaxWidth().fillMaxHeight(),
                 value = noteState,
                 onValueChange = {
                     noteState = it
@@ -59,18 +61,19 @@ fun ScreenInputNote(
                         style = TextStyle(
                             fontSize = 36.sp,
                             fontWeight = FontWeight.Bold,
-                            color = InactiveText
+                            color = MaterialTheme.colors.onBackground
                         )
                     )
                 },
                 textStyle = TextStyle(
                     fontSize = 36.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colors.onBackground
                 ),
                 colors = TextFieldDefaults.textFieldColors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    textColor = Color.Black,
+                    textColor = MaterialTheme.colors.onBackground,
                     backgroundColor = Color.Transparent,
                 )
             )

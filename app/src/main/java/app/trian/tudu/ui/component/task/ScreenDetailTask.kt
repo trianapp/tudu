@@ -1,6 +1,8 @@
 package app.trian.tudu.ui.component.task
 
 import android.app.DatePickerDialog
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -173,18 +175,19 @@ fun ScreenDetailTask(
                                 style = TextStyle(
                                     fontSize = 36.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = InactiveText
+                                    color = MaterialTheme.colors.onBackground
                                 )
                             )
                         },
                         textStyle = TextStyle(
                             fontSize = 36.sp,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colors.onBackground
                         ),
                         colors = TextFieldDefaults.textFieldColors(
                             focusedIndicatorColor = Color.Transparent,
                             unfocusedIndicatorColor = Color.Transparent,
-                            textColor = Color.Black,
+                            textColor = MaterialTheme.colors.onSurface,
                             backgroundColor = Color.Transparent,
                         )
                     )
@@ -200,7 +203,8 @@ fun ScreenDetailTask(
                             text = stringResource(R.string.label_incomplete_todo),
                             style= TextStyle(
                                 fontSize = 20.sp,
-                                fontWeight = FontWeight.SemiBold
+                                fontWeight = FontWeight.SemiBold,
+                                color = MaterialTheme.colors.onBackground
                             )
                         )
                     }
@@ -248,7 +252,8 @@ fun ScreenDetailTask(
                             text = stringResource(R.string.label_completed_todo),
                             style = TextStyle(
                                 fontSize = 20.sp,
-                                fontWeight = FontWeight.SemiBold
+                                fontWeight = FontWeight.SemiBold,
+                                color = MaterialTheme.colors.onBackground
                             )
                         )
                         Spacer(modifier = modifier.height(10.dp))
@@ -293,9 +298,16 @@ fun ScreenDetailTask(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Row {
-                                Icon(imageVector = Octicons.Calendar16, contentDescription = "")
+                                Icon(
+                                    imageVector = Octicons.Calendar16,
+                                    contentDescription = "",
+                                    tint = MaterialTheme.colors.onBackground
+                                )
                                 Spacer(modifier = modifier.width(6.dp))
-                                Text(text = stringResource(R.string.label_due_date))
+                                Text(
+                                    text = stringResource(R.string.label_due_date),
+                                    color = MaterialTheme.colors.onBackground
+                                )
                             }
                             Row(
                                 modifier= modifier
@@ -316,7 +328,12 @@ fun ScreenDetailTask(
                                         datePickerDialog.show()
                                     }
                             ) {
-                                Text(text = deadlineState.toReadableDate())
+                                Text(
+                                    text = deadlineState.toReadableDate(),
+                                    style= TextStyle(
+                                        color = MaterialTheme.colors.onPrimary
+                                    )
+                                )
                             }
                         }
                     }
@@ -339,9 +356,18 @@ fun ScreenDetailTask(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Row {
-                                Icon(imageVector = Octicons.Clock16, contentDescription = "")
+                                Icon(
+                                    imageVector = Octicons.Clock16,
+                                    contentDescription = "",
+                                    tint = MaterialTheme.colors.onBackground
+                                )
                                 Spacer(modifier = modifier.width(6.dp))
-                                Text(text = stringResource(R.string.label_reminder))
+                                Text(
+                                    text = stringResource(R.string.label_reminder),
+                                    style= TextStyle(
+                                        color = MaterialTheme.colors.onBackground
+                                    )
+                                )
                             }
                             Row(
                                 modifier= modifier
@@ -363,8 +389,13 @@ fun ScreenDetailTask(
                                         update()
                                     }
                             ) {
-                                Text(text = if(reminderState) stringResource(R.string.reminder_yes)
-                                else stringResource(R.string.reminder_no))
+                                Text(
+                                    text = if(reminderState) stringResource(R.string.reminder_yes)
+                                else stringResource(R.string.reminder_no),
+                                    style= TextStyle(
+                                        color = MaterialTheme.colors.onPrimary
+                                    )
+                                )
                             }
                         }
                     }
@@ -394,13 +425,27 @@ fun ScreenDetailTask(
                                 horizontalArrangement = Arrangement.Start,
                                 verticalAlignment = Alignment.Top
                             ) {
-                                Icon(imageVector = Octicons.Note16, contentDescription = "")
+                                Icon(
+                                    imageVector = Octicons.Note16,
+                                    contentDescription = "",
+                                    tint = MaterialTheme.colors.onBackground
+                                )
                                 Spacer(modifier = modifier.width(6.dp))
                                 Column(
                                     modifier=modifier.fillMaxWidth(fraction = 0.8f)
                                 ) {
-                                    Text(text = stringResource(R.string.label_note))
-                                    Text(text = task.note)
+                                    Text(
+                                        text = stringResource(R.string.label_note),
+                                        style= TextStyle(
+                                            color = MaterialTheme.colors.onBackground
+                                        )
+                                    )
+                                    Text(
+                                        text = task.note,
+                                        style= TextStyle(
+                                            color = MaterialTheme.colors.onBackground
+                                        )
+                                    )
                                 }
                             }
                             Row(
@@ -421,7 +466,12 @@ fun ScreenDetailTask(
                                         vertical = 2.dp
                                     )
                             ) {
-                                Text(text = stringResource(R.string.btn_add_note))
+                                Text(
+                                    text = stringResource(R.string.btn_add_note),
+                                    style= TextStyle(
+                                        color = MaterialTheme.colors.onPrimary
+                                    )
+                                )
                             }
                         }
                     }
@@ -435,7 +485,13 @@ fun ScreenDetailTask(
 
 }
 
-@Preview
+@Preview(
+    uiMode = UI_MODE_NIGHT_YES
+)
+
+@Preview(
+    uiMode = UI_MODE_NIGHT_NO
+)
 @Composable
 fun PreviewScreenDetailTask() {
     TuduTheme {
