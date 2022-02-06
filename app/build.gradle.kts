@@ -33,7 +33,7 @@ fun getVersionCode():Int{
         }
         return stdout.toString().trim().toInt()
     }catch (ignored: Exception){
-        return -1
+        return 1
     }
 }
 
@@ -86,12 +86,14 @@ android {
                 keyPassword = keystoreProperties.getProperty("keyPassword")
                 storeFile = file(filePath)
                 storePassword = keystoreProperties.getProperty("storePassword")
+
         }
     }
     buildTypes {
 
         getByName("release") {
             signingConfig = signingConfigs.getByName("release")
+
             isMinifyEnabled=true
             multiDexKeepProguard = file("multidex-config.txt")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
