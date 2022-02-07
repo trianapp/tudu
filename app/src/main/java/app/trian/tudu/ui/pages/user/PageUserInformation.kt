@@ -7,15 +7,20 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
 import app.trian.tudu.ui.theme.TuduTheme
+import coil.compose.ImagePainter
+import coil.compose.rememberImagePainter
+import coil.transform.CircleCropTransformation
 import compose.icons.Octicons
 import compose.icons.octicons.ArrowLeft24
 
@@ -56,12 +61,25 @@ fun PageUserInformation(
             Box(
                 modifier = modifier
                     .fillMaxSize()
-                    .background(MaterialTheme.colors.background)
+                    .background(MaterialTheme.colors.primary)
             ) {
                 Column(
 
                 ) {
-                   
+                   Image(
+                       painter = rememberImagePainter(
+                           data = "https://via.placeholder.com/300",
+                           builder = {
+                                transformations(CircleCropTransformation())
+                           },
+                           onExecute = { previous, current ->
+
+                               true
+                           }
+                       ),
+                       modifier=modifier.size(40.dp),
+                       contentDescription = ""
+                   )
                 }
             }
         }

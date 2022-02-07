@@ -59,7 +59,9 @@ fun BasePagesDashboard(
                     }
                 },
                 onNavigate = {
-                    router.navigate(it)
+                    if(it.isNotBlank()) {
+                        router.navigate(it)
+                    }
                 }
             )
         },

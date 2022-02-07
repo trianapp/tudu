@@ -75,7 +75,12 @@ fun DrawerContent(
     ) {
 
         Column(
-            modifier=modifier.padding(horizontal = 30.dp)
+            modifier=modifier
+                .padding(
+                    end = 30.dp,
+                    start = 30.dp,
+                    top = 25.dp
+                )
         ) {
             Text(
                 text = "Hi!",

@@ -86,7 +86,7 @@ fun PagesOnboard(
             Image(
                 modifier=modifier.size(280.dp),
                 painter = painterResource(id = R.drawable.ic_onboard),
-                contentDescription = ""
+                contentDescription = stringResource(R.string.content_description_image_onboard)
             )
             Spacer(modifier = modifier.height(40.dp))
             Column(
@@ -115,7 +115,7 @@ fun PagesOnboard(
                             .align(Alignment.BottomEnd)
                             .padding(top = 18.dp),
                         painter = painterResource(id =R.drawable.ic_onboard_slash),
-                        contentDescription = ""
+                        contentDescription = stringResource(R.string.content_description_slash_onboard)
                     )
                 }
             }

@@ -71,6 +71,11 @@
     <string name="title_dialog_time_format">Time Format</string>
     <string name="title_page_user_information">Profile Information</string>
     <string name="content_description_home_button">Back to previous page</string>
+    <string name="default_notification_channel_id">tudu_notification</string>
+    <string name="content_description_logo">Logo Application</string>
+    <string name="content_description_icon_close">Icon Close Or Delete</string>
+    <string name="content_description_image_onboard">Image Onboard</string>
+    <string name="content_description_slash_onboard">Icon slash</string>
 
 
 </resources>

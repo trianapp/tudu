@@ -35,7 +35,7 @@ platform :android do
   lane :deploy do
     gradle(task: "clean bundleRelease")
     upload_to_play_store(
-        track: "internal",
+        track: "alpha",
         release_status: "draft"
      )
   end

@@ -1,10 +1,12 @@
 package app.trian.tudu.data.repository
 
 import app.trian.tudu.common.DispatcherProvider
+import app.trian.tudu.common.getNowMillis
 import app.trian.tudu.data.local.dao.TaskDao
 import app.trian.tudu.data.local.dao.TodoDao
 import app.trian.tudu.data.repository.design.UserRepository
 import app.trian.tudu.domain.DataState
+import app.trian.tudu.domain.UserToken
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -12,6 +14,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -28,6 +32,7 @@ import logcat.logcat
 class UserRepositoryImpl(
     private val dispatcherProvider: DispatcherProvider,
     private val firebaseAuth: FirebaseAuth,
+    private val firestore: FirebaseFirestore,
     private val taskDao: TaskDao,
     private val todoDao: TodoDao
 ):UserRepository {
@@ -82,6 +87,25 @@ class UserRepositoryImpl(
             emit(DataState.onFailure(e.message ?: "unknown error"))
         }
     }.flowOn(dispatcherProvider.io())
+
+    override  fun registerNewToken(token:String) {
+        try {
+            val user = firebaseAuth.currentUser
+            firestore.collection("userToken")
+                .document(user!!.uid)
+                .set(
+                    UserToken(
+                        token = token,
+                        created_at = getNowMillis(),
+                        updated_at = getNowMillis()
+                    ),
+                    SetOptions.merge()
+                )
+
+        }catch (e:Exception){
+
+        }
+    }
 
 
     override suspend fun signOut(callback: () -> Unit) = withContext(dispatcherProvider.io()){

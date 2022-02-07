@@ -32,9 +32,10 @@ fun getVersionCode():Int{
 
         }
         return stdout.toString().trim().toInt()
-    }catch (ignored: Exception){
+    }catch(ignored:Exception) {
         return 1
     }
+
 }
 
 fun getVersionName():String{

@@ -7,7 +7,7 @@ object Libs {
                 val auth by lazy{"com.google.firebase:firebase-auth-ktx"}
                 val firestore by lazy{"com.google.firebase:firebase-firestore-ktx"}
                 val storage by lazy{"com.google.firebase:firebase-storage-ktx"}
-                val messaging by lazy{"com.google.firebase:firebase-storage-ktx"}
+                val messaging by lazy{"com.google.firebase:firebase-messaging-ktx"}
                 val crashlytics by lazy{"com.google.firebase:firebase-crashlytics-ktx"}
                 val analytics by lazy {"com.google.firebase:firebase-analytics-ktx"}
             }

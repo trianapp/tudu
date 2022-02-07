@@ -1,5 +1,6 @@
 package app.trian.tudu.ui.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
@@ -14,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.trian.tudu.R
 import app.trian.tudu.data.local.Todo
+import app.trian.tudu.ui.theme.Inactivebackground
 import app.trian.tudu.ui.theme.TuduTheme
 import compose.icons.Octicons
 import compose.icons.octicons.X16
@@ -39,7 +41,11 @@ fun ItemTodo(
     }
     val scope = rememberCoroutineScope()
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .background(
+                MaterialTheme.colors.background
+            ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -51,10 +57,17 @@ fun ItemTodo(
                 onClick = {
                     onDone(todo.apply { done = !todo.done })
                 },
-                modifier = modifier.align(Alignment.CenterStart)
+                modifier = modifier
+                    .align(Alignment.CenterStart),
+                colors = RadioButtonDefaults.colors(
+                    selectedColor = MaterialTheme.colors.primary,
+                    unselectedColor = MaterialTheme.colors.onBackground,
+                    disabledColor = Inactivebackground
+                )
+
             )
             TextField(
-                modifier=modifier
+                modifier= modifier
                     .fillMaxWidth(fraction = 0.9f)
                     .align(Alignment.CenterStart)
                     .padding(start = 30.dp),
@@ -96,7 +109,7 @@ fun ItemTodo(
         ) {
             Icon(
                 imageVector = Octicons.X16,
-                contentDescription = ""
+                contentDescription = stringResource(R.string.content_description_icon_close)
             )
         }
 
