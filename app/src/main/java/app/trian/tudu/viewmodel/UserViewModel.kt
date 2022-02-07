@@ -108,6 +108,10 @@ class UserViewModel @Inject constructor():ViewModel() {
         }
     }
 
+    fun registerNewToken(token:String) = viewModelScope.launch {
+        userRepository.registerNewToken(token)
+    }
+
     fun signOut(
         callback:()->Unit={}
     )=viewModelScope.launch{

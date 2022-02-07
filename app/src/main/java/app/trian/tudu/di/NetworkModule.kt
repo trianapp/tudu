@@ -43,11 +43,13 @@ object NetworkModule {
     fun provideUserRepository(
         dispatcherProvider: DispatcherProvider,
         firebaseAuth: FirebaseAuth,
+        firestore: FirebaseFirestore,
         taskDao:TaskDao,
         todoDao: TodoDao,
     ):UserRepository =UserRepositoryImpl(
             dispatcherProvider,
             firebaseAuth,
+            firestore ,
             taskDao,
             todoDao
         )

@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.compose.foundation.isSystemInDarkTheme
+import app.trian.tudu.R
 
 /**
  * Utility for context
@@ -33,4 +35,9 @@ fun Context.showKeyboard(){
 
 fun Context.restartActivity(){
 
+}
+
+fun Boolean.getLogo():Int{
+    val isDark = this
+    return if(isDark) R.drawable.logo_dark else R.drawable.logo_light
 }

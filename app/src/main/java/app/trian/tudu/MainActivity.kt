@@ -18,6 +18,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import app.trian.tudu.common.Routes
+import app.trian.tudu.data.repository.design.UserRepository
 import app.trian.tudu.ui.pages.auth.*
 import app.trian.tudu.ui.pages.category.PagesCategoryManagement
 import app.trian.tudu.ui.pages.dashbboard.PageCalender
@@ -30,13 +31,20 @@ import app.trian.tudu.ui.pages.task.PageSearchTask
 import app.trian.tudu.ui.theme.TuduTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.firebase.FirebaseApp
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.ktx.messaging
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
+    @Inject lateinit var userRepository: UserRepository
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -190,5 +198,28 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+        subscribeTopic()
+    }
+
+    fun subscribeTopic(){
+        FirebaseMessaging.getInstance().token.addOnCompleteListener {
+            task->
+            try {
+                if(task.isSuccessful){
+                    val token = task.result
+                  //  userRepository.registerNewToken(token)
+                }
+
+            }catch (ignored:Exception){
+
+            }
+        }
+        Firebase.messaging.subscribeToTopic("berita")
+            .addOnCompleteListener {
+                task->
+                if(task.isSuccessful){
+
+                }
+            }
     }
 }
