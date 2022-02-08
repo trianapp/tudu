@@ -4,13 +4,13 @@ import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,6 +39,8 @@ fun PageUserInformation(
     Scaffold(
         topBar = {
             TopAppBar(
+                backgroundColor = MaterialTheme.colors.primary,
+                elevation = 0.dp,
                 navigationIcon = {
                     IconButton(onClick = {
                         router.popBackStack()
@@ -64,7 +66,11 @@ fun PageUserInformation(
                     .background(MaterialTheme.colors.primary)
             ) {
                 Column(
-
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .align(Alignment.TopCenter),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
                    Image(
                        painter = rememberImagePainter(
@@ -81,8 +87,86 @@ fun PageUserInformation(
                        contentDescription = ""
                    )
                 }
+                Column(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(
+                            top = 100.dp
+                        )
+                        .clip(
+                            RoundedCornerShape(
+                                topEnd = 20.dp,
+                                topStart = 20.dp
+                            )
+                        )
+                        .background(MaterialTheme.colors.background)
+
+                ) {
+                    Spacer(modifier = modifier.height(40.dp))
+                    ItemProfileUser(
+                        label = "Name",
+                        text = "Trian Damai",
+                        actionText = "EDIT"
+                    )
+                    ItemProfileUser(
+                        label = "Username",
+                        text = "@triandamai",
+                        actionText = "EDIT"
+                    )
+                    ItemProfileUser(
+                        label = "Email",
+                        text = "example@trian.app",
+                        actionText = ""
+                    )
+                    ItemProfileUser(
+                        label = "Gender",
+                        text = "Male",
+                        actionText = ""
+                    )
+                    ItemProfileUser(
+                        label = "Date of birth",
+                        text = "16-09-1998",
+                        actionText = ""
+                    )
+                }
             }
         }
+    }
+}
+
+@Composable
+fun ItemProfileUser(
+    modifier: Modifier=Modifier,
+    label:String="name",
+    text:String="Name",
+    actionText:String="EDIT",
+    onAction:()->Unit= {}
+
+){
+    Column(
+        modifier = modifier.fillMaxWidth(),
+
+    ) {
+        Spacer(modifier = modifier.height(16.dp))
+        Text(
+            text = label,
+            modifier = modifier.padding(horizontal = 16.dp)
+        )
+        Spacer(modifier = modifier.height(16.dp))
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = 16.dp
+                ),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = text)
+            Text(text = actionText)
+        }
+        Spacer(modifier = modifier.height(16.dp))
+        Divider()
     }
 }
 
