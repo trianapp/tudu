@@ -1,6 +1,6 @@
 import java.util.Properties
 import java.io.FileInputStream
-import java.io.ByteArrayOutputStream
+
 plugins {
     id("com.android.application")
     id("dagger.hilt.android.plugin")
@@ -17,45 +17,6 @@ val keystoreProperties = Properties()
 keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
 
-fun getVersionCode():Int{
-    try {
-        val stdout = ByteArrayOutputStream()
-        exec {
-            commandLine(
-                "git",
-                "rev-list",
-                "--first-parent",
-                "--count",
-                "main"
-            )
-            standardOutput = stdout
-
-        }
-        return stdout.toString().trim().toInt()
-    }catch(ignored:Exception) {
-        return 1
-    }
-
-}
-
-fun getVersionName():String{
-    return try{
-        val stdout =ByteArrayOutputStream()
-        exec {
-            commandLine(
-                "git",
-                "describe",
-                "--tags",
-                "--dirty"
-            )
-            standardOutput = stdout
-        }
-        stdout.toString().trim()
-    }catch (ignored: Exception){
-        ""
-    }
-}
-
 android {
     compileSdk =32
 
@@ -63,8 +24,8 @@ android {
         applicationId = Version.applicationId
         minSdk =21
         targetSdk =30
-        versionCode =23//getVersionCode()
-        versionName = "1.0.0"// getVersionName()
+        versionCode =23
+        versionName = "1.0.0"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -176,6 +137,7 @@ dependencies {
 
     }
 
+    implementation(Libs.Com.Github.Jeziellago.composeMarkdown)
 
     testImplementation(Libs.Org.Mockito.mockitoCore)
     //  Bump to 4.6.* after https://github.com/robolectric/robolectric/issues/6593 is fixed

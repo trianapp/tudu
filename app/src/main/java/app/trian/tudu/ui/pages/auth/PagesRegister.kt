@@ -29,12 +29,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
 import app.trian.tudu.common.Routes
+import app.trian.tudu.common.hideKeyboard
 import app.trian.tudu.ui.component.AppbarAuth
 import app.trian.tudu.ui.component.ButtonPrimary
+import app.trian.tudu.ui.component.dialog.ModalBottomSheetPrivacyPolicy
 import app.trian.tudu.ui.component.task.FormInput
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.UserViewModel
+import kotlinx.coroutines.launch
 
+@ExperimentalMaterialApi
 @Composable
 fun PagesRegister(
     modifier: Modifier=Modifier,
@@ -42,6 +46,15 @@ fun PagesRegister(
 ) {
     val ctx = LocalContext.current
     val userViewModel = hiltViewModel<UserViewModel>()
+    val bottomSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = true,
+        confirmStateChange = {
+
+            true
+        }
+    )
+    val scope = rememberCoroutineScope()
 
     var email by remember {
         mutableStateOf("")
@@ -116,133 +129,147 @@ fun PagesRegister(
         }
     }
 
-    Scaffold(
-        topBar = {
-            AppbarAuth(){
-                router.popBackStack()
+    ModalBottomSheetLayout(
+        sheetState = bottomSheetState,
+        sheetContent = {
+            ModalBottomSheetPrivacyPolicy(){
+                scope.launch {
+                    bottomSheetState.hide()
+                }
             }
         }
     ) {
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(
-                    horizontal = 20.dp
-                )
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.Top
+        Scaffold(
+            topBar = {
+                AppbarAuth(){
+                    router.popBackStack()
+                }
+            }
         ) {
-            Text(
-                text = stringResource(R.string.title_register),
-                style = TextStyle(
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.SemiBold
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(
+                        horizontal = 20.dp
+                    )
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.Top
+            ) {
+                Text(
+                    text = stringResource(R.string.title_register),
+                    style = TextStyle(
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 )
-            )
-            Row {
-                ClickableText(
-                    text = annotatedSignIn,
-                    onClick = {
-                        offset->
-                        annotatedSignIn.getStringAnnotations(
-                            tag = ctx.getString(R.string.text_signin),
-                            start = offset,
-                            end = offset
-                        ).firstOrNull()?.let {
-                            annotated ->
-                            router.navigate(Routes.LOGIN){
-                                popUpTo(Routes.REGISTER){
-                                    inclusive = true
+                Row {
+                    ClickableText(
+                        text = annotatedSignIn,
+                        onClick = {
+                                offset->
+                            annotatedSignIn.getStringAnnotations(
+                                tag = ctx.getString(R.string.text_signin),
+                                start = offset,
+                                end = offset
+                            ).firstOrNull()?.let {
+                                    annotated ->
+                                router.navigate(Routes.LOGIN){
+                                    popUpTo(Routes.REGISTER){
+                                        inclusive = true
+                                    }
+                                    launchSingleTop = true
                                 }
-                                launchSingleTop = true
                             }
                         }
-                    }
-                )
-            }
-            Spacer(modifier = modifier.height(20.dp))
-            Column(
-                modifier= modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 10.dp)
-            ) {
-                FormInput(
-                    initialValue = username,
-                    label = {
-                        Text(text = stringResource(R.string.label_input_username))
-                    },
-                    placeholder = stringResource(R.string.placeholder_input_username),
-                    onChange = {
-                        username = it
-                    }
-                )
-                Spacer(modifier = modifier.height(16.dp))
-                FormInput(
-                    initialValue = email,
-                    label = {
-                        Text(text = stringResource(id = R.string.label_input_email))
-                    },
-                    placeholder = stringResource(id = R.string.placeholder_input_email),
-                    onChange = {
-                        email = it
-                    }
-                )
-                Spacer(modifier = modifier.height(16.dp))
-                FormInput(
-                    initialValue = password,
-                    label = {
-                        Text(text = stringResource(id = R.string.label_input_password))
-                    },
-                    showPasswordObsecure = true,
-                    placeholder = stringResource(id = R.string.placeholder_input_password),
-                    onChange = {
-                        password = it
-                    }
-                )
-            }
-            Spacer(modifier = modifier.height(10.dp))
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Checkbox(
-                    checked = termsConditions,
-                    onCheckedChange ={
-                            termsConditions = it
-                    },
-                    modifier=modifier.clip(CircleShape)
-                )
-
-
-                ClickableText(
-                    text = annotatedPrivacyPolicy,
-                    onClick = {
-                        offset->
-                        annotatedPrivacyPolicy.getStringAnnotations(
-                            tag = ctx.getString(R.string.text_privacy_policy),
-                            start = offset,
-                            end = offset
-                        ).firstOrNull()?.let {
-                            annotation->
-                            Toast.makeText(ctx,"$annotation",Toast.LENGTH_LONG).show()
-
+                    )
+                }
+                Spacer(modifier = modifier.height(20.dp))
+                Column(
+                    modifier= modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 10.dp)
+                ) {
+                    FormInput(
+                        initialValue = username,
+                        label = {
+                            Text(text = stringResource(R.string.label_input_username))
+                        },
+                        placeholder = stringResource(R.string.placeholder_input_username),
+                        onChange = {
+                            username = it
                         }
-                    }
-                )
+                    )
+                    Spacer(modifier = modifier.height(16.dp))
+                    FormInput(
+                        initialValue = email,
+                        label = {
+                            Text(text = stringResource(id = R.string.label_input_email))
+                        },
+                        placeholder = stringResource(id = R.string.placeholder_input_email),
+                        onChange = {
+                            email = it
+                        }
+                    )
+                    Spacer(modifier = modifier.height(16.dp))
+                    FormInput(
+                        initialValue = password,
+                        label = {
+                            Text(text = stringResource(id = R.string.label_input_password))
+                        },
+                        showPasswordObsecure = true,
+                        placeholder = stringResource(id = R.string.placeholder_input_password),
+                        onChange = {
+                            password = it
+                        }
+                    )
+                }
+                Spacer(modifier = modifier.height(10.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(
+                        checked = termsConditions,
+                        onCheckedChange ={
+                            termsConditions = it
+                            ctx.hideKeyboard()
+                        },
+                        modifier=modifier.clip(CircleShape)
+                    )
 
-            }
-            Spacer(modifier = modifier.height(20.dp))
-            ButtonPrimary(
-                text = stringResource(R.string.btn_continue),
-                enabled = termsConditions
 
-            ){
-                processRegister()
+                    ClickableText(
+                        text = annotatedPrivacyPolicy,
+                        onClick = {
+                                offset->
+                            annotatedPrivacyPolicy.getStringAnnotations(
+                                tag = ctx.getString(R.string.text_privacy_policy),
+                                start = offset,
+                                end = offset
+                            ).firstOrNull()?.let { _ ->
+                                scope.launch {
+                                    bottomSheetState.show()
+                                }
+
+                            }
+                        }
+                    )
+
+                }
+                Spacer(modifier = modifier.height(20.dp))
+                ButtonPrimary(
+                    text = stringResource(R.string.btn_continue),
+                    enabled = termsConditions
+
+                ){
+                    processRegister()
+                }
             }
         }
     }
 }
 
+@ExperimentalMaterialApi
 @Preview
 @Composable
 fun PreviewPagesRegister(){

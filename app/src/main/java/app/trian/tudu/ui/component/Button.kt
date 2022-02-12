@@ -8,7 +8,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.trian.tudu.R
@@ -71,7 +73,12 @@ fun ButtonGoogle(
     ) {
         Icon(painter = painterResource(id = R.drawable.ic_google_signin_button), contentDescription = "")
         Spacer(modifier = modifier.width(6.dp))
-        Text(text = text)
+        Text(
+            text = text,
+            style = TextStyle(
+                color = Color.White
+            )
+        )
     }
 }
 @Composable

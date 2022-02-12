@@ -27,6 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
 import app.trian.tudu.common.GoogleAuthContract
 import app.trian.tudu.common.Routes
+import app.trian.tudu.common.hideKeyboard
 import app.trian.tudu.common.signInInSuccess
 import app.trian.tudu.ui.component.AppbarAuth
 import app.trian.tudu.ui.component.ButtonGoogle
@@ -72,6 +73,7 @@ fun PageLogin(
 
 
     fun processLoggedIn(){
+        ctx.hideKeyboard()
         if(email.isBlank() || password.isBlank()){
             Toast.makeText(ctx,ctx.getString(R.string.validation_login),Toast.LENGTH_SHORT).show()
             return
