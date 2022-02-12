@@ -256,7 +256,10 @@ fun BottomSheetInputNewTask(
                         }
                     )
                     Text(
-                        text = categoryId.name
+                        text = categoryId.name,
+                        style = TextStyle(
+                            color = Color.Black
+                        )
                     )
                 }
 

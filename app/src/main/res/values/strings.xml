@@ -80,6 +80,8 @@
     <string name="default_url_profile_image">https://via.placeholder.com/300</string>
     <string name="content_description_image_profile">Profile Picture</string>
     <string name="text_privacy_policy">Privacy Policy</string>
+    <string name="content_description_empty_task">Background Empty Task</string>
+    <string name="content_description_icon_login_google">Icon Login Google</string>
 
 
 </resources>

@@ -421,7 +421,7 @@ fun PageDetailTask(
                  item {
                      Divider(
                          color = Inactivebackground,
-                         thickness = 1.dp
+                         thickness = 0.6.dp
                      )
                      Spacer(modifier = modifier.height(16.dp))
                      Box(
@@ -483,7 +483,7 @@ fun PageDetailTask(
                  item {
                      Divider(
                          color = Inactivebackground,
-                         thickness = 1.dp
+                         thickness = 0.6.dp
                      )
                      Box(
                          modifier = modifier
@@ -555,10 +555,7 @@ fun PageDetailTask(
                              }
                          }
                      }
-                     Divider(
-                         color = Inactivebackground,
-                         thickness = 1.dp
-                     )
+
                  }
              })
          }

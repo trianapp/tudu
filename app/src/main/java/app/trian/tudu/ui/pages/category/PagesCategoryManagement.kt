@@ -13,7 +13,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -87,7 +89,10 @@ fun PagesCategoryManagement(
                         horizontalArrangement = Arrangement.Center
                     ){
                        Text(
-                           text = stringResource(R.string.subtitle_category_management)
+                           text = stringResource(R.string.subtitle_category_management),
+                           style= TextStyle(
+                               color = Color.Black
+                           )
                        )
                     }
                 }

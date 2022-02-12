@@ -1,5 +1,6 @@
 package app.trian.tudu.ui.component.drawer
 
+import android.content.pm.PackageInfo
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -37,6 +39,14 @@ fun DrawerContent(
     onClick: (item: ItemMenuDrawer) -> Unit={},
     onNavigate:(route:String)->Unit={}
 ) {
+    val ctx = LocalContext.current
+    fun getVersion():String{
+        return try {
+            ctx.packageManager.getPackageInfo(ctx.packageName,0).versionName
+        }catch (e:Exception){
+            "0"
+        }
+    }
     val menu = listOf(
         ItemMenuDrawer(
             name = "Give Rating",
@@ -157,7 +167,7 @@ fun DrawerContent(
             }
             Spacer(modifier = modifier.height(30.dp))
             Text(
-                text = "Version 1.0.1",
+                text = "Version ${getVersion()}",
                 style=TextStyle(
                     color = MaterialTheme.colors.onBackground
 

@@ -174,11 +174,7 @@ fun PageHome(
         ) {
             when(listTask.isEmpty()){
                 true->{
-                    ScreenEmptyTask{
-                        scope.launch {
-                            modalBottomSheetState.show()
-                        }
-                    }
+                    ScreenEmptyTask()
                 }
                 false->{
                     ScreenListTask(
