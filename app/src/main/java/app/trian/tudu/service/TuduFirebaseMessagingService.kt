@@ -17,7 +17,10 @@ class TuduFirebaseMessagingService: FirebaseMessagingService(){
     override fun onNewToken(token: String) {
         super.onNewToken(token)
 
-            userRepository.registerNewToken(token)
+        GlobalScope.launch {
+            userRepository.registerFCMTokenAndSubscribeTopic()
+        }
+
 
 
     }

@@ -11,6 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -23,6 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
 import app.trian.tudu.common.Routes
 import app.trian.tudu.common.getLogo
+import app.trian.tudu.ui.component.dialog.DialogTimeFormat
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.UserViewModel
 import kotlinx.coroutines.delay
@@ -32,8 +34,14 @@ fun PagesSplash(
     modifier: Modifier=Modifier,
     router: NavHostController
 ) {
+
     val userViewModel = hiltViewModel<UserViewModel>()
     val isDark = isSystemInDarkTheme()
+
+
+
+
+
     LaunchedEffect(key1 = Unit, block = {
         //cek if user already logged in
         userViewModel.userAlreadyLogin {
@@ -54,6 +62,8 @@ fun PagesSplash(
         }
     })
 
+
+
     Scaffold() {
         Column(
             modifier=modifier.fillMaxSize(),
@@ -63,8 +73,7 @@ fun PagesSplash(
             Image(painter = painterResource(id = isDark.getLogo()), contentDescription = stringResource(
                             R.string.content_description_logo)
                         )
-            Spacer(modifier = modifier.height(20.dp))
-            CircularProgressIndicator()
+
         }
     }
 }

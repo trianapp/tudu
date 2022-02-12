@@ -15,7 +15,8 @@ interface UserRepository {
 
     suspend fun loginGoogle(idToken:String):Flow<DataState<FirebaseUser>>
 
-     fun registerNewToken(token:String)
+    suspend fun registerFCMTokenAndSubscribeTopic()
+
 
     suspend fun signOut(callback:()->Unit)
 }

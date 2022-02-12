@@ -10,6 +10,9 @@ import org.joda.time.DateTime
  */
 
 fun Long.toReadableDate():String{
+    if(this in 0..1){
+        return "No deadline"
+    }
     val date = DateTime(this).toLocalDateTime()
     return date.toString("d MMMM, yyyy")
 }

@@ -40,27 +40,27 @@ fun DrawerContent(
     val menu = listOf(
         ItemMenuDrawer(
             name = "Give Rating",
-            route = "rating_app"
+            route = ""
         ),
         ItemMenuDrawer(
             name = "Theme",
-            route = "theme"
+            route = ""
         ),
         ItemMenuDrawer(
             name = "Widget",
-            route = "widget"
+            route = ""
         ),
         ItemMenuDrawer(
             name = "Donate",
-            route = "donate"
+            route = ""
         ),
         ItemMenuDrawer(
             name = "Feedback",
-            route = "feedback"
+            route = ""
         ),
         ItemMenuDrawer(
             name = "FAQ",
-            route = "faq"
+            route = ""
         ),
         ItemMenuDrawer(
             name = "Settings",

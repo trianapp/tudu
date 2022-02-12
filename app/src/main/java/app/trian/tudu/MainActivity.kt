@@ -31,6 +31,7 @@ import app.trian.tudu.ui.pages.task.PageSearchTask
 import app.trian.tudu.ui.theme.TuduTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.ktx.messaging
@@ -44,7 +45,8 @@ import javax.inject.Inject
 @ExperimentalMaterialApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @Inject lateinit var userRepository: UserRepository
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -63,6 +65,7 @@ class MainActivity : ComponentActivity() {
                         color = uiColor,
                         darkIcons = !useDark
                     )
+
                 })
 
                 Surface(
@@ -194,32 +197,18 @@ class MainActivity : ComponentActivity() {
                                  router=navHostController
                             )
                         }
+                        composable(Routes.PAGE_USER_INFORMATION){
+                            systemUiController.setSystemBarsColor(
+                                color = primaryColor,
+                                darkIcons = !useDark
+                            )
+                        }
                     }
                 }
             }
         }
-        subscribeTopic()
+
     }
 
-    fun subscribeTopic(){
-        FirebaseMessaging.getInstance().token.addOnCompleteListener {
-            task->
-            try {
-                if(task.isSuccessful){
-                    val token = task.result
-                  //  userRepository.registerNewToken(token)
-                }
 
-            }catch (ignored:Exception){
-
-            }
-        }
-        Firebase.messaging.subscribeToTopic("berita")
-            .addOnCompleteListener {
-                task->
-                if(task.isSuccessful){
-
-                }
-            }
-    }
 }

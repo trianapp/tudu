@@ -94,6 +94,7 @@ fun PageHome(
         taskViewModel.getListTask()
         taskViewModel.getListCategory()
         userViewModel.getCurrentUser()
+        userViewModel.registerNewToken()
     })
 
     DialogFormCategory(

@@ -1,12 +1,18 @@
 package app.trian.tudu.ui.pages.task
 
 
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -14,13 +20,14 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import app.trian.tudu.R
 import app.trian.tudu.data.local.Task
-import app.trian.tudu.domain.DataState
-import app.trian.tudu.ui.component.task.ScreenInputNote
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.TaskViewModel
 import compose.icons.Octicons
 import compose.icons.octicons.ArrowLeft24
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * Page input note
@@ -35,14 +42,25 @@ fun PageInputNote(
     router: NavHostController
 ) {
     val taskViewModel = hiltViewModel<TaskViewModel>()
-    val detailTask by taskViewModel.detailTask.observeAsState(initial = DataState.LOADING)
+    val detailTask by taskViewModel.detailTask.observeAsState(initial = Task())
 
-    fun updateTask(task: Task){
-        taskViewModel.updateTask(task)
+    val scope = rememberCoroutineScope()
+    var noteState by remember {
+        mutableStateOf(TextFieldValue(text = detailTask.note))
+    }
+
+    fun updateTask(){
+        scope.launch {
+            delay(500)
+            detailTask.apply { note = noteState.text }
+            taskViewModel.updateTask(detailTask)
+        }
     }
     LaunchedEffect(key1 = Unit, block = {
         val taskId = router.currentBackStackEntry?.arguments?.getString("taskId") ?: ""
         taskViewModel.getTaskById(taskId)
+        delay(100)
+        noteState = TextFieldValue(text = detailTask.note)
     })
 
     Scaffold(
@@ -67,11 +85,7 @@ fun PageInputNote(
                 },
                 title = {
                     Text(
-                        text = when (detailTask){
-                            DataState.LOADING -> ""
-                            is DataState.onData -> (detailTask as DataState.onData<Task>).data.name
-                            is DataState.onFailure -> ""
-                        },
+                        text = detailTask.note,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -79,18 +93,39 @@ fun PageInputNote(
             )
         }
     ) {
-       when(detailTask){
-           DataState.LOADING -> {}
-           is DataState.onData -> {
-               ScreenInputNote(
-                   task = (detailTask as DataState.onData<Task>).data,
-                   onEdit = {
-                       updateTask(it)
-                   }
-               )
-           }
-           is DataState.onFailure -> {}
-       }
+        LazyColumn(content = {
+            item {
+                TextField(
+                    modifier=modifier.fillMaxWidth().fillMaxHeight(),
+                    value = noteState,
+                    onValueChange = {
+                        noteState = it
+                        updateTask()
+                    },
+                    placeholder={
+                        Text(
+                            text = noteState.text.ifBlank { stringResource(R.string.placeholder_input_note) },
+                            style = TextStyle(
+                                fontSize = 36.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colors.onBackground
+                            )
+                        )
+                    },
+                    textStyle = TextStyle(
+                        fontSize = 36.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colors.onBackground
+                    ),
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        textColor = MaterialTheme.colors.onBackground,
+                        backgroundColor = Color.Transparent,
+                    )
+                )
+            }
+        })
     }
 }
 

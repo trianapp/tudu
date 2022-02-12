@@ -7,11 +7,12 @@ import kotlinx.coroutines.flow.Flow
 interface TaskRepository {
     suspend fun getListTask():Flow<List<Task>>
     suspend fun getListTaskByCategory(categoryId:String):Flow<List<Task>>
-    suspend fun getTaskById(taskId:String):Flow<DataState<Task>>
+    suspend fun getTaskById(taskId:String):Flow<Task?>
     suspend fun createNewTask(task: Task,todo:List<Todo>):Flow<DataState<Task>>
     suspend fun updateTask(task: Task):Flow<Task>
 
-    suspend fun getListTodo(taskId:String):Flow<List<Todo>>
+    suspend fun getListCompleteTodo(taskId:String):Flow<List<Todo>>
+    suspend fun getListUnCompleteTodo(taskId:String):Flow<List<Todo>>
     suspend fun addTodo(todo: Todo):Flow<Todo>
     suspend fun updateTodo(todo: Todo):Flow<Todo>
     suspend fun deleteTodo(todo: Todo):Flow<Todo>

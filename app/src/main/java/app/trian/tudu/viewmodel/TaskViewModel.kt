@@ -8,10 +8,11 @@ import app.trian.tudu.data.local.Task
 import app.trian.tudu.data.local.Todo
 import app.trian.tudu.data.repository.design.TaskRepository
 import app.trian.tudu.data.repository.design.UserRepository
-import app.trian.tudu.domain.DataState
 import app.trian.tudu.ui.theme.HexToJetpackColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import logcat.LogPriority
+import logcat.logcat
 import javax.inject.Inject
 
 /**
@@ -29,7 +30,7 @@ class TaskViewModel @Inject constructor() : ViewModel() {
     private var _listTask = MutableLiveData<List<Task>>()
     val listTask get() = _listTask
 
-    private var _detailTask = MutableLiveData<DataState<Task>>()
+    private var _detailTask = MutableLiveData<Task>()
     val detailTask get() = _detailTask
 
     private var _completeTodo = MutableLiveData<List<Todo>>()
@@ -79,12 +80,23 @@ class TaskViewModel @Inject constructor() : ViewModel() {
     }
 
 
-    fun getListTodo(taskId:String)=viewModelScope.launch {
-         taskRepository.getListTodo(taskId).collect {
+    fun getCompleteTodo(taskId:String)=viewModelScope.launch {
+         taskRepository.getListCompleteTodo(taskId).collect {
              result->
-             _completeTodo.value = result.filter { it.done }
-             _unCompleteTodo.value = result.filter { !it.done }
+             result.forEach {
+                 logcat("yoo",LogPriority.ERROR) { it.toString() }
+             }
+             _completeTodo.value = result
+
          }
+    }
+
+    fun getUnCompleteTodo(taskId: String) = viewModelScope.launch {
+        taskRepository.getListUnCompleteTodo(taskId).collect{
+            result->
+
+            _unCompleteTodo.value = result
+        }
     }
 
     fun calculateTaskCount()=viewModelScope.launch {
@@ -121,7 +133,7 @@ class TaskViewModel @Inject constructor() : ViewModel() {
 
         }
         getListCategory()
-        getListTodo(taskId)
+        getCompleteTodo(taskId)
     }
 
     fun addNewCategory(categoryName:String)=viewModelScope.launch {

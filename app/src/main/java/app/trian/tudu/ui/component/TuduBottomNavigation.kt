@@ -79,7 +79,7 @@ sealed class BottomNavigationScreenItem(
         var type:String="link"
     ){
     object Drawer:BottomNavigationScreenItem(
-        R.string.nav_item_home,
+        R.string.nav_item_drawer,
         Octicons.ThreeBars16,
         "",
         type = "button"

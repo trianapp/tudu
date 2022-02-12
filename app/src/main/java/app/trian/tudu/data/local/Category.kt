@@ -3,6 +3,7 @@ package app.trian.tudu.data.local
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import app.trian.tudu.ui.theme.HexToJetpackColor
 
 /**
  * Entity Category
@@ -16,13 +17,13 @@ data class Category(
     @ColumnInfo(name = "categoryId")
     var categoryId:String="",
     @ColumnInfo(name = "name")
-    var name:String,
+    var name:String="",
     @ColumnInfo(name="color")
-    var color:String,
+    var color:String=HexToJetpackColor.Blue,
     @ColumnInfo(name="used_count")
     var usedCount:Int=0,
     @ColumnInfo(name = "created_at")
-    var created_at:Long,
+    var created_at:Long=0,
     @ColumnInfo(name = "updated_at")
-    var updated_at:Long,
+    var updated_at:Long=0,
 )

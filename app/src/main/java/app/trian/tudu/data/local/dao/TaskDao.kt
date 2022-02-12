@@ -16,13 +16,13 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TaskDao {
 
-    @Query("SELECT * FROM tb_task ORDER BY created_at ASC")
+    @Query("SELECT * FROM tb_task ORDER BY created_at DESC")
     fun getListTask():Flow<List<Task>>
 
     @Query("SELECT * FROM tb_task WHERE taskId=:taskId")
     fun getTaskById(taskId:String):Task?
 
-    @Query("SELECT * FROM tb_task WHERE taskCategoryId=:categoryId")
+    @Query("SELECT * FROM tb_task WHERE taskCategoryId=:categoryId ORDER BY created_at DESC")
     fun getListTaskByCategory(categoryId:String):Flow<List<Task>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

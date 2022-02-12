@@ -63,7 +63,7 @@ android {
         applicationId = Version.applicationId
         minSdk =21
         targetSdk =30
-        versionCode =21//getVersionCode()
+        versionCode =23//getVersionCode()
         versionName = "1.0.0"// getVersionName()
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
