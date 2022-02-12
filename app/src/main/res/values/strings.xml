@@ -39,7 +39,8 @@
     <string name="label_already_have_account">"Do you already have account?"</string>
     <string name="label_input_username">Username</string>
     <string name="placeholder_input_username">Your username</string>
-    <string name="text_license_agreement">I accept Terms of use and Privacy Policy</string>
+    <string name="text_license_agreement">I accept Terms of use and </string>
+    <string name="text_signin">Sign In </string>
     <string name="btn_continue">Continue</string>
     <string name="label_incomplete_todo">Incomplete</string>
     <string name="label_completed_todo">Completed</string>
@@ -76,6 +77,9 @@
     <string name="content_description_icon_close">Icon Close Or Delete</string>
     <string name="content_description_image_onboard">Image Onboard</string>
     <string name="content_description_slash_onboard">Icon slash</string>
+    <string name="default_url_profile_image">https://via.placeholder.com/300</string>
+    <string name="content_description_image_profile">Profile Picture</string>
+    <string name="text_privacy_policy">Privacy Policy</string>
 
 
 </resources>

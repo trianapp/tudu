@@ -3,6 +3,7 @@ package app.trian.tudu.ui.pages.dashbboard
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.GenericShape
@@ -62,6 +63,8 @@ fun PageProfile(
         initialValue = ModalBottomSheetValue.Hidden,
         skipHalfExpanded = false,
     )
+
+    val isDark = isSystemInDarkTheme()
     fun signOut(){
         scope.launch(Dispatchers.Main) {
             router.signOut()
@@ -156,7 +159,7 @@ fun PageProfile(
                             modifier= modifier
                                 .size(70.dp)
                                 .clip(CircleShape),
-                            painter = painterResource(id = R.drawable.ic_onboard),
+                            painter = painterResource(id = if(isDark) R.drawable.ilustrasion_dark else R.drawable.ilustrasion_light),
                             contentDescription = "",
                         )
 

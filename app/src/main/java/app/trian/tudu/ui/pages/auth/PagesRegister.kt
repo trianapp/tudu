@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme
@@ -15,8 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
+import app.trian.tudu.common.Routes
 import app.trian.tudu.ui.component.AppbarAuth
 import app.trian.tudu.ui.component.ButtonPrimary
 import app.trian.tudu.ui.component.task.FormInput
@@ -46,6 +51,55 @@ fun PagesRegister(
     }
     var username by remember {
         mutableStateOf("")
+    }
+    var termsConditions by remember {
+        mutableStateOf(false)
+    }
+
+    val annotatedPrivacyPolicy = buildAnnotatedString {
+        withStyle(
+            style = SpanStyle(
+                color = MaterialTheme.colors.onBackground
+            )
+        ){
+            append(ctx.getString(R.string.text_license_agreement))
+        }
+        append(" ")
+        pushStringAnnotation(
+            tag = ctx.getString(R.string.text_privacy_policy),
+            annotation = ctx.getString(R.string.text_privacy_policy)
+        )
+        withStyle(
+            style = SpanStyle(
+                color = MaterialTheme.colors.primary
+            )
+        ){
+            append(ctx.getString(R.string.text_privacy_policy))
+        }
+        pop()
+    }
+
+    val annotatedSignIn = buildAnnotatedString {
+        withStyle(
+            style = SpanStyle(
+                color = MaterialTheme.colors.onBackground
+            )
+        ){
+            append(ctx.getString(R.string.label_already_have_account))
+        }
+        append(" ")
+        pushStringAnnotation(
+            tag = ctx.getString(R.string.text_signin),
+            annotation = ctx.getString(R.string.text_signin)
+        )
+        withStyle(
+            style = SpanStyle(
+                color = MaterialTheme.colors.primary
+            )
+        ){
+            append(ctx.getString(R.string.text_signin))
+        }
+        pop()
     }
 
     fun processRegister(){
@@ -73,7 +127,7 @@ fun PagesRegister(
             modifier = modifier
                 .fillMaxSize()
                 .padding(
-                    horizontal = 36.dp
+                    horizontal = 20.dp
                 )
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.Start,
@@ -87,23 +141,24 @@ fun PagesRegister(
                 )
             )
             Row {
-                Text(
-                    text = stringResource(R.string.label_already_have_account),
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Light
-                    )
-                )
-                Text(
-                    text = stringResource(id = R.string.btn_signin),
-                    modifier=modifier.clickable {
-                        router.popBackStack()
-                    },
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Normal,
-                        color = MaterialTheme.colors.primary
-                    )
+                ClickableText(
+                    text = annotatedSignIn,
+                    onClick = {
+                        offset->
+                        annotatedSignIn.getStringAnnotations(
+                            tag = ctx.getString(R.string.text_signin),
+                            start = offset,
+                            end = offset
+                        ).firstOrNull()?.let {
+                            annotated ->
+                            router.navigate(Routes.LOGIN){
+                                popUpTo(Routes.REGISTER){
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
+                        }
+                    }
                 )
             }
             Spacer(modifier = modifier.height(20.dp))
@@ -151,14 +206,37 @@ fun PagesRegister(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Checkbox(
-                    checked = false,
-                    onCheckedChange ={ },
+                    checked = termsConditions,
+                    onCheckedChange ={
+                            termsConditions = it
+                    },
                     modifier=modifier.clip(CircleShape)
                 )
-                Text(text = stringResource(R.string.text_license_agreement))
+
+
+                ClickableText(
+                    text = annotatedPrivacyPolicy,
+                    onClick = {
+                        offset->
+                        annotatedPrivacyPolicy.getStringAnnotations(
+                            tag = ctx.getString(R.string.text_privacy_policy),
+                            start = offset,
+                            end = offset
+                        ).firstOrNull()?.let {
+                            annotation->
+                            Toast.makeText(ctx,"$annotation",Toast.LENGTH_LONG).show()
+
+                        }
+                    }
+                )
+
             }
             Spacer(modifier = modifier.height(20.dp))
-            ButtonPrimary(text = stringResource(R.string.btn_continue)){
+            ButtonPrimary(
+                text = stringResource(R.string.btn_continue),
+                enabled = termsConditions
+
+            ){
                 processRegister()
             }
         }

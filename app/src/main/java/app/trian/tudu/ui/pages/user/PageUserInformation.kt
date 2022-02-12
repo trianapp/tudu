@@ -8,16 +8,21 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
 import app.trian.tudu.ui.theme.TuduTheme
+import app.trian.tudu.viewmodel.UserViewModel
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
@@ -35,6 +40,12 @@ fun PageUserInformation(
     modifier: Modifier = Modifier,
     router: NavHostController
 ) {
+    val userViewModel = hiltViewModel<UserViewModel>()
+    val currentUser by userViewModel.currentUser.observeAsState()
+
+    LaunchedEffect(key1 = Unit, block = {
+        userViewModel.getCurrentUser()
+    })
     //todo
     Scaffold(
         topBar = {
@@ -74,7 +85,7 @@ fun PageUserInformation(
                 ) {
                    Image(
                        painter = rememberImagePainter(
-                           data = "https://via.placeholder.com/300",
+                           data = currentUser?.photoUrl ?: stringResource(R.string.default_url_profile_image),
                            builder = {
                                 transformations(CircleCropTransformation())
                            },
@@ -84,7 +95,7 @@ fun PageUserInformation(
                            }
                        ),
                        modifier=modifier.size(40.dp),
-                       contentDescription = ""
+                       contentDescription = stringResource(R.string.content_description_image_profile)
                    )
                 }
                 Column(
@@ -105,29 +116,15 @@ fun PageUserInformation(
                     Spacer(modifier = modifier.height(40.dp))
                     ItemProfileUser(
                         label = "Name",
-                        text = "Trian Damai",
-                        actionText = "EDIT"
-                    )
-                    ItemProfileUser(
-                        label = "Username",
-                        text = "@triandamai",
+                        text = currentUser?.displayName ?: stringResource(id = R.string.placeholder_unknown),
                         actionText = "EDIT"
                     )
                     ItemProfileUser(
                         label = "Email",
-                        text = "example@trian.app",
+                        text = currentUser?.email ?: stringResource(id = R.string.placeholder_unknown),
                         actionText = ""
                     )
-                    ItemProfileUser(
-                        label = "Gender",
-                        text = "Male",
-                        actionText = ""
-                    )
-                    ItemProfileUser(
-                        label = "Date of birth",
-                        text = "16-09-1998",
-                        actionText = ""
-                    )
+
                 }
             }
         }

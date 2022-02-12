@@ -1,17 +1,14 @@
 package app.trian.tudu.ui.pages.auth
 
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -28,20 +25,12 @@ import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
 import app.trian.tudu.common.GoogleAuthContract
 import app.trian.tudu.common.Routes
-import app.trian.tudu.common.signInInSuccess
 import app.trian.tudu.common.signInInSuccessOnboard
 import app.trian.tudu.ui.component.ButtonGoogle
 import app.trian.tudu.ui.component.ButtonPrimary
 import app.trian.tudu.ui.component.ButtonSecondary
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.UserViewModel
-import com.google.accompanist.systemuicontroller.SystemUiController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.google.android.gms.common.api.ApiException
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import logcat.logcat
 
 
 @Composable
@@ -51,6 +40,7 @@ fun PagesOnboard(
 ){
     val userViewModel = hiltViewModel<UserViewModel>()
     val ctx = LocalContext.current
+    val isDark = isSystemInDarkTheme()
 
     fun goToDashboard(){
         router.signInInSuccessOnboard()
@@ -82,13 +72,13 @@ fun PagesOnboard(
             verticalArrangement = Arrangement.SpaceBetween
 
         ) {
-
+            Spacer(modifier = modifier.height(60.dp))
             Image(
                 modifier=modifier.size(280.dp),
-                painter = painterResource(id = R.drawable.ic_onboard),
+                painter = painterResource(id = if(isDark) R.drawable.ilustrasion_dark else R.drawable.ilustrasion_light ),
                 contentDescription = stringResource(R.string.content_description_image_onboard)
             )
-            Spacer(modifier = modifier.height(40.dp))
+            Spacer(modifier = modifier.height(20.dp))
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -114,7 +104,7 @@ fun PagesOnboard(
                         modifier= modifier
                             .align(Alignment.BottomEnd)
                             .padding(top = 18.dp),
-                        painter = painterResource(id =R.drawable.ic_onboard_slash),
+                        painter = painterResource(id =R.drawable.ic_onboard_splash),
                         contentDescription = stringResource(R.string.content_description_slash_onboard)
                     )
                 }
