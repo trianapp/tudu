@@ -35,6 +35,13 @@ object Libs {
                 val truth by lazy{"com.google.truth:truth:1.1"}
             }
         }
+        object Github{
+
+            object Jeziellago{
+                private const val compose_version_markdown = "0.2.6"
+                val composeMarkdown by lazy { "com.github.jeziellago:compose-markdown:$compose_version_markdown" }
+            }
+        }
         object Squareup{
             //for logging in debugging mode
             object Logcat{
@@ -149,5 +156,6 @@ object Libs {
     object Junit{
         val junit by lazy {"junit:junit:4.13.2"}
     }
+
 }
 

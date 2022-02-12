@@ -8,7 +8,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.trian.tudu.R
@@ -27,6 +30,7 @@ import compose.icons.octicons.LogoGithub16
 @Composable
 fun ButtonPrimary(
     modifier: Modifier=Modifier,
+    enabled:Boolean=true,
     text:String,
     onClick:()->Unit={}
 ) {
@@ -42,7 +46,8 @@ fun ButtonPrimary(
             backgroundColor = MaterialTheme.colors.primary,
             contentColor = MaterialTheme.colors.onPrimary
         ),
-        shape = RoundedCornerShape(10.dp)
+        shape = RoundedCornerShape(10.dp),
+        enabled = enabled
     ) {
         Text(text = text)
     }
@@ -67,9 +72,18 @@ fun ButtonGoogle(
         ),
         shape = RoundedCornerShape(10.dp)
     ) {
-        Icon(painter = painterResource(id = R.drawable.ic_google_signin_button), contentDescription = "")
+        Icon(
+            painter = painterResource(id = R.drawable.ic_google_signin_button),
+            contentDescription = stringResource(R.string.content_description_icon_login_google),
+            tint = Color.White
+        )
         Spacer(modifier = modifier.width(6.dp))
-        Text(text = text)
+        Text(
+            text = text,
+            style = TextStyle(
+                color = Color.White
+            )
+        )
     }
 }
 @Composable

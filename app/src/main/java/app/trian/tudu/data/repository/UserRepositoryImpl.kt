@@ -7,6 +7,7 @@ import app.trian.tudu.data.local.dao.TodoDao
 import app.trian.tudu.data.repository.design.UserRepository
 import app.trian.tudu.domain.DataState
 import app.trian.tudu.domain.UserToken
+import app.trian.tudu.domain.toHashMap
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -110,7 +111,7 @@ class UserRepositoryImpl(
                                 token = token,
                                 updated_at = getNowMillis(),
                                 created_at = getNowMillis()
-                            ),
+                            ).toHashMap(),
                             SetOptions.merge()
                         )
                 }

@@ -2,6 +2,7 @@ package app.trian.tudu.ui.pages.auth
 
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -26,6 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
 import app.trian.tudu.common.GoogleAuthContract
 import app.trian.tudu.common.Routes
+import app.trian.tudu.common.hideKeyboard
 import app.trian.tudu.common.signInInSuccess
 import app.trian.tudu.ui.component.AppbarAuth
 import app.trian.tudu.ui.component.ButtonGoogle
@@ -71,6 +73,7 @@ fun PageLogin(
 
 
     fun processLoggedIn(){
+        ctx.hideKeyboard()
         if(email.isBlank() || password.isBlank()){
             Toast.makeText(ctx,ctx.getString(R.string.validation_login),Toast.LENGTH_SHORT).show()
             return
@@ -166,7 +169,8 @@ fun PageLogin(
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Normal,
                             color = MaterialTheme.colors.primary
-                        )
+                        ),
+                        modifier = modifier
                     )
                 }
             }
@@ -196,7 +200,12 @@ fun PageLogin(
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Normal,
                                 color = MaterialTheme.colors.primary
-                            )
+                            ),
+                            modifier = modifier.clickable {
+                                router.navigate(Routes.REGISTER){
+                                    launchSingleTop=true
+                                }
+                            }
                         )
                     }
                 }

@@ -4,12 +4,16 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -58,6 +62,9 @@ fun ScreenDialogFormCategory(
     var categoryName by remember {
         mutableStateOf(TextFieldValue(text = ""))
     }
+    var canInput by remember {
+        mutableStateOf(true)
+    }
     fun submit(){
         if(categoryName.text.isBlank()){
             Toast.makeText(ctx,ctx.getString(R.string.blank_validation,"Category"),Toast.LENGTH_LONG).show()
@@ -69,12 +76,14 @@ fun ScreenDialogFormCategory(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(
-                topStart = 10.dp,
-                topEnd = 10.dp,
-                bottomStart = 10.dp,
-                bottomEnd = 10.dp
-            ))
+            .clip(
+                RoundedCornerShape(
+                    topStart = 10.dp,
+                    topEnd = 10.dp,
+                    bottomStart = 10.dp,
+                    bottomEnd = 10.dp
+                )
+            )
             .background(MaterialTheme.colors.background)
             .padding(horizontal = 16.dp, vertical = 16.dp)
     ) {
@@ -88,11 +97,12 @@ fun ScreenDialogFormCategory(
             )
             Spacer(modifier = modifier.height(16.dp))
             Box (
-                modifier = modifier.clip(RoundedCornerShape(10.dp))
+                modifier = modifier
+                    .clip(RoundedCornerShape(10.dp))
                     .background(MaterialTheme.colors.surface)
                     ){
                 TextField(
-                    modifier=modifier
+                    modifier= modifier
                         .fillMaxWidth()
                         .align(Alignment.TopCenter),
                     value = categoryName,
@@ -105,16 +115,17 @@ fun ScreenDialogFormCategory(
                         )
                     },
                     onValueChange ={
-                        if(categoryName.text.length <=50) {
+                        if(it.text.length <= 50) {
                             categoryName = it
                         }
+
                     },
                     colors = TextFieldDefaults.textFieldColors(
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent
                     ),
                     textStyle = TextStyle(
-                        color = Color.Black,
+                        color = MaterialTheme.colors.onBackground,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     ),

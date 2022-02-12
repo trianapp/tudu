@@ -31,7 +31,9 @@ fun PageChangePassword(
 ) {
     Scaffold(
         topBar = {
-            AppbarBasic(title = "Change Password")
+            AppbarBasic(title = "Change Password"){
+                router.popBackStack()
+            }
         }
     ) {
         Column(

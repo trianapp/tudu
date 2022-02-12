@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme
@@ -15,8 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,12 +28,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
+import app.trian.tudu.common.Routes
+import app.trian.tudu.common.hideKeyboard
 import app.trian.tudu.ui.component.AppbarAuth
 import app.trian.tudu.ui.component.ButtonPrimary
+import app.trian.tudu.ui.component.dialog.ModalBottomSheetPrivacyPolicy
 import app.trian.tudu.ui.component.task.FormInput
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.UserViewModel
+import kotlinx.coroutines.launch
 
+@ExperimentalMaterialApi
 @Composable
 fun PagesRegister(
     modifier: Modifier=Modifier,
@@ -37,6 +46,15 @@ fun PagesRegister(
 ) {
     val ctx = LocalContext.current
     val userViewModel = hiltViewModel<UserViewModel>()
+    val bottomSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = true,
+        confirmStateChange = {
+
+            true
+        }
+    )
+    val scope = rememberCoroutineScope()
 
     var email by remember {
         mutableStateOf("")
@@ -46,6 +64,55 @@ fun PagesRegister(
     }
     var username by remember {
         mutableStateOf("")
+    }
+    var termsConditions by remember {
+        mutableStateOf(false)
+    }
+
+    val annotatedPrivacyPolicy = buildAnnotatedString {
+        withStyle(
+            style = SpanStyle(
+                color = MaterialTheme.colors.onBackground
+            )
+        ){
+            append(ctx.getString(R.string.text_license_agreement))
+        }
+        append(" ")
+        pushStringAnnotation(
+            tag = ctx.getString(R.string.text_privacy_policy),
+            annotation = ctx.getString(R.string.text_privacy_policy)
+        )
+        withStyle(
+            style = SpanStyle(
+                color = MaterialTheme.colors.primary
+            )
+        ){
+            append(ctx.getString(R.string.text_privacy_policy))
+        }
+        pop()
+    }
+
+    val annotatedSignIn = buildAnnotatedString {
+        withStyle(
+            style = SpanStyle(
+                color = MaterialTheme.colors.onBackground
+            )
+        ){
+            append(ctx.getString(R.string.label_already_have_account))
+        }
+        append(" ")
+        pushStringAnnotation(
+            tag = ctx.getString(R.string.text_signin),
+            annotation = ctx.getString(R.string.text_signin)
+        )
+        withStyle(
+            style = SpanStyle(
+                color = MaterialTheme.colors.primary
+            )
+        ){
+            append(ctx.getString(R.string.text_signin))
+        }
+        pop()
     }
 
     fun processRegister(){
@@ -62,109 +129,147 @@ fun PagesRegister(
         }
     }
 
-    Scaffold(
-        topBar = {
-            AppbarAuth(){
-                router.popBackStack()
+    ModalBottomSheetLayout(
+        sheetState = bottomSheetState,
+        sheetContent = {
+            ModalBottomSheetPrivacyPolicy(){
+                scope.launch {
+                    bottomSheetState.hide()
+                }
             }
         }
     ) {
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(
-                    horizontal = 36.dp
-                )
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.Top
+        Scaffold(
+            topBar = {
+                AppbarAuth(){
+                    router.popBackStack()
+                }
+            }
         ) {
-            Text(
-                text = stringResource(R.string.title_register),
-                style = TextStyle(
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-            )
-            Row {
-                Text(
-                    text = stringResource(R.string.label_already_have_account),
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Light
-                    )
-                )
-                Text(
-                    text = stringResource(id = R.string.btn_signin),
-                    modifier=modifier.clickable {
-                        router.popBackStack()
-                    },
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Normal,
-                        color = MaterialTheme.colors.primary
-                    )
-                )
-            }
-            Spacer(modifier = modifier.height(20.dp))
             Column(
-                modifier= modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 10.dp)
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(
+                        horizontal = 20.dp
+                    )
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.Top
             ) {
-                FormInput(
-                    initialValue = username,
-                    label = {
-                        Text(text = stringResource(R.string.label_input_username))
-                    },
-                    placeholder = stringResource(R.string.placeholder_input_username),
-                    onChange = {
-                        username = it
-                    }
+                Text(
+                    text = stringResource(R.string.title_register),
+                    style = TextStyle(
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 )
-                Spacer(modifier = modifier.height(16.dp))
-                FormInput(
-                    initialValue = email,
-                    label = {
-                        Text(text = stringResource(id = R.string.label_input_email))
-                    },
-                    placeholder = stringResource(id = R.string.placeholder_input_email),
-                    onChange = {
-                        email = it
-                    }
-                )
-                Spacer(modifier = modifier.height(16.dp))
-                FormInput(
-                    initialValue = password,
-                    label = {
-                        Text(text = stringResource(id = R.string.label_input_password))
-                    },
-                    showPasswordObsecure = true,
-                    placeholder = stringResource(id = R.string.placeholder_input_password),
-                    onChange = {
-                        password = it
-                    }
-                )
-            }
-            Spacer(modifier = modifier.height(10.dp))
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Checkbox(
-                    checked = false,
-                    onCheckedChange ={ },
-                    modifier=modifier.clip(CircleShape)
-                )
-                Text(text = stringResource(R.string.text_license_agreement))
-            }
-            Spacer(modifier = modifier.height(20.dp))
-            ButtonPrimary(text = stringResource(R.string.btn_continue)){
-                processRegister()
+                Row {
+                    ClickableText(
+                        text = annotatedSignIn,
+                        onClick = {
+                                offset->
+                            annotatedSignIn.getStringAnnotations(
+                                tag = ctx.getString(R.string.text_signin),
+                                start = offset,
+                                end = offset
+                            ).firstOrNull()?.let {
+                                    annotated ->
+                                router.navigate(Routes.LOGIN){
+                                    popUpTo(Routes.REGISTER){
+                                        inclusive = true
+                                    }
+                                    launchSingleTop = true
+                                }
+                            }
+                        }
+                    )
+                }
+                Spacer(modifier = modifier.height(20.dp))
+                Column(
+                    modifier= modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 10.dp)
+                ) {
+                    FormInput(
+                        initialValue = username,
+                        label = {
+                            Text(text = stringResource(R.string.label_input_username))
+                        },
+                        placeholder = stringResource(R.string.placeholder_input_username),
+                        onChange = {
+                            username = it
+                        }
+                    )
+                    Spacer(modifier = modifier.height(16.dp))
+                    FormInput(
+                        initialValue = email,
+                        label = {
+                            Text(text = stringResource(id = R.string.label_input_email))
+                        },
+                        placeholder = stringResource(id = R.string.placeholder_input_email),
+                        onChange = {
+                            email = it
+                        }
+                    )
+                    Spacer(modifier = modifier.height(16.dp))
+                    FormInput(
+                        initialValue = password,
+                        label = {
+                            Text(text = stringResource(id = R.string.label_input_password))
+                        },
+                        showPasswordObsecure = true,
+                        placeholder = stringResource(id = R.string.placeholder_input_password),
+                        onChange = {
+                            password = it
+                        }
+                    )
+                }
+                Spacer(modifier = modifier.height(10.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(
+                        checked = termsConditions,
+                        onCheckedChange ={
+                            termsConditions = it
+                            ctx.hideKeyboard()
+                        },
+                        modifier=modifier.clip(CircleShape)
+                    )
+
+
+                    ClickableText(
+                        text = annotatedPrivacyPolicy,
+                        onClick = {
+                                offset->
+                            annotatedPrivacyPolicy.getStringAnnotations(
+                                tag = ctx.getString(R.string.text_privacy_policy),
+                                start = offset,
+                                end = offset
+                            ).firstOrNull()?.let { _ ->
+                                scope.launch {
+                                    bottomSheetState.show()
+                                }
+
+                            }
+                        }
+                    )
+
+                }
+                Spacer(modifier = modifier.height(20.dp))
+                ButtonPrimary(
+                    text = stringResource(R.string.btn_continue),
+                    enabled = termsConditions
+
+                ){
+                    processRegister()
+                }
             }
         }
     }
 }
 
+@ExperimentalMaterialApi
 @Preview
 @Composable
 fun PreviewPagesRegister(){

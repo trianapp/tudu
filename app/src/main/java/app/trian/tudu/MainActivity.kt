@@ -28,6 +28,7 @@ import app.trian.tudu.ui.pages.setting.PageSetting
 import app.trian.tudu.ui.pages.task.PageDetailTask
 import app.trian.tudu.ui.pages.task.PageInputNote
 import app.trian.tudu.ui.pages.task.PageSearchTask
+import app.trian.tudu.ui.pages.user.PageUserInformation
 import app.trian.tudu.ui.theme.TuduTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.firebase.FirebaseApp
@@ -202,6 +203,7 @@ class MainActivity : ComponentActivity() {
                                 color = primaryColor,
                                 darkIcons = !useDark
                             )
+                            PageUserInformation(router = navHostController)
                         }
                     }
                 }

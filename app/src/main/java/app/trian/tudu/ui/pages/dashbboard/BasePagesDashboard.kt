@@ -55,12 +55,18 @@ fun BasePagesDashboard(
                 currentUser = currentUser,
                 onClick = {
                     if(it.route == "logout"){
-                        showDialogLogout=true
+                        scope.launch {
+                            drawerState.close()
+                            showDialogLogout=true
+                        }
                     }
                 },
                 onNavigate = {
                     if(it.isNotBlank()) {
-                        router.navigate(it)
+                        scope.launch {
+                            drawerState.close()
+                            router.navigate(it)
+                        }
                     }
                 }
             )

@@ -119,7 +119,7 @@ class DatabaseTest {
         val todoDao = tuduDatabase.todoDao()
         todoDao.insertTodoTask(todo)
 
-        val insertedTodo = todoDao.getListCompleteTodoByTask("aXkAs")
+        val insertedTodo = todoDao.getListCompleteTodoByTask("aXkAs",false)
             .take(1)
             .toList()
             .first()
