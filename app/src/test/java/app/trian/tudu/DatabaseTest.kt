@@ -4,27 +4,20 @@ import app.trian.tudu.data.local.Category
 import app.trian.tudu.data.local.Task
 import app.trian.tudu.data.local.Todo
 import app.trian.tudu.data.local.TuduDatabase
-import app.trian.tudu.data.local.dao.AttachmentDao
-import app.trian.tudu.data.local.dao.CategoryDao
-import app.trian.tudu.data.local.dao.TaskDao
-import app.trian.tudu.data.local.dao.TodoDao
 import app.trian.tudu.ui.theme.HexToJetpackColor
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.flow.toCollection
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.`when`
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.LooperMode
@@ -126,7 +119,7 @@ class DatabaseTest {
         val todoDao = tuduDatabase.todoDao()
         todoDao.insertTodoTask(todo)
 
-        val insertedTodo = todoDao.getListTodoByTask("aXkAs")
+        val insertedTodo = todoDao.getListCompleteTodoByTask("aXkAs")
             .take(1)
             .toList()
             .first()

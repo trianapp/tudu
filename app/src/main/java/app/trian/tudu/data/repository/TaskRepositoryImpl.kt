@@ -13,7 +13,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import logcat.logcat
 
 class TaskRepositoryImpl(
     private val dispatcherProvider: DispatcherProvider,
@@ -32,14 +31,10 @@ class TaskRepositoryImpl(
     override suspend fun getListTask(): Flow<List<Task>> = taskDao.getListTask().flowOn(dispatcherProvider.io())
     override suspend fun getListTaskByCategory(categoryId: String): Flow<List<Task>> =taskDao.getListTaskByCategory(categoryId).flowOn(dispatcherProvider.io())
 
-    override suspend fun getTaskById(taskId: String): Flow<DataState<Task>> = flow<DataState<Task>> {
-        emit(DataState.LOADING)
+    override suspend fun getTaskById(taskId: String): Flow<Task?> = flow {
         val task = taskDao.getTaskById(taskId)
-        if(task == null){
-            emit(DataState.onFailure("Task not found !"))
-        }else{
-            emit(DataState.onData(task))
-        }
+            emit(task)
+
     }.flowOn(dispatcherProvider.io())
 
 
@@ -66,12 +61,14 @@ class TaskRepositoryImpl(
         emit(DataState.onData(task))
     }.flowOn(dispatcherProvider.io())
 
-    override suspend fun updateTask(task: Task): Flow<Task> =flow<Task> {
+    override suspend fun updateTask(task: Task): Flow<Task> =flow {
         taskDao.updateTask(task)
         emit(task)
     }.flowOn(dispatcherProvider.io())
 
-    override suspend fun getListTodo(taskId: String): Flow<List<Todo>> = todoDao.getListTodoByTask(taskId).flowOn(dispatcherProvider.io())
+    override suspend fun getListCompleteTodo(taskId: String): Flow<List<Todo>> = todoDao.getListCompleteTodoByTask(taskId,true).flowOn(dispatcherProvider.io())
+    override suspend fun getListUnCompleteTodo(taskId: String): Flow<List<Todo>> = todoDao.getListUnCompleteTodoByTask(taskId,false).flowOn(dispatcherProvider.io())
+
     override suspend fun addTodo(todo: Todo): Flow<Todo> =flow{
         todoDao.insertTodoTask(todo)
 

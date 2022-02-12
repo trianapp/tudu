@@ -1,0 +1,6 @@
+1. Menambahkan tema gelap
+2. Unlimited Task
+3. Unilimited Todo
+
+Bug Fix:
+1. Duplicate Todo

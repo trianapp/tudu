@@ -12,6 +12,7 @@ import app.trian.tudu.data.repository.design.TaskRepository
 import app.trian.tudu.data.repository.design.UserRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
 import dagger.Provides
@@ -31,6 +32,9 @@ object NetworkModule {
     fun provideDispatcher():DispatcherProvider= DefaultDispatcherProvider()
 
     @Provides
+    fun provideFirebaseMessaging():FirebaseMessaging=FirebaseMessaging.getInstance()
+
+    @Provides
     fun provideFirestore():FirebaseFirestore = FirebaseFirestore.getInstance()
 
     @Provides
@@ -44,12 +48,14 @@ object NetworkModule {
         dispatcherProvider: DispatcherProvider,
         firebaseAuth: FirebaseAuth,
         firestore: FirebaseFirestore,
+        firebaseMessaging: FirebaseMessaging,
         taskDao:TaskDao,
         todoDao: TodoDao,
     ):UserRepository =UserRepositoryImpl(
             dispatcherProvider,
             firebaseAuth,
             firestore ,
+            firebaseMessaging,
             taskDao,
             todoDao
         )

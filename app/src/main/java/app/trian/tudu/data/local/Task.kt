@@ -19,25 +19,25 @@ data class Task(
     @ColumnInfo(name = "uid")
     var uid:String="dummy",
     @ColumnInfo(name = "name")
-    var name:String,
+    var name:String="",
     @ColumnInfo(name = "deadline")
-    var deadline:Long,
+    var deadline:Long=0,
     @ColumnInfo(name = "done")
-    var done:Boolean,
+    var done:Boolean=false,
     @ColumnInfo(name = "done_at")
-    var done_at:Long,
+    var done_at:Long=0,
     @ColumnInfo(name = "note")
-    var note:String,
+    var note:String="",
     @ColumnInfo(name="color")
-    var color:String,
+    var color:String="",
     @ColumnInfo(name="second_color")
-    var secondColor:String,
+    var secondColor:String="",
     @ColumnInfo(name = "reminder")
-    var reminder:Boolean,
+    var reminder:Boolean=false,
     @ColumnInfo(name = "taskCategoryId")
-    var category_id:String,
+    var category_id:String="",
     @ColumnInfo(name = "created_at")
-    var created_at:Long,
+    var created_at:Long=0,
     @ColumnInfo(name = "updated_at")
-    var updated_at:Long
+    var updated_at:Long=0
 )

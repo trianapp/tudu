@@ -16,8 +16,14 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TodoDao {
 
-    @Query("SELECT * FROM tb_todo WHERE todoTaskId =:taskId")
-    fun getListTodoByTask(taskId:String):Flow<List<Todo>>
+    //true = 1
+    @Query("SELECT * FROM tb_todo WHERE todoTaskId =:taskId AND done=:done ORDER BY created_at DESC")
+    fun getListCompleteTodoByTask(taskId:String,done:Boolean):Flow<List<Todo>>
+
+    //false =0
+    @Query("SELECT * FROM tb_todo WHERE todoTaskId =:taskId AND done=:done ORDER BY created_at DESC")
+    fun getListUnCompleteTodoByTask(taskId:String,done:Boolean):Flow<List<Todo>>
+
 
     @Insert(
         onConflict = OnConflictStrategy.REPLACE

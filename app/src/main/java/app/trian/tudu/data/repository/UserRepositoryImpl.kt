@@ -16,6 +16,9 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.ktx.messaging
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -33,6 +36,7 @@ class UserRepositoryImpl(
     private val dispatcherProvider: DispatcherProvider,
     private val firebaseAuth: FirebaseAuth,
     private val firestore: FirebaseFirestore,
+    private val firebaseMessaging: FirebaseMessaging,
     private val taskDao: TaskDao,
     private val todoDao: TodoDao
 ):UserRepository {
@@ -88,24 +92,42 @@ class UserRepositoryImpl(
         }
     }.flowOn(dispatcherProvider.io())
 
-    override  fun registerNewToken(token:String) {
-        try {
-            val user = firebaseAuth.currentUser
-            firestore.collection("userToken")
-                .document(user!!.uid)
-                .set(
-                    UserToken(
-                        token = token,
-                        created_at = getNowMillis(),
-                        updated_at = getNowMillis()
-                    ),
-                    SetOptions.merge()
-                )
-
-        }catch (e:Exception){
-
+    override suspend fun registerFCMTokenAndSubscribeTopic() {
+        val userId = firebaseAuth.currentUser?.uid ?: ""
+        if(userId.isBlank()){
+            return
         }
+
+        firebaseMessaging.token.addOnCompleteListener {
+                task->
+            try {
+                if(task.isSuccessful){
+                    val token = task.result
+                    firestore.collection("user")
+                        .document(userId)
+                        .set(
+                            UserToken(
+                                token = token,
+                                updated_at = getNowMillis(),
+                                created_at = getNowMillis()
+                            ),
+                            SetOptions.merge()
+                        )
+                }
+
+            }catch (ignored:Exception){
+
+            }
+        }
+        firebaseMessaging.subscribeToTopic("berita")
+            .addOnCompleteListener {
+                    task->
+                if(task.isSuccessful){
+
+                }
+            }
     }
+
 
 
     override suspend fun signOut(callback: () -> Unit) = withContext(dispatcherProvider.io()){

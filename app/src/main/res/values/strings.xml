@@ -5,7 +5,7 @@
     <string name="btn_hide">Hide</string>
 
     <string name="nav_item_home">Home</string>
-    <string name="nav_item_drawe">Menu</string>
+    <string name="nav_item_drawer" />
     <string name="nav_item_calendar">Calendar</string>
     <string name="nav_item_profile">Profile</string>
     <string name="blank_validation">%1$s cannot blank</string>

@@ -51,8 +51,8 @@ fun PageSetting(
             children = listOf(
                 SubItemSetting(
                     name = "Profile Information",
-                    route = "",
-                    type = "",
+                    route = Routes.PAGE_USER_INFORMATION,
+                    type = "link",
                     color = HexToJetpackColor.getColor(HexToJetpackColor.Blue),
                     icon = Octicons.Person24,
                     description = "Name,Email,Bio"
@@ -223,9 +223,13 @@ fun ItemChildSetting(
     Column(
         modifier = modifier.clickable {
             if (itemSetting.type == "link") {
-                onNavigate(itemSetting.route)
+                if(itemSetting.route.isNotBlank()) {
+                    onNavigate(itemSetting.route)
+                }
             } else {
-                onClick(itemSetting.route)
+
+                    onClick(itemSetting.route)
+
             }
         }
     ) {
