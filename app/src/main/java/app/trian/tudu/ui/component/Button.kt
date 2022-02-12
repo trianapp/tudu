@@ -27,6 +27,7 @@ import compose.icons.octicons.LogoGithub16
 @Composable
 fun ButtonPrimary(
     modifier: Modifier=Modifier,
+    enabled:Boolean=true,
     text:String,
     onClick:()->Unit={}
 ) {
@@ -42,7 +43,8 @@ fun ButtonPrimary(
             backgroundColor = MaterialTheme.colors.primary,
             contentColor = MaterialTheme.colors.onPrimary
         ),
-        shape = RoundedCornerShape(10.dp)
+        shape = RoundedCornerShape(10.dp),
+        enabled = enabled
     ) {
         Text(text = text)
     }
