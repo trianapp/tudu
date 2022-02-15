@@ -39,6 +39,8 @@ import app.trian.tudu.ui.component.task.BottomSheetInputNewTask
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.TaskViewModel
 import app.trian.tudu.viewmodel.UserViewModel
+import coil.compose.rememberImagePainter
+import coil.transform.CircleCropTransformation
 import compose.icons.Octicons
 import compose.icons.octicons.ArrowLeft24
 import compose.icons.octicons.Gear16
@@ -116,7 +118,14 @@ fun PageProfile(
                             )
                     },
                     actions = {
-                        IconToggleButton(checked = false, onCheckedChange = {}) {
+                        IconToggleButton(
+                            checked = false,
+                            onCheckedChange = {
+                                router.navigate(Routes.PAGE_USER_INFORMATION){
+                                    launchSingleTop = true
+                                }
+                            }
+                        ) {
                             Icon(
                                 imageVector = Octicons.Gear16,
                                 contentDescription = "",
@@ -154,7 +163,12 @@ fun PageProfile(
                                 modifier= modifier
                                     .size(70.dp)
                                     .clip(CircleShape),
-                                painter = painterResource(id = if(isDark) R.drawable.ilustrasion_dark else R.drawable.ilustrasion_light),
+                                painter = rememberImagePainter(
+                                    data = currentUser?.photoUrl,
+                                    builder = {
+                                        transformations(CircleCropTransformation())
+                                    }
+                                ),
                                 contentDescription = "",
                             )
 
