@@ -1,9 +1,12 @@
 package app.trian.tudu.ui.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,6 +28,7 @@ import compose.icons.octicons.Home16
  */
 @Composable
 fun AppbarHome(
+    modifier: Modifier=Modifier,
     dataCategory:List<Category> = listOf(),
     onOptionMenuSelected:(menu:Int)->Unit={},
     onSelectCategory:(category:Category)->Unit={}
@@ -36,9 +40,11 @@ fun AppbarHome(
             },
             backgroundColor = MaterialTheme.colors.background,
             navigationIcon = {
-                IconToggleButton(checked = false, onCheckedChange = {}) {
-                    Icon(imageVector =Octicons.Home16 , contentDescription = "")
-                }
+                Image(
+                    modifier = modifier.size(40.dp),
+                    painter = painterResource(id = R.drawable.logo) ,
+                    contentDescription = "Logo Tudu"
+                )
             },
             elevation = 0.dp
         )

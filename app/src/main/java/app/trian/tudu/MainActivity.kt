@@ -155,7 +155,7 @@ class MainActivity : ComponentActivity() {
                             composable(route=Routes.Dashboard.PROFILE){
                                 systemUiController.setSystemBarsColor(
                                     color = primaryColor,
-                                    darkIcons = !useDark
+                                    darkIcons = useDark
                                 )
                                 PageProfile(router=navHostController)
 

@@ -33,6 +33,7 @@ import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
 import app.trian.tudu.common.Routes
 import app.trian.tudu.common.signOut
+import app.trian.tudu.ui.component.chart.BarChartView
 import app.trian.tudu.ui.component.customShape.CurveShape
 import app.trian.tudu.ui.component.task.BottomSheetInputNewTask
 import app.trian.tudu.ui.theme.TuduTheme
@@ -126,94 +127,99 @@ fun PageProfile(
                 )
             }
         ) {
+            Column {
+                Box {
+                    Box (
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .height(80.dp)
+                            .background(MaterialTheme.colors.primary)
+                    ){
 
-            Box {
-                Box (
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .height(80.dp)
-                        .clip(
-                            RoundedCornerShape(
-                                bottomStartPercent = 100,
-                                bottomEndPercent = 100
-                            )
+                    }
+                    Card(
+                        modifier=modifier.padding(
+                            horizontal = 30.dp,
+                            vertical = 20.dp
                         )
-                        .background(MaterialTheme.colors.primary)
-                ){
-
-                }
-                Card(
-                    modifier=modifier.padding(
-                        horizontal = 30.dp,
-                        vertical = 20.dp
-                    )
-                ) {
-                    Column(
-                        modifier=modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Spacer(modifier = modifier.height(20.dp))
-                        Image(
-
-                            modifier= modifier
-                                .size(70.dp)
-                                .clip(CircleShape),
-                            painter = painterResource(id = if(isDark) R.drawable.ilustrasion_dark else R.drawable.ilustrasion_light),
-                            contentDescription = "",
-                        )
-
                         Column(
                             modifier=modifier.fillMaxWidth(),
                             horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
+                            verticalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Spacer(modifier = modifier.height(30.dp))
-                            Text(currentUser?.displayName ?: stringResource(R.string.placeholder_unknown))
-                            Text(currentUser?.email ?: stringResource(id = R.string.placeholder_unknown))
-                            Spacer(modifier = modifier.height(30.dp))
-                        }
-                        Column(
-                            modifier = modifier.fillMaxWidth(),
-                        ) {
-                            Divider()
-                            Spacer(modifier = modifier.height(10.dp))
-                            Row(
-                                modifier = modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        horizontal = 30.dp
-                                    ),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
+                            Spacer(modifier = modifier.height(20.dp))
+                            Image(
+
+                                modifier= modifier
+                                    .size(70.dp)
+                                    .clip(CircleShape),
+                                painter = painterResource(id = if(isDark) R.drawable.ilustrasion_dark else R.drawable.ilustrasion_light),
+                                contentDescription = "",
+                            )
+
+                            Column(
+                                modifier=modifier.fillMaxWidth(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
                             ) {
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.Center
+                                Spacer(modifier = modifier.height(30.dp))
+                                Text(currentUser?.displayName ?: stringResource(R.string.placeholder_unknown))
+                                Text(currentUser?.email ?: stringResource(id = R.string.placeholder_unknown))
+                                Spacer(modifier = modifier.height(30.dp))
+                            }
+                            Column(
+                                modifier = modifier.fillMaxWidth(),
+                            ) {
+                                Divider()
+                                Spacer(modifier = modifier.height(10.dp))
+                                Row(
+                                    modifier = modifier
+                                        .fillMaxWidth()
+                                        .padding(
+                                            horizontal = 30.dp
+                                        ),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Text(text = "$allTaskCount")
-                                    Text(text = stringResource(R.string.label_total_task))
-                                }
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.Center
-                                ) {
-                                    Text(text = "$completeTaskCount")
-                                    Text(text = stringResource(R.string.label_complete_task))
-                                }
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.Center
-                                ) {
-                                    Text(text = "$unCompleteTaskCount")
-                                    Text(text = stringResource(R.string.label_uncomplete_task))
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.Center
+                                    ) {
+                                        Text(text = "$allTaskCount")
+                                        Text(text = stringResource(R.string.label_total_task))
+                                    }
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.Center
+                                    ) {
+                                        Text(text = "$completeTaskCount")
+                                        Text(text = stringResource(R.string.label_complete_task))
+                                    }
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.Center
+                                    ) {
+                                        Text(text = "$unCompleteTaskCount")
+                                        Text(text = stringResource(R.string.label_uncomplete_task))
+                                    }
                                 }
                             }
+                            Spacer(modifier = modifier.height(30.dp))
                         }
-                        Spacer(modifier = modifier.height(30.dp))
                     }
                 }
+                Spacer(modifier = modifier.height(10.dp))
+                Column(
+                    modifier = modifier.padding(
+                        horizontal = 20.dp
+                    )
+                ) {
+                    BarChartView()
+                }
             }
+
+
         }
     }
 }
