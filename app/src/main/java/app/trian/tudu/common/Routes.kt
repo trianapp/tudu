@@ -17,6 +17,7 @@ object Routes {
     const val DETAIL_TASK = "DETAIL_TASK"
     const val ADD_NOTE = "ADD_NOTE"
     const val CHANGE_PASSWORD = "CHANGE_PASSWORD"
+    const val RESET_PASSWORD = "RESET_PASSWORD"
     const val SETTING = "SETTING"
     const val PAGE_USER_INFORMATION = "PAGE_USER_INFORMATION"
     object Dashboard{

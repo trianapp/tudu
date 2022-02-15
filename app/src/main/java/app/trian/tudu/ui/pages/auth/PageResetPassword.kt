@@ -29,41 +29,35 @@ import app.trian.tudu.viewmodel.UserViewModel
  */
 
 @Composable
-fun PageChangePassword(
+fun PageResetPassword(
     modifier: Modifier = Modifier,
     router: NavHostController
 ) {
     val ctx = LocalContext.current
     val userViewModel = hiltViewModel<UserViewModel>()
 
-    var newPassword by remember {
+    var email by remember {
         mutableStateOf("")
     }
 
-    var confirmNewPassword by remember {
-        mutableStateOf("")
-    }
+
 
     fun proceedChangePassword(){
-        if(newPassword.isEmpty()) {
+        if(email.isEmpty()) {
             //todo notify password cannot blank
                 Toast.makeText(ctx,"Password cannat empty!",Toast.LENGTH_LONG).show()
 
             return
         }
-        if(newPassword != confirmNewPassword){
-            //todo: notify password didn't match
-            Toast.makeText(ctx,"Password didn't match!",Toast.LENGTH_LONG).show()
-            return
-        }
-        userViewModel.changePassword(newPassword){
+
+        userViewModel.resetPasswordEmail(email){
             success, message ->
             Toast.makeText(ctx,message,Toast.LENGTH_LONG).show()
         }
     }
     Scaffold(
         topBar = {
-            AppbarBasic(title = "Change Password"){
+            AppbarBasic(title = "Reset Password"){
                 router.popBackStack()
             }
         }
@@ -74,32 +68,21 @@ fun PageChangePassword(
                     horizontal = 20.dp
                 )
         ) {
+
+
             FormInput(
                 label = {
-                    Text(text = "New Password")
+                    Text(text = "Email")
                 },
-                placeholder = "Input new password",
-                showPasswordObsecure = true,
-                initialValue = newPassword,
+                placeholder = "Your email account",
+                initialValue = email,
                 onChange = {
-                    newPassword=it
-                }
-            )
-            Spacer(modifier = modifier.height(16.dp))
-            FormInput(
-                label = {
-                    Text(text = "Confirm Password")
-                },
-                placeholder = "Confirm new password",
-                showPasswordObsecure = true,
-                initialValue = confirmNewPassword,
-                onChange = {
-                    confirmNewPassword = it
+                    email = it
                 }
             )
             Spacer(modifier = modifier.height(30.dp))
             ButtonPrimary(
-                text = "Save Changes"
+                text = "Reset my password"
             ){
                 proceedChangePassword()
             }
@@ -109,8 +92,8 @@ fun PageChangePassword(
 
 @Preview
 @Composable
-fun PreviewPageChangePassword(){
+fun PreviewPageResetPassword(){
     TuduTheme {
-        PageChangePassword(router = rememberNavController())
+        PageResetPassword(router = rememberNavController())
     }
 }

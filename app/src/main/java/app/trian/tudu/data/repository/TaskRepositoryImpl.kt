@@ -58,7 +58,7 @@ class TaskRepositoryImpl(
             }
             todoDao.insertBatchTodo(todos)
         }
-        emit(DataState.onData(task))
+        emit(DataState.OnData(task))
     }.flowOn(dispatcherProvider.io())
 
     override suspend fun updateTask(task: Task): Flow<Task> =flow {
@@ -92,7 +92,7 @@ class TaskRepositoryImpl(
             categoryId = idFromFireStore
         }
         categoryDao.insertNewCategory(category)
-        emit(DataState.onData(category))
+        emit(DataState.OnData(category))
     }.flowOn(dispatcherProvider.io())
 
     override suspend fun getListCategory(): Flow<List<Category>> = categoryDao.getListCategory().flowOn(dispatcherProvider.io())

@@ -125,7 +125,7 @@ fun PagesRegister(
             if(success){
                 router.popBackStack()
             }
-            Toast.makeText(ctx,"login $success $message", Toast.LENGTH_LONG).show()
+            Toast.makeText(ctx,"$message", Toast.LENGTH_LONG).show()
         }
     }
 

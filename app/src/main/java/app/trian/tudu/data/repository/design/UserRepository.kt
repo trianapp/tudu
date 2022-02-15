@@ -17,6 +17,9 @@ interface UserRepository {
 
     suspend fun registerFCMTokenAndSubscribeTopic()
 
+    suspend fun changePassword(newPassword:String):Flow<DataState<Boolean>>
+
+    suspend fun resetPasswordEmail(email: String):Flow<DataState<Boolean>>
 
     suspend fun signOut(callback:()->Unit)
 }

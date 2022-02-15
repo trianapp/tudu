@@ -171,6 +171,11 @@ fun PageLogin(
                             color = MaterialTheme.colors.primary
                         ),
                         modifier = modifier
+                            .clickable {
+                                router.navigate(Routes.RESET_PASSWORD){
+                                    launchSingleTop = true
+                                }
+                            }
                     )
                 }
             }

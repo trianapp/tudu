@@ -122,6 +122,13 @@ class MainActivity : ComponentActivity() {
                                 router = navHostController
                             )
                         }
+                        composable(Routes.RESET_PASSWORD){
+                            systemUiController.setSystemBarsColor(
+                                color = uiColor,
+                                darkIcons = !useDark
+                            )
+                            PageResetPassword(router = navHostController)
+                        }
                         composable(Routes.SETTING){
                             systemUiController.setSystemBarsColor(
                                 color = uiColor,

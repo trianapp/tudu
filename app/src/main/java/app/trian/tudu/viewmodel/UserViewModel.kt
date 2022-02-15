@@ -1,6 +1,5 @@
 package app.trian.tudu.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,10 +8,10 @@ import app.trian.tudu.domain.DataState
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -58,9 +57,9 @@ class UserViewModel @Inject constructor():ViewModel() {
         userRepository.loginBasic(email, password).collect{
             result->
             when(result){
-                DataState.LOADING -> {}
-                is DataState.onData -> {callback(true,"Sign In Success")}
-                is DataState.onFailure -> {callback(false,result.message)}
+                DataState.OnLoading -> {}
+                is DataState.OnData -> {callback(true,"Sign In Success")}
+                is DataState.OnFailure -> {callback(false,result.message)}
             }
         }
     }
@@ -74,11 +73,11 @@ class UserViewModel @Inject constructor():ViewModel() {
                 val account = credential.await()
                 userRepository.loginGoogle(account.idToken!!).collect { auth ->
                     when (auth) {
-                        DataState.LOADING -> {}
-                        is DataState.onData -> {
+                        DataState.OnLoading -> {}
+                        is DataState.OnData -> {
                             callback(true, "Sign in success")
                         }
-                        is DataState.onFailure -> {
+                        is DataState.OnFailure -> {
                             callback(false, auth.message)
                         }
                     }
@@ -101,11 +100,43 @@ class UserViewModel @Inject constructor():ViewModel() {
         userRepository.registerBasic(username,email, password).collect {
             result->
             when(result){
-                DataState.LOADING -> {}
-                is DataState.onData -> {callback(true,"sukses")}
-                is DataState.onFailure -> {callback(false,result.message)}
+                DataState.OnLoading -> {}
+                is DataState.OnData -> {callback(true,"Register Success, Please check your email inbox to verify!")}
+                is DataState.OnFailure -> {callback(false,result.message)}
             }
         }
+    }
+
+
+    fun changePassword(
+        newPassword:String,
+        callback: (success: Boolean, message: String) -> Unit
+    ) = viewModelScope.launch {
+        userRepository.changePassword(newPassword)
+            .onEach {
+                when(it){
+                    DataState.OnLoading -> {}
+                    is DataState.OnData -> callback(true,"Password has changed!")
+                    is DataState.OnFailure -> callback(false,it.message)
+                }
+            }
+            .collect()
+    }
+
+
+    fun resetPasswordEmail(
+        email: String,
+        callback: (success: Boolean, message: String) -> Unit
+    ) = viewModelScope.launch {
+        userRepository.resetPasswordEmail(email)
+            .onEach {
+                when(it){
+                    is DataState.OnData -> callback(true,"Password has ben send to ${email}, Please check your email!")
+                    is DataState.OnFailure -> callback(false,it.message)
+                    DataState.OnLoading -> {}
+                }
+            }
+            .collect()
     }
 
     fun registerNewToken() = viewModelScope.launch {
