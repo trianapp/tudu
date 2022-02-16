@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Tudu"
 include(":app")
+include(":datepicker")
