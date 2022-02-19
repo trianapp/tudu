@@ -19,6 +19,9 @@ interface TaskDao {
     @Query("SELECT * FROM tb_task ORDER BY created_at DESC")
     fun getListTask():Flow<List<Task>>
 
+    @Query("SELECT * FROM tb_task ORDER BY created_at DESC")
+    fun getListTaskNoFlow():List<Task>
+
     @Query("SELECT * FROM tb_task WHERE taskId=:taskId")
     fun getTaskById(taskId:String):Task?
 
@@ -27,6 +30,9 @@ interface TaskDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertNewTask(task:Task)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertBatchTask(tasks:List<Task>)
 
     @Update
     fun updateTask(task: Task)

@@ -58,7 +58,6 @@ class TaskViewModel @Inject constructor() : ViewModel() {
 
 
 
-
     fun getListTask()=viewModelScope.launch {
         taskRepository.getListTask().onEach {
             result->
@@ -133,6 +132,15 @@ class TaskViewModel @Inject constructor() : ViewModel() {
         }.collect()
         getListCategory()
         getCompleteTodo(taskId)
+    }
+
+    fun sendBackupTask() = viewModelScope.launch {
+        taskRepository.sendBackupTaskToCloud().onEach {  }.collect()
+    }
+
+    fun getBackupTaskFromCloud() = viewModelScope.launch {
+
+        taskRepository.getBackupTaskFromCloud().onEach {  }.collect()
     }
 
     fun addNewCategory(categoryName:String)=viewModelScope.launch {

@@ -7,12 +7,12 @@ import app.trian.tudu.data.local.dao.CategoryDao
 import app.trian.tudu.data.local.dao.TaskDao
 import app.trian.tudu.data.local.dao.TodoDao
 import app.trian.tudu.data.repository.design.TaskRepository
-import app.trian.tudu.domain.DataState
+import app.trian.tudu.domain.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import com.google.firebase.firestore.SetOptions
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.tasks.await
 import logcat.LogPriority
 import logcat.logcat
 
@@ -66,6 +66,47 @@ class TaskRepositoryImpl(
     override suspend fun updateTask(task: Task): Flow<Task> =flow {
         taskDao.updateTask(task)
         emit(task)
+    }.flowOn(dispatcherProvider.io())
+
+    override suspend fun getBackupTaskFromCloud(): Flow<DataState<List<Task>>> = flow {
+        emit(DataState.OnLoading)
+        val currentUser = firebaseAuth.currentUser
+        if(currentUser == null) {
+            emit(DataState.OnFailure("Login first!"))
+        }else{
+            try {
+               val result = firestore.collection("TASK")
+                    .document(currentUser.uid)
+                    .get().await().toObject(TaskModel::class.java)!!
+
+                taskDao.insertBatchTask(result.task)
+                emit(DataState.OnFailure("sas"))
+            }catch (e:Exception){
+                emit(DataState.OnFailure(e.message ?: "Error retrieve data"))
+            }
+        }
+
+    }.flowOn(dispatcherProvider.io())
+
+    override suspend fun sendBackupTaskToCloud(): Flow<DataState<List<Task>>> = flow<DataState<List<Task>>> {
+        emit(DataState.OnLoading)
+        val currentUser = firebaseAuth.currentUser
+        if(currentUser == null){
+            emit(DataState.OnFailure("Login First!"))
+        }else{
+            try {
+                val listTask = taskDao.getListTaskNoFlow()
+                val taskModel = TaskModel(
+                    task = listTask,
+                    updated_at = 0
+                )
+                firestore.collection("TASK")
+                    .document(currentUser.uid)
+                    .set(taskModel.toHashMap(), SetOptions.merge())
+            }catch (e:Exception){
+                emit(DataState.OnFailure(e.message ?: "Error uploading data"))
+            }
+        }
     }.flowOn(dispatcherProvider.io())
 
     override suspend fun getListCompleteTodo(taskId: String): Flow<List<Todo>> = todoDao.getListCompleteTodoByTask(taskId,true).flowOn(dispatcherProvider.io())

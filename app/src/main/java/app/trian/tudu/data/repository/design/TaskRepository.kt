@@ -10,6 +10,9 @@ interface TaskRepository {
     suspend fun getTaskById(taskId:String):Flow<Task?>
     suspend fun createNewTask(task: Task,todo:List<Todo>):Flow<DataState<Task>>
     suspend fun updateTask(task: Task):Flow<Task>
+    suspend fun getBackupTaskFromCloud():Flow<DataState<List<Task>>>
+    suspend fun sendBackupTaskToCloud():Flow<DataState<List<Task>>>
+
 
     suspend fun getListCompleteTodo(taskId:String):Flow<List<Todo>>
     suspend fun getListUnCompleteTodo(taskId:String):Flow<List<Todo>>

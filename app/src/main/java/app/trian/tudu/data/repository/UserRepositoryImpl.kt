@@ -136,7 +136,7 @@ class UserRepositoryImpl(
             emit(DataState.OnFailure("User note logged in!"))
         }else{
             try{
-             val result =   user.updatePassword(newPassword)
+             user.updatePassword(newPassword)
                 .await()
                emit(DataState.OnData(true))
             }catch (e:Exception){
