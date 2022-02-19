@@ -7,8 +7,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -32,6 +31,7 @@ import app.trian.tudu.common.signInInSuccessOnboard
 import app.trian.tudu.ui.component.ButtonGoogle
 import app.trian.tudu.ui.component.ButtonPrimary
 import app.trian.tudu.ui.component.ButtonSecondary
+import app.trian.tudu.ui.component.dialog.DialogLoading
 import app.trian.tudu.ui.component.dialog.ModalBottomSheetPrivacyPolicy
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.UserViewModel
@@ -55,6 +55,9 @@ fun PagesOnboard(
             true
         }
     )
+    var shouldShowDialogLoading by remember {
+        mutableStateOf(false)
+    }
     val scope = rememberCoroutineScope()
 
     fun goToDashboard(){
@@ -87,9 +90,10 @@ fun PagesOnboard(
         contract = GoogleAuthContract(),
         onResult = {
                 task->
+            shouldShowDialogLoading = true
             userViewModel.logInWithGoogle(task){
                 success, message ->
-
+                shouldShowDialogLoading = false
                 if(success){
                     Toast.makeText(ctx,ctx.getString(R.string.signin_success),Toast.LENGTH_LONG).show()
                     goToDashboard()
@@ -98,6 +102,9 @@ fun PagesOnboard(
                 }
             }
         }
+    )
+    DialogLoading(
+        show=shouldShowDialogLoading
     )
 
     ModalBottomSheetLayout(

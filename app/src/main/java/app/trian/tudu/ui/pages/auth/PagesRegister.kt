@@ -1,7 +1,6 @@
 package app.trian.tudu.ui.pages.auth
 
 import android.widget.Toast
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -33,7 +32,8 @@ import app.trian.tudu.common.hideKeyboard
 import app.trian.tudu.ui.component.AppbarAuth
 import app.trian.tudu.ui.component.ButtonPrimary
 import app.trian.tudu.ui.component.dialog.ModalBottomSheetPrivacyPolicy
-import app.trian.tudu.ui.component.task.FormInput
+import app.trian.tudu.ui.component.FormInput
+import app.trian.tudu.ui.component.dialog.DialogLoading
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
@@ -56,6 +56,9 @@ fun PagesRegister(
     )
     val scope = rememberCoroutineScope()
 
+    var shouldShowDialogLoading by remember {
+        mutableStateOf(false)
+    }
     var email by remember {
         mutableStateOf("")
     }
@@ -120,14 +123,19 @@ fun PagesRegister(
             Toast.makeText(ctx,"Please fill all form?",Toast.LENGTH_SHORT).show()
             return
         }
+        shouldShowDialogLoading = true
         userViewModel.registerWithEmailAndPassword(username,email,password){
             success, message ->
+            shouldShowDialogLoading = false
             if(success){
                 router.popBackStack()
             }
             Toast.makeText(ctx,"$message", Toast.LENGTH_LONG).show()
         }
     }
+    DialogLoading(
+        show=shouldShowDialogLoading
+    )
 
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,

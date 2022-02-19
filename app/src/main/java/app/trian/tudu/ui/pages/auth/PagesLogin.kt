@@ -10,7 +10,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,10 +31,10 @@ import app.trian.tudu.common.signInInSuccess
 import app.trian.tudu.ui.component.AppbarAuth
 import app.trian.tudu.ui.component.ButtonGoogle
 import app.trian.tudu.ui.component.ButtonPrimary
-import app.trian.tudu.ui.component.task.FormInput
+import app.trian.tudu.ui.component.FormInput
+import app.trian.tudu.ui.component.dialog.DialogLoading
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.UserViewModel
-import com.google.android.gms.common.api.ApiException
 
 const val AUTH_GOOGLE_CODE = 1
 
@@ -46,6 +45,10 @@ fun PageLogin(
 ) {
     val ctx = LocalContext.current
     val userViewModel = hiltViewModel<UserViewModel>()
+
+    var shouldShowDialogLoading by remember {
+        mutableStateOf(false)
+    }
 
     var email by remember {
         mutableStateOf("")
@@ -58,8 +61,10 @@ fun PageLogin(
         contract = GoogleAuthContract(),
         onResult = {
                 task->
+            shouldShowDialogLoading = true
             userViewModel.logInWithGoogle(task){
                     success, message ->
+                shouldShowDialogLoading = false
                 if(success){
                     Toast.makeText(ctx,ctx.getString(R.string.signin_success),Toast.LENGTH_LONG).show()
                     router.signInInSuccess()
@@ -78,8 +83,10 @@ fun PageLogin(
             Toast.makeText(ctx,ctx.getString(R.string.validation_login),Toast.LENGTH_SHORT).show()
             return
         }
+        shouldShowDialogLoading = true
         userViewModel.logInWithEmailAndPassword(email,password){
             success, message ->
+            shouldShowDialogLoading = false
             if(success){
                 Toast.makeText(ctx,ctx.getString(R.string.signin_success),Toast.LENGTH_LONG).show()
                 router.signInInSuccess()
@@ -88,6 +95,10 @@ fun PageLogin(
             }
         }
     }
+
+    DialogLoading(
+        show = shouldShowDialogLoading
+    )
 
     Scaffold(
         topBar = {

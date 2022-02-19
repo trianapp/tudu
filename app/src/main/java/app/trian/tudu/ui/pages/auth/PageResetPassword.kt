@@ -17,7 +17,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.ui.component.AppbarBasic
 import app.trian.tudu.ui.component.ButtonPrimary
-import app.trian.tudu.ui.component.task.FormInput
+import app.trian.tudu.ui.component.FormInput
+import app.trian.tudu.ui.component.dialog.DialogLoading
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.UserViewModel
 
@@ -35,6 +36,9 @@ fun PageResetPassword(
 ) {
     val ctx = LocalContext.current
     val userViewModel = hiltViewModel<UserViewModel>()
+    var shouldShowDialogLoading by remember {
+        mutableStateOf(false)
+    }
 
     var email by remember {
         mutableStateOf("")
@@ -50,11 +54,16 @@ fun PageResetPassword(
             return
         }
 
+        shouldShowDialogLoading = true
         userViewModel.resetPasswordEmail(email){
             success, message ->
+            shouldShowDialogLoading = false
             Toast.makeText(ctx,message,Toast.LENGTH_LONG).show()
         }
     }
+    DialogLoading(
+        show = shouldShowDialogLoading
+    )
     Scaffold(
         topBar = {
             AppbarBasic(title = "Reset Password"){

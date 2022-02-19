@@ -1,18 +1,20 @@
-package app.trian.tudu.ui.component.task
+package app.trian.tudu.ui.component
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import app.trian.tudu.R
 import app.trian.tudu.ui.theme.InactiveText
 import app.trian.tudu.ui.theme.TuduTheme
 import compose.icons.Octicons
@@ -41,7 +43,7 @@ fun FormInput(
         mutableStateOf(!showPasswordObsecure)
     }
     Column(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth().background(MaterialTheme.colors.background)
     ) {
         label.invoke()
         Spacer(modifier = modifier.height(8.dp))
@@ -52,7 +54,7 @@ fun FormInput(
             placeholder = {
                 Text(
                     text = placeholder,
-                    style= TextStyle(
+                    style= MaterialTheme.typography.body2.copy(
                         color = MaterialTheme.colors.onBackground
                     )
                 )
@@ -73,13 +75,13 @@ fun FormInput(
                     }) {
                         Icon(
                             imageVector = if(visible) Octicons.Eye16 else Octicons.EyeClosed16,
-                            contentDescription = "",
+                            contentDescription = stringResource(R.string.content_description_hide_show_password),
                             tint = if (visible) InactiveText else MaterialTheme.colors.primary
                         )
                     }
                 }
             },
-            textStyle = TextStyle(
+            textStyle = MaterialTheme.typography.body2.copy(
                 color= MaterialTheme.colors.onBackground
             )
         )

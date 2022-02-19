@@ -17,7 +17,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.ui.component.AppbarBasic
 import app.trian.tudu.ui.component.ButtonPrimary
-import app.trian.tudu.ui.component.task.FormInput
+import app.trian.tudu.ui.component.FormInput
+import app.trian.tudu.ui.component.dialog.DialogLoading
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.UserViewModel
 
@@ -36,6 +37,9 @@ fun PageChangePassword(
     val ctx = LocalContext.current
     val userViewModel = hiltViewModel<UserViewModel>()
 
+    var shouldShowDialogLoading by remember {
+        mutableStateOf(false)
+    }
     var newPassword by remember {
         mutableStateOf("")
     }
@@ -47,7 +51,7 @@ fun PageChangePassword(
     fun proceedChangePassword(){
         if(newPassword.isEmpty()) {
             //todo notify password cannot blank
-                Toast.makeText(ctx,"Password cannat empty!",Toast.LENGTH_LONG).show()
+                Toast.makeText(ctx,"Password cannot empty!",Toast.LENGTH_LONG).show()
 
             return
         }
@@ -56,11 +60,16 @@ fun PageChangePassword(
             Toast.makeText(ctx,"Password didn't match!",Toast.LENGTH_LONG).show()
             return
         }
+        shouldShowDialogLoading = true
         userViewModel.changePassword(newPassword){
             success, message ->
+            shouldShowDialogLoading = false
             Toast.makeText(ctx,message,Toast.LENGTH_LONG).show()
         }
     }
+    DialogLoading(
+        show = shouldShowDialogLoading
+    )
     Scaffold(
         topBar = {
             AppbarBasic(title = "Change Password"){
