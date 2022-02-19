@@ -1,5 +1,7 @@
 package app.trian.tudu.ui.pages.auth
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.Image
@@ -207,7 +209,12 @@ fun PagesOnboard(
 }
 
 @ExperimentalMaterialApi
-@Preview
+@Preview(
+    uiMode = UI_MODE_NIGHT_NO
+)
+@Preview(
+    uiMode = UI_MODE_NIGHT_YES
+)
 @Composable
 fun PreviewOnboard(){
     TuduTheme {
