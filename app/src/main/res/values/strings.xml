@@ -83,7 +83,7 @@
     <string name="content_description_empty_task">Background Empty Task</string>
     <string name="content_description_icon_login_google">Icon Login Google</string>
     <string name="content_description_icon_add_todo">Add New Todo</string>
-    <string name="content_decription_add_new_category">Crete New Category</string>
+    <string name="content_description_add_new_category">Crete New Category</string>
     <string name="content_description_option_menu_category">Option Category</string>
     <string name="content_description_icon_save_task">Save task</string>
     <string name="text_empty_task">Get started with your first task</string>
@@ -95,6 +95,7 @@
     <string name="content_description_hide_show_password">Hide or show password</string>
     <string name="btn_reset_password">Reset my password</string>
     <string name="placeholder_email_reset_password">Your email account</string>
+    <string name="alert_validation_email">Seems the email is not valid email,please check again!</string>
 
 
 </resources>

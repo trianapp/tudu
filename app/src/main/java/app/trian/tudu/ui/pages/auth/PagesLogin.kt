@@ -1,6 +1,5 @@
 package app.trian.tudu.ui.pages.auth
 
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -78,6 +77,10 @@ fun PageLogin(
         ctx.hideKeyboard()
         if(email.isBlank() || password.isBlank()){
             ctx.toastError(ctx.getString(R.string.validation_login))
+            return
+        }
+        if(!email.isEmailValid()){
+            ctx.toastError(ctx.getString(R.string.alert_validation_email))
             return
         }
         shouldShowDialogLoading = true

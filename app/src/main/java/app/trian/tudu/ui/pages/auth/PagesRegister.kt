@@ -16,7 +16,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
@@ -29,6 +28,8 @@ import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
 import app.trian.tudu.common.Routes
 import app.trian.tudu.common.hideKeyboard
+import app.trian.tudu.common.isEmailValid
+import app.trian.tudu.common.toastError
 import app.trian.tudu.ui.component.AppbarAuth
 import app.trian.tudu.ui.component.ButtonPrimary
 import app.trian.tudu.ui.component.dialog.ModalBottomSheetPrivacyPolicy
@@ -126,6 +127,10 @@ fun PagesRegister(
     fun processRegister(){
         if(email.isBlank() || password.isBlank() || username.isBlank()){
             Toast.makeText(ctx,"Please fill all form?",Toast.LENGTH_SHORT).show()
+            return
+        }
+        if(!email.isEmailValid()){
+            ctx.toastError(ctx.getString(R.string.alert_validation_email))
             return
         }
         shouldShowDialogLoading = true

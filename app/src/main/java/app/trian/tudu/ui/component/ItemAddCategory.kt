@@ -42,7 +42,7 @@ fun ItemAddCategory(
         ){
             Icon(
                 imageVector = Octicons.Plus16,
-                contentDescription = stringResource(R.string.content_decription_add_new_category),
+                contentDescription = stringResource(R.string.content_description_add_new_category),
                 tint = MaterialTheme.colors.onBackground
             )
             Spacer(modifier = modifier.width(6.dp))

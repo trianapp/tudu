@@ -1,6 +1,5 @@
 package app.trian.tudu.ui.pages.auth
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -18,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
+import app.trian.tudu.common.isEmailValid
 import app.trian.tudu.common.toastError
 import app.trian.tudu.common.toastSuccess
 import app.trian.tudu.ui.component.AppbarBasic
@@ -53,9 +53,13 @@ fun PageResetPassword(
 
     fun proceedChangePassword(){
         if(email.isEmpty()) {
-            //todo notify password cannot blank
-                ctx.toastError("Password cannot empty!")
 
+            ctx.toastError("Password cannot empty!")
+            return
+        }
+
+        if(!email.isEmailValid()){
+            ctx.toastError(ctx.getString(R.string.alert_validation_email))
             return
         }
 

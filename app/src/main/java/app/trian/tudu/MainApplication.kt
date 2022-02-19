@@ -39,7 +39,7 @@ class MainApplication:MultiDexApplication(){
                 .setToastTypeface(typeface!!)
                 .setTextSize(16)
                 .allowQueue(true)
-                .setGravity(0,0,0)
+                .setGravity(1,0,1)
                 .supportDarkTheme(true)
                 .apply()
         }catch (e:Exception){
