@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import app.trian.tudu.R
+import app.trian.tudu.data.local.Category
 import app.trian.tudu.ui.theme.InactiveText
 import app.trian.tudu.ui.theme.TuduTheme
 
@@ -39,8 +40,9 @@ import app.trian.tudu.ui.theme.TuduTheme
 @Composable
 fun DialogFormCategory(
     show:Boolean=false,
+    category: Category= Category(),
     onHide:()->Unit,
-    onSubmit:(value:String)->Unit
+    onSubmit:( category:Category)->Unit
 ) {
     if(show) {
         Dialog(onDismissRequest = {
@@ -48,7 +50,8 @@ fun DialogFormCategory(
         }) {
             ScreenDialogFormCategory(
                 onSubmit = onSubmit,
-                onHide = onHide
+                onHide = onHide,
+                category = category
             )
         }
     }
@@ -57,21 +60,24 @@ fun DialogFormCategory(
 @Composable
 fun ScreenDialogFormCategory(
     modifier: Modifier=Modifier,
+    category: Category= Category(),
     onHide: () -> Unit={},
-    onSubmit: (value:String) -> Unit
+    onSubmit: (category:Category) -> Unit
 ) {
     val ctx = LocalContext.current
     var categoryName by remember {
-        mutableStateOf(TextFieldValue(text = ""))
+        mutableStateOf(TextFieldValue(text = category.name))
     }
-    var canInput by remember {
-        mutableStateOf(true)
-    }
+
     fun submit(){
         if(categoryName.text.isBlank()){
             Toast.makeText(ctx,ctx.getString(R.string.blank_validation,"Category"),Toast.LENGTH_LONG).show()
         }else{
-            onSubmit(categoryName.text)
+            onSubmit(
+                category.apply {
+                    name = categoryName.text
+                }
+            )
             onHide()
         }
     }

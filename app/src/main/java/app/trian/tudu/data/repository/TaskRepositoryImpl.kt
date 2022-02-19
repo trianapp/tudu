@@ -13,6 +13,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import logcat.LogPriority
+import logcat.logcat
 
 class TaskRepositoryImpl(
     private val dispatcherProvider: DispatcherProvider,
@@ -91,9 +93,19 @@ class TaskRepositoryImpl(
         category.apply {
             categoryId = idFromFireStore
         }
+
         categoryDao.insertNewCategory(category)
         emit(DataState.OnData(category))
     }.flowOn(dispatcherProvider.io())
 
     override suspend fun getListCategory(): Flow<List<Category>> = categoryDao.getListCategory().flowOn(dispatcherProvider.io())
+    override suspend fun updateCategory(category: Category): Flow<DataState<Category>> = flow<DataState<Category>> {
+        categoryDao.updateCategory(category)
+        emit(DataState.OnData(category))
+    }.flowOn(dispatcherProvider.io())
+
+    override suspend fun deleteCategory(category: Category): Flow<DataState<Category>> = flow<DataState<Category>> {
+        categoryDao.deleteCategory(category)
+        emit(DataState.OnData(category))
+    }.flowOn(dispatcherProvider.io())
 }

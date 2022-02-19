@@ -103,7 +103,7 @@ fun PageHome(
             shouldShowDialogAddCategory = false
         },
         onSubmit = {
-            taskViewModel.addNewCategory(it)
+            taskViewModel.addNewCategory(it.name)
         }
     )
 

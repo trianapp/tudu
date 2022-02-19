@@ -19,4 +19,6 @@ interface TaskRepository {
 
     suspend fun addCategory(category: Category):Flow<DataState<Category>>
     suspend fun getListCategory():Flow<List<Category>>
+    suspend fun updateCategory(category: Category):Flow<DataState<Category>>
+    suspend fun deleteCategory(category: Category):Flow<DataState<Category>>
 }

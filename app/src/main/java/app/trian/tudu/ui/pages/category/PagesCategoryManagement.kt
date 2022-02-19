@@ -22,14 +22,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
+import app.trian.tudu.data.local.Category
 import app.trian.tudu.ui.component.dialog.DialogFormCategory
 import app.trian.tudu.ui.component.ItemAddCategory
 import app.trian.tudu.ui.component.ItemCategory
+import app.trian.tudu.ui.component.dialog.DialogDeleteConfirmation
 import app.trian.tudu.ui.theme.Inactivebackground
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.TaskViewModel
 import compose.icons.Octicons
 import compose.icons.octicons.ArrowLeft16
+import logcat.LogPriority
 import logcat.logcat
 
 @Composable
@@ -42,6 +45,12 @@ fun PagesCategoryManagement(
     var shouldShowDialogFormCategory by remember {
         mutableStateOf(false)
     }
+    var shouldShowDialogDelete by remember {
+        mutableStateOf(false)
+    }
+    var currentCategory by remember {
+        mutableStateOf(Category())
+    }
 
     LaunchedEffect(key1 = Unit, block = {
         taskViewModel.getListCategory()
@@ -49,14 +58,41 @@ fun PagesCategoryManagement(
 
     DialogFormCategory(
         show = shouldShowDialogFormCategory,
+        category = currentCategory,
         onHide = {
             shouldShowDialogFormCategory=false
         },
         onSubmit = {
-            taskViewModel.addNewCategory(it)
+
+            //check update or add new?
+            if(it.categoryId.isBlank()){
+                taskViewModel.addNewCategory(it.name)
+            }else{
+                taskViewModel.updateCategory(it)
+            }
+            //set current state
+            currentCategory = Category()
         }
     )
 
+    DialogDeleteConfirmation(
+        show=shouldShowDialogDelete,
+        name=currentCategory.name,
+        onDismiss = {
+            shouldShowDialogDelete = false
+        },
+        onCancel = {
+            shouldShowDialogDelete = false
+        },
+        onConfirm = {
+            //delete category
+            taskViewModel.deleteCategory(currentCategory)
+
+            //reset state to initial value
+            currentCategory = Category()
+            shouldShowDialogDelete = false
+        }
+    )
     Scaffold(
         topBar = {
             TopAppBar(
@@ -98,7 +134,18 @@ fun PagesCategoryManagement(
                 }
                 items(listCategory){
                     data ->
-                    ItemCategory(category = data)
+                    ItemCategory(
+                        category = data,
+                        onEdit = {
+                            currentCategory = it
+                            shouldShowDialogFormCategory = true
+                        },
+                        onHide = {},
+                        onDelete = {
+                            currentCategory = it
+                            shouldShowDialogDelete = true
+                        }
+                    )
                 }
                 item {
                     ItemAddCategory {

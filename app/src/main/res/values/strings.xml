@@ -87,7 +87,8 @@
     <string name="content_description_option_menu_category">Option Category</string>
     <string name="content_description_icon_save_task">Save task</string>
     <string name="text_empty_task">Get started with your first task</string>
-    <string name="text_instruction_create_new_task">Click here or + to create your first task</string>
+    <string name="text_instruction_create_new_task">Click + to create your first task</string>
+    <string name="text_confirmation_delete">Are you sure delete %1$s?</string>
 
 
 </resources>
