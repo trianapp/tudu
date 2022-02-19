@@ -27,9 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
-import app.trian.tudu.common.GoogleAuthContract
-import app.trian.tudu.common.Routes
-import app.trian.tudu.common.signInInSuccessOnboard
+import app.trian.tudu.common.*
 import app.trian.tudu.ui.component.ButtonGoogle
 import app.trian.tudu.ui.component.ButtonPrimary
 import app.trian.tudu.ui.component.ButtonSecondary
@@ -97,10 +95,10 @@ fun PagesOnboard(
                 success, message ->
                 shouldShowDialogLoading = false
                 if(success){
-                    Toast.makeText(ctx,ctx.getString(R.string.signin_success),Toast.LENGTH_LONG).show()
+                    ctx.toastSuccess(ctx.getString(R.string.signin_success))
                     goToDashboard()
                 }else{
-                    Toast.makeText(ctx,ctx.getString(R.string.signin_failed,message),Toast.LENGTH_LONG).show()
+                    ctx.toastError(ctx.getString(R.string.signin_failed,message))
                 }
             }
         }
@@ -140,7 +138,7 @@ fun PagesOnboard(
                 ) {
                     Text(
                         text = stringResource(R.string.title_onboard),
-                        style = TextStyle(
+                        style = MaterialTheme.typography.body1.copy(
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Normal
                         )
@@ -150,7 +148,7 @@ fun PagesOnboard(
                             modifier = modifier
                                 .align(Alignment.TopCenter),
                             text = stringResource(R.string.subtitle_onboard),
-                            style = TextStyle(
+                            style = MaterialTheme.typography.body1.copy(
                                 fontSize = 36.sp,
                                 fontWeight = FontWeight.Normal,
                                 color = MaterialTheme.colors.primary

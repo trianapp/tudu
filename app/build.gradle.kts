@@ -205,6 +205,8 @@ dependencies {
         implementation(mpAndroidChart)
     }
 
+    implementation(Libs.Com.Github.GrenderG.toasty)
+
 //    local unit test
     testImplementation(Libs.Junit.junit)
     testImplementation(Libs.Com.Google.Truth.truth)

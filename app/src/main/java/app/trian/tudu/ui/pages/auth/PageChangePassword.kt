@@ -15,6 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import app.trian.tudu.common.toastError
+import app.trian.tudu.common.toastSuccess
 import app.trian.tudu.ui.component.AppbarBasic
 import app.trian.tudu.ui.component.ButtonPrimary
 import app.trian.tudu.ui.component.FormInput
@@ -51,20 +53,24 @@ fun PageChangePassword(
     fun proceedChangePassword(){
         if(newPassword.isEmpty()) {
             //todo notify password cannot blank
-                Toast.makeText(ctx,"Password cannot empty!",Toast.LENGTH_LONG).show()
+                ctx.toastError("Password cannot empty!")
 
             return
         }
         if(newPassword != confirmNewPassword){
             //todo: notify password didn't match
-            Toast.makeText(ctx,"Password didn't match!",Toast.LENGTH_LONG).show()
+            ctx.toastError("Password didn't match!")
             return
         }
         shouldShowDialogLoading = true
         userViewModel.changePassword(newPassword){
             success, message ->
             shouldShowDialogLoading = false
-            Toast.makeText(ctx,message,Toast.LENGTH_LONG).show()
+            if(success){
+                ctx.toastSuccess(message)
+            }else{
+                ctx.toastError(message)
+            }
         }
     }
     DialogLoading(

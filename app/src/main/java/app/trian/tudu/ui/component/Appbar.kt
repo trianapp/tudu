@@ -51,7 +51,7 @@ fun AppbarHome(
             navigationIcon = {
                 Image(
                     modifier = modifier.size(40.dp),
-                    painter = painterResource(id = isDark.getLogo()) ,
+                    painter = painterResource(id = R.drawable.logo) ,
                     contentDescription = "Logo Tudu"
                 )
             },

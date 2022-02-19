@@ -93,6 +93,8 @@
     <string name="email_feedback">triandamai@gmail.com</string>
     <string name="subject_feedback">[Feedback-Tudu]</string>
     <string name="content_description_hide_show_password">Hide or show password</string>
+    <string name="btn_reset_password">Reset my password</string>
+    <string name="placeholder_email_reset_password">Your email account</string>
 
 
 </resources>

@@ -8,8 +8,10 @@ import android.content.Intent
 import android.net.Uri
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.compose.foundation.isSystemInDarkTheme
 import app.trian.tudu.R
+import es.dmoral.toasty.Toasty
 import logcat.logcat
 
 /**
@@ -63,4 +65,20 @@ fun Context.gotoApp(){
 fun Boolean.getLogo():Int{
     val isDark = this
     return if(isDark) R.drawable.logo_dark else R.drawable.logo_light
+}
+
+fun Context.toastSuccess(message:String){
+    Toasty.success(this,message,Toast.LENGTH_LONG).show()
+}
+fun Context.toastError(message:String){
+    Toasty.error(this,message,Toast.LENGTH_LONG).show()
+}
+fun Context.toastWarning(message:String){
+    Toasty.warning(this,message,Toast.LENGTH_LONG).show()
+}
+fun Context.toastInfo(message:String){
+    Toasty.info(this,message,Toast.LENGTH_LONG).show()
+}
+fun Context.toastNormal(message:String){
+    Toasty.normal(this,message,Toast.LENGTH_LONG).show()
 }
