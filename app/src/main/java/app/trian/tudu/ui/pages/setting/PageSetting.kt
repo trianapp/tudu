@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -26,9 +27,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import app.trian.tudu.common.Routes
-import app.trian.tudu.common.getNowMillis
-import app.trian.tudu.common.toReadableDate
+import app.trian.tudu.R
+import app.trian.tudu.common.*
 import app.trian.tudu.data.local.AppSetting
 import app.trian.tudu.ui.component.AppbarBasic
 import app.trian.tudu.ui.component.dialog.DateTimeFormat
@@ -51,6 +51,7 @@ fun PageSetting(
     modifier: Modifier = Modifier,
     router: NavHostController
 ) {
+    val ctx = LocalContext.current
     val userViewModel = hiltViewModel<UserViewModel>()
 
     val scope = rememberCoroutineScope()
@@ -59,7 +60,7 @@ fun PageSetting(
         skipHalfExpanded = true
     )
     val appSetting by userViewModel.appSetting.observeAsState(initial = AppSetting())
-
+    val currentUser by userViewModel.currentUser.observeAsState()
     var showDialogDateFormt by remember {
         mutableStateOf(false)
     }
@@ -127,16 +128,16 @@ fun PageSetting(
             children = listOf(
                 SubItemSetting(
                     name = "Rate our App",
-                    route = "",
-                    type = "",
+                    route = "rate_app",
+                    type = "button",
                     color = HexToJetpackColor.getColor(HexToJetpackColor.Yellow),
                     icon = Octicons.Star24,
                     description = "Rate & Review us"
                 ),
                 SubItemSetting(
                     name = "Send feedback",
-                    route = "",
-                    type = "",
+                    route = "send_feedback",
+                    type = "button",
                     color = HexToJetpackColor.getColor(HexToJetpackColor.Yellow),
                     icon = Octicons.Mail24,
                     description = "Share your thought"
@@ -218,6 +219,16 @@ fun PageSetting(
                                     scope.launch{
                                         bottomSheetState.show()
                                     }
+                                }
+                                "send_feedback"->{
+                                    ctx.emailTo(
+                                        from = currentUser?.email ?: "",
+                                        to =ctx.getString(R.string.email_feedback),
+                                        subject =ctx.getString(R.string.subject_feedback)
+                                    )
+                                }
+                                "rate_app"->{
+                                    ctx.gotoApp()
                                 }
                                 else->{}
                             }

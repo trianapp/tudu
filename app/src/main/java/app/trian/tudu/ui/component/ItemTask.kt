@@ -1,20 +1,21 @@
 package app.trian.tudu.ui.component
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.IconToggleButton
-import androidx.compose.material.RadioButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -22,8 +23,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import app.trian.tudu.R
 import app.trian.tudu.common.toReadableDate
 import app.trian.tudu.data.local.Task
+import app.trian.tudu.ui.component.dialog.DateTimeFormat
 import app.trian.tudu.ui.theme.HexToJetpackColor
 import app.trian.tudu.ui.theme.TuduTheme
 import compose.icons.Octicons
@@ -41,6 +44,7 @@ import compose.icons.octicons.Milestone24
 fun ItemTaskRow(
     modifier:Modifier=Modifier,
     task:Task,
+    dateFormat:String=DateTimeFormat.DDMMYYYY.value,
     onMark:(task:Task)->Unit={},
     onDone:(task:Task)->Unit={},
     onDetail:(task:Task)->Unit={}
@@ -74,7 +78,11 @@ fun ItemTaskRow(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconToggleButton(checked = false, onCheckedChange = {}) {
-                    Icon(imageVector = Octicons.Milestone16, contentDescription = "")
+                    Icon(
+                        imageVector = Octicons.Milestone16,
+                        contentDescription = stringResource(R.string.content_description_icon_label_task),
+                        tint=MaterialTheme.colors.onBackground
+                    )
                 }
 
                 Column(
@@ -85,7 +93,7 @@ fun ItemTaskRow(
                         maxLines=1,
                         modifier=modifier.fillMaxWidth(fraction = 0.8f),
                         overflow= TextOverflow.Ellipsis,
-                        style = TextStyle(
+                        style = MaterialTheme.typography.body2.copy(
                             fontSize = 20.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = HexToJetpackColor.getColor(task.color),
@@ -93,8 +101,8 @@ fun ItemTaskRow(
                         )
                     )
                     Text(
-                        text = task.deadline.toReadableDate(),
-                        style = TextStyle(
+                        text = task.deadline.toReadableDate(dateFormat),
+                        style = MaterialTheme.typography.subtitle2.copy(
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Light,
                             color = HexToJetpackColor.getColor(task.color)
@@ -111,7 +119,12 @@ fun ItemTaskRow(
                         done = isDone
                     }
                     onDone(taskUpdated)
-                }
+                },
+                colors = RadioButtonDefaults.colors(
+                    selectedColor = MaterialTheme.colors.primary,
+                    unselectedColor = MaterialTheme.colors.secondary,
+                    disabledColor = Color.DarkGray
+                )
             )
 
 
@@ -123,6 +136,7 @@ fun ItemTaskGrid(
     modifier: Modifier=Modifier,
     task:Task,
     index:Int=0,
+    dateFormat:String=DateTimeFormat.DDMMYYYY.value,
     onMark:(task:Task)->Unit={},
     onDone:(task:Task)->Unit={},
     onDetail:(task:Task)->Unit={}
@@ -172,7 +186,11 @@ fun ItemTaskGrid(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(imageVector = Octicons.Milestone24, contentDescription = "")
+                Icon(
+                    imageVector = Octicons.Milestone24,
+                    contentDescription = stringResource(R.string.content_description_icon_label_task),
+                    tint=MaterialTheme.colors.onBackground
+                )
                 RadioButton(
                     selected = isDone,
                     onClick = {
@@ -181,7 +199,12 @@ fun ItemTaskGrid(
                             done = isDone
                         }
                         onDone(taskUpdated)
-                    }
+                    },
+                    colors = RadioButtonDefaults.colors(
+                        selectedColor = MaterialTheme.colors.primary,
+                        unselectedColor = MaterialTheme.colors.secondary,
+                        disabledColor = Color.DarkGray
+                    )
                 )
             }
             Column(
@@ -193,7 +216,7 @@ fun ItemTaskGrid(
                     text = task.name,
                     maxLines=1,
                     overflow= TextOverflow.Ellipsis,
-                    style = TextStyle(
+                    style = MaterialTheme.typography.body2.copy(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = HexToJetpackColor.getColor(task.color),
@@ -201,8 +224,8 @@ fun ItemTaskGrid(
                     )
                 )
                 Text(
-                    text= task.deadline.toReadableDate(),
-                    style = TextStyle(
+                    text= task.deadline.toReadableDate(dateFormat),
+                    style = MaterialTheme.typography.subtitle1.copy(
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Light,
                         color = HexToJetpackColor.getColor(task.color)
@@ -212,7 +235,12 @@ fun ItemTaskGrid(
         }
     }
 }
-@Preview
+@Preview(
+    uiMode = UI_MODE_NIGHT_NO
+)
+@Preview(
+    uiMode = UI_MODE_NIGHT_YES
+)
 @Composable
 fun PreviewItemTaskRow(){
     val task = Task(
@@ -237,7 +265,12 @@ fun PreviewItemTaskRow(){
     }
 }
 
-@Preview
+@Preview(
+    uiMode = UI_MODE_NIGHT_NO
+)
+@Preview(
+    uiMode = UI_MODE_NIGHT_YES
+)
 @Composable
 fun PreviewItemTaskGrid(){
     val task = Task(

@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.trian.tudu.common.Routes
 import app.trian.tudu.common.gridItems
+import app.trian.tudu.data.local.AppSetting
 import app.trian.tudu.data.local.Task
 import app.trian.tudu.ui.component.ItemTaskGrid
 import app.trian.tudu.ui.component.ItemTaskRow
@@ -32,6 +33,7 @@ fun ScreenListTask(
     modifier:Modifier=Modifier,
     listType:HeaderTask,
     listTask:List<Task>,
+    appSetting: AppSetting,
     onChangeListType:(type:HeaderTask)->Unit={},
     onDetail:(task:Task)->Unit={},
     onDone:(task:Task)->Unit={}
@@ -55,6 +57,7 @@ fun ScreenListTask(
                         data  ->
                     ItemTaskGrid(
                         task = data,
+                        dateFormat = appSetting.dateFormat,
                         onDone = {
                             onDone(it)
                         },
@@ -69,6 +72,7 @@ fun ScreenListTask(
                 items(listTask) { data ->
                     ItemTaskRow(
                         task = data,
+                        dateFormat = appSetting.dateFormat,
                         onDone = {
                                  onDone(it)
                         },
@@ -93,6 +97,10 @@ fun ScreenListTask(
 @Composable
 fun PreviewScreenListTask(){
     TuduTheme {
-        ScreenListTask(listType = HeaderTask.ROW, listTask = listOf())
+        ScreenListTask(
+            listType = HeaderTask.ROW,
+            listTask = listOf(),
+            appSetting = AppSetting()
+        )
     }
 }

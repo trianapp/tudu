@@ -20,6 +20,7 @@ import app.trian.tudu.R
 import app.trian.tudu.common.Routes
 import app.trian.tudu.common.hideKeyboard
 import app.trian.tudu.common.signOut
+import app.trian.tudu.data.local.AppSetting
 import app.trian.tudu.data.local.Category
 import app.trian.tudu.data.local.Task
 import app.trian.tudu.ui.component.AppbarHome
@@ -55,6 +56,7 @@ fun PageHome(
         color = HexToJetpackColor.Blue
     )))
     val currentUser by userViewModel.currentUser.observeAsState()
+    val appSetting by userViewModel.appSetting.observeAsState(initial = AppSetting())
 
     val scope = rememberCoroutineScope()
     val ctx = LocalContext.current
@@ -91,6 +93,7 @@ fun PageHome(
 
 
     LaunchedEffect(key1 = Unit, block = {
+        userViewModel.getCurrentSetting()
         taskViewModel.getListTask()
         taskViewModel.getListCategory()
         userViewModel.getCurrentUser()
@@ -180,6 +183,7 @@ fun PageHome(
                     ScreenListTask(
                         listType = listType,
                         listTask = listTask,
+                        appSetting = appSetting,
                         onDetail = {
                             router.navigate("${Routes.DETAIL_TASK}/${it.taskId}")
                         },

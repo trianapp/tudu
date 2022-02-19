@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.sp
 import app.trian.tudu.R
 import app.trian.tudu.common.getNowMillis
 import app.trian.tudu.common.hideKeyboard
-import app.trian.tudu.common.showKeyboard
+
 import app.trian.tudu.data.local.Category
 import app.trian.tudu.data.local.Task
 import app.trian.tudu.data.local.Todo

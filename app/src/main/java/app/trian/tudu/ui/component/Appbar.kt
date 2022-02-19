@@ -1,16 +1,21 @@
 package app.trian.tudu.ui.component
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.trian.tudu.R
+import app.trian.tudu.common.getLogo
 import app.trian.tudu.data.local.Category
 import app.trian.tudu.ui.component.tab.TabBarHome
 import app.trian.tudu.ui.theme.HexToJetpackColor
@@ -33,6 +38,7 @@ fun AppbarHome(
     onOptionMenuSelected:(menu:Int)->Unit={},
     onSelectCategory:(category:Category)->Unit={}
 ) {
+    val isDark = isSystemInDarkTheme()
     Column {
         TopAppBar(
             title = {
@@ -45,7 +51,7 @@ fun AppbarHome(
             navigationIcon = {
                 Image(
                     modifier = modifier.size(40.dp),
-                    painter = painterResource(id = R.drawable.logo) ,
+                    painter = painterResource(id = isDark.getLogo()) ,
                     contentDescription = "Logo Tudu"
                 )
             },
@@ -104,7 +110,12 @@ fun AppbarBasic(
         }
     )
 }
-@Preview
+@Preview(
+    uiMode = UI_MODE_NIGHT_NO
+)
+@Preview(
+    uiMode = UI_MODE_NIGHT_YES
+)
 @Composable
 fun PreviewAppbarHome(){
     TuduTheme {
@@ -144,7 +155,12 @@ fun PreviewAppbarHome(){
 
 }
 
-@Preview
+@Preview(
+    uiMode = UI_MODE_NIGHT_NO
+)
+@Preview(
+    uiMode = UI_MODE_NIGHT_YES
+)
 @Composable
 fun PreviewAppbarBasic(){
     TuduTheme {
