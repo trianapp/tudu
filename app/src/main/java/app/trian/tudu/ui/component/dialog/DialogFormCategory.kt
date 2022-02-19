@@ -1,5 +1,7 @@
 package app.trian.tudu.ui.component.dialog
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -90,9 +92,10 @@ fun ScreenDialogFormCategory(
         Column {
             Text(
                 text = stringResource(R.string.title_create_new_cateogory),
-                style = TextStyle(
+                style = MaterialTheme.typography.h5.copy(
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colors.onBackground
                 )
             )
             Spacer(modifier = modifier.height(16.dp))
@@ -109,8 +112,10 @@ fun ScreenDialogFormCategory(
                     placeholder = {
                         Text(
                             text = stringResource(R.string.placeholder_input_category),
-                            style=TextStyle(
-                                color = MaterialTheme.colors.onBackground
+                            style=MaterialTheme.typography.body2.copy(
+                                color = MaterialTheme.colors.onBackground,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
                             )
                         )
                     },
@@ -124,7 +129,7 @@ fun ScreenDialogFormCategory(
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent
                     ),
-                    textStyle = TextStyle(
+                    textStyle = MaterialTheme.typography.body2.copy(
                         color = MaterialTheme.colors.onBackground,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
@@ -163,7 +168,7 @@ fun ScreenDialogFormCategory(
                 }) {
                     Text(
                         text = stringResource(R.string.btn_cancel),
-                        style = TextStyle(
+                        style = MaterialTheme.typography.button.copy(
                             color=MaterialTheme.colors.primary.copy(alpha = 0.6f)
                         )
                     )
@@ -171,7 +176,7 @@ fun ScreenDialogFormCategory(
                 TextButton(onClick = { submit() }) {
                     Text(
                         text = stringResource(R.string.btn_save),
-                        style = TextStyle(
+                        style = MaterialTheme.typography.button.copy(
                             color=MaterialTheme.colors.primary
                         )
                     )
@@ -181,7 +186,12 @@ fun ScreenDialogFormCategory(
     }
 }
 
-@Preview
+@Preview(
+    uiMode = UI_MODE_NIGHT_YES
+)
+@Preview(
+    uiMode = UI_MODE_NIGHT_NO
+)
 @Composable
 fun PreviewScreenFromCategory(){
     TuduTheme {

@@ -82,6 +82,12 @@
     <string name="text_privacy_policy">Privacy Policy</string>
     <string name="content_description_empty_task">Background Empty Task</string>
     <string name="content_description_icon_login_google">Icon Login Google</string>
+    <string name="content_description_icon_add_todo">Add New Todo</string>
+    <string name="content_decription_add_new_category">Crete New Category</string>
+    <string name="content_description_option_menu_category">Option Category</string>
+    <string name="content_description_icon_save_task">Save task</string>
+    <string name="text_empty_task">Get started with your first task</string>
+    <string name="text_instruction_create_new_task">Click here or + to create your first task</string>
 
 
 </resources>

@@ -7,13 +7,16 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconToggleButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import app.trian.tudu.R
 import app.trian.tudu.data.local.Category
 import app.trian.tudu.ui.component.dialog.DropdownActionItemCategory
 import app.trian.tudu.ui.theme.HexToJetpackColor
@@ -61,13 +64,23 @@ fun ItemCategory(
                         .background(HexToJetpackColor.getColor(category.color))
                 )
                 Spacer(modifier = modifier.width(16.dp))
-                Text(text = category.name)
+                Text(
+                    text = category.name,
+                    style=MaterialTheme.typography.body2.copy(
+                        MaterialTheme.colors.onBackground
+                    )
+                )
             }
             Row(
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "${category.usedCount}")
+                Text(
+                    text = "${category.usedCount}",
+                    style = MaterialTheme.typography.body2.copy(
+                        color = MaterialTheme.colors.onBackground
+                    )
+                )
                 Spacer(modifier = modifier.width(16.dp))
                 IconToggleButton(
                     checked = showDropdownAction,
@@ -81,7 +94,11 @@ fun ItemCategory(
                         onEdit = {onEdit(category)},
                         onDismiss = {showDropdownAction=false}
                     )
-                    Icon(imageVector = Octicons.Quote16, contentDescription = "")
+                    Icon(
+                        imageVector = Octicons.Quote16,
+                        contentDescription = stringResource(R.string.content_description_option_menu_category),
+                        tint = MaterialTheme.colors.onBackground
+                    )
                 }
             }
         }
@@ -97,13 +114,14 @@ fun ItemCategory(
 @Composable
 fun PreviewItemCategory(){
     TuduTheme {
-        ItemCategory(category = Category(
-            categoryId = "ini id",
-            name = "Wishlist",
-            color = HexToJetpackColor.Blue,
-            created_at = 0,
-            updated_at = 0
-        )
+        ItemCategory(
+            category = Category(
+                categoryId = "ini id",
+                name = "Wishlist",
+                color = HexToJetpackColor.Blue,
+                created_at = 0,
+                updated_at = 0
+            )
         )
     }
 }

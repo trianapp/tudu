@@ -2,6 +2,8 @@ package app.trian.tudu.data.repository
 
 import app.trian.tudu.common.DispatcherProvider
 import app.trian.tudu.common.getNowMillis
+import app.trian.tudu.data.local.AppSetting
+import app.trian.tudu.data.local.dao.AppSettingDao
 import app.trian.tudu.data.local.dao.TaskDao
 import app.trian.tudu.data.local.dao.TodoDao
 import app.trian.tudu.data.repository.design.UserRepository
@@ -28,7 +30,8 @@ class UserRepositoryImpl(
     private val firestore: FirebaseFirestore,
     private val firebaseMessaging: FirebaseMessaging,
     private val taskDao: TaskDao,
-    private val todoDao: TodoDao
+    private val todoDao: TodoDao,
+    private val appSettingDao: AppSettingDao
 ):UserRepository {
     override suspend fun checkIsUserLogin(): Flow<Boolean> = flow {
         val currentUser = firebaseAuth.currentUser
@@ -152,6 +155,8 @@ class UserRepositoryImpl(
             emit(DataState.OnFailure(e.message ?: "Can't send new password to an email"))
         }
     }.flowOn(dispatcherProvider.io())
+
+    override suspend fun getCurrentAppSetting(uid: String): Flow<AppSetting?> = appSettingDao.getApplicationSetting(uid).flowOn(dispatcherProvider.io())
 
 
     override suspend fun signOut(callback: () -> Unit) = withContext(dispatcherProvider.io()){

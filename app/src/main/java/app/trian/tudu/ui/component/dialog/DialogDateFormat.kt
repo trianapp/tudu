@@ -93,7 +93,7 @@ fun ScreenDialogDateTimeFormat(
     ) {
         Text(
             text = title,
-            style = TextStyle(
+            style = MaterialTheme.typography.subtitle1.copy(
                 fontSize = 20.sp,
                 color = MaterialTheme.colors.onBackground
             )
@@ -116,7 +116,7 @@ fun ScreenDialogDateTimeFormat(
             TextButton(onClick = onDismiss) {
                 Text(
                     text = stringResource(id = R.string.btn_cancel),
-                    style=TextStyle(
+                    style=MaterialTheme.typography.button.copy(
                         color = MaterialTheme.colors.primary.copy(alpha = 0.5f)
                     )
                 )
@@ -126,7 +126,7 @@ fun ScreenDialogDateTimeFormat(
             }) {
                 Text(
                     text = stringResource(id = R.string.btn_save),
-                    style = TextStyle(
+                    style = MaterialTheme.typography.button.copy(
                         color=MaterialTheme.colors.primary
                     )
                 )
@@ -154,7 +154,7 @@ fun ItemDateFormat(
         )
         Text(
             text = data.text,
-            style= TextStyle(
+            style= MaterialTheme.typography.body2.copy(
                 color=MaterialTheme.colors.onBackground
             )
         )

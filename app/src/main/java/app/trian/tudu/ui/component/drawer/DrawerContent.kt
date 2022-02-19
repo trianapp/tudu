@@ -94,16 +94,14 @@ fun DrawerContent(
         ) {
             Text(
                 text = "Hi!",
-                style = TextStyle(
-                    fontSize = 24.sp,
+                style = MaterialTheme.typography.h5.copy(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colors.onBackground
                 )
             )
             Text(
                 text = currentUser?.displayName ?: "Unknown",
-                style = TextStyle(
-                    fontSize = 36.sp,
+                style =  MaterialTheme.typography.h4.copy(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colors.onBackground
                 )
@@ -158,8 +156,7 @@ fun DrawerContent(
                 Spacer(modifier = modifier.width(10.dp))
                 Text(
                     text = stringResource(R.string.btn_logout),
-                    style = TextStyle(
-                        fontSize = 20.sp,
+                    style = MaterialTheme.typography.button.copy(
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colors.onBackground
                     )
@@ -168,7 +165,7 @@ fun DrawerContent(
             Spacer(modifier = modifier.height(30.dp))
             Text(
                 text = "Version ${getVersion()}",
-                style=TextStyle(
+                style=MaterialTheme.typography.caption.copy(
                     color = MaterialTheme.colors.onBackground
 
                 ),
@@ -211,7 +208,7 @@ fun ItemDrawer(
 
         Text(
             text = item.name,
-            style = TextStyle(
+            style = MaterialTheme.typography.button.copy(
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colors.onBackground

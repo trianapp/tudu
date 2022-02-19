@@ -3,11 +3,9 @@ package app.trian.datepicker
 import android.app.AlarmManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -16,6 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,29 +38,34 @@ fun DatePickerSlider(
     currentDate:Long = 0,
     onDateSelected:(date:DateTime,index:Int)->Unit = { _, _ ->}
 ) {
+
     val DAY_MILLIS = AlarmManager.INTERVAL_DAY
     var selected by remember {
         mutableStateOf(0)
     }
 
-    LazyRow(content = {
-        items(count = generateDaysCount){
-            index: Int ->
-            val actualDate = DateTime(
-                initialDate+(DAY_MILLIS*index)
-            )
-            Day(
-                selected = selected == index,
-                currentDate = currentDate,
-                index = index,
-                actualDate = actualDate,
-                onSelected = {
-                    selected = index
-                    onDateSelected(it,index)
-                }
-            )
-        }
-    })
+//    LazyRow(
+//        modifier=modifier.fillMaxWidth()
+//            .pointerInput(Unit) {  }
+//    ){
+//        items()
+//            for(index in 0..generateDaysCount) {
+//                val actualDate = DateTime(
+//                    initialDate + (DAY_MILLIS * index)
+//                )
+//                Day(
+//                    selected = selected == index,
+//                    currentDate = currentDate,
+//                    index = index,
+//                    actualDate = actualDate,
+//                    onSelected = {
+//                        selected = index
+//                        onDateSelected(it, index)
+//                    }
+//                )
+//            }
+//
+//    }
 }
 
 
@@ -70,11 +76,19 @@ fun Day(
     currentDate: Long=0,
     index:Int,
     actualDate:DateTime,
+    selectedColor:Color=MaterialTheme.colors.primary,
     onSelected:(date:DateTime)->Unit={}
 ){
 
+    val ctx = LocalContext.current
+    val currentWidth = ctx
+        .resources
+        .displayMetrics.widthPixels.dp /
+            LocalDensity.current.density
     Column(
-        modifier = modifier.padding(
+        modifier = modifier
+            .width(currentWidth / 5)
+            .padding(
             vertical = 6.dp,
             horizontal = 10.dp
         )

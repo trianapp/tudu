@@ -3,6 +3,7 @@ package app.trian.tudu.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.trian.tudu.data.local.AppSetting
 import app.trian.tudu.data.repository.design.UserRepository
 import app.trian.tudu.domain.DataState
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -29,6 +30,13 @@ class UserViewModel @Inject constructor():ViewModel() {
     private var _currentUser = MutableLiveData<FirebaseUser?>(null)
     val currentUser get() = _currentUser
 
+    private var _appSetting = MutableLiveData<AppSetting>()
+    val appSetting get() = _appSetting
+
+
+    fun getCurrentSetting() = viewModelScope.launch {
+
+    }
 
     /**
      * cek id user already logged in ?

@@ -36,7 +36,10 @@ fun AppbarHome(
     Column {
         TopAppBar(
             title = {
-                Text(text = stringResource(R.string.title_appbar_home))
+                Text(
+                    text = stringResource(R.string.title_appbar_home),
+                    style=MaterialTheme.typography.h5
+                )
             },
             backgroundColor = MaterialTheme.colors.background,
             navigationIcon = {
@@ -94,7 +97,10 @@ fun AppbarBasic(
             }
         },
         title = {
-            Text(text = title)
+            Text(
+                text = title,
+                style =MaterialTheme.typography.h5
+            )
         }
     )
 }

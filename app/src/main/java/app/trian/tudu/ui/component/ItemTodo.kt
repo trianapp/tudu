@@ -1,5 +1,7 @@
 package app.trian.tudu.ui.component
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
@@ -91,13 +93,15 @@ fun ItemTodo(
                 placeholder = {
                     Text(
                         stringResource(id = R.string.placeholder_input_todo),
-                        style= TextStyle(
-                            textDecoration = if(todo.done) TextDecoration.LineThrough else TextDecoration.None
+                        style= MaterialTheme.typography.caption.copy(
+                            textDecoration = if(todo.done) TextDecoration.LineThrough else TextDecoration.None,
+                            color = MaterialTheme.colors.onBackground
                         )
                     )
                 },
-                textStyle = TextStyle(
-                    textDecoration = if(todo.done) TextDecoration.LineThrough else TextDecoration.None
+                textStyle = MaterialTheme.typography.caption.copy(
+                    textDecoration = if(todo.done) TextDecoration.LineThrough else TextDecoration.None,
+                    color = MaterialTheme.colors.onBackground
                 )
             )
         }
@@ -109,14 +113,20 @@ fun ItemTodo(
         ) {
             Icon(
                 imageVector = Octicons.X16,
-                contentDescription = stringResource(R.string.content_description_icon_close)
+                contentDescription = stringResource(R.string.content_description_icon_close),
+                tint = MaterialTheme.colors.onBackground
             )
         }
 
     }
 }
 
-@Preview
+@Preview(
+    uiMode = UI_MODE_NIGHT_NO
+)
+@Preview(
+    uiMode = UI_MODE_NIGHT_YES
+)
 @Composable
 fun PreviewItemTodo() {
     TuduTheme {

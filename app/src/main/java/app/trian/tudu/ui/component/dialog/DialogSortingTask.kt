@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -74,8 +75,7 @@ fun ScreenDialogSorting(
         ) {
             Text(
                 text = "Task sorted by",
-                style = TextStyle(
-                    fontSize = 30.sp,
+                style = MaterialTheme.typography.h5.copy(
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colors.onSurface
                 )
@@ -91,10 +91,10 @@ fun ScreenDialogSorting(
         ){
             Text(
                 text = "it will switch to manual sorting mode automatically after dragging tasks to reorder",
-                style = TextStyle(
+                style = MaterialTheme.typography.caption.copy(
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Light,
-                    color = MaterialTheme.colors.onBackground
+                    color = Color.DarkGray
                 )
             )
         }
@@ -117,7 +117,7 @@ fun ScreenDialogSorting(
             TextButton(onClick = { onDismiss() }) {
                 Text(
                     text = stringResource(id = R.string.btn_cancel),
-                    style= TextStyle(
+                    style= MaterialTheme.typography.button.copy(
                         color = MaterialTheme.colors.primary.copy(alpha = 0.6f)
                     )
                 )
@@ -150,7 +150,7 @@ fun ItemDialogSortTask(
         ))
         Text(
             text = sortItem.text,
-            style= TextStyle(
+            style= MaterialTheme.typography.body2.copy(
                 color = MaterialTheme.colors.onSurface
             )
         )

@@ -6,10 +6,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import app.trian.tudu.common.getNowMillis
 import app.trian.tudu.data.local.TuduDatabase
-import app.trian.tudu.data.local.dao.AttachmentDao
-import app.trian.tudu.data.local.dao.CategoryDao
-import app.trian.tudu.data.local.dao.TaskDao
-import app.trian.tudu.data.local.dao.TodoDao
+import app.trian.tudu.data.local.dao.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -77,5 +74,9 @@ object DatabaseModule {
     @Provides
     fun provideCategoryDao(db:TuduDatabase):CategoryDao =
         db.categoryDao()
+
+    @Provides
+    fun provideAppSettingDao(db:TuduDatabase):AppSettingDao =
+        db.appSettingDao()
 
 }

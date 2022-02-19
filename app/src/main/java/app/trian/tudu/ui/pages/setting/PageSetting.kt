@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.common.Routes
@@ -30,6 +31,7 @@ import app.trian.tudu.ui.component.dialog.DialogDateFormat
 import app.trian.tudu.ui.component.dialog.DialogTimeFormat
 import app.trian.tudu.ui.theme.HexToJetpackColor
 import app.trian.tudu.ui.theme.TuduTheme
+import app.trian.tudu.viewmodel.UserViewModel
 import com.squareup.okhttp.Route
 import compose.icons.Octicons
 import compose.icons.octicons.*
@@ -39,6 +41,7 @@ fun PageSetting(
     modifier: Modifier = Modifier,
     router: NavHostController
 ) {
+    val userViewModel = hiltViewModel<UserViewModel>()
     var showDialogDateFormt by remember {
         mutableStateOf(false)
     }

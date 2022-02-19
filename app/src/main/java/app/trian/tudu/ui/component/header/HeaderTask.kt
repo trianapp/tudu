@@ -1,5 +1,8 @@
 package app.trian.tudu.ui.component.header
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconToggleButton
@@ -41,7 +44,7 @@ fun HeaderTask(
     }
     Row(
         modifier= modifier
-            .fillMaxWidth(),
+            .fillMaxWidth().background(MaterialTheme.colors.background),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -54,7 +57,10 @@ fun HeaderTask(
                     Filter.PREVIOUS -> "Previous"
                     Filter.COMPLETE -> "Completed Today"
                     Filter.RECENT -> "Recent"
-                }
+                },
+                style=MaterialTheme.typography.subtitle2.copy(
+                    color = MaterialTheme.colors.onBackground
+                )
             )
             Spacer(modifier = modifier.width(6.dp))
             Icon(imageVector = Octicons.ChevronDown16, contentDescription = "")
@@ -110,7 +116,12 @@ enum class Filter{
     COMPLETE,
     RECENT
 }
-@Preview
+@Preview(
+    uiMode = UI_MODE_NIGHT_NO
+)
+@Preview(
+    uiMode = UI_MODE_NIGHT_YES
+)
 @Composable
 fun PreviewHeaderTask() {
     TuduTheme {

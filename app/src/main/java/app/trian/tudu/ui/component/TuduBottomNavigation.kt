@@ -38,36 +38,45 @@ fun TuduBottomNavigation(
         val currentRoute = navBackStackEntry?.destination?.route
         navItems.forEach {
             val selected = currentRoute == it.route
-            BottomNavigationItem(
-                label={
-                      Text(
-                          text = stringResource(id = it.name),
-                          style = TextStyle(
-                              color = if(selected) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground
-                          )
-                      )
-                },
-                selected = if(it.type == "button") false else selected,
-                onClick = {
-                    if(it.type == "button"){
+            if(it.type == "button"){
+                IconToggleButton(
+                    checked = false,
+                    onCheckedChange = {
                         onButton()
-                    }else {
+                    }) {
+                    Icon(
+                        imageVector = it.icon,
+                        contentDescription = it.contentDescription,
+                        tint =  if(selected) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground
+                    )
+                }
+            }else{
+                BottomNavigationItem(
+                    label={
+                        Text(
+                            text = stringResource(id = it.name),
+                            style = MaterialTheme.typography.body2.copy(
+                                if(selected) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground
+                            )
+                        )
+                    },
+                    selected = if(it.type == "button") false else selected,
+                    onClick = {
                         if (!selected) {
                             router.navigate(it.route)
                         }
+                    },
+                    selectedContentColor = MaterialTheme.colors.primary,
+                    unselectedContentColor = InactiveText,
+                    icon = {
+                        Icon(
+                            imageVector = it.icon,
+                            contentDescription = it.contentDescription,
+                            tint  = if(selected) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground
+                        )
                     }
-
-                },
-                selectedContentColor = MaterialTheme.colors.primary,
-                unselectedContentColor = InactiveText,
-                icon = {
-                    Icon(
-                        imageVector = it.icon,
-                        contentDescription = "",
-                        tint  = if(selected) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground
-                    )
-                }
-            )
+                )
+            }
         }
     }
 }
@@ -75,35 +84,36 @@ fun TuduBottomNavigation(
 sealed class BottomNavigationScreenItem(
         var name:Int,
         var icon:ImageVector,
-        var route:String,
-        var type:String="link"
+        var route:String ="",
+        var type:String="link",
+        var contentDescription:String=""
     ){
     object Drawer:BottomNavigationScreenItem(
-        R.string.nav_item_drawer,
-        Octicons.ThreeBars16,
-        "",
-        type = "button"
+        name=R.string.nav_item_drawer,
+        icon=Octicons.ThreeBars16,
+        type = "button",
+        contentDescription = "Open Drawer Menu"
     )
     object Home:BottomNavigationScreenItem(
         R.string.nav_item_home,
         Octicons.Home24,
-
         Routes.Dashboard.HOME,
-        type = "link"
+        type = "link",
+        contentDescription = "Menu Home"
     )
     object Calender:BottomNavigationScreenItem(
         R.string.nav_item_calendar,
         Octicons.Calendar24,
-
         Routes.Dashboard.CALENDER,
-        type = "link"
+        type = "link",
+        contentDescription = "Menu Calendar"
     )
     object Profile:BottomNavigationScreenItem(
         R.string.nav_item_profile,
         Octicons.Person24,
-
         Routes.Dashboard.PROFILE,
-        type = "link"
+        type = "link",
+        contentDescription = "Menu My Profile"
     )
 }
 
