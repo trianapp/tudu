@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,28 +27,46 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.common.Routes
+import app.trian.tudu.common.getNowMillis
+import app.trian.tudu.common.toReadableDate
+import app.trian.tudu.data.local.AppSetting
 import app.trian.tudu.ui.component.AppbarBasic
+import app.trian.tudu.ui.component.dialog.DateTimeFormat
 import app.trian.tudu.ui.component.dialog.DialogDateFormat
 import app.trian.tudu.ui.component.dialog.DialogTimeFormat
+import app.trian.tudu.ui.component.dialog.ModalBottomSheetPrivacyPolicy
 import app.trian.tudu.ui.theme.HexToJetpackColor
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.UserViewModel
 import com.squareup.okhttp.Route
 import compose.icons.Octicons
 import compose.icons.octicons.*
+import kotlinx.coroutines.launch
+import logcat.LogPriority
+import logcat.logcat
 
+@ExperimentalMaterialApi
 @Composable
 fun PageSetting(
     modifier: Modifier = Modifier,
     router: NavHostController
 ) {
     val userViewModel = hiltViewModel<UserViewModel>()
+
+    val scope = rememberCoroutineScope()
+    val bottomSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = true
+    )
+    val appSetting by userViewModel.appSetting.observeAsState(initial = AppSetting())
+
     var showDialogDateFormt by remember {
         mutableStateOf(false)
     }
     var showDialogTimeFormat by remember {
         mutableStateOf(false)
     }
+
     val menus = listOf(
         ItemSetting(
             name = "Account Setting",
@@ -124,8 +143,8 @@ fun PageSetting(
                 ),
                 SubItemSetting(
                     name = "Privacy Policy",
-                    route = "",
-                    type = "",
+                    route = "privacy_policy",
+                    type = "button",
                     color = HexToJetpackColor.getColor(HexToJetpackColor.Blue),
                     icon = Octicons.Unverified24,
                     description = "Read our privacy policy"
@@ -134,53 +153,83 @@ fun PageSetting(
         )
     )
 
+    LaunchedEffect(key1 = Unit, block = {
+        userViewModel.getCurrentSetting()
+    })
+
     DialogDateFormat(
         show = showDialogDateFormt,
+        dateFormat = appSetting?.dateFormat ?: DateTimeFormat.YYYYMMDD.value,
         onDismiss = {
-                    showDialogDateFormt=false
+            showDialogDateFormt=false
         },
-        onConfirm = {}
+        onConfirm = {
+            userViewModel.updateCurrentSetting(appSetting.apply { dateFormat = it.value })
+            showDialogDateFormt=false
+        }
     )
     DialogTimeFormat(
         show = showDialogTimeFormat,
+        timeFormat = appSetting?.timeFormat ?: DateTimeFormat.TWENTY.value,
         onDismiss = {
-                    showDialogTimeFormat=false
+            showDialogTimeFormat=false
         },
-        onConfirm = {}
+        onConfirm = {
+            userViewModel.updateCurrentSetting(appSetting.apply { timeFormat = it.value })
+            showDialogTimeFormat=false
+        }
     )
-    Scaffold(
-        topBar ={
-            AppbarBasic(title = "Settings"){
-                router.popBackStack()
+
+    ModalBottomSheetLayout(
+        sheetState = bottomSheetState,
+        sheetContent = {
+            ModalBottomSheetPrivacyPolicy{
+                scope.launch {
+                    bottomSheetState.hide()
+                }
             }
         }
     ) {
-        LazyColumn(content = {
-            item {
-                Spacer(modifier = modifier.height(40.dp))
+        Scaffold(
+            topBar ={
+                AppbarBasic(title = "Settings"){
+                    router.popBackStack()
+                }
             }
-            items(menus){
-                menu->
-                ItemParentSetting(
-                    item = menu,
-                    onClick = {
-                        when(it){
-                            "time_format"->{
-                                showDialogTimeFormat=true
+        ) {
+            LazyColumn(content = {
+                item {
+                    Spacer(modifier = modifier.height(40.dp))
+                }
+                items(menus){
+                        menu->
+                    ItemParentSetting(
+                        item = menu,
+                        appSetting = appSetting,
+                        onClick = {
+                            when(it){
+                                "time_format"->{
+                                    showDialogTimeFormat=true
+                                }
+                                "date_format"->{
+                                    showDialogDateFormt=true
+                                }
+                                "privacy_policy"->{
+                                    scope.launch{
+                                        bottomSheetState.show()
+                                    }
+                                }
+                                else->{}
                             }
-                            "date_format"->{
-                                showDialogDateFormt=true
-                            }
-                            else->{}
+                        },
+                        onNavigate = {
+                            router.navigate(it)
                         }
-                    },
-                    onNavigate = {
-                        router.navigate(it)
-                    }
-                )
-            }
-        })
+                    )
+                }
+            })
 
+        }
     }
 }
 
@@ -188,6 +237,7 @@ fun PageSetting(
 fun ItemParentSetting(
     modifier: Modifier=Modifier,
     item:ItemSetting,
+    appSetting: AppSetting,
     onNavigate:(route:String)->Unit={},
     onClick:(route:String)->Unit={}
 ) {
@@ -196,7 +246,7 @@ fun ItemParentSetting(
             text = item.name,
             maxLines=1,
             overflow= TextOverflow.Ellipsis,
-            style =TextStyle(
+            style =MaterialTheme.typography.subtitle1.copy(
                 fontWeight = FontWeight.Normal,
                 fontSize = 20.sp,
                 color = MaterialTheme.colors.primary
@@ -210,7 +260,8 @@ fun ItemParentSetting(
             ItemChildSetting(
                 itemSetting = it,
                 onClick = onClick,
-                onNavigate = onNavigate
+                onNavigate = onNavigate,
+                appSetting = appSetting
             )
         }
     }
@@ -220,6 +271,7 @@ fun ItemParentSetting(
 fun ItemChildSetting(
     modifier: Modifier=Modifier,
     itemSetting: SubItemSetting,
+    appSetting: AppSetting,
     onNavigate:(route:String)->Unit={},
     onClick:(route:String)->Unit={}
 ){
@@ -265,16 +317,20 @@ fun ItemChildSetting(
                     text = itemSetting.name,
                     maxLines=1,
                     overflow= TextOverflow.Ellipsis,
-                    style = TextStyle(
+                    style = MaterialTheme.typography.subtitle2.copy(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Normal
                     )
                 )
                 Text(
-                    text = itemSetting.description,
+                    text = when(itemSetting.route){
+                        "date_format"-> getNowMillis().toReadableDate(appSetting.dateFormat)
+                        "time_format"-> "${if(appSetting.timeFormat == "DEFAULT") "Default System"  else appSetting.timeFormat+" Hours" } "
+                        else->itemSetting.description
+                    },
                     maxLines=1,
                     overflow= TextOverflow.Ellipsis,
-                    style = TextStyle(
+                    style = MaterialTheme.typography.caption.copy(
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Light
                     )
@@ -298,6 +354,7 @@ data class SubItemSetting(
     var icon:ImageVector,
     var color: Color
 )
+@ExperimentalMaterialApi
 @Preview(
     uiMode=UI_MODE_NIGHT_NO
 )

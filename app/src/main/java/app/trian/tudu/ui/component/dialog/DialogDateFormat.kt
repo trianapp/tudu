@@ -20,12 +20,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import app.trian.tudu.R
+import app.trian.tudu.common.getNowMillis
+import app.trian.tudu.common.toReadableDate
 import app.trian.tudu.ui.theme.TuduTheme
 
 @Composable
 fun DialogDateFormat(
     modifier:Modifier=Modifier,
     show:Boolean,
+    dateFormat:String=DateTimeFormat.YYYYMMDD.value,
     onDismiss:()->Unit={},
     onConfirm:(dateTimeFormat:DateTimeFormat)->Unit={}
 ) {
@@ -39,6 +42,7 @@ fun DialogDateFormat(
             ScreenDialogDateTimeFormat(
                 title= stringResource(R.string.title_dialog_date_format),
                 items=listFormat,
+                selected=dateFormat,
                 onDismiss = onDismiss,
                 onConfirm = onConfirm
             )
@@ -51,6 +55,7 @@ fun DialogDateFormat(
 fun DialogTimeFormat(
     modifier:Modifier=Modifier,
     show:Boolean,
+    timeFormat:String=DateTimeFormat.TWENTY.value,
     onDismiss:()->Unit={},
     onConfirm:(dateTimeFormat:DateTimeFormat)->Unit={}
 ) {
@@ -64,6 +69,7 @@ fun DialogTimeFormat(
             ScreenDialogDateTimeFormat(
                 title= stringResource(R.string.title_dialog_time_format),
                 items=listFormat,
+                selected=timeFormat,
                 onDismiss = onDismiss,
                 onConfirm = onConfirm
             )
@@ -82,7 +88,7 @@ fun ScreenDialogDateTimeFormat(
     onConfirm: (dateTimeFormat: DateTimeFormat) -> Unit
 ) {
     var selectedItem by remember {
-        mutableStateOf(items.find { it.text == selected } ?: DateTimeFormat.DEFAULT)
+        mutableStateOf(items.find { it.value == selected } ?: DateTimeFormat.DEFAULT)
     }
     Column(
         modifier = modifier
@@ -153,7 +159,11 @@ fun ItemDateFormat(
             onClick = onClick
         )
         Text(
-            text = data.text,
+            text = when(data.value){
+                "12","24","DEFAULT"->data.text
+                else -> getNowMillis().toReadableDate(data.value)
+
+            },
             style= MaterialTheme.typography.body2.copy(
                 color=MaterialTheme.colors.onBackground
             )
@@ -161,10 +171,11 @@ fun ItemDateFormat(
     }
 }
 
+//d MMMM, yyyy
 enum class DateTimeFormat(var text:String,var value:String){
-    YYYYMMDD("2022/02/06","YYYY/MM/DD"),
-    DDMMYYYY("06/02/2022","DD/MM/YYYY"),
-    MMDDYYYY("02/06/2022","MM/DD/YYYY"),
+    YYYYMMDD("2022/02/06","yyyy/MM/dd"),
+    DDMMYYYY("06/02/2022","d MMMM, yyyy"),
+    MMDDYYYY("02/06/2022","MM/dd/YYYY"),
     DEFAULT("Default System","DEFAULT"),
     TWELVE("12 Hour","12"),
     TWENTY("24 Hour","24")

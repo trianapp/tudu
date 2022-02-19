@@ -34,15 +34,31 @@ class UserViewModel @Inject constructor():ViewModel() {
     val appSetting get() = _appSetting
 
 
+    /**
+     * user setting
+     * */
     fun getCurrentSetting() = viewModelScope.launch {
+        userRepository.getCurrentAppSetting().onEach {
+            if(it != null) {
+                _appSetting.postValue(it)
+            }
+        }
+            .collect()
+    }
 
+    fun updateCurrentSetting(appSetting: AppSetting) = viewModelScope.launch {
+        userRepository.updateCurrentSetting(appSetting)
+            .onEach {
+                _appSetting.postValue(it)
+            }
+            .collect()
     }
 
     /**
      * cek id user already logged in ?
-     * we user firebase auth
+     * we use firebase auth
      * */
-    fun userAlreadyLogin(callback:(isLoggedIn:Boolean)->Unit)=viewModelScope.launch {
+    fun userAlreadyLogin(callback:suspend (isLoggedIn:Boolean)->Unit)=viewModelScope.launch {
         delay(1000)
         userRepository.checkIsUserLogin()
             .collect {

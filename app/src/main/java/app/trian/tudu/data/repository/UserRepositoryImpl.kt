@@ -156,7 +156,14 @@ class UserRepositoryImpl(
         }
     }.flowOn(dispatcherProvider.io())
 
-    override suspend fun getCurrentAppSetting(uid: String): Flow<AppSetting?> = appSettingDao.getApplicationSetting(uid).flowOn(dispatcherProvider.io())
+    override suspend fun getCurrentAppSetting(): Flow<AppSetting?> = appSettingDao.getApplicationSetting("MyAppSetting").flowOn(dispatcherProvider.io())
+
+
+    override suspend fun updateCurrentSetting(appSetting: AppSetting): Flow<AppSetting> =flow {
+
+        appSettingDao.addNewSetting(appSetting)
+        emit(appSetting)
+    }.flowOn(dispatcherProvider.io())
 
 
     override suspend fun signOut(callback: () -> Unit) = withContext(dispatcherProvider.io()){
