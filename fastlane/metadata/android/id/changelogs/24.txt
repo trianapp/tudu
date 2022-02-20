@@ -1,9 +1,0 @@
-1. Perubahan Pada 'Privacy Policy'
-2. Improvisasi Kecepatan dan performa
-3. Penambahan Pelabelan
-
-
-Bug Fix:
-1. Perbaikan koreksi warna gelap dan terang
-2. Perbaikan pada batas input nama kategory
-3. Crash Pada Menu Drawer
