@@ -8,3 +8,11 @@ Kelola & catat aktivitas untuk produktivitas
 <p>
 Aplikasi Tudu cocok untuk mengelola to do list yang kompleks. Misalnya, dengan aplikasi ini kamu bisa mencatat kegiatan yang harus kamu kerjakan dalam satu hari, satu minggu, atau bahkan satu bulan. Todoist hadir dengan user interface yang mudah digunakan dan tidak membingungkan
 </p>
+
+Design:
+[figma](https://www.figma.com/file/l6v4UIuLJYSMgkOUnUY8cF/Tudu-UI-Design)
+
+Download:
+| Android  | iOS |
+|:-:|:-:|
+| [<img src="assets/google-play-badge.png" height="50">](https://play.google.com/store/apps/details?id=app.trian.tudu) | Coming soon |
