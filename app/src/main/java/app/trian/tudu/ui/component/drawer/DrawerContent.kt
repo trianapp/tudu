@@ -49,34 +49,34 @@ fun DrawerContent(
     }
     val menu = listOf(
         ItemMenuDrawer(
-            name = "Give Rating",
+            name = stringResource(R.string.menu_give_rating),
             route = "rating_app",
             type = "button"
         ),
         ItemMenuDrawer(
-            name = "Theme",
+            name = stringResource(R.string.menu_theme),
             route = "set_theme",
             type = "button"
         ),
         ItemMenuDrawer(
-            name = "Widget",
+            name = stringResource(R.string.menu_widget),
             route = ""
         ),
         ItemMenuDrawer(
-            name = "Donate",
+            name = stringResource(R.string.menu_donate),
             route = ""
         ),
         ItemMenuDrawer(
-            name = "Feedback",
+            name = stringResource(R.string.menu_feedback),
             route = "send_feedback",
             type = "button"
         ),
         ItemMenuDrawer(
-            name = "FAQ",
+            name = stringResource(R.string.menu_faq),
             route = ""
         ),
         ItemMenuDrawer(
-            name = "Settings",
+            name = stringResource(R.string.menu_settings),
             route = Routes.SETTING
         )
     )

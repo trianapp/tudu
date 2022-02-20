@@ -63,7 +63,7 @@ fun BarChartView(
             )
 
     ) {
-        Text(text = "Daily Task Complete")
+        Text(text = "Weekly Task Complete")
         Row(
             modifier = modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,

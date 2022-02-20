@@ -2,7 +2,6 @@ package app.trian.tudu.ui.pages.setting
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -18,7 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,12 +37,9 @@ import app.trian.tudu.ui.component.dialog.ModalBottomSheetPrivacyPolicy
 import app.trian.tudu.ui.theme.HexToJetpackColor
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.UserViewModel
-import com.squareup.okhttp.Route
 import compose.icons.Octicons
 import compose.icons.octicons.*
 import kotlinx.coroutines.launch
-import logcat.LogPriority
-import logcat.logcat
 
 @ExperimentalMaterialApi
 @Composable
@@ -70,43 +66,43 @@ fun PageSetting(
 
     val menus = listOf(
         ItemSetting(
-            name = "Account Setting",
+            name = stringResource(R.string.setting_account_setting),
             children = listOf(
                 SubItemSetting(
-                    name = "Profile Information",
+                    name = stringResource(R.string.setting_sub_profile_information),
                     route = Routes.PAGE_USER_INFORMATION,
                     type = "link",
                     color = HexToJetpackColor.getColor(HexToJetpackColor.Blue),
                     icon = Octicons.Person24,
-                    description = "Name,Email,Bio"
+                    description = stringResource(R.string.setting_sub_description_profile_information)
                 ),
                 SubItemSetting(
-                    name = "Change Password",
+                    name = stringResource(R.string.setting_sub_change_password),
                     route = Routes.CHANGE_PASSWORD,
                     color = HexToJetpackColor.getColor(HexToJetpackColor.Green),
                     icon = Octicons.Lock24,
-                    description = "Change your current password"
+                    description = stringResource(R.string.setting_sub_description_change_password)
                 )
             )
         ),
         ItemSetting(
-            name = "Notification Setting",
+            name = stringResource(R.string.setting_notification_setting),
             children = listOf(
                 SubItemSetting(
-                    name = "Push Notifications",
+                    name = stringResource(R.string.setting_sub_push_notification),
                     route = "",
                     type = "",
                     color = HexToJetpackColor.getColor(HexToJetpackColor.Red),
                     icon = Octicons.Bell24,
-                    description = "New reminder for your tasks"
+                    description = stringResource(R.string.setting_sub_description_push_notification)
                 ),
             )
         ),
         ItemSetting(
-            name = "Date & Time",
+            name = stringResource(R.string.setting_date_time),
             children = listOf(
                 SubItemSetting(
-                    name = "Date Format",
+                    name = stringResource(R.string.setting_sub_date_format),
                     route = "date_format",
                     type = "button",
                     color = HexToJetpackColor.getColor(HexToJetpackColor.Blue),
@@ -114,7 +110,7 @@ fun PageSetting(
                     description = "November,22 2020"
                 ),
                 SubItemSetting(
-                    name = "Time Format",
+                    name = stringResource(R.string.setting_sub_tim_format),
                     route = "time_format",
                     type = "button",
                     color = HexToJetpackColor.getColor(HexToJetpackColor.Blue),
@@ -124,31 +120,31 @@ fun PageSetting(
             )
         ),
         ItemSetting(
-            name = "General",
+            name = stringResource(R.string.setting_general),
             children = listOf(
                 SubItemSetting(
-                    name = "Rate our App",
+                    name = stringResource(R.string.setting_sub_rate_our_app),
                     route = "rate_app",
                     type = "button",
                     color = HexToJetpackColor.getColor(HexToJetpackColor.Yellow),
                     icon = Octicons.Star24,
-                    description = "Rate & Review us"
+                    description = stringResource(R.string.setting_sub_description_rate_and_review)
                 ),
                 SubItemSetting(
-                    name = "Send feedback",
+                    name = stringResource(R.string.setting_sub_send_feedback),
                     route = "send_feedback",
                     type = "button",
                     color = HexToJetpackColor.getColor(HexToJetpackColor.Yellow),
                     icon = Octicons.Mail24,
-                    description = "Share your thought"
+                    description = stringResource(R.string.setting_sub_description_send_feedback)
                 ),
                 SubItemSetting(
-                    name = "Privacy Policy",
+                    name = stringResource(R.string.setting_sub_privacy_policy),
                     route = "privacy_policy",
                     type = "button",
                     color = HexToJetpackColor.getColor(HexToJetpackColor.Blue),
                     icon = Octicons.Unverified24,
-                    description = "Read our privacy policy"
+                    description = stringResource(R.string.setting_sub_description_privacy_policy)
                 ),
             )
         )

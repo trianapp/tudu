@@ -1,13 +1,14 @@
-1. Sekarang kamu bisa melihat statistik mingguan di halaman profile
-2. Demi keamanan pengguna lama dan baru akan diminta untuk verifikasi email
-3. Pengaturan format tanggal dan waktu sudah tersedia
-4. Bagi kamu yang lupa password, tenang sekarang Tudu sudah bisa reset password
-5.
+1. Weekly statistic now available 🥳
+2. For security user need to verify their email
+3. Settings format date time
+4. Added reset password
+5. Added English and Indonesia
+
 
 
 Bug Fix:
-1. Peningkatan Performa
-2. Perbaikan Tema - Warna,font,dan alert
-3. Beberapa device mengalami crash ketika membuka menu
-4. User tidak logout sepenuhnya pada bebrapa device
+1. Improve performance
+2. Fix Theme - Color,Typography,and Alert
+3. Crash on some device when opening menu
+4. User can still access home after SignOut
 
