@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import app.trian.datepicker.DatePickerSlider
 import app.trian.tudu.R
 import app.trian.tudu.common.Routes
 import app.trian.tudu.common.signOut
