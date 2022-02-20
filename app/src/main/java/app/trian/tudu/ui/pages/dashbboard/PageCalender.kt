@@ -83,15 +83,27 @@ fun PageCalender(
     ) {
 
         Column(
-            modifier = modifier
-                .fillMaxWidth()
-                .fillMaxHeight(),
+            modifier = modifier.fillMaxWidth().fillMaxHeight(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
+            verticalArrangement = Arrangement.Center
 
         ) {
-            DatePickerSlider(
-                generateDaysCount = 5
+            Image(
+                painter = painterResource(id = R.drawable.bg_page_calendar_empty),
+                contentDescription = "")
+            Text(
+                text = "Under Construction",
+                style= TextStyle(
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            )
+            Text(
+                text = "We're working o it!",
+                style= TextStyle(
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Normal
+                )
             )
         }
     }

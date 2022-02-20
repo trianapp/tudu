@@ -3,11 +3,13 @@ package app.trian.tudu.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.trian.tudu.common.*
 import app.trian.tudu.data.local.Category
 import app.trian.tudu.data.local.Task
 import app.trian.tudu.data.local.Todo
 import app.trian.tudu.data.repository.design.TaskRepository
 import app.trian.tudu.data.repository.design.UserRepository
+import app.trian.tudu.domain.ChartModelData
 import app.trian.tudu.ui.theme.HexToJetpackColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -56,6 +58,11 @@ class TaskViewModel @Inject constructor() : ViewModel() {
     private var _unCompleteTaskCount = MutableLiveData<Int>(0)
     val unCompleteTaskCount get() = _unCompleteTaskCount
 
+    private var _chartCompleteTask = MutableLiveData<ChartModelData>()
+    val chartCompleteTask get() = _chartCompleteTask
+
+    private var _currentDate = MutableLiveData<Long>(getNowMillis())
+    val currentDate get() = _currentDate
 
 
     fun getListTask()=viewModelScope.launch {
@@ -108,6 +115,29 @@ class TaskViewModel @Inject constructor() : ViewModel() {
             _completedTaskCount.value = tasks.filter { it.done }.size
             _unCompleteTaskCount.value = tasks.filter { !it.done }.size
         }.collect()
+    }
+
+    fun getStatisticChart() = viewModelScope.launch {
+        getStatisticChart(_currentDate.value ?: getNowMillis())
+
+    }
+
+    private fun getStatisticChart(date:Long) = viewModelScope.launch {
+        taskRepository.getWeekCompleteCount(date).onEach {
+            _chartCompleteTask.postValue(it)
+        }
+            .collect()
+    }
+
+    fun getStatistic(isNext:Boolean) = viewModelScope.launch {
+        val date = if(isNext) (_currentDate.value ?: getNowMillis()).getNextWeek() else (_currentDate.value ?: getNowMillis()).getPreviousWeek()
+        getStatisticChart(date)
+        if(isNext){
+            _currentDate.postValue(date)
+        }else{
+            _currentDate.postValue(date)
+        }
+
     }
 
     fun addNewTask(

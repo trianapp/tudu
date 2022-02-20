@@ -28,6 +28,9 @@ interface TaskDao {
     @Query("SELECT * FROM tb_task WHERE taskCategoryId=:categoryId ORDER BY created_at DESC")
     fun getListTaskByCategory(categoryId:String):Flow<List<Task>>
 
+    @Query("SELECT COUNT(taskId) from tb_task WHERE done=:done AND updated_at BETWEEN :from AND :to")
+    fun getCountCompleteTask(from:Long,to:Long,done:Boolean = true):Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertNewTask(task:Task)
 

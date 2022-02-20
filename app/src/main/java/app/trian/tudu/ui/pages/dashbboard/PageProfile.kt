@@ -31,8 +31,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
-import app.trian.tudu.common.Routes
-import app.trian.tudu.common.signOut
+import app.trian.tudu.common.*
+import app.trian.tudu.domain.ChartModelData
 import app.trian.tudu.ui.component.chart.BarChartView
 import app.trian.tudu.ui.component.customShape.CurveShape
 import app.trian.tudu.ui.component.task.BottomSheetInputNewTask
@@ -44,6 +44,7 @@ import coil.transform.CircleCropTransformation
 import compose.icons.Octicons
 import compose.icons.octicons.ArrowLeft24
 import compose.icons.octicons.Gear16
+import compose.icons.octicons.Person24
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -61,6 +62,9 @@ fun PageProfile(
     val allTaskCount by taskViewModel.allTaskCount.observeAsState(initial = 0)
     val completeTaskCount by taskViewModel.completedTaskCount.observeAsState(initial = 0)
     val unCompleteTaskCount by taskViewModel.unCompleteTaskCount.observeAsState(initial = 0)
+    val chartStatistics by taskViewModel.chartCompleteTask.observeAsState(initial = ChartModelData())
+    val currentDate by taskViewModel.currentDate.observeAsState(initial = getNowMillis())
+
 
     val modalBottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -77,6 +81,7 @@ fun PageProfile(
     LaunchedEffect(key1 = Unit, block = {
         userViewModel.getCurrentUser()
         taskViewModel.calculateTaskCount()
+        taskViewModel.getStatisticChart()
     })
     BasePagesDashboard(
         router = router,
@@ -96,17 +101,6 @@ fun PageProfile(
                 TopAppBar(
                     backgroundColor = MaterialTheme.colors.primary,
                     elevation = 0.dp,
-                    navigationIcon = {
-                        IconToggleButton(checked = false, onCheckedChange = {
-                            router.popBackStack()
-                        }) {
-                            Icon(
-                                imageVector = Octicons.ArrowLeft24,
-                                contentDescription = "",
-                                tint = MaterialTheme.colors.onPrimary
-                            )
-                        }
-                    },
                     title = {
                             Text(
                                 stringResource(R.string.title_page_profile),
@@ -127,8 +121,8 @@ fun PageProfile(
                             }
                         ) {
                             Icon(
-                                imageVector = Octicons.Gear16,
-                                contentDescription = "",
+                                imageVector = Octicons.Person24,
+                                contentDescription = stringResource(R.string.content_description_button_user_profile),
                                 tint = MaterialTheme.colors.onPrimary
                             )
                         }
@@ -169,7 +163,7 @@ fun PageProfile(
                                         transformations(CircleCropTransformation())
                                     }
                                 ),
-                                contentDescription = "",
+                                contentDescription = stringResource(R.string.content_description_profile_image),
                             )
 
                             Column(
@@ -229,7 +223,16 @@ fun PageProfile(
                         horizontal = 20.dp
                     )
                 ) {
-                    BarChartView()
+                    BarChartView(
+                        title=currentDate.getPreviousWeek().getDateUntil(currentDate),
+                        items = chartStatistics.items,
+                        labels = chartStatistics.labels,
+                        maxAxis = chartStatistics.max,
+                        minAxis = chartStatistics.min,
+                        onArrowClicked = {
+                            taskViewModel.getStatistic(it)
+                        }
+                    )
                 }
             }
 

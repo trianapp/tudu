@@ -1,6 +1,6 @@
 package app.trian.tudu.data.repository
 
-import app.trian.tudu.common.DispatcherProvider
+import app.trian.tudu.common.*
 import app.trian.tudu.data.local.*
 import app.trian.tudu.data.local.dao.AttachmentDao
 import app.trian.tudu.data.local.dao.CategoryDao
@@ -8,6 +8,7 @@ import app.trian.tudu.data.local.dao.TaskDao
 import app.trian.tudu.data.local.dao.TodoDao
 import app.trian.tudu.data.repository.design.TaskRepository
 import app.trian.tudu.domain.*
+import com.github.mikephil.charting.data.BarEntry
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -37,6 +38,51 @@ class TaskRepositoryImpl(
         val task = taskDao.getTaskById(taskId)
             emit(task)
 
+    }.flowOn(dispatcherProvider.io())
+
+    override suspend fun getWeekCompleteCount(date:Long): Flow<ChartModelData> =flow {
+
+
+
+        val startWeek = date.getPreviousWeek()
+
+        var currentTo = date.getNextDate()
+        var currentFrom = currentTo.getPreviousDate()
+        var currentMax = 0f
+
+        val dayCount = listOf(6,5,4,3,2,1,0)
+        var listEntry = listOf<BarEntry>()
+        var listLabel = listOf<String>()
+        dayCount.forEachIndexed { _, i ->
+
+//            logcat("date -> ",LogPriority.ERROR) { currentFrom.formatDate()+"<->"+currentTo.formatDate() }
+            val dataCount = taskDao.getCountCompleteTask(currentFrom,currentTo)
+
+            if(currentMax < dataCount){
+                currentMax = (dataCount + 2).toFloat()
+            }
+
+            listEntry = listEntry + BarEntry(
+                i.toFloat(),
+                dataCount.toFloat()
+            )
+
+            currentTo = currentFrom
+            currentFrom = currentFrom.getPreviousDate()
+
+            listLabel = listLabel + currentTo.formatDate()
+
+        }
+        emit(
+            ChartModelData(
+                items = listEntry,
+                labels = listLabel.reversed(),
+                dateFrom = startWeek,
+                dateTo = date,
+                max = currentMax,
+                min = 0f
+            )
+        )
     }.flowOn(dispatcherProvider.io())
 
 

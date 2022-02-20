@@ -96,6 +96,8 @@
     <string name="btn_reset_password">Reset my password</string>
     <string name="placeholder_email_reset_password">Your email account</string>
     <string name="alert_validation_email">Seems the email is not valid email,please check again!</string>
+    <string name="content_description_button_user_profile">Goto Detail Profile</string>
+    <string name="content_description_profile_image">Photo Profile User</string>
 
 
 </resources>

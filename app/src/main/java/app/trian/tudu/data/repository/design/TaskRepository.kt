@@ -1,6 +1,7 @@
 package app.trian.tudu.data.repository.design
 
 import app.trian.tudu.data.local.*
+import app.trian.tudu.domain.ChartModelData
 import app.trian.tudu.domain.DataState
 import kotlinx.coroutines.flow.Flow
 
@@ -8,6 +9,7 @@ interface TaskRepository {
     suspend fun getListTask():Flow<List<Task>>
     suspend fun getListTaskByCategory(categoryId:String):Flow<List<Task>>
     suspend fun getTaskById(taskId:String):Flow<Task?>
+    suspend fun getWeekCompleteCount(date:Long):Flow<ChartModelData>
     suspend fun createNewTask(task: Task,todo:List<Todo>):Flow<DataState<Task>>
     suspend fun updateTask(task: Task):Flow<Task>
     suspend fun getBackupTaskFromCloud():Flow<DataState<List<Task>>>

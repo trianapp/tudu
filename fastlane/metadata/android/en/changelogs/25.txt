@@ -1,0 +1,13 @@
+1. Sekarang kamu bisa melihat statistik mingguan di halaman profile
+2. Demi keamanan pengguna lama dan baru akan diminta untuk verifikasi email
+3. Pengaturan format tanggal dan waktu sudah tersedia
+4. Bagi kamu yang lupa password, tenang sekarang Tudu sudah bisa reset password
+5.
+
+
+Bug Fix:
+1. Peningkatan Performa
+2. Perbaikan Tema - Warna,font,dan alert
+3. Beberapa device mengalami crash ketika membuka menu
+4. User tidak logout sepenuhnya pada bebrapa device
+
