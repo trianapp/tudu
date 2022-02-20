@@ -218,8 +218,6 @@ dependencies {
     androidTestImplementation(Libs.Org.Jetbrains.Kotlinx.kotlinxCoroutinesTest)
 
 
-    implementation(project(":datepicker"))
-
 
 }
 
