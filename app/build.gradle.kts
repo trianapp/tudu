@@ -55,7 +55,6 @@ android {
 
         getByName("release") {
             signingConfig = signingConfigs.getByName("release")
-
             isMinifyEnabled=true
             multiDexKeepProguard = file("multidex-config.txt")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
