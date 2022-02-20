@@ -24,7 +24,7 @@ android {
         applicationId = Version.applicationId
         minSdk =21
         targetSdk =30
-        versionCode =24
+        versionCode =25
         versionName = "1.0.1"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -34,11 +34,11 @@ android {
     }
     signingConfigs {
         /**
-         * It's not necessary to specify, but I like to keep the debug keystore * in SCM so all our debug builds (on all workstations) use the same
+         *  It's not necessary to specify, but I like to keep the debug keystore * in SCM so all our debug builds (on all workstations) use the same
          *  key for convenience
-        create("debug") {
-        storeFile =file("debug.keystore")
-        }
+            create("debug") {
+                storeFile =file("debug.keystore")
+            }
          */
 
         //https://github.com/onmyway133/blog/issues/285
@@ -60,13 +60,6 @@ android {
             multiDexKeepProguard = file("multidex-config.txt")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
-        /**
-        getByName("debug"){
-            signingConfig = signingConfigs.getByName("debug")
-            isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
-        */
     }
 
     lint {
@@ -202,11 +195,17 @@ dependencies {
     with(Libs.Com.Google.Accompanist){
         implementation(accompanistSystemUiController)
     }
-    //image laoder
+    //image loader
     with(Libs.Io.CoilKt){
         implementation(coilCompose)
     }
 
+    //chart
+    with(Libs.Com.Github.PhilJay){
+        implementation(mpAndroidChart)
+    }
+
+    implementation(Libs.Com.Github.GrenderG.toasty)
 
 //    local unit test
     testImplementation(Libs.Junit.junit)

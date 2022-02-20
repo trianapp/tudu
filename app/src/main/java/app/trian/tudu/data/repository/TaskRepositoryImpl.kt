@@ -1,18 +1,21 @@
 package app.trian.tudu.data.repository
 
-import app.trian.tudu.common.DispatcherProvider
+import app.trian.tudu.common.*
 import app.trian.tudu.data.local.*
 import app.trian.tudu.data.local.dao.AttachmentDao
 import app.trian.tudu.data.local.dao.CategoryDao
 import app.trian.tudu.data.local.dao.TaskDao
 import app.trian.tudu.data.local.dao.TodoDao
 import app.trian.tudu.data.repository.design.TaskRepository
-import app.trian.tudu.domain.DataState
+import app.trian.tudu.domain.*
+import com.github.mikephil.charting.data.BarEntry
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import com.google.firebase.firestore.SetOptions
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.tasks.await
+import logcat.LogPriority
+import logcat.logcat
 
 class TaskRepositoryImpl(
     private val dispatcherProvider: DispatcherProvider,
@@ -37,6 +40,51 @@ class TaskRepositoryImpl(
 
     }.flowOn(dispatcherProvider.io())
 
+    override suspend fun getWeekCompleteCount(date:Long): Flow<ChartModelData> =flow {
+
+
+
+        val startWeek = date.getPreviousWeek()
+
+        var currentTo = date.getNextDate()
+        var currentFrom = currentTo.getPreviousDate()
+        var currentMax = 0f
+
+        val dayCount = listOf(6,5,4,3,2,1,0)
+        var listEntry = listOf<BarEntry>()
+        var listLabel = listOf<String>()
+        dayCount.forEachIndexed { _, i ->
+
+//            logcat("date -> ",LogPriority.ERROR) { currentFrom.formatDate()+"<->"+currentTo.formatDate() }
+            val dataCount = taskDao.getCountCompleteTask(currentFrom,currentTo)
+
+            if(currentMax < dataCount){
+                currentMax = (dataCount + 2).toFloat()
+            }
+
+            listEntry = listEntry + BarEntry(
+                i.toFloat(),
+                dataCount.toFloat()
+            )
+
+            currentTo = currentFrom
+            currentFrom = currentFrom.getPreviousDate()
+
+            listLabel = listLabel + currentTo.formatDate()
+
+        }
+        emit(
+            ChartModelData(
+                items = listEntry,
+                labels = listLabel.reversed(),
+                dateFrom = startWeek,
+                dateTo = date,
+                max = currentMax,
+                min = 0f
+            )
+        )
+    }.flowOn(dispatcherProvider.io())
+
 
     override suspend fun createNewTask(task: Task,todo:List<Todo>): Flow<DataState<Task>> =flow{
 
@@ -58,12 +106,53 @@ class TaskRepositoryImpl(
             }
             todoDao.insertBatchTodo(todos)
         }
-        emit(DataState.onData(task))
+        emit(DataState.OnData(task))
     }.flowOn(dispatcherProvider.io())
 
     override suspend fun updateTask(task: Task): Flow<Task> =flow {
         taskDao.updateTask(task)
         emit(task)
+    }.flowOn(dispatcherProvider.io())
+
+    override suspend fun getBackupTaskFromCloud(): Flow<DataState<List<Task>>> = flow {
+        emit(DataState.OnLoading)
+        val currentUser = firebaseAuth.currentUser
+        if(currentUser == null) {
+            emit(DataState.OnFailure("Login first!"))
+        }else{
+            try {
+               val result = firestore.collection("TASK")
+                    .document(currentUser.uid)
+                    .get().await().toObject(TaskModel::class.java)!!
+
+                taskDao.insertBatchTask(result.task)
+                emit(DataState.OnFailure("sas"))
+            }catch (e:Exception){
+                emit(DataState.OnFailure(e.message ?: "Error retrieve data"))
+            }
+        }
+
+    }.flowOn(dispatcherProvider.io())
+
+    override suspend fun sendBackupTaskToCloud(): Flow<DataState<List<Task>>> = flow<DataState<List<Task>>> {
+        emit(DataState.OnLoading)
+        val currentUser = firebaseAuth.currentUser
+        if(currentUser == null){
+            emit(DataState.OnFailure("Login First!"))
+        }else{
+            try {
+                val listTask = taskDao.getListTaskNoFlow()
+                val taskModel = TaskModel(
+                    task = listTask,
+                    updated_at = 0
+                )
+                firestore.collection("TASK")
+                    .document(currentUser.uid)
+                    .set(taskModel.toHashMap(), SetOptions.merge())
+            }catch (e:Exception){
+                emit(DataState.OnFailure(e.message ?: "Error uploading data"))
+            }
+        }
     }.flowOn(dispatcherProvider.io())
 
     override suspend fun getListCompleteTodo(taskId: String): Flow<List<Todo>> = todoDao.getListCompleteTodoByTask(taskId,true).flowOn(dispatcherProvider.io())
@@ -91,9 +180,19 @@ class TaskRepositoryImpl(
         category.apply {
             categoryId = idFromFireStore
         }
+
         categoryDao.insertNewCategory(category)
-        emit(DataState.onData(category))
+        emit(DataState.OnData(category))
     }.flowOn(dispatcherProvider.io())
 
     override suspend fun getListCategory(): Flow<List<Category>> = categoryDao.getListCategory().flowOn(dispatcherProvider.io())
+    override suspend fun updateCategory(category: Category): Flow<DataState<Category>> = flow<DataState<Category>> {
+        categoryDao.updateCategory(category)
+        emit(DataState.OnData(category))
+    }.flowOn(dispatcherProvider.io())
+
+    override suspend fun deleteCategory(category: Category): Flow<DataState<Category>> = flow<DataState<Category>> {
+        categoryDao.deleteCategory(category)
+        emit(DataState.OnData(category))
+    }.flowOn(dispatcherProvider.io())
 }

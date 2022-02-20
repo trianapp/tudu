@@ -1,22 +1,20 @@
 package app.trian.tudu
 
-import android.app.Application
+
+import android.graphics.Typeface
+import androidx.core.content.res.ResourcesCompat
 import androidx.multidex.MultiDexApplication
-import app.trian.tudu.common.DefaultDispatcherProvider
-import app.trian.tudu.common.DispatcherProvider
-import app.trian.tudu.data.repository.design.TaskRepository
 import com.google.firebase.FirebaseApp
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.HiltAndroidApp
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import es.dmoral.toasty.Toasty
 import logcat.AndroidLogcatLogger
 import logcat.LogPriority
 import logcat.logcat
-import javax.inject.Inject
+import app.trian.tudu.R
+
 
 /**
  * main application
@@ -33,6 +31,17 @@ class MainApplication:MultiDexApplication(){
         try {
             FirebaseApp.initializeApp(this)
             FirebaseCrashlytics.getInstance()
+
+            //configure toast
+            val typeface: Typeface? = ResourcesCompat.getFont(this, R.font.poppins_regular)
+            Toasty.Config.getInstance()
+                .tintIcon(true)
+                .setToastTypeface(typeface!!)
+                .setTextSize(16)
+                .allowQueue(true)
+                .setGravity(1,0,1)
+                .supportDarkTheme(true)
+                .apply()
         }catch (e:Exception){
             Firebase.crashlytics.recordException(e)
             logcat { e.message.toString() }

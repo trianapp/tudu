@@ -1,5 +1,7 @@
 package app.trian.tudu.ui.component.dialog
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -64,7 +66,7 @@ fun ScreenDialogLogout(
         ) {
             Text(
                 text = stringResource(R.string.text_confirmation_signout),
-                style = TextStyle(
+                style = MaterialTheme.typography.body1.copy(
                     color=MaterialTheme.colors.onBackground
                 )
             )
@@ -78,7 +80,7 @@ fun ScreenDialogLogout(
                 TextButton(onClick = { onCancel() }) {
                     Text(
                         text = stringResource(id = R.string.btn_cancel),
-                        style = TextStyle(
+                        style = MaterialTheme.typography.button.copy(
                             color=MaterialTheme.colors.primary.copy(alpha = 0.6f)
                         )
                     )
@@ -86,7 +88,7 @@ fun ScreenDialogLogout(
                 TextButton(onClick = { onConfirm() }) {
                     Text(
                         text = stringResource(R.string.btn_signout),
-                        style = TextStyle(
+                        style = MaterialTheme.typography.button.copy(
                             color=MaterialTheme.colors.primary
                         )
                     )
@@ -96,7 +98,12 @@ fun ScreenDialogLogout(
     }
 }
 
-@Preview
+@Preview(
+    uiMode = UI_MODE_NIGHT_NO
+)
+@Preview(
+    uiMode = UI_MODE_NIGHT_YES
+)
 @Composable
 fun PreviewDialogLogout(){
     TuduTheme {

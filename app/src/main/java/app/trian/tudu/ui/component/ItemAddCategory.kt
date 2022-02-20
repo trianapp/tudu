@@ -3,6 +3,7 @@ package app.trian.tudu.ui.component
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -39,8 +40,18 @@ fun ItemAddCategory(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ){
-            Icon(imageVector = Octicons.Plus16, contentDescription = "")
-            Text(text = stringResource(id = R.string.create_new_category))
+            Icon(
+                imageVector = Octicons.Plus16,
+                contentDescription = stringResource(R.string.content_description_add_new_category),
+                tint = MaterialTheme.colors.onBackground
+            )
+            Spacer(modifier = modifier.width(6.dp))
+            Text(
+                text = stringResource(id = R.string.create_new_category),
+                style = MaterialTheme.typography.subtitle1.copy(
+                    color = MaterialTheme.colors.onBackground
+                )
+            )
         }
     }
 }

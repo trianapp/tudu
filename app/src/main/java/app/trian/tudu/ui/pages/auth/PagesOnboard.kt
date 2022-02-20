@@ -1,5 +1,7 @@
 package app.trian.tudu.ui.pages.auth
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.Image
@@ -7,8 +9,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -26,12 +27,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
-import app.trian.tudu.common.GoogleAuthContract
-import app.trian.tudu.common.Routes
-import app.trian.tudu.common.signInInSuccessOnboard
+import app.trian.tudu.common.*
 import app.trian.tudu.ui.component.ButtonGoogle
 import app.trian.tudu.ui.component.ButtonPrimary
 import app.trian.tudu.ui.component.ButtonSecondary
+import app.trian.tudu.ui.component.dialog.DialogLoading
 import app.trian.tudu.ui.component.dialog.ModalBottomSheetPrivacyPolicy
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.UserViewModel
@@ -55,6 +55,9 @@ fun PagesOnboard(
             true
         }
     )
+    var shouldShowDialogLoading by remember {
+        mutableStateOf(false)
+    }
     val scope = rememberCoroutineScope()
 
     fun goToDashboard(){
@@ -87,17 +90,21 @@ fun PagesOnboard(
         contract = GoogleAuthContract(),
         onResult = {
                 task->
+            shouldShowDialogLoading = true
             userViewModel.logInWithGoogle(task){
                 success, message ->
-
+                shouldShowDialogLoading = false
                 if(success){
-                    Toast.makeText(ctx,ctx.getString(R.string.signin_success),Toast.LENGTH_LONG).show()
+                    ctx.toastSuccess(ctx.getString(R.string.signin_success))
                     goToDashboard()
                 }else{
-                    Toast.makeText(ctx,ctx.getString(R.string.signin_failed,message),Toast.LENGTH_LONG).show()
+                    ctx.toastError(ctx.getString(R.string.signin_failed,message))
                 }
             }
         }
+    )
+    DialogLoading(
+        show=shouldShowDialogLoading
     )
 
     ModalBottomSheetLayout(
@@ -131,7 +138,7 @@ fun PagesOnboard(
                 ) {
                     Text(
                         text = stringResource(R.string.title_onboard),
-                        style = TextStyle(
+                        style = MaterialTheme.typography.body1.copy(
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Normal
                         )
@@ -141,7 +148,7 @@ fun PagesOnboard(
                             modifier = modifier
                                 .align(Alignment.TopCenter),
                             text = stringResource(R.string.subtitle_onboard),
-                            style = TextStyle(
+                            style = MaterialTheme.typography.body1.copy(
                                 fontSize = 36.sp,
                                 fontWeight = FontWeight.Normal,
                                 color = MaterialTheme.colors.primary
@@ -200,7 +207,12 @@ fun PagesOnboard(
 }
 
 @ExperimentalMaterialApi
-@Preview
+@Preview(
+    uiMode = UI_MODE_NIGHT_NO
+)
+@Preview(
+    uiMode = UI_MODE_NIGHT_YES
+)
 @Composable
 fun PreviewOnboard(){
     TuduTheme {

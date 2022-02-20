@@ -3,13 +3,17 @@ package app.trian.tudu.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.trian.tudu.common.*
 import app.trian.tudu.data.local.Category
 import app.trian.tudu.data.local.Task
 import app.trian.tudu.data.local.Todo
 import app.trian.tudu.data.repository.design.TaskRepository
 import app.trian.tudu.data.repository.design.UserRepository
+import app.trian.tudu.domain.ChartModelData
 import app.trian.tudu.ui.theme.HexToJetpackColor
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import logcat.LogPriority
 import logcat.logcat
@@ -54,86 +58,119 @@ class TaskViewModel @Inject constructor() : ViewModel() {
     private var _unCompleteTaskCount = MutableLiveData<Int>(0)
     val unCompleteTaskCount get() = _unCompleteTaskCount
 
+    private var _chartCompleteTask = MutableLiveData<ChartModelData>()
+    val chartCompleteTask get() = _chartCompleteTask
 
+    private var _currentDate = MutableLiveData<Long>(getNowMillis())
+    val currentDate get() = _currentDate
 
 
     fun getListTask()=viewModelScope.launch {
-        taskRepository.getListTask().collect {
+        taskRepository.getListTask().onEach {
             result->
             _listTask.value = result
-        }
+        }.collect()
     }
 
 
     fun getListTaskByCategory(categoryId:String)=viewModelScope.launch {
-        taskRepository.getListTaskByCategory(categoryId).collect {
+        taskRepository.getListTaskByCategory(categoryId).onEach {
             result->
             _listTask.value = result
-        }
+        }.collect()
     }
 
     fun getListCategory()=viewModelScope.launch {
-        taskRepository.getListCategory().collect {
+        taskRepository.getListCategory().onEach {
             result->
             _listCategory.value = result
-        }
+        }.collect()
     }
 
 
     fun getCompleteTodo(taskId:String)=viewModelScope.launch {
-         taskRepository.getListCompleteTodo(taskId).collect {
+         taskRepository.getListCompleteTodo(taskId).onEach {
              result->
              result.forEach {
                  logcat("yoo",LogPriority.ERROR) { it.toString() }
              }
              _completeTodo.value = result
 
-         }
+         }.collect()
     }
 
     fun getUnCompleteTodo(taskId: String) = viewModelScope.launch {
-        taskRepository.getListUnCompleteTodo(taskId).collect{
+        taskRepository.getListUnCompleteTodo(taskId).onEach{
             result->
 
             _unCompleteTodo.value = result
         }
+            .collect()
     }
 
     fun calculateTaskCount()=viewModelScope.launch {
-        taskRepository.getListTask().collect{
+        taskRepository.getListTask().onEach{
             tasks->
             _allTaskCount.value = tasks.size
             _completedTaskCount.value = tasks.filter { it.done }.size
             _unCompleteTaskCount.value = tasks.filter { !it.done }.size
+        }.collect()
+    }
+
+    fun getStatisticChart() = viewModelScope.launch {
+        getStatisticChart(_currentDate.value ?: getNowMillis())
+
+    }
+
+    private fun getStatisticChart(date:Long) = viewModelScope.launch {
+        taskRepository.getWeekCompleteCount(date).onEach {
+            _chartCompleteTask.postValue(it)
         }
+            .collect()
+    }
+
+    fun getStatistic(isNext:Boolean) = viewModelScope.launch {
+        val date = if(isNext) (_currentDate.value ?: getNowMillis()).getNextWeek() else (_currentDate.value ?: getNowMillis()).getPreviousWeek()
+        getStatisticChart(date)
+        if(isNext){
+            _currentDate.postValue(date)
+        }else{
+            _currentDate.postValue(date)
+        }
+
     }
 
     fun addNewTask(
         task:Task,
         todo:List<Todo>
     )=viewModelScope.launch {
-        taskRepository.createNewTask(task,todo).collect {
-
-        }
+        taskRepository.createNewTask(task,todo).onEach{}.collect()
 
     }
 
     fun updateTask(
         task: Task
     )=viewModelScope.launch {
-        taskRepository.updateTask(task).collect {
-
-        }
+        taskRepository.updateTask(task).onEach{}.collect()
     }
 
     fun getTaskById(taskId:String)=viewModelScope.launch{
-        taskRepository.getTaskById(taskId).collect {
+        taskRepository.getTaskById(taskId).onEach {
             result->
             _detailTask.value = result
 
-        }
+        }.collect()
         getListCategory()
         getCompleteTodo(taskId)
+    }
+
+    fun sendBackupTask() = viewModelScope.launch {
+        taskRepository.sendBackupTaskToCloud().onEach {  }.collect()
+    }
+
+    fun getBackupTaskFromCloud() = viewModelScope.launch {
+
+        taskRepository.getBackupTaskFromCloud().onEach {  }.collect()
     }
 
     fun addNewCategory(categoryName:String)=viewModelScope.launch {
@@ -143,9 +180,15 @@ class TaskViewModel @Inject constructor() : ViewModel() {
             updated_at = 0,
             color = HexToJetpackColor.Blue
         )
-        taskRepository.addCategory(category).collect {
 
-        }
+        taskRepository.addCategory(category).onEach{}.collect()
+    }
+    fun updateCategory(category: Category) = viewModelScope.launch {
+        taskRepository.updateCategory(category).onEach{}.collect()
+    }
+
+    fun deleteCategory(category: Category)=viewModelScope.launch {
+        taskRepository.deleteCategory(category).onEach { }.collect()
     }
 
     fun addNewTodo(todoName:String,taskId: String)=viewModelScope.launch {
@@ -157,14 +200,14 @@ class TaskViewModel @Inject constructor() : ViewModel() {
             updated_at = 0
         )
 
-        taskRepository.addTodo(todo).collect {  }
+        taskRepository.addTodo(todo).onEach{}.collect()
     }
 
     fun updateTodo(todo: Todo)=viewModelScope.launch {
-        taskRepository.updateTodo(todo).collect {  }
+        taskRepository.updateTodo(todo).onEach{}.collect()
     }
     fun deleteTodo(todo: Todo)=viewModelScope.launch {
-        taskRepository.deleteTodo(todo).collect {  }
+        taskRepository.deleteTodo(todo).onEach{}.collect()
     }
 
 }

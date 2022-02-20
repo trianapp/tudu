@@ -61,7 +61,7 @@ fun DropdownActionItemCategory(
         ) {
             Text(
                 text = stringResource(id = R.string.btn_edit),
-                style = TextStyle(
+                style = MaterialTheme.typography.button.copy(
                     color=MaterialTheme.colors.onBackground
                 )
             )
@@ -74,7 +74,7 @@ fun DropdownActionItemCategory(
         ) {
             Text(
                 text = stringResource(id = R.string.btn_hide),
-                style = TextStyle(
+                style = MaterialTheme.typography.button.copy(
                     color= MaterialTheme.colors.onBackground
                 )
             )
@@ -87,7 +87,7 @@ fun DropdownActionItemCategory(
         ) {
             Text(
                 text = stringResource(id = R.string.btn_delete),
-                style = TextStyle(
+                style = MaterialTheme.typography.button.copy(
                     color=MaterialTheme.colors.onBackground
                 )
             )

@@ -1,13 +1,21 @@
 package app.trian.tudu.ui.component
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.trian.tudu.R
+import app.trian.tudu.common.getLogo
 import app.trian.tudu.data.local.Category
 import app.trian.tudu.ui.component.tab.TabBarHome
 import app.trian.tudu.ui.theme.HexToJetpackColor
@@ -25,20 +33,27 @@ import compose.icons.octicons.Home16
  */
 @Composable
 fun AppbarHome(
+    modifier: Modifier=Modifier,
     dataCategory:List<Category> = listOf(),
     onOptionMenuSelected:(menu:Int)->Unit={},
     onSelectCategory:(category:Category)->Unit={}
 ) {
+    val isDark = isSystemInDarkTheme()
     Column {
         TopAppBar(
             title = {
-                Text(text = stringResource(R.string.title_appbar_home))
+                Text(
+                    text = stringResource(R.string.title_appbar_home),
+                    style=MaterialTheme.typography.h5
+                )
             },
             backgroundColor = MaterialTheme.colors.background,
             navigationIcon = {
-                IconToggleButton(checked = false, onCheckedChange = {}) {
-                    Icon(imageVector =Octicons.Home16 , contentDescription = "")
-                }
+                Image(
+                    modifier = modifier.size(40.dp),
+                    painter = painterResource(id = R.drawable.logo) ,
+                    contentDescription = "Logo Tudu"
+                )
             },
             elevation = 0.dp
         )
@@ -88,11 +103,19 @@ fun AppbarBasic(
             }
         },
         title = {
-            Text(text = title)
+            Text(
+                text = title,
+                style =MaterialTheme.typography.h5
+            )
         }
     )
 }
-@Preview
+@Preview(
+    uiMode = UI_MODE_NIGHT_NO
+)
+@Preview(
+    uiMode = UI_MODE_NIGHT_YES
+)
 @Composable
 fun PreviewAppbarHome(){
     TuduTheme {
@@ -132,7 +155,12 @@ fun PreviewAppbarHome(){
 
 }
 
-@Preview
+@Preview(
+    uiMode = UI_MODE_NIGHT_NO
+)
+@Preview(
+    uiMode = UI_MODE_NIGHT_YES
+)
 @Composable
 fun PreviewAppbarBasic(){
     TuduTheme {

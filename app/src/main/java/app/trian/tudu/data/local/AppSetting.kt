@@ -3,14 +3,15 @@ package app.trian.tudu.data.local
 import androidx.annotation.IdRes
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import app.trian.tudu.ui.component.dialog.DateTimeFormat
 
 @Entity(tableName = "tb_app_setting")
 data class AppSetting(
     @PrimaryKey
-    var idSetting:String="",
-    var listType:Int,
-    var lastSync:Long,
-    var dateFormat:String,
-    var timeFormat:String
+    var idSetting:String="MyAppSetting",
+    var listType:Int=0,
+    var lastSync:Long=0,
+    var dateFormat:String=DateTimeFormat.YYYYMMDD.value,
+    var timeFormat:String=DateTimeFormat.TWENTY.value
 
 )

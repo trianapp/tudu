@@ -1,5 +1,7 @@
 package app.trian.tudu.ui.component.dialog
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -25,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import app.trian.tudu.R
+import app.trian.tudu.data.local.Category
 import app.trian.tudu.ui.theme.InactiveText
 import app.trian.tudu.ui.theme.TuduTheme
 
@@ -37,8 +40,9 @@ import app.trian.tudu.ui.theme.TuduTheme
 @Composable
 fun DialogFormCategory(
     show:Boolean=false,
+    category: Category= Category(),
     onHide:()->Unit,
-    onSubmit:(value:String)->Unit
+    onSubmit:( category:Category)->Unit
 ) {
     if(show) {
         Dialog(onDismissRequest = {
@@ -46,7 +50,8 @@ fun DialogFormCategory(
         }) {
             ScreenDialogFormCategory(
                 onSubmit = onSubmit,
-                onHide = onHide
+                onHide = onHide,
+                category = category
             )
         }
     }
@@ -55,21 +60,24 @@ fun DialogFormCategory(
 @Composable
 fun ScreenDialogFormCategory(
     modifier: Modifier=Modifier,
+    category: Category= Category(),
     onHide: () -> Unit={},
-    onSubmit: (value:String) -> Unit
+    onSubmit: (category:Category) -> Unit
 ) {
     val ctx = LocalContext.current
     var categoryName by remember {
-        mutableStateOf(TextFieldValue(text = ""))
+        mutableStateOf(TextFieldValue(text = category.name))
     }
-    var canInput by remember {
-        mutableStateOf(true)
-    }
+
     fun submit(){
         if(categoryName.text.isBlank()){
             Toast.makeText(ctx,ctx.getString(R.string.blank_validation,"Category"),Toast.LENGTH_LONG).show()
         }else{
-            onSubmit(categoryName.text)
+            onSubmit(
+                category.apply {
+                    name = categoryName.text
+                }
+            )
             onHide()
         }
     }
@@ -90,9 +98,10 @@ fun ScreenDialogFormCategory(
         Column {
             Text(
                 text = stringResource(R.string.title_create_new_cateogory),
-                style = TextStyle(
+                style = MaterialTheme.typography.h5.copy(
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colors.onBackground
                 )
             )
             Spacer(modifier = modifier.height(16.dp))
@@ -109,8 +118,10 @@ fun ScreenDialogFormCategory(
                     placeholder = {
                         Text(
                             text = stringResource(R.string.placeholder_input_category),
-                            style=TextStyle(
-                                color = MaterialTheme.colors.onBackground
+                            style=MaterialTheme.typography.body2.copy(
+                                color = MaterialTheme.colors.onBackground,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
                             )
                         )
                     },
@@ -124,7 +135,7 @@ fun ScreenDialogFormCategory(
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent
                     ),
-                    textStyle = TextStyle(
+                    textStyle = MaterialTheme.typography.body2.copy(
                         color = MaterialTheme.colors.onBackground,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
@@ -163,7 +174,7 @@ fun ScreenDialogFormCategory(
                 }) {
                     Text(
                         text = stringResource(R.string.btn_cancel),
-                        style = TextStyle(
+                        style = MaterialTheme.typography.button.copy(
                             color=MaterialTheme.colors.primary.copy(alpha = 0.6f)
                         )
                     )
@@ -171,7 +182,7 @@ fun ScreenDialogFormCategory(
                 TextButton(onClick = { submit() }) {
                     Text(
                         text = stringResource(R.string.btn_save),
-                        style = TextStyle(
+                        style = MaterialTheme.typography.button.copy(
                             color=MaterialTheme.colors.primary
                         )
                     )
@@ -181,7 +192,12 @@ fun ScreenDialogFormCategory(
     }
 }
 
-@Preview
+@Preview(
+    uiMode = UI_MODE_NIGHT_YES
+)
+@Preview(
+    uiMode = UI_MODE_NIGHT_NO
+)
 @Composable
 fun PreviewScreenFromCategory(){
     TuduTheme {

@@ -1,7 +1,6 @@
 package app.trian.tudu.ui.pages.auth
 
 import android.widget.Toast
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -17,7 +16,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
@@ -30,11 +28,15 @@ import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
 import app.trian.tudu.common.Routes
 import app.trian.tudu.common.hideKeyboard
+import app.trian.tudu.common.isEmailValid
+import app.trian.tudu.common.toastError
 import app.trian.tudu.ui.component.AppbarAuth
 import app.trian.tudu.ui.component.ButtonPrimary
 import app.trian.tudu.ui.component.dialog.ModalBottomSheetPrivacyPolicy
-import app.trian.tudu.ui.component.task.FormInput
+import app.trian.tudu.ui.component.FormInput
+import app.trian.tudu.ui.component.dialog.DialogLoading
 import app.trian.tudu.ui.theme.TuduTheme
+import app.trian.tudu.ui.theme.fontFamily
 import app.trian.tudu.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 
@@ -56,6 +58,9 @@ fun PagesRegister(
     )
     val scope = rememberCoroutineScope()
 
+    var shouldShowDialogLoading by remember {
+        mutableStateOf(false)
+    }
     var email by remember {
         mutableStateOf("")
     }
@@ -72,7 +77,8 @@ fun PagesRegister(
     val annotatedPrivacyPolicy = buildAnnotatedString {
         withStyle(
             style = SpanStyle(
-                color = MaterialTheme.colors.onBackground
+                color = MaterialTheme.colors.onBackground,
+                fontFamily = fontFamily
             )
         ){
             append(ctx.getString(R.string.text_license_agreement))
@@ -84,7 +90,8 @@ fun PagesRegister(
         )
         withStyle(
             style = SpanStyle(
-                color = MaterialTheme.colors.primary
+                color = MaterialTheme.colors.primary,
+                fontFamily = fontFamily
             )
         ){
             append(ctx.getString(R.string.text_privacy_policy))
@@ -95,7 +102,8 @@ fun PagesRegister(
     val annotatedSignIn = buildAnnotatedString {
         withStyle(
             style = SpanStyle(
-                color = MaterialTheme.colors.onBackground
+                color = MaterialTheme.colors.onBackground,
+                fontFamily = fontFamily
             )
         ){
             append(ctx.getString(R.string.label_already_have_account))
@@ -107,7 +115,8 @@ fun PagesRegister(
         )
         withStyle(
             style = SpanStyle(
-                color = MaterialTheme.colors.primary
+                color = MaterialTheme.colors.primary,
+                fontFamily = fontFamily
             )
         ){
             append(ctx.getString(R.string.text_signin))
@@ -120,14 +129,23 @@ fun PagesRegister(
             Toast.makeText(ctx,"Please fill all form?",Toast.LENGTH_SHORT).show()
             return
         }
+        if(!email.isEmailValid()){
+            ctx.toastError(ctx.getString(R.string.alert_validation_email))
+            return
+        }
+        shouldShowDialogLoading = true
         userViewModel.registerWithEmailAndPassword(username,email,password){
             success, message ->
+            shouldShowDialogLoading = false
             if(success){
                 router.popBackStack()
             }
-            Toast.makeText(ctx,"login $success $message", Toast.LENGTH_LONG).show()
+            Toast.makeText(ctx,"$message", Toast.LENGTH_LONG).show()
         }
     }
+    DialogLoading(
+        show=shouldShowDialogLoading
+    )
 
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
@@ -158,7 +176,7 @@ fun PagesRegister(
             ) {
                 Text(
                     text = stringResource(R.string.title_register),
-                    style = TextStyle(
+                    style = MaterialTheme.typography.body1.copy(
                         fontSize = 22.sp,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -193,7 +211,10 @@ fun PagesRegister(
                     FormInput(
                         initialValue = username,
                         label = {
-                            Text(text = stringResource(R.string.label_input_username))
+                            Text(
+                                text = stringResource(R.string.label_input_username),
+                                style = MaterialTheme.typography.body2
+                            )
                         },
                         placeholder = stringResource(R.string.placeholder_input_username),
                         onChange = {
@@ -204,7 +225,10 @@ fun PagesRegister(
                     FormInput(
                         initialValue = email,
                         label = {
-                            Text(text = stringResource(id = R.string.label_input_email))
+                            Text(
+                                text = stringResource(id = R.string.label_input_email),
+                                style = MaterialTheme.typography.body2
+                            )
                         },
                         placeholder = stringResource(id = R.string.placeholder_input_email),
                         onChange = {
@@ -215,7 +239,10 @@ fun PagesRegister(
                     FormInput(
                         initialValue = password,
                         label = {
-                            Text(text = stringResource(id = R.string.label_input_password))
+                            Text(
+                                text = stringResource(id = R.string.label_input_password),
+                                style = MaterialTheme.typography.body2
+                            )
                         },
                         showPasswordObsecure = true,
                         placeholder = stringResource(id = R.string.placeholder_input_password),

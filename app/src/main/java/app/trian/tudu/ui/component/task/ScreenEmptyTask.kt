@@ -70,8 +70,8 @@ fun ScreenEmptyTask(
                 modifier = modifier.size(currentWidth / 3)
             )
             Text(
-                text = "Get started with your first task",
-                style=TextStyle(
+                text = stringResource(R.string.text_empty_task),
+                style=MaterialTheme.typography.subtitle2.copy(
                     color = MaterialTheme.colors.onBackground
                 )
             )
@@ -97,8 +97,8 @@ fun ScreenEmptyTask(
             ) {
 
                 Text(
-                    "Click here or + to create your first task",
-                    style = TextStyle(
+                    stringResource(R.string.text_instruction_create_new_task),
+                    style = MaterialTheme.typography.caption.copy(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Light,
                         color = Color.Black

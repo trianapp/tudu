@@ -19,14 +19,23 @@ interface TaskDao {
     @Query("SELECT * FROM tb_task ORDER BY created_at DESC")
     fun getListTask():Flow<List<Task>>
 
+    @Query("SELECT * FROM tb_task ORDER BY created_at DESC")
+    fun getListTaskNoFlow():List<Task>
+
     @Query("SELECT * FROM tb_task WHERE taskId=:taskId")
     fun getTaskById(taskId:String):Task?
 
     @Query("SELECT * FROM tb_task WHERE taskCategoryId=:categoryId ORDER BY created_at DESC")
     fun getListTaskByCategory(categoryId:String):Flow<List<Task>>
 
+    @Query("SELECT COUNT(taskId) from tb_task WHERE done=:done AND updated_at BETWEEN :from AND :to")
+    fun getCountCompleteTask(from:Long,to:Long,done:Boolean = true):Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertNewTask(task:Task)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertBatchTask(tasks:List<Task>)
 
     @Update
     fun updateTask(task: Task)

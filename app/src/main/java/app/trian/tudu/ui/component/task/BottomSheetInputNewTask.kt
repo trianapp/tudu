@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.sp
 import app.trian.tudu.R
 import app.trian.tudu.common.getNowMillis
 import app.trian.tudu.common.hideKeyboard
-import app.trian.tudu.common.showKeyboard
+
 import app.trian.tudu.data.local.Category
 import app.trian.tudu.data.local.Task
 import app.trian.tudu.data.local.Todo
@@ -184,16 +184,14 @@ fun BottomSheetInputNewTask(
                 placeholder = {
                     Text(
                         text = stringResource(R.string.placeholder_input_new_task),
-                        style = TextStyle(
-                            fontSize = 20.sp,
+                        style = MaterialTheme.typography.body2.copy(
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colors.onSurface
                         )
                     )
                 },
-                textStyle = TextStyle(
+                textStyle = MaterialTheme.typography.body2.copy(
                     color = MaterialTheme.colors.onSurface,
-                    fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                 )
 
@@ -315,7 +313,7 @@ fun BottomSheetInputNewTask(
                 ) {
                     Icon(
                         imageVector = Octicons.PaperAirplane24,
-                        contentDescription = "",
+                        contentDescription = stringResource(R.string.content_description_icon_save_task),
                         tint=MaterialTheme.colors.onBackground
                     )
                 }

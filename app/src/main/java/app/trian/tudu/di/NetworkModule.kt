@@ -2,10 +2,7 @@ package app.trian.tudu.di
 
 import app.trian.tudu.common.DefaultDispatcherProvider
 import app.trian.tudu.common.DispatcherProvider
-import app.trian.tudu.data.local.dao.AttachmentDao
-import app.trian.tudu.data.local.dao.CategoryDao
-import app.trian.tudu.data.local.dao.TaskDao
-import app.trian.tudu.data.local.dao.TodoDao
+import app.trian.tudu.data.local.dao.*
 import app.trian.tudu.data.repository.TaskRepositoryImpl
 import app.trian.tudu.data.repository.UserRepositoryImpl
 import app.trian.tudu.data.repository.design.TaskRepository
@@ -51,13 +48,15 @@ object NetworkModule {
         firebaseMessaging: FirebaseMessaging,
         taskDao:TaskDao,
         todoDao: TodoDao,
+        appSettingDao: AppSettingDao
     ):UserRepository =UserRepositoryImpl(
             dispatcherProvider,
             firebaseAuth,
             firestore ,
             firebaseMessaging,
             taskDao,
-            todoDao
+            todoDao,
+            appSettingDao
         )
 
     @Provides

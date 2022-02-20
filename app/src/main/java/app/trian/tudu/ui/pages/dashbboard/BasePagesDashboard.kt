@@ -4,10 +4,15 @@ import android.annotation.SuppressLint
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
 import androidx.navigation.NavHostController
+import app.trian.tudu.R
 import app.trian.tudu.common.Routes
+import app.trian.tudu.common.emailTo
+import app.trian.tudu.common.gotoApp
 import app.trian.tudu.ui.component.TuduBottomNavigation
 import app.trian.tudu.ui.component.dialog.DialogLogout
 import app.trian.tudu.ui.component.drawer.DrawerContent
@@ -29,6 +34,7 @@ fun BasePagesDashboard(
     onLogout:()->Unit={},
     content:@Composable ()->Unit
 ) {
+    val ctx = LocalContext.current
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     var showDialogLogout by remember {
@@ -54,10 +60,25 @@ fun BasePagesDashboard(
             DrawerContent(
                 currentUser = currentUser,
                 onClick = {
-                    if(it.route == "logout"){
-                        scope.launch {
-                            drawerState.close()
-                            showDialogLogout=true
+                    when(it.route){
+                        "logout" ->{
+                            scope.launch {
+                                drawerState.close()
+                                showDialogLogout=true
+                            }
+                        }
+                        "send_feedback"->{
+                            ctx.emailTo(
+                                from = currentUser?.email ?: "",
+                                to=ctx.getString(R.string.email_feedback),
+                                subject =ctx.getString(R.string.subject_feedback)
+                            )
+                        }
+                        "rating_app"->{
+                            ctx.gotoApp()
+                        }
+                        "set_theme"->{
+
                         }
                     }
                 },

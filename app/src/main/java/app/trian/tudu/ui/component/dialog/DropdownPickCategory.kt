@@ -57,7 +57,7 @@ fun DropdownPickCategory(
                 Spacer(modifier = modifier.width(6.dp))
                 Text(
                     text = stringResource(R.string.create_new_category),
-                    style = TextStyle(
+                    style = MaterialTheme.typography.button.copy(
                         color=MaterialTheme.colors.onBackground
                     )
                 )
@@ -95,7 +95,7 @@ fun DropdownPickCategory(
         ) {
             Text(
                 text = stringResource(id = R.string.no_category),
-                style= TextStyle(
+                style= MaterialTheme.typography.body2.copy(
                     color = MaterialTheme.colors.onBackground
                 )
                 )
@@ -109,7 +109,7 @@ fun DropdownPickCategory(
             ) {
                 Text(
                     text = it.name,
-                    style = TextStyle(
+                    style = MaterialTheme.typography.body2.copy(
                         color=MaterialTheme.colors.onBackground
                     )
                 )

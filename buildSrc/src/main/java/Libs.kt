@@ -41,6 +41,12 @@ object Libs {
                 private const val compose_version_markdown = "0.2.6"
                 val composeMarkdown by lazy { "com.github.jeziellago:compose-markdown:$compose_version_markdown" }
             }
+            object PhilJay{
+                val mpAndroidChart by lazy{"com.github.PhilJay:MPAndroidChart:v3.1.0"}
+            }
+            object GrenderG{
+               val toasty by lazy{ "com.github.GrenderG:Toasty:1.5.2"}
+            }
         }
         object Squareup{
             //for logging in debugging mode

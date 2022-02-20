@@ -49,7 +49,10 @@ fun ButtonPrimary(
         shape = RoundedCornerShape(10.dp),
         enabled = enabled
     ) {
-        Text(text = text)
+        Text(
+            text = text,
+            style = MaterialTheme.typography.button
+        )
     }
 }
 @Composable
@@ -80,9 +83,10 @@ fun ButtonGoogle(
         Spacer(modifier = modifier.width(6.dp))
         Text(
             text = text,
-            style = TextStyle(
-                color = Color.White
-            )
+            style =  MaterialTheme.typography.button
+                .copy(
+                    color = Color.White
+                )
         )
     }
 }
@@ -109,7 +113,10 @@ fun ButtonSecondary(
         ),
         shape = RoundedCornerShape(10.dp)
     ) {
-        Text(text = text)
+        Text(
+            text = text,
+            style = MaterialTheme.typography.button
+        )
     }
 }
 

@@ -7,7 +7,7 @@ package app.trian.tudu.domain
  * site https://trian.app
  */
 sealed class DataState<out T>{
-    object LOADING:DataState<Nothing>()
-    data class onData<out Result>(val data:Result):DataState<Result>()
-    data class onFailure(val message:String):DataState<Nothing>()
+    object OnLoading:DataState<Nothing>()
+    data class OnData<out Result>(val data:Result):DataState<Result>()
+    data class OnFailure(val message:String):DataState<Nothing>()
 }

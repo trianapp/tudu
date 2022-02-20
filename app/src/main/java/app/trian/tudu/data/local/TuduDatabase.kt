@@ -2,10 +2,7 @@ package app.trian.tudu.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import app.trian.tudu.data.local.dao.AttachmentDao
-import app.trian.tudu.data.local.dao.CategoryDao
-import app.trian.tudu.data.local.dao.TaskDao
-import app.trian.tudu.data.local.dao.TodoDao
+import app.trian.tudu.data.local.dao.*
 
 /**
  * Database
@@ -29,6 +26,7 @@ abstract class TuduDatabase :RoomDatabase(){
     abstract fun todoDao():TodoDao
     abstract fun attachmentDao(): AttachmentDao
     abstract fun categoryDao():CategoryDao
+    abstract fun appSettingDao():AppSettingDao
     companion object{
         const val DB_NAME = "TUDU_APP"
     }

@@ -1,6 +1,5 @@
 package app.trian.tudu.ui.pages.auth
 
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,7 +9,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,17 +23,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
-import app.trian.tudu.common.GoogleAuthContract
-import app.trian.tudu.common.Routes
-import app.trian.tudu.common.hideKeyboard
-import app.trian.tudu.common.signInInSuccess
+import app.trian.tudu.common.*
 import app.trian.tudu.ui.component.AppbarAuth
 import app.trian.tudu.ui.component.ButtonGoogle
 import app.trian.tudu.ui.component.ButtonPrimary
-import app.trian.tudu.ui.component.task.FormInput
+import app.trian.tudu.ui.component.FormInput
+import app.trian.tudu.ui.component.dialog.DialogLoading
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.UserViewModel
-import com.google.android.gms.common.api.ApiException
 
 const val AUTH_GOOGLE_CODE = 1
 
@@ -46,6 +41,10 @@ fun PageLogin(
 ) {
     val ctx = LocalContext.current
     val userViewModel = hiltViewModel<UserViewModel>()
+
+    var shouldShowDialogLoading by remember {
+        mutableStateOf(false)
+    }
 
     var email by remember {
         mutableStateOf("")
@@ -58,13 +57,15 @@ fun PageLogin(
         contract = GoogleAuthContract(),
         onResult = {
                 task->
+            shouldShowDialogLoading = true
             userViewModel.logInWithGoogle(task){
                     success, message ->
+                shouldShowDialogLoading = false
                 if(success){
-                    Toast.makeText(ctx,ctx.getString(R.string.signin_success),Toast.LENGTH_LONG).show()
+                    ctx.toastSuccess(ctx.getString(R.string.signin_success))
                     router.signInInSuccess()
                 }else{
-                    Toast.makeText(ctx,ctx.getString(R.string.signin_failed,message),Toast.LENGTH_LONG).show()
+                    ctx.toastError(ctx.getString(R.string.signin_failed,message))
                 }
             }
         }
@@ -75,19 +76,29 @@ fun PageLogin(
     fun processLoggedIn(){
         ctx.hideKeyboard()
         if(email.isBlank() || password.isBlank()){
-            Toast.makeText(ctx,ctx.getString(R.string.validation_login),Toast.LENGTH_SHORT).show()
+            ctx.toastError(ctx.getString(R.string.validation_login))
             return
         }
+        if(!email.isEmailValid()){
+            ctx.toastError(ctx.getString(R.string.alert_validation_email))
+            return
+        }
+        shouldShowDialogLoading = true
         userViewModel.logInWithEmailAndPassword(email,password){
             success, message ->
+            shouldShowDialogLoading = false
             if(success){
-                Toast.makeText(ctx,ctx.getString(R.string.signin_success),Toast.LENGTH_LONG).show()
+                ctx.toastSuccess(ctx.getString(R.string.signin_success))
                 router.signInInSuccess()
             }else{
-                Toast.makeText(ctx,ctx.getString(R.string.signin_failed,message),Toast.LENGTH_LONG).show()
+                ctx.toastError(ctx.getString(R.string.signin_failed,message))
             }
         }
     }
+
+    DialogLoading(
+        show = shouldShowDialogLoading
+    )
 
     Scaffold(
         topBar = {
@@ -106,19 +117,19 @@ fun PageLogin(
             Column(
                 modifier= modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 36.dp),
+                    .padding(horizontal = 20.dp),
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
                     text = stringResource(R.string.title_sign_in),
-                    style = TextStyle(
+                    style = MaterialTheme.typography.body1.copy(
                         fontSize = 22.sp,
                         fontWeight = FontWeight.SemiBold,
                     )
                 )
                 Text(
                     text = stringResource(R.string.subtitle_signin),
-                    style = TextStyle(
+                    style = MaterialTheme.typography.caption.copy(
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Light,
                     )
@@ -127,7 +138,10 @@ fun PageLogin(
                 Spacer(modifier = modifier.height(36.dp))
                 FormInput(
                     label = {
-                        Text(text = stringResource(R.string.label_input_email))
+                        Text(
+                            text = stringResource(R.string.label_input_email),
+                            style = MaterialTheme.typography.body2
+                        )
                     },
                     initialValue = email,
                     placeholder = stringResource(R.string.placeholder_input_email),
@@ -139,7 +153,10 @@ fun PageLogin(
                 Spacer(modifier = modifier.height(10.dp))
                 FormInput(
                     label = {
-                        Text(text = stringResource(R.string.label_input_password))
+                        Text(
+                            text = stringResource(R.string.label_input_password),
+                            style = MaterialTheme.typography.body2
+                        )
                     },
                     initialValue = password,
                     placeholder = stringResource(R.string.placeholder_input_password),
@@ -160,7 +177,8 @@ fun PageLogin(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = stringResource(R.string.label_forgot_password)
+                        text = stringResource(R.string.label_forgot_password),
+                        style = MaterialTheme.typography.body2
                     )
                     Spacer(modifier = modifier.width(6.dp))
                     Text(
@@ -171,6 +189,11 @@ fun PageLogin(
                             color = MaterialTheme.colors.primary
                         ),
                         modifier = modifier
+                            .clickable {
+                                router.navigate(Routes.RESET_PASSWORD){
+                                    launchSingleTop = true
+                                }
+                            }
                     )
                 }
             }
@@ -191,12 +214,13 @@ fun PageLogin(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = stringResource(R.string.label_dont_have_account)
+                            text = stringResource(R.string.label_dont_have_account),
+                            style = MaterialTheme.typography.caption
                         )
                         Spacer(modifier = modifier.width(6.dp))
                         Text(
                             text = stringResource(R.string.btn_create_account),
-                            style = TextStyle(
+                            style =  MaterialTheme.typography.caption.copy(
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Normal,
                                 color = MaterialTheme.colors.primary

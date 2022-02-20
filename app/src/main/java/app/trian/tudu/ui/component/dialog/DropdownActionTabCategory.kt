@@ -43,7 +43,7 @@ fun DropdownActionTabCategory(
             }) {
                 Text(
                     text = stringResource(id = it),
-                    style = TextStyle(
+                    style = MaterialTheme.typography.button.copy(
                         color = MaterialTheme.colors.onSurface
                     )
                 )

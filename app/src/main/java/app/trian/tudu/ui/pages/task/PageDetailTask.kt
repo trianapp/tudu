@@ -1,6 +1,8 @@
  package app.trian.tudu.ui.pages.task
 
 import android.app.DatePickerDialog
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -31,6 +33,7 @@ import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
 import app.trian.tudu.common.Routes
 import app.trian.tudu.common.toReadableDate
+import app.trian.tudu.data.local.AppSetting
 import app.trian.tudu.data.local.Category
 import app.trian.tudu.data.local.Task
 import app.trian.tudu.data.local.Todo
@@ -40,6 +43,7 @@ import app.trian.tudu.ui.component.dialog.DropdownPickCategory
 import app.trian.tudu.ui.theme.Inactivebackground
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.TaskViewModel
+import app.trian.tudu.viewmodel.UserViewModel
 import compose.icons.Octicons
 import compose.icons.octicons.*
 import kotlinx.coroutines.delay
@@ -58,14 +62,18 @@ fun PageDetailTask(
     router: NavHostController
 ) {
      val ctx = LocalContext.current
+     val taskViewModel = hiltViewModel<TaskViewModel>()
+     val userViewModel = hiltViewModel<UserViewModel>()
      val scope = rememberCoroutineScope()
      val currentBackStack = router.currentBackStackEntryAsState()
-     val taskViewModel = hiltViewModel<TaskViewModel>()
+
+     val appSetting by userViewModel.appSetting.observeAsState(initial = AppSetting())
 
      val detailTask by taskViewModel.detailTask.observeAsState(initial = Task())
      val completeTodo by taskViewModel.completeTodo.observeAsState(initial = emptyList())
      val unCompleteTodo by taskViewModel.unCompleteTodo.observeAsState(initial = emptyList())
      val listCategory by taskViewModel.listCategory.observeAsState(initial = emptyList())
+
      var date by remember {
          mutableStateOf(DateTime())
      }
@@ -145,6 +153,8 @@ fun PageDetailTask(
          taskViewModel.getTaskById(taskId)
          taskViewModel.getCompleteTodo(taskId)
          taskViewModel.getUnCompleteTodo(taskId)
+
+         userViewModel.getCurrentSetting()
 
          delay(100)
          taskName = TextFieldValue(text = detailTask.name)
@@ -398,7 +408,7 @@ fun PageDetailTask(
                                              bottomEnd = 10.dp
                                          )
                                      )
-                                     .background(Inactivebackground)
+                                     .background(MaterialTheme.colors.primary.copy(alpha=0.7f))
                                      .padding(
                                          horizontal = 10.dp,
                                          vertical = 2.dp
@@ -408,7 +418,7 @@ fun PageDetailTask(
                                      }
                              ) {
                                  Text(
-                                     text = deadlineState.toReadableDate(),
+                                     text = deadlineState.toReadableDate(appSetting.dateFormat),
                                      style = TextStyle(
                                          color = MaterialTheme.colors.onPrimary
                                      )
@@ -443,7 +453,7 @@ fun PageDetailTask(
                                  Spacer(modifier = modifier.width(6.dp))
                                  Text(
                                      text = stringResource(R.string.label_reminder),
-                                     style = TextStyle(
+                                     style = MaterialTheme.typography.caption.copy(
                                          color = MaterialTheme.colors.onBackground
                                      )
                                  )
@@ -458,7 +468,7 @@ fun PageDetailTask(
                                              bottomEnd = 10.dp
                                          )
                                      )
-                                     .background(Inactivebackground)
+                                     .background(MaterialTheme.colors.primary.copy(alpha=0.7f))
                                      .padding(
                                          horizontal = 10.dp,
                                          vertical = 2.dp
@@ -471,7 +481,7 @@ fun PageDetailTask(
                                  Text(
                                      text = if (reminderState) stringResource(R.string.reminder_yes)
                                      else stringResource(R.string.reminder_no),
-                                     style = TextStyle(
+                                     style = MaterialTheme.typography.caption.copy(
                                          color = MaterialTheme.colors.onPrimary
                                      )
                                  )
@@ -522,7 +532,7 @@ fun PageDetailTask(
                                      )
                                      Text(
                                          text = detailTask.note,
-                                         style = TextStyle(
+                                         style = MaterialTheme.typography.caption.copy(
                                              color = MaterialTheme.colors.onBackground
                                          )
                                      )
@@ -540,7 +550,7 @@ fun PageDetailTask(
                                              bottomEnd = 10.dp
                                          )
                                      )
-                                     .background(Inactivebackground)
+                                     .background(MaterialTheme.colors.primary.copy(alpha=0.7f))
                                      .padding(
                                          horizontal = 10.dp,
                                          vertical = 2.dp
@@ -566,7 +576,12 @@ fun PageDetailTask(
 
 
 
-@Preview
+@Preview(
+    uiMode =UI_MODE_NIGHT_NO
+)
+@Preview(
+    uiMode =UI_MODE_NIGHT_YES
+)
 @Composable
 fun PreviewPageDetailTask(){
     TuduTheme {
