@@ -15,4 +15,4 @@ Design:
 Download:
 | Android  | iOS |
 |:-:|:-:|
-| [<img src="assets/google-play-badge.png" height="50">](https://play.google.com/store/apps/details?id=org.jitsi.meet) | Coming soon |
+| [<img src="assets/google-play-badge.png" height="50">](https://play.google.com/store/apps/details?id=app.trian.tudu) | Coming soon |
