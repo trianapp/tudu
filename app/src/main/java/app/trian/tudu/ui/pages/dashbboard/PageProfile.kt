@@ -86,6 +86,7 @@ fun PageProfile(
     BasePagesDashboard(
         router = router,
         currentUser = currentUser,
+        enableDrawerGesture = true,
         sheetContent={
             BottomSheetInputNewTask()
         },

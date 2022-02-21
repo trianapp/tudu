@@ -121,6 +121,7 @@ fun PageHome(
     BasePagesDashboard(
         modalBottomSheetState=modalBottomSheetState,
         currentUser = currentUser,
+        enableDrawerGesture = true,
         topAppbar = {
             AppbarHome(
                 dataCategory = listCategory,

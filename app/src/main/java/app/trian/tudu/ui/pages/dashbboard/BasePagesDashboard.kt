@@ -20,6 +20,7 @@ import app.trian.tudu.ui.theme.ScrimColor
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import logcat.LogPriority
 import logcat.logcat
 
 @SuppressLint("ServiceCast")
@@ -29,13 +30,21 @@ fun BasePagesDashboard(
     router: NavHostController,
     modalBottomSheetState:ModalBottomSheetState,
     currentUser:FirebaseUser?,
+    enableDrawerGesture:Boolean,
+    onDrawerStateChanged:(DrawerValue)->Unit={},
     topAppbar:@Composable ()->Unit={},
     sheetContent:@Composable ()->Unit={},
     onLogout:()->Unit={},
     content:@Composable ()->Unit
 ) {
     val ctx = LocalContext.current
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val drawerState = rememberDrawerState(
+        initialValue = DrawerValue.Closed,
+        confirmStateChange = {
+            onDrawerStateChanged(it)
+            true
+        }
+    )
     val scope = rememberCoroutineScope()
     var showDialogLogout by remember {
         mutableStateOf(false)
@@ -64,6 +73,7 @@ fun BasePagesDashboard(
                         "logout" ->{
                             scope.launch {
                                 drawerState.close()
+                                onDrawerStateChanged(DrawerValue.Closed)
                                 showDialogLogout=true
                             }
                         }
@@ -86,6 +96,7 @@ fun BasePagesDashboard(
                     if(it.isNotBlank()) {
                         scope.launch {
                             drawerState.close()
+                            onDrawerStateChanged(DrawerValue.Closed)
                             router.navigate(it)
                         }
                     }
@@ -93,10 +104,11 @@ fun BasePagesDashboard(
             )
         },
         drawerElevation = 0.dp,
-        scrimColor = ScrimColor
+        scrimColor = ScrimColor,
+        gesturesEnabled = enableDrawerGesture
     ) {
         ModalBottomSheetLayout(
-            sheetState =modalBottomSheetState,
+            sheetState = modalBottomSheetState,
             sheetContent = {
                 sheetContent.invoke()
             },
@@ -111,6 +123,7 @@ fun BasePagesDashboard(
                         onButton = {
                             scope.launch {
                                 drawerState.open()
+                                onDrawerStateChanged(DrawerValue.Open)
                             }
                         }
                     )

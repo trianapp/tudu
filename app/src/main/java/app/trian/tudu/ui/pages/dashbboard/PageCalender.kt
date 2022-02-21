@@ -6,11 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,10 +22,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
 import app.trian.tudu.common.Routes
+import app.trian.tudu.common.daysOfWeekFromLocale
 import app.trian.tudu.common.signOut
+import app.trian.tudu.ui.component.CalendarViewCompose
 import app.trian.tudu.ui.component.task.BottomSheetInputNewTask
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.UserViewModel
+import compose.icons.Octicons
+import compose.icons.octicons.ArrowLeft24
+import compose.icons.octicons.ArrowRight24
+import compose.icons.octicons.Calendar24
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -44,7 +47,14 @@ fun PageCalender(
         initialValue = ModalBottomSheetValue.Hidden,
         skipHalfExpanded = false
     )
+    val daysOfWeek = daysOfWeekFromLocale()
     val currentUser by userViewModel.currentUser.observeAsState()
+    var gestureEnabled by remember {
+        mutableStateOf(false)
+    }
+    var calendarWeekMode by remember {
+        mutableStateOf(false)
+    }
 
     fun signOut(){
         scope.launch(Dispatchers.Main) {
@@ -57,21 +67,54 @@ fun PageCalender(
     })
 
     BasePagesDashboard(
-
         router = router,
         currentUser=currentUser,
+        enableDrawerGesture = gestureEnabled,
+        onDrawerStateChanged = {
+            gestureEnabled = when(it){
+                DrawerValue.Closed -> false
+                DrawerValue.Open -> true
+            }
+        },
         sheetContent={
                      BottomSheetInputNewTask()
         },
         topAppbar = {
-            TopAppBar {
-                Text(
-                    text = "Activity",
-                    style = MaterialTheme.typography.subtitle2,
-                    modifier = modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
-            }
+            TopAppBar(
+                title={
+                    Column(
+                        modifier = modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.Start,
+                        verticalArrangement = Arrangement.Bottom
+                    ) {
+                        Text(
+                            text = "2022",
+                            style = MaterialTheme.typography.subtitle1,
+                            modifier = modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Start
+                        )
+                        Text(
+                            text = "Februari",
+                            style = MaterialTheme.typography.subtitle2,
+                            modifier = modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Start
+                        )
+
+                    }
+                },
+                actions = {
+                    IconToggleButton(checked = false, onCheckedChange = {
+                        calendarWeekMode = !calendarWeekMode
+                    }) {
+                        Icon(imageVector = Octicons.ArrowLeft24, contentDescription = "")
+                    }
+                    IconToggleButton(checked = false, onCheckedChange = {
+                        calendarWeekMode = !calendarWeekMode
+                    }) {
+                        Icon(imageVector = Octicons.ArrowRight24, contentDescription = "")
+                    }
+                }
+            )
         },
         onLogout = {
             userViewModel.signOut{
@@ -80,31 +123,9 @@ fun PageCalender(
         },
         modalBottomSheetState=modalBottomSheetState
     ) {
-
-        Column(
-            modifier = modifier.fillMaxWidth().fillMaxHeight(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.bg_page_calendar_empty),
-                contentDescription = "")
-            Text(
-                text = "Under Construction",
-                style= TextStyle(
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.Medium
-                )
-            )
-            Text(
-                text = "We're working o it!",
-                style= TextStyle(
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Normal
-                )
-            )
-        }
+        CalendarViewCompose(
+            legend = daysOfWeek
+        )
     }
 
 }
@@ -115,6 +136,7 @@ fun PageCalender(
 fun PreviewPageCalendar(){
 
     TuduTheme {
-        PageCalender(router = rememberNavController())
+        PageCalender(
+            router = rememberNavController())
     }
 }
