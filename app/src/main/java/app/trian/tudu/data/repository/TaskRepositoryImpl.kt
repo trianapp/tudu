@@ -50,7 +50,7 @@ class TaskRepositoryImpl(
         var currentFrom = currentTo.getPreviousDate()
         var currentMax = 0f
 
-        val dayCount = listOf(6,5,4,3,2,1,0)
+        val dayCount = listOf(6,5,4,3,2,1,0).reversed()
         var listEntry = listOf<BarEntry>()
         var listLabel = listOf<String>()
         dayCount.forEachIndexed { _, i ->
