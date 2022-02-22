@@ -88,6 +88,7 @@ fun PageCalender(
         },
         topAppbar = {
             TopAppBar(
+                backgroundColor = MaterialTheme.colors.primary,
                 title= {
                     Column(
                         modifier = modifier.fillMaxWidth(),
@@ -96,13 +97,17 @@ fun PageCalender(
                     ) {
                         Text(
                             text = currentYear,
-                            style = MaterialTheme.typography.subtitle1,
+                            style = MaterialTheme.typography.subtitle1.copy(
+                                color = MaterialTheme.colors.onPrimary
+                            ),
                             modifier = modifier.fillMaxWidth(),
                             textAlign = TextAlign.Start
                         )
                         Text(
                             text = currentMonth,
-                            style = MaterialTheme.typography.h6,
+                            style = MaterialTheme.typography.h6.copy(
+                                color = MaterialTheme.colors.onPrimary
+                            ),
                             modifier = modifier.fillMaxWidth(),
                             textAlign = TextAlign.Start
                         )

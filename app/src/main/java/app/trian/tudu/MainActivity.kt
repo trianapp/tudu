@@ -146,8 +146,8 @@ class MainActivity : ComponentActivity() {
                             }
                             composable(route=Routes.Dashboard.CALENDER){
                                 systemUiController.setSystemBarsColor(
-                                    color = uiColor,
-                                    darkIcons = !useDark
+                                    color = primaryColor,
+                                    darkIcons = useDark
                                 )
                                 PageCalender(router=navHostController)
 
