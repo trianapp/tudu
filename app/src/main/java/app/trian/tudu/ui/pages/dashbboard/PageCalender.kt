@@ -56,6 +56,13 @@ fun PageCalender(
         mutableStateOf(false)
     }
 
+    var currentYear by remember {
+        mutableStateOf("")
+    }
+    var currentMonth by remember {
+        mutableStateOf("")
+    }
+
     fun signOut(){
         scope.launch(Dispatchers.Main) {
             router.signOut()
@@ -81,37 +88,25 @@ fun PageCalender(
         },
         topAppbar = {
             TopAppBar(
-                title={
+                title= {
                     Column(
                         modifier = modifier.fillMaxWidth(),
                         horizontalAlignment = Alignment.Start,
                         verticalArrangement = Arrangement.Bottom
                     ) {
                         Text(
-                            text = "2022",
+                            text = currentYear,
                             style = MaterialTheme.typography.subtitle1,
                             modifier = modifier.fillMaxWidth(),
                             textAlign = TextAlign.Start
                         )
                         Text(
-                            text = "Februari",
-                            style = MaterialTheme.typography.subtitle2,
+                            text = currentMonth,
+                            style = MaterialTheme.typography.h6,
                             modifier = modifier.fillMaxWidth(),
                             textAlign = TextAlign.Start
                         )
 
-                    }
-                },
-                actions = {
-                    IconToggleButton(checked = false, onCheckedChange = {
-                        calendarWeekMode = !calendarWeekMode
-                    }) {
-                        Icon(imageVector = Octicons.ArrowLeft24, contentDescription = "")
-                    }
-                    IconToggleButton(checked = false, onCheckedChange = {
-                        calendarWeekMode = !calendarWeekMode
-                    }) {
-                        Icon(imageVector = Octicons.ArrowRight24, contentDescription = "")
                     }
                 }
             )
@@ -124,7 +119,13 @@ fun PageCalender(
         modalBottomSheetState=modalBottomSheetState
     ) {
         CalendarViewCompose(
-            legend = daysOfWeek
+            legend = daysOfWeek,
+            onScroll = {
+                year,month->
+                currentYear = year
+                currentMonth = month
+
+            }
         )
     }
 

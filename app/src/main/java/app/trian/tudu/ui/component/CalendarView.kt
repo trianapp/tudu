@@ -29,7 +29,9 @@ import com.kizitonwose.calendarview.utils.yearMonth
 import logcat.LogPriority
 import logcat.logcat
 import java.time.DayOfWeek
+import java.time.LocalDate
 import java.time.YearMonth
+import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.time.temporal.WeekFields
 import java.util.*
@@ -37,20 +39,26 @@ import java.util.*
 @Composable
 fun CalendarViewCompose(
     modifier: Modifier = Modifier,
-    legend:Array<DayOfWeek> = emptyArray()
+    legend:Array<DayOfWeek> = emptyArray(),
+    onScroll:(year:String,month:String)->Unit={_,_->}
 ) {
 
     val firstDayOfWeek =  WeekFields.of(Locale.getDefault()).firstDayOfWeek
     val currentMonth = YearMonth.now()
     val startMonth = currentMonth.minusMonths(10)
     val endMonth = currentMonth.plusMonths(10)
-
-
+    val today = LocalDate.now()
+    var selectedDate by remember {
+        mutableStateOf<LocalDate>(LocalDate.now())
+    }
+    val monthTitleFormatter = DateTimeFormatter.ofPattern("MMMM")
     Column(
         modifier = modifier.fillMaxWidth()
     ){
         Row(
-            modifier = modifier.padding(vertical = 4.dp, horizontal = 16.dp).fillMaxWidth(),
+            modifier = modifier
+                .padding(vertical = 4.dp, horizontal = 16.dp)
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -75,6 +83,21 @@ fun CalendarViewCompose(
                     outDateStyle = OutDateStyle.END_OF_ROW
                     inDateStyle = InDateStyle.ALL_MONTHS
                     dayViewResource = R.layout.item_calendar_day
+                    class DayViewContainer(view:View):ViewContainer(view){
+                        lateinit var day: CalendarDay
+                        val textView = view.findViewById<TextView>(R.id.calendarDayText)
+
+                        init {
+                            view.setOnClickListener {
+                                if(day.owner == DayOwner.THIS_MONTH){
+                                    selectedDate = day.date
+                                    notifyCalendarChanged()
+                                }
+
+
+                            }
+                        }
+                    }
 
 
                     dayBinder = object :DayBinder<DayViewContainer>{
@@ -83,7 +106,21 @@ fun CalendarViewCompose(
                             val textView = container.textView
                             textView.text = day.date.dayOfMonth.toString()
                             if(day.owner == DayOwner.THIS_MONTH){
-                                textView.setTextColor(resources.getColor(R.color.textActive))
+                                when(day.date){
+                                    selectedDate->{
+                                        textView.setTextColor(resources.getColor(R.color.textActive))
+                                        textView.setBackgroundResource(R.drawable.bg_date_selected)
+                                    }
+                                    today ->{
+                                        textView.setTextColor(resources.getColor(R.color.textActive))
+                                        textView.setBackgroundResource(R.drawable.bg_date)
+                                    }
+                                    else -> {
+                                        textView.setTextColor(resources.getColor(R.color.textActive))
+                                        textView.background = null
+                                    }
+                                }
+
                             }else{
                                 textView.setTextColor(resources.getColor(R.color.textInActive))
                                 textView.background = null
@@ -92,25 +129,27 @@ fun CalendarViewCompose(
 
                         override fun create(view: View): DayViewContainer =DayViewContainer(view)
                     }
+
+
                 }
             },
             update = {
                     view->
                 view.setup(startMonth ,endMonth, firstDayOfWeek)
+                view.scrollToMonth(currentMonth)
+                view.monthScrollListener ={
+                        onScroll(
+                            it.yearMonth.year.toString(),
+                            monthTitleFormatter.format(it.yearMonth)
+                        )
+                }
 
             }
         )
     }
 }
 
-class DayViewContainer(view:View):ViewContainer(view){
-    lateinit var day: CalendarDay
-    val textView = view.findViewById<TextView>(R.id.calendarDayText)
 
-    init {
-
-    }
-}
 
 @Preview
 @Composable
