@@ -64,7 +64,7 @@ fun PageResetPassword(
     fun proceedChangePassword(){
         if(email.isEmpty()) {
 
-            ctx.toastError("Password cannot empty!")
+            ctx.toastError(ctx.getString(R.string.alert_email_empty))
             return
         }
 
@@ -99,7 +99,7 @@ fun PageResetPassword(
     )
     Scaffold(
         topBar = {
-            AppbarBasic(title = "Reset Password"){
+            AppbarBasic(title = stringResource(R.string.title_appbar_reset_password)){
                 router.popBackStack()
             }
         }

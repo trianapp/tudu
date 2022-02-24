@@ -125,7 +125,20 @@
     <string name="setting_sub_description_privacy_policy">Read our privacy policy</string>
     <string name="theme_default">Default System</string>
     <string name="theme_dark">Dark</string>
-    <string name="theme_light">Light Theme</string>
+    <string name="theme_light">Light</string>
+    <string name="title_dialog_select_theme">Select Theme</string>
+    <string name="caption_dialog_select_theme">Theme will set after app re-open</string>
+    <string name="title_appbar_change_password">Change Password</string>
+    <string name="label_input_new_password">New Password</string>
+    <string name="placeholder_input_new_password">Input new password</string>
+    <string name="label_input_confirm_new_password">Confirm Password</string>
+    <string name="placeholder_input_confirm_new_password">Confirm new password</string>
+    <string name="btn_save_changes">Save Changes</string>
+    <string name="alert_email_empty">Password cannot empty!</string>
+    <string name="title_appbar_reset_password">Reset Password</string>
+    <string name="alert_input_empty">Please fill all form!</string>
+    <string name="content_description_fab_add_task">Add new task</string>
+    <string name="tiltle_chart_weekly_task">Weekly Task Complete</string>
 
 
 </resources>

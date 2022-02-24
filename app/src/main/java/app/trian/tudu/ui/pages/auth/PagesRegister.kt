@@ -130,7 +130,7 @@ fun PagesRegister(
 
     fun processRegister(){
         if(email.isBlank() || password.isBlank() || username.isBlank()){
-            Toast.makeText(ctx,"Please fill all form?",Toast.LENGTH_SHORT).show()
+            Toast.makeText(ctx,ctx.getString(R.string.alert_input_empty),Toast.LENGTH_SHORT).show()
             return
         }
         if(!email.isEmailValid()){

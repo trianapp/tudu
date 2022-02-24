@@ -145,7 +145,11 @@ fun PagesOnboard(
                 Spacer(modifier = modifier.height(60.dp))
                 Image(
                     modifier=modifier.size(280.dp),
-                    painter = painterResource(id = if(isSystemDark) R.drawable.ilustrasion_dark else R.drawable.ilustrasion_light ),
+                    painter = painterResource(id =if( when(theme.getTheme()){
+                        ThemeData.DEFAULT -> isSystemDark
+                        ThemeData.DARK -> true
+                        ThemeData.LIGHT -> false
+                    }) R.drawable.ilustrasion_dark else R.drawable.ilustrasion_light ),
                     contentDescription = stringResource(R.string.content_description_image_onboard)
                 )
                 Spacer(modifier = modifier.height(20.dp))

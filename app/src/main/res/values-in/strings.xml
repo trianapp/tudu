@@ -124,7 +124,20 @@
     <string name="setting_sub_description_send_feedback">Bagikan ide kamu</string>
     <string name="setting_sub_privacy_policy">Kebijakan Privasi</string>
     <string name="setting_sub_description_privacy_policy">Baca Kebijakan Privasi Kami</string>
-    <string name="theme_default">Default System</string>
-    <string name="theme_dark">Dark</string>
-    <string name="theme_light">Light Theme</string>
+    <string name="theme_default">Bawaan Sistem</string>
+    <string name="theme_dark">Gelap</string>
+    <string name="theme_light">Terang</string>
+    <string name="title_dialog_select_theme">Pilih tema</string>
+    <string name="caption_dialog_select_theme">Tema akan diterapkan setelah aplikasi di restart</string>
+    <string name="title_appbar_change_password">Ubah password</string>
+    <string name="label_input_new_password">Password baru</string>
+    <string name="placeholder_input_new_password">Masukkan password baru</string>
+    <string name="label_input_confirm_new_password">Konfirmasi Password</string>
+    <string name="placeholder_input_confirm_new_password">Konfirmasi password baru</string>
+    <string name="btn_save_changes">Simpan Perubahan</string>
+    <string name="alert_email_empty">Password Tidak boleh kosong!</string>
+    <string name="title_appbar_reset_password">Reset Password</string>
+    <string name="alert_input_empty">Semua isian tidak boleh kosong!</string>
+    <string name="content_description_fab_add_task">Tambahkan Tugas Baru</string>
+    <string name="tiltle_chart_weekly_task">Penyelesaian Tugas Mingguan</string>
 </resources>

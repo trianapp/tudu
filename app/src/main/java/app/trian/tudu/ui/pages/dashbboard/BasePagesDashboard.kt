@@ -75,8 +75,8 @@ fun BasePagesDashboard(
     }
     DialogSelect(
         show = showDialogSelectTheme,
-        title = "Select Theme",
-        caption = "Theme will set after app re-open",
+        title = stringResource(R.string.title_dialog_select_theme),
+        caption = stringResource(R.string.caption_dialog_select_theme),
         selectedItem =selectedTheme,
         items = listOf(
             DialogItemModel(

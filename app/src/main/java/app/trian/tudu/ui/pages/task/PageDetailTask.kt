@@ -597,10 +597,12 @@ fun PageDetailTask(
 
 
 @Preview(
-    uiMode =UI_MODE_NIGHT_NO
+    uiMode =UI_MODE_NIGHT_NO,
+    showSystemUi = true
 )
 @Preview(
-    uiMode =UI_MODE_NIGHT_YES
+    uiMode =UI_MODE_NIGHT_YES,
+    showSystemUi = true
 )
 @Composable
 fun PreviewPageDetailTask(){

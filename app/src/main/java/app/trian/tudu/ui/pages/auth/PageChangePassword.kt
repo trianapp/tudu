@@ -1,6 +1,5 @@
 package app.trian.tudu.ui.pages.auth
 
-import android.widget.Toast
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,11 +11,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import app.trian.tudu.R
 import app.trian.tudu.common.getTheme
 import app.trian.tudu.common.toastError
 import app.trian.tudu.common.toastSuccess
@@ -98,7 +99,7 @@ fun PageChangePassword(
     )
     Scaffold(
         topBar = {
-            AppbarBasic(title = "Change Password"){
+            AppbarBasic(title = stringResource(R.string.title_appbar_change_password)){
                 router.popBackStack()
             }
         }
@@ -111,9 +112,9 @@ fun PageChangePassword(
         ) {
             FormInput(
                 label = {
-                    Text(text = "New Password")
+                    Text(text = stringResource(R.string.label_input_new_password))
                 },
-                placeholder = "Input new password",
+                placeholder = stringResource(R.string.placeholder_input_new_password),
                 showPasswordObsecure = true,
                 initialValue = newPassword,
                 onChange = {
@@ -123,9 +124,9 @@ fun PageChangePassword(
             Spacer(modifier = modifier.height(16.dp))
             FormInput(
                 label = {
-                    Text(text = "Confirm Password")
+                    Text(text = stringResource(R.string.label_input_confirm_new_password))
                 },
-                placeholder = "Confirm new password",
+                placeholder = stringResource(R.string.placeholder_input_confirm_new_password),
                 showPasswordObsecure = true,
                 initialValue = confirmNewPassword,
                 onChange = {
@@ -134,7 +135,7 @@ fun PageChangePassword(
             )
             Spacer(modifier = modifier.height(30.dp))
             ButtonPrimary(
-                text = "Save Changes"
+                text = stringResource(R.string.btn_save_changes)
             ){
                 proceedChangePassword()
             }

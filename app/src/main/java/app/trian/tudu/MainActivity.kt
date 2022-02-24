@@ -4,6 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
@@ -16,15 +21,11 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
-import androidx.navigation.compose.rememberNavController
+
 import androidx.navigation.navArgument
 import app.trian.tudu.common.Routes
 import app.trian.tudu.common.getTheme
 import app.trian.tudu.data.local.AppSetting
-import app.trian.tudu.data.repository.design.UserRepository
 import app.trian.tudu.domain.ThemeData
 import app.trian.tudu.ui.pages.auth.*
 import app.trian.tudu.ui.pages.category.PagesCategoryManagement
@@ -38,6 +39,10 @@ import app.trian.tudu.ui.pages.task.PageSearchTask
 import app.trian.tudu.ui.pages.user.PageUserInformation
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.UserViewModel
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.navigation
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
@@ -50,6 +55,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
+@ExperimentalAnimationApi
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 @AndroidEntryPoint
@@ -59,7 +65,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val navHostController = rememberNavController()
+            val navHostController = rememberAnimatedNavController()
             val systemUiController = rememberSystemUiController()
 
             // A surface container using the 'background' color from the theme
@@ -95,11 +101,21 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    NavHost(
+                    AnimatedNavHost(
                         navController = navHostController,
                         startDestination = Routes.SPLASH
                     ){
-                        composable(Routes.SPLASH){
+                        composable(
+                            Routes.SPLASH,
+                            enterTransition = {
+                                fadeIn(animationSpec = tween(400))
+                            },
+                            exitTransition = {
+
+                                fadeOut(animationSpec = tween(400))
+
+                            },
+                        ){
                             PagesSplash(
                                 router=navHostController,
                                 theme = currentSetting.theme
@@ -146,7 +162,17 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         navigation(route=Routes.DASHBOARD, startDestination = Routes.Dashboard.HOME){
-                            composable(route=Routes.Dashboard.HOME){
+                            composable(
+                                route=Routes.Dashboard.HOME,
+                                enterTransition = {
+                                    fadeIn(animationSpec = tween(700))
+                                },
+                                exitTransition = {
+
+                                    fadeOut(animationSpec = tween(700))
+
+                                },
+                            ){
                                 PageHome(
                                     router=navHostController,
                                     theme = currentSetting.theme,
@@ -157,7 +183,17 @@ class MainActivity : ComponentActivity() {
                                     restartActivity = ::logout
                                 )
                             }
-                            composable(route=Routes.Dashboard.CALENDER){
+                            composable(
+                                route=Routes.Dashboard.CALENDER,
+                                enterTransition = {
+                                    fadeIn(animationSpec = tween(700))
+                                },
+                                exitTransition = {
+
+                                    fadeOut(animationSpec = tween(700))
+
+                                },
+                            ){
 
                                 PageCalender(
                                     router=navHostController,
@@ -170,7 +206,17 @@ class MainActivity : ComponentActivity() {
                                 )
 
                             }
-                            composable(route=Routes.Dashboard.PROFILE){
+                            composable(
+                                route=Routes.Dashboard.PROFILE,
+                                enterTransition = {
+                                    fadeIn(animationSpec = tween(700))
+                                },
+                                exitTransition = {
+
+                                    fadeOut(animationSpec = tween(700))
+
+                                },
+                            ){
 
                                 PageProfile(
                                     router=navHostController,

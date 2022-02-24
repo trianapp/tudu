@@ -50,7 +50,7 @@ fun PageUserInformation(
     val currentUser by userViewModel.currentUser.observeAsState()
 
     val systemUiController = rememberSystemUiController()
-    val isSystemDark = isSystemInDarkTheme()
+
     val statusBar = MaterialTheme.colors.primary
 
     SideEffect {
