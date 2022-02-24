@@ -3,6 +3,9 @@ package app.trian.tudu.common
 import android.annotation.SuppressLint
 import org.joda.time.DateTime
 import java.text.SimpleDateFormat
+import java.time.DayOfWeek
+import java.time.temporal.WeekFields
+import java.util.*
 
 /**
  * Date Utils
@@ -45,4 +48,17 @@ fun Long.getDateUntil(to:Long):String{
     val dateTo = DateTime(to).toLocalDateTime()
    return "${dateFrom.toString("d MMM")} - ${dateTo.toString("d MMM, yyyy")}"
 
+}
+
+fun daysOfWeekFromLocale(): Array<DayOfWeek> {
+    val firstDayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek
+    var daysOfWeek = DayOfWeek.values()
+    // Order `daysOfWeek` array so that firstDayOfWeek is at index 0.
+    // Only necessary if firstDayOfWeek != DayOfWeek.MONDAY which has ordinal 0.
+    if (firstDayOfWeek != DayOfWeek.MONDAY) {
+        val rhs = daysOfWeek.sliceArray(firstDayOfWeek.ordinal..daysOfWeek.indices.last)
+        val lhs = daysOfWeek.sliceArray(0 until firstDayOfWeek.ordinal)
+        daysOfWeek = rhs + lhs
+    }
+    return daysOfWeek
 }

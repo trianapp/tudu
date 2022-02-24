@@ -21,6 +21,9 @@ object Libs {
             //accompanist(external library for jetpack compose)
             object Accompanist{
                 val accompanistSystemUiController by lazy{"com.google.accompanist:accompanist-systemuicontroller:0.24.1-alpha"}
+
+                val accompanistNavigationAnimation by lazy{"com.google.accompanist:accompanist-navigation-animation:0.24.2-alpha" }
+
             }
 
             //dagger hilt
@@ -64,18 +67,19 @@ object Libs {
             val coreKtx by lazy { "androidx.core:core-ktx:1.7.0" }
         }
         object Compose{
+            const val composeVersion = "1.2.0-alpha02"
             object Ui{
-                val ui by lazy{"androidx.compose.ui:ui:1.2.0-alpha02"}
-                val uiToolingPreview by lazy{"androidx.compose.ui:ui-tooling-preview:1.2.0-alpha02"}
-                val uiTooling by lazy{"androidx.compose.ui:ui-tooling:1.2.0-alpha02"}
-                val uiTestJunit4 by lazy{"androidx.compose.ui:ui-test-junit4:1.2.0-alpha02"}
-                val uiTestManifest by lazy{"androidx.compose.ui:ui-test-manifest:1.2.0-alpha02"}
+                val ui by lazy{"androidx.compose.ui:ui:$composeVersion"}
+                val uiToolingPreview by lazy{"androidx.compose.ui:ui-tooling-preview:$composeVersion"}
+                val uiTooling by lazy{"androidx.compose.ui:ui-tooling:$composeVersion"}
+                val uiTestJunit4 by lazy{"androidx.compose.ui:ui-test-junit4:$composeVersion"}
+                val uiTestManifest by lazy{"androidx.compose.ui:ui-test-manifest:$composeVersion"}
             }
             object Runtime{
-                val runtimeLivedata by lazy{"androidx.compose.runtime:runtime-livedata:1.2.0-alpha02"}
+                val runtimeLivedata by lazy{"androidx.compose.runtime:runtime-livedata:$composeVersion"}
             }
             object Material{
-                val material by lazy{"androidx.compose.material:material:1.2.0-alpha02"}
+                val material by lazy{"androidx.compose.material:material:$composeVersion"}
             }
         }
         object Lifecycle{

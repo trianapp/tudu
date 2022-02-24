@@ -1,6 +1,7 @@
 package app.trian.tudu.ui.pages.task
 
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,9 +22,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
+import app.trian.tudu.common.getTheme
 import app.trian.tudu.data.local.Task
+import app.trian.tudu.domain.ThemeData
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.TaskViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import compose.icons.Octicons
 import compose.icons.octicons.ArrowLeft24
 import kotlinx.coroutines.delay
@@ -39,10 +43,15 @@ import kotlinx.coroutines.launch
 @Composable
 fun PageInputNote(
     modifier: Modifier = Modifier,
-    router: NavHostController
+    router: NavHostController,
+    theme:String
 ) {
     val taskViewModel = hiltViewModel<TaskViewModel>()
     val detailTask by taskViewModel.detailTask.observeAsState(initial = Task())
+
+    val systemUiController = rememberSystemUiController()
+    val isSystemDark = isSystemInDarkTheme()
+    val statusBar = MaterialTheme.colors.background
 
     val scope = rememberCoroutineScope()
     var noteState by remember {
@@ -55,6 +64,17 @@ fun PageInputNote(
             detailTask.apply { note = noteState.text }
             taskViewModel.updateTask(detailTask)
         }
+    }
+
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = statusBar,
+            darkIcons = when(theme.getTheme()){
+                ThemeData.DEFAULT -> !isSystemDark
+                ThemeData.DARK -> false
+                ThemeData.LIGHT -> true
+            }
+        )
     }
     LaunchedEffect(key1 = Unit, block = {
         val taskId = router.currentBackStackEntry?.arguments?.getString("taskId") ?: ""
@@ -133,6 +153,9 @@ fun PageInputNote(
 @Composable
 fun PreviewPageInputNote() {
     TuduTheme {
-        PageInputNote(router = rememberNavController())
+        PageInputNote(
+            router = rememberNavController(),
+            theme = ThemeData.DEFAULT.value
+        )
     }
 }

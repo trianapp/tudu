@@ -12,7 +12,9 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
-
+import logcat.LogPriority
+import logcat.logcat
+import kotlin.math.log
 
 
 private val LightColorScheme = lightColors(
@@ -37,8 +39,6 @@ private val DarkColorScheme = darkColors(
 @Composable
 fun TuduTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -51,6 +51,9 @@ fun TuduTheme(
             (view.context as Activity).window.statusBarColor = colorScheme.primary.toArgb()
             ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = darkTheme
         }
+    }
+    SideEffect {
+        logcat("gee",LogPriority.ERROR){darkTheme.toString()}
     }
 
     MaterialTheme(

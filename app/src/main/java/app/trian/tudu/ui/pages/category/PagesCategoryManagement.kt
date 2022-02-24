@@ -1,6 +1,7 @@
 package app.trian.tudu.ui.pages.category
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -22,7 +23,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
+import app.trian.tudu.common.getTheme
 import app.trian.tudu.data.local.Category
+import app.trian.tudu.domain.ThemeData
 import app.trian.tudu.ui.component.dialog.DialogFormCategory
 import app.trian.tudu.ui.component.ItemAddCategory
 import app.trian.tudu.ui.component.ItemCategory
@@ -30,6 +33,7 @@ import app.trian.tudu.ui.component.dialog.DialogDeleteConfirmation
 import app.trian.tudu.ui.theme.Inactivebackground
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.TaskViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import compose.icons.Octicons
 import compose.icons.octicons.ArrowLeft16
 import logcat.LogPriority
@@ -38,9 +42,16 @@ import logcat.logcat
 @Composable
 fun PagesCategoryManagement(
     modifier: Modifier=Modifier,
-    router: NavHostController
+    router: NavHostController,
+    theme:String
+
 ) {
     val taskViewModel = hiltViewModel<TaskViewModel>()
+
+    val systemUiController = rememberSystemUiController()
+    val isSystemDark = isSystemInDarkTheme()
+    val statusBar = MaterialTheme.colors.background
+
     val listCategory by taskViewModel.listCategory.observeAsState(initial = emptyList())
     var shouldShowDialogFormCategory by remember {
         mutableStateOf(false)
@@ -52,6 +63,16 @@ fun PagesCategoryManagement(
         mutableStateOf(Category())
     }
 
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = statusBar,
+            darkIcons = when(theme.getTheme()){
+                ThemeData.DEFAULT -> !isSystemDark
+                ThemeData.DARK -> false
+                ThemeData.LIGHT -> true
+            }
+        )
+    }
     LaunchedEffect(key1 = Unit, block = {
         taskViewModel.getListCategory()
     })
@@ -162,7 +183,8 @@ fun PagesCategoryManagement(
 fun PreviewCategoryManagement(){
     TuduTheme {
         PagesCategoryManagement(
-            router = rememberNavController()
+            router = rememberNavController(),
+            theme = ThemeData.DEFAULT.value
         )
     }
 }

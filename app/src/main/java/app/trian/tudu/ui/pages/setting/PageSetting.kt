@@ -4,6 +4,7 @@ import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -29,6 +30,7 @@ import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
 import app.trian.tudu.common.*
 import app.trian.tudu.data.local.AppSetting
+import app.trian.tudu.domain.ThemeData
 import app.trian.tudu.ui.component.AppbarBasic
 import app.trian.tudu.ui.component.dialog.DateTimeFormat
 import app.trian.tudu.ui.component.dialog.DialogDateFormat
@@ -37,6 +39,7 @@ import app.trian.tudu.ui.component.dialog.ModalBottomSheetPrivacyPolicy
 import app.trian.tudu.ui.theme.HexToJetpackColor
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.UserViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import compose.icons.Octicons
 import compose.icons.octicons.*
 import kotlinx.coroutines.launch
@@ -45,10 +48,15 @@ import kotlinx.coroutines.launch
 @Composable
 fun PageSetting(
     modifier: Modifier = Modifier,
-    router: NavHostController
+    router: NavHostController,
+    theme:String
 ) {
     val ctx = LocalContext.current
     val userViewModel = hiltViewModel<UserViewModel>()
+
+    val systemUiController = rememberSystemUiController()
+    val isSystemDark = isSystemInDarkTheme()
+    val statusBar = MaterialTheme.colors.background
 
     val scope = rememberCoroutineScope()
     val bottomSheetState = rememberModalBottomSheetState(
@@ -149,7 +157,16 @@ fun PageSetting(
             )
         )
     )
-
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = statusBar,
+            darkIcons = when(theme.getTheme()){
+                ThemeData.DEFAULT -> !isSystemDark
+                ThemeData.DARK -> false
+                ThemeData.LIGHT -> true
+            }
+        )
+    }
     LaunchedEffect(key1 = Unit, block = {
         userViewModel.getCurrentSetting()
     })
@@ -371,6 +388,9 @@ data class SubItemSetting(
 @Composable
 fun PreviewPageSetting() {
     TuduTheme {
-        PageSetting(router = rememberNavController())
+        PageSetting(
+            router = rememberNavController(),
+            theme = ThemeData.DEFAULT.value
+        )
     }
 }

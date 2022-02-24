@@ -18,8 +18,8 @@ import app.trian.tudu.data.local.dao.*
         Todo::class,
         AppSetting::class
     ],
-    version = 13,
-    exportSchema = false
+    version = 14,
+    exportSchema = true
 )
 abstract class TuduDatabase :RoomDatabase(){
     abstract fun taskDao():TaskDao

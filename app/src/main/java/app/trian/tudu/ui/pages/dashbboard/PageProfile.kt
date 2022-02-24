@@ -10,11 +10,8 @@ import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -33,6 +30,7 @@ import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
 import app.trian.tudu.common.*
 import app.trian.tudu.domain.ChartModelData
+import app.trian.tudu.domain.ThemeData
 import app.trian.tudu.ui.component.chart.BarChartView
 import app.trian.tudu.ui.component.customShape.CurveShape
 import app.trian.tudu.ui.component.task.BottomSheetInputNewTask
@@ -41,6 +39,7 @@ import app.trian.tudu.viewmodel.TaskViewModel
 import app.trian.tudu.viewmodel.UserViewModel
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import compose.icons.Octicons
 import compose.icons.octicons.ArrowLeft24
 import compose.icons.octicons.Gear16
@@ -52,11 +51,19 @@ import kotlinx.coroutines.launch
 @Composable
 fun PageProfile(
     modifier: Modifier=Modifier,
-    router: NavHostController
+    router: NavHostController,
+    theme:String,
+    onChangeTheme:(theme:String)->Unit,
+    restartActivity:()->Unit
 ){
     val scope = rememberCoroutineScope()
     val userViewModel = hiltViewModel<UserViewModel>()
     val taskViewModel = hiltViewModel<TaskViewModel>()
+
+    val systemUiController = rememberSystemUiController()
+    val isSystemDark = isSystemInDarkTheme()
+    val statusBar = MaterialTheme.colors.primary
+
     val currentUser by userViewModel.currentUser.observeAsState()
 
     val allTaskCount by taskViewModel.allTaskCount.observeAsState(initial = 0)
@@ -71,11 +78,11 @@ fun PageProfile(
         skipHalfExpanded = false,
     )
 
-    val isDark = isSystemInDarkTheme()
-    fun signOut(){
-        scope.launch(Dispatchers.Main) {
-            router.signOut()
-        }
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = statusBar,
+            darkIcons = false
+        )
     }
 
     LaunchedEffect(key1 = Unit, block = {
@@ -86,12 +93,15 @@ fun PageProfile(
     BasePagesDashboard(
         router = router,
         currentUser = currentUser,
+        enableDrawerGesture = true,
+        theme = theme,
+        onChangeTheme = onChangeTheme,
         sheetContent={
             BottomSheetInputNewTask()
         },
         onLogout = {
             userViewModel.signOut{
-                signOut()
+                restartActivity()
             }
         },
         modalBottomSheetState=modalBottomSheetState
@@ -248,6 +258,11 @@ fun PageProfile(
 @Composable
 fun PreviewPageProfile() {
     TuduTheme {
-        PageProfile(router = rememberNavController())
+        PageProfile(
+            router = rememberNavController(),
+            theme = "",
+            onChangeTheme = {},
+            restartActivity = {}
+        )
     }
 }

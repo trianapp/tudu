@@ -1,6 +1,7 @@
 package app.trian.tudu.ui.pages.auth
 
 import android.widget.Toast
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -26,10 +27,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
-import app.trian.tudu.common.Routes
-import app.trian.tudu.common.hideKeyboard
-import app.trian.tudu.common.isEmailValid
-import app.trian.tudu.common.toastError
+import app.trian.tudu.common.*
+import app.trian.tudu.domain.ThemeData
 import app.trian.tudu.ui.component.AppbarAuth
 import app.trian.tudu.ui.component.ButtonPrimary
 import app.trian.tudu.ui.component.dialog.ModalBottomSheetPrivacyPolicy
@@ -38,16 +37,21 @@ import app.trian.tudu.ui.component.dialog.DialogLoading
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.ui.theme.fontFamily
 import app.trian.tudu.viewmodel.UserViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
 fun PagesRegister(
     modifier: Modifier=Modifier,
-    router: NavHostController
+    router: NavHostController,
+    theme:String
 ) {
     val ctx = LocalContext.current
     val userViewModel = hiltViewModel<UserViewModel>()
+    val systemUiController = rememberSystemUiController()
+    val isSystemDark = isSystemInDarkTheme()
+    val statusBar = MaterialTheme.colors.background
     val bottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
         skipHalfExpanded = true,
@@ -126,7 +130,7 @@ fun PagesRegister(
 
     fun processRegister(){
         if(email.isBlank() || password.isBlank() || username.isBlank()){
-            Toast.makeText(ctx,"Please fill all form?",Toast.LENGTH_SHORT).show()
+            Toast.makeText(ctx,ctx.getString(R.string.alert_input_empty),Toast.LENGTH_SHORT).show()
             return
         }
         if(!email.isEmailValid()){
@@ -142,6 +146,16 @@ fun PagesRegister(
             }
             Toast.makeText(ctx,"$message", Toast.LENGTH_LONG).show()
         }
+    }
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = statusBar,
+            darkIcons = when(theme.getTheme()){
+                ThemeData.DEFAULT -> !isSystemDark
+                ThemeData.DARK -> false
+                ThemeData.LIGHT -> true
+            }
+        )
     }
     DialogLoading(
         show=shouldShowDialogLoading
@@ -301,6 +315,9 @@ fun PagesRegister(
 @Composable
 fun PreviewPagesRegister(){
     TuduTheme {
-        PagesRegister(router=rememberNavController())
+        PagesRegister(
+            router=rememberNavController(),
+            theme = ThemeData.DEFAULT.value
+        )
     }
 }

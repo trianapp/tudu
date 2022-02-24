@@ -42,6 +42,8 @@ class MainApplication:MultiDexApplication(){
                 .setGravity(1,0,1)
                 .supportDarkTheme(true)
                 .apply()
+
+
         }catch (e:Exception){
             Firebase.crashlytics.recordException(e)
             logcat { e.message.toString() }
