@@ -76,6 +76,7 @@ class MainActivity : ComponentActivity() {
             val useDark by userViewModel.isDarkTheme.observeAsState(initial = ThemeData.DEFAULT)
             val dark = isSystemInDarkTheme()
             LaunchedEffect(key1 = Unit, block = {
+                //https://github.com/google/accompanist/issues/918
                 systemUiController.setSystemBarsColor(
                     color = uiColor,
                     darkIcons = when(useDark){
