@@ -4,11 +4,13 @@ import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -21,11 +23,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
+import app.trian.tudu.common.getTheme
+import app.trian.tudu.domain.ThemeData
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.UserViewModel
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import compose.icons.Octicons
 import compose.icons.octicons.ArrowLeft24
 
@@ -38,11 +43,22 @@ import compose.icons.octicons.ArrowLeft24
 @Composable
 fun PageUserInformation(
     modifier: Modifier = Modifier,
-    router: NavHostController
+    router: NavHostController,
+    theme:String
 ) {
     val userViewModel = hiltViewModel<UserViewModel>()
     val currentUser by userViewModel.currentUser.observeAsState()
 
+    val systemUiController = rememberSystemUiController()
+    val isSystemDark = isSystemInDarkTheme()
+    val statusBar = MaterialTheme.colors.primary
+
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = statusBar,
+            darkIcons = false
+        )
+    }
     LaunchedEffect(key1 = Unit, block = {
         userViewModel.getCurrentUser()
     })
@@ -176,6 +192,9 @@ fun ItemProfileUser(
 @Composable
 fun PreviewPageUserInformation(){
     TuduTheme {
-        PageUserInformation(router = rememberNavController())
+        PageUserInformation(
+            router = rememberNavController(),
+            theme = ThemeData.DEFAULT.value
+        )
     }
 }

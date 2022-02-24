@@ -3,9 +3,11 @@ package app.trian.tudu.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.trian.tudu.common.getTheme
 import app.trian.tudu.data.local.AppSetting
 import app.trian.tudu.data.repository.design.UserRepository
 import app.trian.tudu.domain.DataState
+import app.trian.tudu.domain.ThemeData
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseUser
@@ -32,6 +34,8 @@ class UserViewModel @Inject constructor():ViewModel() {
 
     private var _appSetting = MutableLiveData<AppSetting>()
     val appSetting get() = _appSetting
+    private var _isDarkTheme = MutableLiveData<ThemeData>()
+    val isDarkTheme get() = _isDarkTheme
 
 
     /**
@@ -50,6 +54,7 @@ class UserViewModel @Inject constructor():ViewModel() {
         userRepository.updateCurrentSetting(appSetting)
             .onEach {
                 _appSetting.postValue(it)
+                _isDarkTheme.postValue(appSetting.theme.getTheme())
             }
             .collect()
     }

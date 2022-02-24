@@ -2,6 +2,7 @@ package app.trian.tudu.ui.pages.auth
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -24,6 +25,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
 import app.trian.tudu.common.*
+import app.trian.tudu.domain.ThemeData
 import app.trian.tudu.ui.component.AppbarAuth
 import app.trian.tudu.ui.component.ButtonGoogle
 import app.trian.tudu.ui.component.ButtonPrimary
@@ -31,16 +33,21 @@ import app.trian.tudu.ui.component.FormInput
 import app.trian.tudu.ui.component.dialog.DialogLoading
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.UserViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 const val AUTH_GOOGLE_CODE = 1
 
 @Composable
 fun PageLogin(
     modifier: Modifier = Modifier,
-    router: NavHostController
+    router: NavHostController,
+    theme:String
 ) {
     val ctx = LocalContext.current
     val userViewModel = hiltViewModel<UserViewModel>()
+    val systemUiController = rememberSystemUiController()
+    val isSystemDark = isSystemInDarkTheme()
+    val statusBar = MaterialTheme.colors.background
 
     var shouldShowDialogLoading by remember {
         mutableStateOf(false)
@@ -94,6 +101,16 @@ fun PageLogin(
                 ctx.toastError(ctx.getString(R.string.signin_failed,message))
             }
         }
+    }
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = statusBar,
+            darkIcons = when(theme.getTheme()){
+                ThemeData.DEFAULT -> !isSystemDark
+                ThemeData.DARK -> false
+                ThemeData.LIGHT -> true
+            }
+        )
     }
 
     DialogLoading(
@@ -250,6 +267,7 @@ fun PreviewPagesLogin(){
     TuduTheme {
         PageLogin(
             router = rememberNavController(),
+            theme = ThemeData.DEFAULT.value
         )
     }
 }

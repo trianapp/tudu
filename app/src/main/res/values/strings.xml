@@ -123,6 +123,9 @@
     <string name="setting_sub_description_send_feedback">Share your thought</string>
     <string name="setting_sub_privacy_policy">Privacy Policy</string>
     <string name="setting_sub_description_privacy_policy">Read our privacy policy</string>
+    <string name="theme_default">Default System</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_light">Light Theme</string>
 
 
 </resources>

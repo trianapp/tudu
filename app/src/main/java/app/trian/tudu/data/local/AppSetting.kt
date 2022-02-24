@@ -3,6 +3,7 @@ package app.trian.tudu.data.local
 import androidx.annotation.IdRes
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import app.trian.tudu.domain.ThemeData
 import app.trian.tudu.ui.component.dialog.DateTimeFormat
 
 @Entity(tableName = "tb_app_setting")
@@ -12,6 +13,7 @@ data class AppSetting(
     var listType:Int=0,
     var lastSync:Long=0,
     var dateFormat:String=DateTimeFormat.YYYYMMDD.value,
-    var timeFormat:String=DateTimeFormat.TWENTY.value
+    var timeFormat:String=DateTimeFormat.TWENTY.value,
+    var theme:String=ThemeData.DEFAULT.value
 
 )

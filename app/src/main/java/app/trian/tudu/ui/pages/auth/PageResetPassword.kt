@@ -1,5 +1,6 @@
 package app.trian.tudu.ui.pages.auth
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -17,15 +18,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
+import app.trian.tudu.common.getTheme
 import app.trian.tudu.common.isEmailValid
 import app.trian.tudu.common.toastError
 import app.trian.tudu.common.toastSuccess
+import app.trian.tudu.domain.ThemeData
 import app.trian.tudu.ui.component.AppbarBasic
 import app.trian.tudu.ui.component.ButtonPrimary
 import app.trian.tudu.ui.component.FormInput
 import app.trian.tudu.ui.component.dialog.DialogLoading
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.UserViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 /**
  * Page Password
@@ -37,10 +41,16 @@ import app.trian.tudu.viewmodel.UserViewModel
 @Composable
 fun PageResetPassword(
     modifier: Modifier = Modifier,
-    router: NavHostController
+    router: NavHostController,
+    theme:String
 ) {
     val ctx = LocalContext.current
     val userViewModel = hiltViewModel<UserViewModel>()
+
+    val systemUiController = rememberSystemUiController()
+    val isSystemDark = isSystemInDarkTheme()
+    val statusBar = MaterialTheme.colors.background
+
     var shouldShowDialogLoading by remember {
         mutableStateOf(false)
     }
@@ -73,6 +83,16 @@ fun PageResetPassword(
                 ctx.toastError(message)
             }
         }
+    }
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = statusBar,
+            darkIcons = when(theme.getTheme()){
+                ThemeData.DEFAULT -> !isSystemDark
+                ThemeData.DARK -> false
+                ThemeData.LIGHT -> true
+            }
+        )
     }
     DialogLoading(
         show = shouldShowDialogLoading
@@ -119,6 +139,9 @@ fun PageResetPassword(
 @Composable
 fun PreviewPageResetPassword(){
     TuduTheme {
-        PageResetPassword(router = rememberNavController())
+        PageResetPassword(
+            router = rememberNavController(),
+            theme = ThemeData.DEFAULT.value
+        )
     }
 }

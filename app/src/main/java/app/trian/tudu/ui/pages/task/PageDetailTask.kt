@@ -6,6 +6,7 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -32,11 +33,13 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
 import app.trian.tudu.common.Routes
+import app.trian.tudu.common.getTheme
 import app.trian.tudu.common.toReadableDate
 import app.trian.tudu.data.local.AppSetting
 import app.trian.tudu.data.local.Category
 import app.trian.tudu.data.local.Task
 import app.trian.tudu.data.local.Todo
+import app.trian.tudu.domain.ThemeData
 import app.trian.tudu.ui.component.ItemAddTodo
 import app.trian.tudu.ui.component.ItemTodo
 import app.trian.tudu.ui.component.dialog.DropdownPickCategory
@@ -44,6 +47,7 @@ import app.trian.tudu.ui.theme.Inactivebackground
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.TaskViewModel
 import app.trian.tudu.viewmodel.UserViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import compose.icons.Octicons
 import compose.icons.octicons.*
 import kotlinx.coroutines.delay
@@ -59,11 +63,17 @@ import org.joda.time.DateTime
 @Composable
 fun PageDetailTask(
     modifier: Modifier = Modifier,
-    router: NavHostController
+    router: NavHostController,
+    theme:String
 ) {
      val ctx = LocalContext.current
      val taskViewModel = hiltViewModel<TaskViewModel>()
      val userViewModel = hiltViewModel<UserViewModel>()
+
+     val systemUiController = rememberSystemUiController()
+     val isSystemDark = isSystemInDarkTheme()
+     val statusBar = MaterialTheme.colors.background
+
      val scope = rememberCoroutineScope()
      val currentBackStack = router.currentBackStackEntryAsState()
 
@@ -148,6 +158,16 @@ fun PageDetailTask(
          }, date.year, getMonth(date.monthOfYear), date.dayOfMonth)
 
 
+     SideEffect {
+         systemUiController.setSystemBarsColor(
+             color = statusBar,
+             darkIcons = when(theme.getTheme()){
+                 ThemeData.DEFAULT -> !isSystemDark
+                 ThemeData.DARK -> false
+                 ThemeData.LIGHT -> true
+             }
+         )
+     }
      LaunchedEffect(key1 = Unit, block = {
          taskId = currentBackStack.value?.arguments?.getString("taskId") ?: ""
          taskViewModel.getTaskById(taskId)
@@ -585,6 +605,9 @@ fun PageDetailTask(
 @Composable
 fun PreviewPageDetailTask(){
     TuduTheme {
-        PageDetailTask(router = rememberNavController())
+        PageDetailTask(
+            router = rememberNavController(),
+            theme = ThemeData.DEFAULT.value
+        )
     }
 }

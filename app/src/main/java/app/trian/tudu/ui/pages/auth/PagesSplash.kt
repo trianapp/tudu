@@ -5,10 +5,7 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
@@ -24,24 +21,25 @@ import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
 import app.trian.tudu.common.Routes
 import app.trian.tudu.common.getLogo
+import app.trian.tudu.common.getTheme
+import app.trian.tudu.domain.ThemeData
 import app.trian.tudu.ui.component.dialog.DialogTimeFormat
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.UserViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.delay
 
 @Composable
 fun PagesSplash(
     modifier: Modifier=Modifier,
-    router: NavHostController
+    router: NavHostController,
+    theme:String
 ) {
 
     val userViewModel = hiltViewModel<UserViewModel>()
-    val isDark = isSystemInDarkTheme()
-
-
-
-
-
+    val systemUiController = rememberSystemUiController()
+    val isSystemDark = isSystemInDarkTheme()
+    val statusBar = MaterialTheme.colors.background
     LaunchedEffect(key1 = Unit, block = {
         //cek if user already logged in
         userViewModel.userAlreadyLogin {
@@ -62,6 +60,16 @@ fun PagesSplash(
         }
     })
 
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = statusBar,
+            darkIcons = when(theme.getTheme()){
+                ThemeData.DEFAULT -> !isSystemDark
+                ThemeData.DARK -> false
+                ThemeData.LIGHT -> true
+            }
+        )
+    }
 
 
     Scaffold() {
@@ -70,9 +78,13 @@ fun PagesSplash(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Image(painter = painterResource(id = isDark.getLogo()), contentDescription = stringResource(
-                            R.string.content_description_logo)
-                        )
+            Image(
+                painter = painterResource(id = when(theme.getTheme()){
+                    ThemeData.DEFAULT -> isSystemInDarkTheme()
+                    ThemeData.DARK -> true
+                    ThemeData.LIGHT -> false
+                }.getLogo()),
+                contentDescription = stringResource(R.string.content_description_logo))
 
         }
     }
@@ -88,6 +100,9 @@ fun PagesSplash(
 @Composable
 fun PreviewSplash(){
     TuduTheme {
-        PagesSplash(router = rememberNavController())
+        PagesSplash(
+            router = rememberNavController(),
+            theme = ThemeData.DEFAULT.value
+        )
     }
 }

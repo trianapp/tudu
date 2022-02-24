@@ -198,6 +198,7 @@ dependencies {
     //system ui controller
     with(Libs.Com.Google.Accompanist){
         implementation(accompanistSystemUiController)
+        implementation(accompanistNavigationAnimation)
     }
     //image loader
     with(Libs.Io.CoilKt){

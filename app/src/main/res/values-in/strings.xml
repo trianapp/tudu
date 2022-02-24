@@ -124,4 +124,7 @@
     <string name="setting_sub_description_send_feedback">Bagikan ide kamu</string>
     <string name="setting_sub_privacy_policy">Kebijakan Privasi</string>
     <string name="setting_sub_description_privacy_policy">Baca Kebijakan Privasi Kami</string>
+    <string name="theme_default">Default System</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_light">Light Theme</string>
 </resources>

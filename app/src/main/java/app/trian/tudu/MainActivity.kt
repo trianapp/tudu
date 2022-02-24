@@ -1,5 +1,6 @@
 package app.trian.tudu
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,8 +10,11 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,7 +22,10 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import app.trian.tudu.common.Routes
+import app.trian.tudu.common.getTheme
+import app.trian.tudu.data.local.AppSetting
 import app.trian.tudu.data.repository.design.UserRepository
+import app.trian.tudu.domain.ThemeData
 import app.trian.tudu.ui.pages.auth.*
 import app.trian.tudu.ui.pages.category.PagesCategoryManagement
 import app.trian.tudu.ui.pages.dashbboard.PageCalender
@@ -30,6 +37,7 @@ import app.trian.tudu.ui.pages.task.PageInputNote
 import app.trian.tudu.ui.pages.task.PageSearchTask
 import app.trian.tudu.ui.pages.user.PageUserInformation
 import app.trian.tudu.ui.theme.TuduTheme
+import app.trian.tudu.viewmodel.UserViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
@@ -54,20 +62,34 @@ class MainActivity : ComponentActivity() {
             val navHostController = rememberNavController()
             val systemUiController = rememberSystemUiController()
 
+            // A surface container using the 'background' color from the theme
+            val uiColor = MaterialTheme.colors.background
 
+            val userViewModel = hiltViewModel<UserViewModel>()
+            val currentSetting by userViewModel.appSetting.observeAsState(initial = AppSetting())
+            val useDark by userViewModel.isDarkTheme.observeAsState(initial = ThemeData.DEFAULT)
+            val dark = isSystemInDarkTheme()
+            LaunchedEffect(key1 = Unit, block = {
+                systemUiController.setSystemBarsColor(
+                    color = uiColor,
+                    darkIcons = when(useDark){
+                        ThemeData.DEFAULT -> !dark
+                        ThemeData.DARK -> false
+                        ThemeData.LIGHT -> true
+                    }
+                )
+                userViewModel.getCurrentSetting()
 
-            TuduTheme {
-                // A surface container using the 'background' color from the theme
-                val uiColor = MaterialTheme.colors.background
-                val primaryColor = MaterialTheme.colors.primary
-                val useDark = isSystemInDarkTheme()
-                LaunchedEffect(key1 = Unit, block = {
-                    systemUiController.setSystemBarsColor(
-                        color = uiColor,
-                        darkIcons = !useDark
-                    )
+            })
 
-                })
+            TuduTheme(
+                darkTheme = when(currentSetting.theme.getTheme()){
+                    ThemeData.DEFAULT -> isSystemInDarkTheme()
+                    ThemeData.DARK -> true
+                    ThemeData.LIGHT -> false
+                }
+            ) {
+
 
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -78,86 +100,87 @@ class MainActivity : ComponentActivity() {
                         startDestination = Routes.SPLASH
                     ){
                         composable(Routes.SPLASH){
-                            systemUiController.setSystemBarsColor(
-                                color = uiColor,
-                                darkIcons = !useDark
-                            )
                             PagesSplash(
-                                router=navHostController
+                                router=navHostController,
+                                theme = currentSetting.theme
                             )
                         }
                         composable(Routes.ONBOARD){
-                            systemUiController.setSystemBarsColor(
-                                color = uiColor,
-                                darkIcons = !useDark
-                            )
+
                             PagesOnboard(
                                 router=navHostController,
-                                )
+                                theme = currentSetting.theme
+                            )
                         }
                         composable(Routes.LOGIN){
-                            systemUiController.setSystemBarsColor(
-                                color = uiColor,
-                                darkIcons = !useDark
-                            )
                             PageLogin(
-                                router=navHostController
+                                router=navHostController,
+                                theme = currentSetting.theme
                             )
                         }
                         composable(Routes.REGISTER){
-                            systemUiController.setSystemBarsColor(
-                                color = uiColor,
-                                darkIcons = !useDark
-                            )
+
                             PagesRegister(
-                                router=navHostController
+                                router=navHostController,
+                                theme = currentSetting.theme
                             )
                         }
                         composable(Routes.CHANGE_PASSWORD){
-                            systemUiController.setSystemBarsColor(
-                                color = uiColor,
-                                darkIcons = !useDark
-                            )
+
                             PageChangePassword(
-                                router = navHostController
+                                router = navHostController,
+                                theme=currentSetting.theme
                             )
                         }
                         composable(Routes.RESET_PASSWORD){
-                            systemUiController.setSystemBarsColor(
-                                color = uiColor,
-                                darkIcons = !useDark
+
+                            PageResetPassword(
+                                router = navHostController,
+                                theme = currentSetting.theme
                             )
-                            PageResetPassword(router = navHostController)
                         }
                         composable(Routes.SETTING){
-                            systemUiController.setSystemBarsColor(
-                                color = uiColor,
-                                darkIcons = !useDark
+                            PageSetting(
+                                router = navHostController,
+                                theme=currentSetting.theme
                             )
-                            PageSetting(router = navHostController)
                         }
                         navigation(route=Routes.DASHBOARD, startDestination = Routes.Dashboard.HOME){
                             composable(route=Routes.Dashboard.HOME){
-                                systemUiController.setSystemBarsColor(
-                                    color = uiColor,
-                                    darkIcons = !useDark
+                                PageHome(
+                                    router=navHostController,
+                                    theme = currentSetting.theme,
+                                    onChangeTheme = {
+                                        userViewModel.updateCurrentSetting(currentSetting.apply { theme =it })
+                                        restartActivity()
+                                    },
+                                    restartActivity = ::logout
                                 )
-                                PageHome(router=navHostController)
                             }
                             composable(route=Routes.Dashboard.CALENDER){
-                                systemUiController.setSystemBarsColor(
-                                    color = primaryColor,
-                                    darkIcons = useDark
+
+                                PageCalender(
+                                    router=navHostController,
+                                    theme = currentSetting.theme,
+                                    onChangeTheme = {
+                                        userViewModel.updateCurrentSetting(currentSetting.apply { theme =it })
+                                        restartActivity()
+                                    },
+                                    restartActivity = ::logout
                                 )
-                                PageCalender(router=navHostController)
 
                             }
                             composable(route=Routes.Dashboard.PROFILE){
-                                systemUiController.setSystemBarsColor(
-                                    color = primaryColor,
-                                    darkIcons = useDark
+
+                                PageProfile(
+                                    router=navHostController,
+                                    theme = currentSetting.theme,
+                                    onChangeTheme = {
+                                        userViewModel.updateCurrentSetting(currentSetting.apply { theme =it })
+                                        restartActivity()
+                                    },
+                                    restartActivity = ::logout
                                 )
-                                PageProfile(router=navHostController)
 
                             }
                         }
@@ -169,11 +192,11 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         ){
-                            systemUiController.setSystemBarsColor(
-                                color = uiColor,
-                                darkIcons = !useDark
+
+                            PageDetailTask(
+                                router = navHostController,
+                                theme = currentSetting.theme
                             )
-                            PageDetailTask(router = navHostController)
                         }
                         composable(
                             "${Routes.ADD_NOTE}/{taskId}",
@@ -183,34 +206,29 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         ){
-                            systemUiController.setSystemBarsColor(
-                                color = uiColor,
-                                darkIcons = !useDark
+
+                            PageInputNote(
+                                router = navHostController,
+                                theme = currentSetting.theme
                             )
-                            PageInputNote(router = navHostController)
                         }
                         composable(Routes.SEARCH_TASK){
-                            systemUiController.setSystemBarsColor(
-                                color = uiColor,
-                                darkIcons = !useDark
-                            )
+
                             PageSearchTask(router = navHostController)
                         }
                         composable(Routes.CATEGORY){
-                            systemUiController.setSystemBarsColor(
-                                color = uiColor,
-                                darkIcons = !useDark
-                            )
+
                             PagesCategoryManagement(
-                                 router=navHostController
+                                 router=navHostController,
+                                theme = currentSetting.theme
                             )
                         }
                         composable(Routes.PAGE_USER_INFORMATION){
-                            systemUiController.setSystemBarsColor(
-                                color = primaryColor,
-                                darkIcons = !useDark
+
+                            PageUserInformation(
+                                router = navHostController,
+                                theme = currentSetting.theme
                             )
-                            PageUserInformation(router = navHostController)
                         }
                     }
                 }
@@ -219,5 +237,18 @@ class MainActivity : ComponentActivity() {
 
     }
 
+    private fun restartActivity(){
+      runOnUiThread {
+          this.recreate()
+      }
+    }
+    private fun logout(){
+        Intent(this,MainActivity::class.java).apply {
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }.also {
+            startActivity(it)
+            finish()
+        }
+    }
 
 }

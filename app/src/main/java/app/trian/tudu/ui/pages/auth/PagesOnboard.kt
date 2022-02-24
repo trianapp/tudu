@@ -28,6 +28,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
 import app.trian.tudu.common.*
+import app.trian.tudu.domain.ThemeData
 import app.trian.tudu.ui.component.ButtonGoogle
 import app.trian.tudu.ui.component.ButtonPrimary
 import app.trian.tudu.ui.component.ButtonSecondary
@@ -35,6 +36,7 @@ import app.trian.tudu.ui.component.dialog.DialogLoading
 import app.trian.tudu.ui.component.dialog.ModalBottomSheetPrivacyPolicy
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.UserViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.launch
 
 
@@ -42,11 +44,15 @@ import kotlinx.coroutines.launch
 @Composable
 fun PagesOnboard(
     modifier: Modifier=Modifier,
-    router:NavHostController
+    router:NavHostController,
+    theme:String
 ){
-    val userViewModel = hiltViewModel<UserViewModel>()
     val ctx = LocalContext.current
-    val isDark = isSystemInDarkTheme()
+    val userViewModel = hiltViewModel<UserViewModel>()
+    val systemUiController = rememberSystemUiController()
+    val isSystemDark = isSystemInDarkTheme()
+    val statusBar = MaterialTheme.colors.background
+
     val bottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
         skipHalfExpanded = true,
@@ -103,6 +109,16 @@ fun PagesOnboard(
             }
         }
     )
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = statusBar,
+            darkIcons = when(theme.getTheme()){
+                ThemeData.DEFAULT -> !isSystemDark
+                ThemeData.DARK -> false
+                ThemeData.LIGHT -> true
+            }
+        )
+    }
     DialogLoading(
         show=shouldShowDialogLoading
     )
@@ -129,7 +145,7 @@ fun PagesOnboard(
                 Spacer(modifier = modifier.height(60.dp))
                 Image(
                     modifier=modifier.size(280.dp),
-                    painter = painterResource(id = if(isDark) R.drawable.ilustrasion_dark else R.drawable.ilustrasion_light ),
+                    painter = painterResource(id = if(isSystemDark) R.drawable.ilustrasion_dark else R.drawable.ilustrasion_light ),
                     contentDescription = stringResource(R.string.content_description_image_onboard)
                 )
                 Spacer(modifier = modifier.height(20.dp))
@@ -216,6 +232,9 @@ fun PagesOnboard(
 @Composable
 fun PreviewOnboard(){
     TuduTheme {
-        PagesOnboard(router = rememberNavController())
+        PagesOnboard(
+            router = rememberNavController(),
+            theme = ThemeData.DEFAULT.value
+        )
     }
 }

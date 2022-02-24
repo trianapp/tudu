@@ -3,20 +3,31 @@ package app.trian.tudu.ui.pages.dashbboard
 import android.annotation.SuppressLint
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
 import app.trian.tudu.common.Routes
 import app.trian.tudu.common.emailTo
 import app.trian.tudu.common.gotoApp
+import app.trian.tudu.common.toDialogSelect
+import app.trian.tudu.data.local.AppSetting
+import app.trian.tudu.domain.ThemeData
 import app.trian.tudu.ui.component.TuduBottomNavigation
+import app.trian.tudu.ui.component.dialog.DialogItemModel
 import app.trian.tudu.ui.component.dialog.DialogLogout
+import app.trian.tudu.ui.component.dialog.DialogSelect
 import app.trian.tudu.ui.component.drawer.DrawerContent
 import app.trian.tudu.ui.theme.ScrimColor
+import app.trian.tudu.ui.theme.TuduTheme
+import app.trian.tudu.viewmodel.UserViewModel
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -31,6 +42,8 @@ fun BasePagesDashboard(
     modalBottomSheetState:ModalBottomSheetState,
     currentUser:FirebaseUser?,
     enableDrawerGesture:Boolean,
+    theme:String,
+    onChangeTheme:(theme:String)->Unit,
     onDrawerStateChanged:(DrawerValue)->Unit={},
     topAppbar:@Composable ()->Unit={},
     sheetContent:@Composable ()->Unit={},
@@ -49,6 +62,45 @@ fun BasePagesDashboard(
     var showDialogLogout by remember {
         mutableStateOf(false)
     }
+    var showDialogSelectTheme by remember {
+        mutableStateOf(false)
+    }
+    var selectedTheme by remember {
+        mutableStateOf<DialogItemModel?>(null)
+    }
+
+
+    SideEffect {
+        selectedTheme = theme.toDialogSelect(ctx)
+    }
+    DialogSelect(
+        show = showDialogSelectTheme,
+        title = "Select Theme",
+        caption = "Theme will set after app re-open",
+        selectedItem =selectedTheme,
+        items = listOf(
+            DialogItemModel(
+                ThemeData.DEFAULT.value,
+                ctx.getString(ThemeData.DEFAULT.text)
+            ),
+            DialogItemModel(
+                ThemeData.DARK.value,
+                ctx.getString(ThemeData.DARK.text)
+            ),
+            DialogItemModel(
+                ThemeData.LIGHT.value,
+                ctx.getString(ThemeData.LIGHT.text)
+            ),
+        ),
+        onDismiss = {
+            showDialogSelectTheme = false
+        },
+        onSelected = {
+            selectedTheme = it
+            onChangeTheme(it.value)
+            showDialogSelectTheme = false
+        }
+    )
     DialogLogout(
         show = showDialogLogout,
         onConfirm = {
@@ -88,7 +140,11 @@ fun BasePagesDashboard(
                             ctx.gotoApp()
                         }
                         "set_theme"->{
+                            scope.launch {
+                                drawerState.close()
 
+                                showDialogSelectTheme = true
+                            }
                         }
                     }
                 },
@@ -136,4 +192,23 @@ fun BasePagesDashboard(
 
 
 
+}
+
+
+@ExperimentalMaterialApi
+@Preview
+@Composable
+fun PreviewBaseDashboard(){
+    TuduTheme {
+        BasePagesDashboard(
+            router = rememberNavController(),
+            modalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden),
+            currentUser = null,
+            enableDrawerGesture = false,
+            theme = ThemeData.DEFAULT.value,
+            onChangeTheme = {}
+        ) {
+
+        }
+    }
 }

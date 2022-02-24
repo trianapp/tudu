@@ -1,6 +1,7 @@
 package app.trian.tudu.ui.pages.dashbboard
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -23,11 +24,14 @@ import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
 import app.trian.tudu.common.Routes
 import app.trian.tudu.common.daysOfWeekFromLocale
+import app.trian.tudu.common.getTheme
 import app.trian.tudu.common.signOut
+import app.trian.tudu.domain.ThemeData
 import app.trian.tudu.ui.component.CalendarViewCompose
 import app.trian.tudu.ui.component.task.BottomSheetInputNewTask
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.UserViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import compose.icons.Octicons
 import compose.icons.octicons.ArrowLeft24
 import compose.icons.octicons.ArrowRight24
@@ -39,10 +43,18 @@ import kotlinx.coroutines.launch
 @Composable
 fun PageCalender(
     modifier: Modifier=Modifier,
-    router: NavHostController
+    router: NavHostController,
+    theme:String,
+    onChangeTheme:(theme:String)->Unit,
+    restartActivity:()->Unit
 ){
     val scope = rememberCoroutineScope()
     val userViewModel = hiltViewModel<UserViewModel>()
+
+    val systemUiController = rememberSystemUiController()
+    val isSystemDark = isSystemInDarkTheme()
+    val statusBar = MaterialTheme.colors.primary
+
     val modalBottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
         skipHalfExpanded = false
@@ -63,10 +75,12 @@ fun PageCalender(
         mutableStateOf("")
     }
 
-    fun signOut(){
-        scope.launch(Dispatchers.Main) {
-            router.signOut()
-        }
+
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = statusBar,
+            darkIcons = false
+        )
     }
 
     LaunchedEffect(key1 = Unit, block = {
@@ -77,6 +91,8 @@ fun PageCalender(
         router = router,
         currentUser=currentUser,
         enableDrawerGesture = gestureEnabled,
+        theme = theme,
+        onChangeTheme = onChangeTheme,
         onDrawerStateChanged = {
             gestureEnabled = when(it){
                 DrawerValue.Closed -> false
@@ -118,7 +134,7 @@ fun PageCalender(
         },
         onLogout = {
             userViewModel.signOut{
-                signOut()
+                restartActivity()
             }
         },
         modalBottomSheetState=modalBottomSheetState
@@ -143,6 +159,10 @@ fun PreviewPageCalendar(){
 
     TuduTheme {
         PageCalender(
-            router = rememberNavController())
+            router = rememberNavController(),
+            theme = "",
+            onChangeTheme = {},
+            restartActivity = {}
+        )
     }
 }
