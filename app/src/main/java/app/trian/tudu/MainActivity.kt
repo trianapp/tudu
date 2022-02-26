@@ -15,6 +15,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -68,23 +69,23 @@ class MainActivity : ComponentActivity() {
             val navHostController = rememberAnimatedNavController()
             val systemUiController = rememberSystemUiController()
 
-            // A surface container using the 'background' color from the theme
-            val uiColor = MaterialTheme.colors.background
+
 
             val userViewModel = hiltViewModel<UserViewModel>()
             val currentSetting by userViewModel.appSetting.observeAsState(initial = AppSetting())
             val useDark by userViewModel.isDarkTheme.observeAsState(initial = ThemeData.DEFAULT)
             val dark = isSystemInDarkTheme()
+
             LaunchedEffect(key1 = Unit, block = {
                 //https://github.com/google/accompanist/issues/918
-                systemUiController.setSystemBarsColor(
-                    color = uiColor,
-                    darkIcons = when(useDark){
-                        ThemeData.DEFAULT -> !dark
-                        ThemeData.DARK -> false
-                        ThemeData.LIGHT -> true
-                    }
-                )
+//                systemUiController.setSystemBarsColor(
+//                    color = uiColor,
+//                    darkIcons = when(useDark){
+//                        ThemeData.DEFAULT -> !dark
+//                        ThemeData.DARK -> false
+//                        ThemeData.LIGHT -> true
+//                    }
+//                )
                 userViewModel.getCurrentSetting()
 
             })
@@ -96,7 +97,7 @@ class MainActivity : ComponentActivity() {
                     ThemeData.LIGHT -> false
                 }
             ) {
-
+                // A surface container using the 'background' color from the theme
 
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -117,6 +118,19 @@ class MainActivity : ComponentActivity() {
 
                             },
                         ){
+
+                            val uiColor = MaterialTheme.colors.background
+                            SideEffect {
+                                systemUiController.setSystemBarsColor(
+                                    color = uiColor,
+                                    darkIcons = when(currentSetting.theme.getTheme()){
+                                        ThemeData.DEFAULT -> !dark
+                                        ThemeData.DARK -> false
+                                        ThemeData.LIGHT -> true
+                                    }
+                                )
+                            }
+
                             PagesSplash(
                                 router=navHostController,
                                 theme = currentSetting.theme
@@ -124,12 +138,36 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(Routes.ONBOARD){
 
+                            val uiColor = MaterialTheme.colors.background
+                            SideEffect {
+                                systemUiController.setSystemBarsColor(
+                                    color = uiColor,
+                                    darkIcons = when(currentSetting.theme.getTheme()){
+                                        ThemeData.DEFAULT -> !dark
+                                        ThemeData.DARK -> false
+                                        ThemeData.LIGHT -> true
+                                    }
+                                )
+                            }
                             PagesOnboard(
                                 router=navHostController,
                                 theme = currentSetting.theme
                             )
                         }
                         composable(Routes.LOGIN){
+
+                            val uiColor = MaterialTheme.colors.background
+                            SideEffect {
+                                systemUiController.setSystemBarsColor(
+                                    color = uiColor,
+                                    darkIcons = when(currentSetting.theme.getTheme()){
+                                        ThemeData.DEFAULT -> !dark
+                                        ThemeData.DARK -> false
+                                        ThemeData.LIGHT -> true
+                                    }
+                                )
+                            }
+
                             PageLogin(
                                 router=navHostController,
                                 theme = currentSetting.theme
@@ -137,6 +175,17 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(Routes.REGISTER){
 
+                            val uiColor = MaterialTheme.colors.background
+                            SideEffect {
+                                systemUiController.setSystemBarsColor(
+                                    color = uiColor,
+                                    darkIcons = when(currentSetting.theme.getTheme()){
+                                        ThemeData.DEFAULT -> !dark
+                                        ThemeData.DARK -> false
+                                        ThemeData.LIGHT -> true
+                                    }
+                                )
+                            }
                             PagesRegister(
                                 router=navHostController,
                                 theme = currentSetting.theme
@@ -144,6 +193,17 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(Routes.CHANGE_PASSWORD){
 
+                            val uiColor = MaterialTheme.colors.background
+                            SideEffect {
+                                systemUiController.setSystemBarsColor(
+                                    color = uiColor,
+                                    darkIcons = when(currentSetting.theme.getTheme()){
+                                        ThemeData.DEFAULT -> !dark
+                                        ThemeData.DARK -> false
+                                        ThemeData.LIGHT -> true
+                                    }
+                                )
+                            }
                             PageChangePassword(
                                 router = navHostController,
                                 theme=currentSetting.theme
@@ -151,12 +211,36 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(Routes.RESET_PASSWORD){
 
+                            val uiColor = MaterialTheme.colors.background
+                            SideEffect {
+                                systemUiController.setSystemBarsColor(
+                                    color = uiColor,
+                                    darkIcons = when(currentSetting.theme.getTheme()){
+                                        ThemeData.DEFAULT -> !dark
+                                        ThemeData.DARK -> false
+                                        ThemeData.LIGHT -> true
+                                    }
+                                )
+                            }
                             PageResetPassword(
                                 router = navHostController,
                                 theme = currentSetting.theme
                             )
                         }
                         composable(Routes.SETTING){
+
+                            val uiColor = MaterialTheme.colors.background
+                            SideEffect {
+                                systemUiController.setSystemBarsColor(
+                                    color = uiColor,
+                                    darkIcons = when(currentSetting.theme.getTheme()){
+                                        ThemeData.DEFAULT -> !dark
+                                        ThemeData.DARK -> false
+                                        ThemeData.LIGHT -> true
+                                    }
+                                )
+                            }
+
                             PageSetting(
                                 router = navHostController,
                                 theme=currentSetting.theme
@@ -174,6 +258,19 @@ class MainActivity : ComponentActivity() {
 
                                 },
                             ){
+                                val uiColor = MaterialTheme.colors.background
+
+                                SideEffect {
+                                    systemUiController.setSystemBarsColor(
+                                        color = uiColor,
+                                        darkIcons = when(currentSetting.theme.getTheme()){
+                                            ThemeData.DEFAULT -> !dark
+                                            ThemeData.DARK -> false
+                                            ThemeData.LIGHT -> true
+                                        }
+                                    )
+                                }
+
                                 PageHome(
                                     router=navHostController,
                                     theme = currentSetting.theme,
@@ -196,6 +293,14 @@ class MainActivity : ComponentActivity() {
                                 },
                             ){
 
+
+                                val uiColorPrimary = MaterialTheme.colors.primary
+                                SideEffect {
+                                    systemUiController.setSystemBarsColor(
+                                        color = uiColorPrimary,
+                                        darkIcons = false
+                                    )
+                                }
                                 PageCalender(
                                     router=navHostController,
                                     theme = currentSetting.theme,
@@ -218,6 +323,14 @@ class MainActivity : ComponentActivity() {
 
                                 },
                             ){
+                                val uiColor = MaterialTheme.colors.background
+                                val uiColorPrimary = MaterialTheme.colors.primary
+                                SideEffect {
+                                    systemUiController.setSystemBarsColor(
+                                        color = uiColorPrimary,
+                                        darkIcons = false
+                                    )
+                                }
 
                                 PageProfile(
                                     router=navHostController,
@@ -240,6 +353,18 @@ class MainActivity : ComponentActivity() {
                             )
                         ){
 
+
+                            val uiColor = MaterialTheme.colors.background
+                            SideEffect {
+                                systemUiController.setSystemBarsColor(
+                                    color = uiColor,
+                                    darkIcons = when(currentSetting.theme.getTheme()){
+                                        ThemeData.DEFAULT -> !dark
+                                        ThemeData.DARK -> false
+                                        ThemeData.LIGHT -> true
+                                    }
+                                )
+                            }
                             PageDetailTask(
                                 router = navHostController,
                                 theme = currentSetting.theme
@@ -254,6 +379,17 @@ class MainActivity : ComponentActivity() {
                             )
                         ){
 
+                            val uiColor = MaterialTheme.colors.background
+                            SideEffect {
+                                systemUiController.setSystemBarsColor(
+                                    color = uiColor,
+                                    darkIcons = when(currentSetting.theme.getTheme()){
+                                        ThemeData.DEFAULT -> !dark
+                                        ThemeData.DARK -> false
+                                        ThemeData.LIGHT -> true
+                                    }
+                                )
+                            }
                             PageInputNote(
                                 router = navHostController,
                                 theme = currentSetting.theme
@@ -265,6 +401,13 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(Routes.CATEGORY){
 
+                            val uiColor = MaterialTheme.colors.background
+                            SideEffect {
+                                systemUiController.setSystemBarsColor(
+                                    color = uiColor,
+                                    darkIcons = false
+                                )
+                            }
                             PagesCategoryManagement(
                                  router=navHostController,
                                 theme = currentSetting.theme
@@ -272,6 +415,14 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(Routes.PAGE_USER_INFORMATION){
 
+
+                            val uiColorPrimary = MaterialTheme.colors.primary
+                            SideEffect {
+                                systemUiController.setSystemBarsColor(
+                                    color = uiColorPrimary,
+                                    darkIcons = false
+                                )
+                            }
                             PageUserInformation(
                                 router = navHostController,
                                 theme = currentSetting.theme

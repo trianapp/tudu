@@ -58,10 +58,6 @@ fun PageHome(
     val taskViewModel = hiltViewModel<TaskViewModel>()
     val userViewModel = hiltViewModel<UserViewModel>()
 
-    val systemUiController = rememberSystemUiController()
-    val isSystemDark = isSystemInDarkTheme()
-    val statusBar = MaterialTheme.colors.background
-
     val listTask by taskViewModel.listTask.observeAsState(initial = emptyList())
     val listCategory by taskViewModel.listCategory.observeAsState(initial = listOf(Category(
         name = "All",
@@ -101,16 +97,7 @@ fun PageHome(
         taskViewModel.getListTask()
     }
 
-    SideEffect {
-        systemUiController.setSystemBarsColor(
-            color = statusBar,
-            darkIcons = when(theme.getTheme()){
-                ThemeData.DEFAULT -> !isSystemDark
-                ThemeData.DARK -> false
-                ThemeData.LIGHT -> true
-            }
-        )
-    }
+
 
     LaunchedEffect(key1 = Unit, block = {
         userViewModel.getCurrentSetting()

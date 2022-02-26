@@ -84,16 +84,7 @@ fun PageResetPassword(
             }
         }
     }
-    SideEffect {
-        systemUiController.setSystemBarsColor(
-            color = statusBar,
-            darkIcons = when(theme.getTheme()){
-                ThemeData.DEFAULT -> !isSystemDark
-                ThemeData.DARK -> false
-                ThemeData.LIGHT -> true
-            }
-        )
-    }
+
     DialogLoading(
         show = shouldShowDialogLoading
     )

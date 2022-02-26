@@ -54,10 +54,6 @@ fun PageSetting(
     val ctx = LocalContext.current
     val userViewModel = hiltViewModel<UserViewModel>()
 
-    val systemUiController = rememberSystemUiController()
-    val isSystemDark = isSystemInDarkTheme()
-    val statusBar = MaterialTheme.colors.background
-
     val scope = rememberCoroutineScope()
     val bottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -157,16 +153,7 @@ fun PageSetting(
             )
         )
     )
-    SideEffect {
-        systemUiController.setSystemBarsColor(
-            color = statusBar,
-            darkIcons = when(theme.getTheme()){
-                ThemeData.DEFAULT -> !isSystemDark
-                ThemeData.DARK -> false
-                ThemeData.LIGHT -> true
-            }
-        )
-    }
+
     LaunchedEffect(key1 = Unit, block = {
         userViewModel.getCurrentSetting()
     })

@@ -56,13 +56,10 @@ fun PageProfile(
     onChangeTheme:(theme:String)->Unit,
     restartActivity:()->Unit
 ){
-    val scope = rememberCoroutineScope()
+
     val userViewModel = hiltViewModel<UserViewModel>()
     val taskViewModel = hiltViewModel<TaskViewModel>()
 
-    val systemUiController = rememberSystemUiController()
-    val isSystemDark = isSystemInDarkTheme()
-    val statusBar = MaterialTheme.colors.primary
 
     val currentUser by userViewModel.currentUser.observeAsState()
 
@@ -78,12 +75,7 @@ fun PageProfile(
         skipHalfExpanded = false,
     )
 
-    SideEffect {
-        systemUiController.setSystemBarsColor(
-            color = statusBar,
-            darkIcons = false
-        )
-    }
+
 
     LaunchedEffect(key1 = Unit, block = {
         userViewModel.getCurrentUser()

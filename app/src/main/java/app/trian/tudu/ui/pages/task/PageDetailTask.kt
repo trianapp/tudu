@@ -70,10 +70,6 @@ fun PageDetailTask(
      val taskViewModel = hiltViewModel<TaskViewModel>()
      val userViewModel = hiltViewModel<UserViewModel>()
 
-     val systemUiController = rememberSystemUiController()
-     val isSystemDark = isSystemInDarkTheme()
-     val statusBar = MaterialTheme.colors.background
-
      val scope = rememberCoroutineScope()
      val currentBackStack = router.currentBackStackEntryAsState()
 
@@ -158,16 +154,6 @@ fun PageDetailTask(
          }, date.year, getMonth(date.monthOfYear), date.dayOfMonth)
 
 
-     SideEffect {
-         systemUiController.setSystemBarsColor(
-             color = statusBar,
-             darkIcons = when(theme.getTheme()){
-                 ThemeData.DEFAULT -> !isSystemDark
-                 ThemeData.DARK -> false
-                 ThemeData.LIGHT -> true
-             }
-         )
-     }
      LaunchedEffect(key1 = Unit, block = {
          taskId = currentBackStack.value?.arguments?.getString("taskId") ?: ""
          taskViewModel.getTaskById(taskId)
