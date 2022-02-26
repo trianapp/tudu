@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.tasks.await
 import logcat.LogPriority
 import logcat.logcat
+import org.joda.time.DateTime
 
 class TaskRepositoryImpl(
     private val dispatcherProvider: DispatcherProvider,
@@ -32,6 +33,12 @@ class TaskRepositoryImpl(
         const val TODO_COLLECTION = "TODO"
     }
     override suspend fun getListTask(): Flow<List<Task>> = taskDao.getListTask().flowOn(dispatcherProvider.io())
+    override suspend fun getListTaskByDate(date: Long): Flow<List<Task>> {
+        val currentDate = DateTime(date).withTimeAtStartOfDay()
+        val nextDate = currentDate.plusDays(1).withTimeAtStartOfDay()
+        return taskDao.getListTaskByDate(currentDate.millis,nextDate.millis).flowOn(dispatcherProvider.io())
+    }
+
     override suspend fun getListTaskByCategory(categoryId: String): Flow<List<Task>> =taskDao.getListTaskByCategory(categoryId).flowOn(dispatcherProvider.io())
 
     override suspend fun getTaskById(taskId: String): Flow<Task?> = flow {

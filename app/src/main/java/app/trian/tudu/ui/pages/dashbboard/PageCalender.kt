@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -28,8 +30,10 @@ import app.trian.tudu.common.getTheme
 import app.trian.tudu.common.signOut
 import app.trian.tudu.domain.ThemeData
 import app.trian.tudu.ui.component.CalendarViewCompose
+import app.trian.tudu.ui.component.ItemTaskCalendar
 import app.trian.tudu.ui.component.task.BottomSheetInputNewTask
 import app.trian.tudu.ui.theme.TuduTheme
+import app.trian.tudu.viewmodel.TaskViewModel
 import app.trian.tudu.viewmodel.UserViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import compose.icons.Octicons
@@ -38,6 +42,7 @@ import compose.icons.octicons.ArrowRight24
 import compose.icons.octicons.Calendar24
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.joda.time.DateTime
 
 @ExperimentalMaterialApi
 @Composable
@@ -48,12 +53,12 @@ fun PageCalender(
     onChangeTheme:(theme:String)->Unit,
     restartActivity:()->Unit
 ){
-    val scope = rememberCoroutineScope()
-    val userViewModel = hiltViewModel<UserViewModel>()
 
-    val systemUiController = rememberSystemUiController()
-    val isSystemDark = isSystemInDarkTheme()
-    val statusBar = MaterialTheme.colors.primary
+    val userViewModel = hiltViewModel<UserViewModel>()
+    val taskViewModel = hiltViewModel<TaskViewModel>()
+
+    val listTask by taskViewModel.listTaskCalendar.observeAsState(initial = emptyList())
+
 
     val modalBottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -64,9 +69,7 @@ fun PageCalender(
     var gestureEnabled by remember {
         mutableStateOf(false)
     }
-    var calendarWeekMode by remember {
-        mutableStateOf(false)
-    }
+
 
     var currentYear by remember {
         mutableStateOf("")
@@ -76,12 +79,6 @@ fun PageCalender(
     }
 
 
-    SideEffect {
-        systemUiController.setSystemBarsColor(
-            color = statusBar,
-            darkIcons = false
-        )
-    }
 
     LaunchedEffect(key1 = Unit, block = {
         userViewModel.getCurrentUser()
@@ -146,8 +143,18 @@ fun PageCalender(
                 currentYear = year
                 currentMonth = month
 
+            },
+            onSelectedDate = {
+
+                taskViewModel.getListTaskByDate(it.toEpochDay())
             }
         )
+        LazyColumn(content = {
+            items(listTask){
+                task->
+                ItemTaskCalendar()
+            }
+        })
     }
 
 }

@@ -55,28 +55,39 @@ class TaskViewModel @Inject constructor() : ViewModel() {
     private var _completedTaskCount = MutableLiveData<Int>(0)
     val completedTaskCount get() = _completedTaskCount
 
-    private var _unCompleteTaskCount = MutableLiveData<Int>(0)
+    private var _unCompleteTaskCount = MutableLiveData(0)
     val unCompleteTaskCount get() = _unCompleteTaskCount
 
     private var _chartCompleteTask = MutableLiveData<ChartModelData>()
     val chartCompleteTask get() = _chartCompleteTask
 
-    private var _currentDate = MutableLiveData<Long>(getNowMillis())
+    private var _currentDate = MutableLiveData(getNowMillis())
     val currentDate get() = _currentDate
+
+    private var _listTaskCalendar = MutableLiveData<List<Task>>(emptyList())
+    val listTaskCalendar get() = _listTaskCalendar
 
 
     fun getListTask()=viewModelScope.launch {
         taskRepository.getListTask().onEach {
             result->
-            _listTask.value = result
+            _listTask.postValue(result)
         }.collect()
+    }
+
+    fun getListTaskByDate(date:Long)=viewModelScope.launch {
+        taskRepository.getListTaskByDate(date)
+            .onEach {
+                _listTaskCalendar.postValue(it)
+            }
+            .collect()
     }
 
 
     fun getListTaskByCategory(categoryId:String)=viewModelScope.launch {
         taskRepository.getListTaskByCategory(categoryId).onEach {
             result->
-            _listTask.value = result
+            _listTask.postValue(result)
         }.collect()
     }
 

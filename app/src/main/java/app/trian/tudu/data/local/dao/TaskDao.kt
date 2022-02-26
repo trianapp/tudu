@@ -19,6 +19,9 @@ interface TaskDao {
     @Query("SELECT * FROM tb_task ORDER BY created_at DESC")
     fun getListTask():Flow<List<Task>>
 
+    @Query("SELECT * FROM tb_task WHERE deadline BETWEEN :from AND :to ORDER BY deadline DESC")
+    fun getListTaskByDate(from: Long,to: Long):Flow<List<Task>>
+
     @Query("SELECT * FROM tb_task ORDER BY created_at DESC")
     fun getListTaskNoFlow():List<Task>
 
@@ -30,6 +33,7 @@ interface TaskDao {
 
     @Query("SELECT COUNT(taskId) from tb_task WHERE done=:done AND updated_at BETWEEN :from AND :to")
     fun getCountCompleteTask(from:Long,to:Long,done:Boolean = true):Int
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertNewTask(task:Task)

@@ -40,7 +40,8 @@ import java.util.*
 fun CalendarViewCompose(
     modifier: Modifier = Modifier,
     legend:Array<DayOfWeek> = emptyArray(),
-    onScroll:(year:String,month:String)->Unit={_,_->}
+    onScroll:(year:String,month:String)->Unit={_,_->},
+    onSelectedDate:(date:LocalDate)->Unit={}
 ) {
 
     val firstDayOfWeek =  WeekFields.of(Locale.getDefault()).firstDayOfWeek
@@ -91,6 +92,7 @@ fun CalendarViewCompose(
                             view.setOnClickListener {
                                 if(day.owner == DayOwner.THIS_MONTH){
                                     selectedDate = day.date
+                                    onSelectedDate(day.date)
                                     notifyCalendarChanged()
                                 }
 

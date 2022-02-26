@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface TaskRepository {
     suspend fun getListTask():Flow<List<Task>>
+    suspend fun getListTaskByDate(date:Long):Flow<List<Task>>
     suspend fun getListTaskByCategory(categoryId:String):Flow<List<Task>>
     suspend fun getTaskById(taskId:String):Flow<Task?>
     suspend fun getWeekCompleteCount(date:Long):Flow<ChartModelData>
