@@ -24,6 +24,7 @@ object Libs {
 
                 val accompanistNavigationAnimation by lazy{"com.google.accompanist:accompanist-navigation-animation:0.24.2-alpha" }
 
+                val accompanistPager by lazy{"com.google.accompanist:accompanist-pager:0.24.3-alpha"}
             }
 
             //dagger hilt
