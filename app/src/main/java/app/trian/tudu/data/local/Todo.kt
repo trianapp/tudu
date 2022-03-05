@@ -3,6 +3,7 @@ package app.trian.tudu.data.local
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.time.OffsetDateTime
 
 /**
  * Entity Todo
@@ -23,7 +24,7 @@ data class Todo(
     @ColumnInfo(name = "todoTaskId")
     var task_id:String,
     @ColumnInfo(name = "created_at")
-    var created_at:Long,
+    var created_at:OffsetDateTime?=null,
     @ColumnInfo(name = "updated_at")
-    var updated_at:Long
+    var updated_at:OffsetDateTime?=null
 )

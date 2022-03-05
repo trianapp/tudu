@@ -1,5 +1,6 @@
 package app.trian.tudu.ui.component.tab
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -29,6 +30,7 @@ import app.trian.tudu.ui.theme.TuduTheme
 import compose.icons.Octicons
 import compose.icons.octicons.Grabber16
 import compose.icons.octicons.Home16
+import java.time.OffsetDateTime
 
 /**
  * Tab bar
@@ -36,6 +38,7 @@ import compose.icons.octicons.Home16
  * created_at 30/01/22 - 12.29
  * site https://trian.app
  */
+@SuppressLint("NewApi")
 @Composable
 fun TabBarHome(
     modifier: Modifier=Modifier,
@@ -69,8 +72,8 @@ fun TabBarHome(
                     ItemTabCategory(
                         category = Category(
                             name = stringResource(R.string.category_all),
-                            created_at = 0,
-                            updated_at = 0,
+                            created_at = OffsetDateTime.now(),
+                            updated_at = OffsetDateTime.now(),
                             color = HexToJetpackColor.Blue
                         ),
                         selected = selectedTab == 0,
@@ -118,6 +121,7 @@ fun TabBarHome(
     }
 }
 
+@SuppressLint("NewApi")
 @Preview
 @Composable
 fun PreviewTabHome() {
@@ -126,26 +130,26 @@ fun PreviewTabHome() {
             tabData = listOf(
                 Category(
                     name = "Wishlist",
-                    created_at = 0,
-                    updated_at = 0,
+                    created_at = OffsetDateTime.now(),
+                    updated_at = OffsetDateTime.now(),
                     color = HexToJetpackColor.Blue
                 ),
                 Category(
                     name = "Tugas",
-                    created_at = 0,
-                    updated_at = 0,
+                    created_at = OffsetDateTime.now(),
+                    updated_at = OffsetDateTime.now(),
                     color = HexToJetpackColor.Blue
                 ),
                 Category(
                     name = "Kerjaan",
-                    created_at = 0,
-                    updated_at = 0,
+                    created_at = OffsetDateTime.now(),
+                    updated_at = OffsetDateTime.now(),
                     color = HexToJetpackColor.Blue
                 ),
                 Category(
                     name = "Cobaan",
-                    created_at = 0,
-                    updated_at = 0,
+                    created_at = OffsetDateTime.now(),
+                    updated_at = OffsetDateTime.now(),
                     color = HexToJetpackColor.Blue
                 )
             ),

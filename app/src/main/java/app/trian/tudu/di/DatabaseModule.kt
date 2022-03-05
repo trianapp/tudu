@@ -68,10 +68,6 @@ object DatabaseModule {
         db.todoDao()
 
     @Provides
-    fun provideAttachmentDao(db:TuduDatabase):AttachmentDao =
-        db.attachmentDao()
-
-    @Provides
     fun provideCategoryDao(db:TuduDatabase):CategoryDao =
         db.categoryDao()
 

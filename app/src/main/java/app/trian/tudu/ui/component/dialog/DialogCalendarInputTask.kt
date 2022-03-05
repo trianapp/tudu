@@ -46,7 +46,7 @@ fun DialogCalendarInputTask(
     currentDateTime: LocalDateTime?=null,
     reminderOn:Boolean=false,
     onDismiss:()->Unit ={},
-    onConfirm:(LocalDateTime:Long, reminderOn:Boolean)->Unit={
+    onConfirm:(LocalDateTime:OffsetDateTime, reminderOn:Boolean)->Unit={
         _,_ ->
     }
 ) {
@@ -77,7 +77,7 @@ fun ScreenDialogCalendarInputTask(
     currentDateTime:LocalDateTime?=null,
     reminderOn:Boolean=false,
     onCancel:()->Unit,
-    onConfirm:(LocalDateTime:Long, reminderOn:Boolean)->Unit
+    onConfirm:(LocalDateTime:OffsetDateTime, reminderOn:Boolean)->Unit
 ) {
     val ctx = LocalContext.current
     val activity =  ctx.findActivity()
@@ -158,7 +158,7 @@ fun ScreenDialogCalendarInputTask(
             }
             TextButton(onClick = {
                 onConfirm(
-                    LocalDateTime.of(date, time).toEpochSecond(ZoneOffset.UTC),
+                    OffsetDateTime.of(date,time, ZoneOffset.UTC),
                     isReminderOn
                 )
             }) {

@@ -64,7 +64,6 @@ object NetworkModule {
         dispatcherProvider: DispatcherProvider,
         taskDao:TaskDao,
         todoDao: TodoDao,
-        attachmentDao: AttachmentDao,
         categoryDao: CategoryDao,
         firestore: FirebaseFirestore,
         firebaseAuth: FirebaseAuth
@@ -72,7 +71,6 @@ object NetworkModule {
         dispatcherProvider,
         taskDao,
         todoDao,
-        attachmentDao,
         categoryDao,
         firestore,
         firebaseAuth

@@ -1,5 +1,6 @@
 package app.trian.tudu.ui.pages.dashbboard
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -43,7 +44,9 @@ import compose.icons.Octicons
 import compose.icons.octicons.Plus16
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.OffsetDateTime
 
+@SuppressLint("NewApi")
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 @Composable
@@ -61,8 +64,8 @@ fun PageHome(
     val listTask by taskViewModel.listTask.observeAsState(initial = emptyList())
     val listCategory by taskViewModel.listCategory.observeAsState(initial = listOf(Category(
         name = "All",
-        created_at = 0,
-        updated_at = 0,
+        created_at = OffsetDateTime.now(),
+        updated_at = OffsetDateTime.now(),
         color = HexToJetpackColor.Blue
     )))
     val currentUser by userViewModel.currentUser.observeAsState()

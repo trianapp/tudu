@@ -1,5 +1,6 @@
 package app.trian.tudu.ui.component
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
@@ -32,6 +33,7 @@ import app.trian.tudu.ui.theme.TuduTheme
 import compose.icons.Octicons
 import compose.icons.octicons.Milestone16
 import compose.icons.octicons.Milestone24
+import java.time.OffsetDateTime
 
 /**
  * TaskItem
@@ -235,6 +237,7 @@ fun ItemTaskGrid(
         }
     }
 }
+@SuppressLint("NewApi")
 @Preview(
     uiMode = UI_MODE_NIGHT_NO
 )
@@ -247,16 +250,16 @@ fun PreviewItemTaskRow(){
         taskId="iniasna",
         uid="iniuid",
         name="task pertama",
-        deadline=0,
+        deadline= OffsetDateTime.now(),
         done=false,
-        done_at=0,
+        done_at=OffsetDateTime.now(),
         note="ini",
         category_id="b",
         color = HexToJetpackColor.Red,
         secondColor = HexToJetpackColor.SecondRed,
         reminder = false,
-        created_at=0,
-        updated_at=1
+        created_at=OffsetDateTime.now(),
+        updated_at=OffsetDateTime.now()
     )
     TuduTheme {
         ItemTaskRow(
@@ -265,6 +268,7 @@ fun PreviewItemTaskRow(){
     }
 }
 
+@SuppressLint("NewApi")
 @Preview(
     uiMode = UI_MODE_NIGHT_NO
 )
@@ -277,16 +281,16 @@ fun PreviewItemTaskGrid(){
         taskId="iniasna",
         uid="iniuid",
         name="task pertama",
-        deadline=0,
+        deadline=OffsetDateTime.now(),
         done=false,
-        done_at=0,
+        done_at=OffsetDateTime.now(),
         note="ini",
         category_id="b",
         color = HexToJetpackColor.Blue,
         secondColor = HexToJetpackColor.SecondBlue,
         reminder=false,
-        created_at=0,
-        updated_at=1
+        created_at=OffsetDateTime.now(),
+        updated_at=OffsetDateTime.now()
     )
     TuduTheme {
         ItemTaskGrid(

@@ -2,6 +2,7 @@ package app.trian.tudu.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import app.trian.tudu.data.local.dao.*
 
 /**
@@ -14,17 +15,19 @@ import app.trian.tudu.data.local.dao.*
     entities = [
         Task::class,
         Category::class,
-        Attachment::class,
         Todo::class,
         AppSetting::class
     ],
-    version = 14,
-    exportSchema = true
+    version = 15,
+    exportSchema = true,
+
+)
+@TypeConverters(
+    DateConverter::class
 )
 abstract class TuduDatabase :RoomDatabase(){
     abstract fun taskDao():TaskDao
     abstract fun todoDao():TodoDao
-    abstract fun attachmentDao(): AttachmentDao
     abstract fun categoryDao():CategoryDao
     abstract fun appSettingDao():AppSettingDao
     companion object{

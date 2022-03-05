@@ -49,6 +49,7 @@ import compose.icons.Octicons
 import compose.icons.octicons.*
 import org.joda.time.DateTime
 import java.time.LocalDateTime
+import java.time.OffsetDateTime
 import java.util.*
 
 
@@ -84,13 +85,19 @@ fun BottomSheetInputNewTask(
         mutableStateOf(TextFieldValue(text = ""))
     }
     var categoryId by remember {
-        mutableStateOf(Category(name = ctx.getString(R.string.no_category), created_at = 0, updated_at = 0, color = HexToJetpackColor.Blue))
+        mutableStateOf(
+            Category(
+                name = ctx.getString(R.string.no_category),
+                created_at = OffsetDateTime.now(),
+                updated_at = OffsetDateTime.now(),
+                color = HexToJetpackColor.Blue)
+        )
     }
     var todos by remember {
         mutableStateOf<List<Todo>>(mutableListOf())
     }
     var deadline by remember {
-        mutableStateOf<Long>(0)
+        mutableStateOf<OffsetDateTime?>(null)
     }
 
     var setReminder by remember {
@@ -112,7 +119,7 @@ fun BottomSheetInputNewTask(
                 name=taskName.text,
                 deadline=deadline,
                 done=false,
-                done_at=0,
+                done_at= OffsetDateTime.now(),
                 note="",
                 color=HexToJetpackColor.Blue,
                 secondColor=HexToJetpackColor.SecondBlue,
@@ -125,13 +132,13 @@ fun BottomSheetInputNewTask(
             //submit data
             onSubmit(task, todos)
             //clear all state to initial value each
-            deadline = 0
+            deadline = OffsetDateTime.now()
             setReminder = false
             taskName = TextFieldValue(text = "")
             categoryId = Category(
                 name = ctx.getString(R.string.no_category),
-                updated_at = 0,
-                created_at = 0,
+                updated_at = OffsetDateTime.now(),
+                created_at = OffsetDateTime.now(),
                 color = HexToJetpackColor.Blue
             )
             todos = mutableListOf()
@@ -143,9 +150,12 @@ fun BottomSheetInputNewTask(
         dismissable = false,
         onDismiss = {showDialogDatePicker=false},
         onConfirm = {
+
             dateTime,reminder ->
             deadline = dateTime
             setReminder = reminder
+
+            showDialogDatePicker=false
         }
     )
 
@@ -268,7 +278,7 @@ fun BottomSheetInputNewTask(
                 }
 
                 IconToggleButton(
-                    checked = deadline > 0,
+                    checked = deadline != null,
                     onCheckedChange = {
                         showDialogDatePicker = true
                         //datePickerDialog.show()
@@ -277,7 +287,7 @@ fun BottomSheetInputNewTask(
                     Icon(
                         imageVector = Octicons.Calendar24,
                         contentDescription = "",
-                        tint=if(deadline > 0) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground
+                        tint=if(deadline == null ) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground
                     )
                 }
                 IconToggleButton(
