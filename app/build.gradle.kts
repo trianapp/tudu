@@ -92,6 +92,7 @@ android {
 dependencies {
 
     implementation("io.github.boguszpawlowski.composecalendar:composecalendar:0.3.0")
+    implementation ("com.google.android.material:material:1.5.0")
     implementation(Libs.AndroidX.Multidex.multidex)
     implementation(Libs.AndroidX.Core.coreKtx)
     implementation(Libs.AndroidX.Activity.activityCompose)

@@ -139,6 +139,7 @@
     <string name="alert_input_empty">Please fill all form!</string>
     <string name="content_description_fab_add_task">Add new task</string>
     <string name="tiltle_chart_weekly_task">Weekly Task Complete</string>
+    <string name="label_deadline_time">Time</string>
 
 
 </resources>
