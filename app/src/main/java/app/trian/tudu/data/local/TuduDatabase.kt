@@ -20,7 +20,6 @@ import app.trian.tudu.data.local.dao.*
     ],
     version = 15,
     exportSchema = true,
-
 )
 @TypeConverters(
     DateConverter::class

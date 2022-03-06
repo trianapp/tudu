@@ -14,9 +14,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.tasks.await
-import logcat.LogPriority
-import logcat.logcat
-import org.joda.time.DateTime
 import java.time.OffsetDateTime
 
 class TaskRepositoryImpl(
@@ -38,10 +35,6 @@ class TaskRepositoryImpl(
     override suspend fun getListTaskByDate(date: OffsetDateTime): Flow<List<Task>> {
         val current = date
         val previous = current.minusDays(1)
-
-        logcat("tes", LogPriority.ERROR) { previous.toReadableDate("dd/mm/yyyy hh:mm:ss") }
-        logcat("tes", LogPriority.ERROR) { date.toReadableDate("dd/mm/yyyy hh:mm:ss") }
-
        val data = taskDao.getListTaskByDate(previous,current)
        return data.flowOn(dispatcherProvider.io())
     }

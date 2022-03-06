@@ -47,12 +47,10 @@ import app.trian.tudu.ui.theme.Inactivebackground
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.TaskViewModel
 import app.trian.tudu.viewmodel.UserViewModel
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import compose.icons.Octicons
 import compose.icons.octicons.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.joda.time.DateTime
 import java.time.OffsetDateTime
 
  /**

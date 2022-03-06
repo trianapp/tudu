@@ -1,10 +1,6 @@
 package app.trian.tudu.common
 
 import android.annotation.SuppressLint
-import androidx.room.TypeConverter
-import app.trian.tudu.data.local.DateConverter
-import org.joda.time.DateTime
-import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.OffsetDateTime

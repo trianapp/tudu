@@ -65,8 +65,7 @@ fun PageCalender(
     val userViewModel = hiltViewModel<UserViewModel>()
     val taskViewModel = hiltViewModel<TaskViewModel>()
     val ctx = LocalContext.current
-
-
+    val today = LocalDate.now()
     val listTask by taskViewModel.listTaskCalendar.observeAsState(initial = emptyList())
 
 
@@ -179,10 +178,21 @@ fun PageCalender(
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.calendar_no_task),
-                        contentDescription =
-                        stringResource(R.string.content_description_image_page_calendar_no_data,selectedDate.toReadableDate()))
+                        contentDescription = stringResource(R.string.content_description_image_page_calendar_no_data,
+                            if(today == selectedDate)
+                                ctx.getString(R.string.text_today)
+                            else
+                                selectedDate.toReadableDate()
+                        )
+                    )
                     Text(
-                        text = stringResource(R.string.text_no_data_page_calendar,selectedDate.toReadableDate())
+                        text = stringResource(R.string.text_no_data_page_calendar,
+                            if(today == selectedDate)
+                                ctx.getString(R.string.text_today)
+                            else
+                                selectedDate.toReadableDate()
+
+                        )
                     )
                 }
 

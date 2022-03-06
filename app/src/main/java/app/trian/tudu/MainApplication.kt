@@ -45,8 +45,7 @@ class MainApplication:MultiDexApplication(){
 
 
         }catch (e:Exception){
-            Firebase.crashlytics.recordException(e)
-            logcat { e.message.toString() }
+
         }
 
 

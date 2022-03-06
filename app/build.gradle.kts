@@ -190,9 +190,9 @@ dependencies {
     }
 
     //datetime
-    with(Libs.JodaTime){
-        implementation(jodaTime)
-    }
+//    with(Libs.JodaTime){
+//        implementation(jodaTime)
+//    }
 
     //system ui controller
     with(Libs.Com.Google.Accompanist){
