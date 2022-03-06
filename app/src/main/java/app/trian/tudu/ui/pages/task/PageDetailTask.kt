@@ -47,12 +47,11 @@ import app.trian.tudu.ui.theme.Inactivebackground
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.TaskViewModel
 import app.trian.tudu.viewmodel.UserViewModel
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import compose.icons.Octicons
 import compose.icons.octicons.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.joda.time.DateTime
+import java.time.OffsetDateTime
 
  /**
  * Detail task
@@ -70,10 +69,6 @@ fun PageDetailTask(
      val taskViewModel = hiltViewModel<TaskViewModel>()
      val userViewModel = hiltViewModel<UserViewModel>()
 
-     val systemUiController = rememberSystemUiController()
-     val isSystemDark = isSystemInDarkTheme()
-     val statusBar = MaterialTheme.colors.background
-
      val scope = rememberCoroutineScope()
      val currentBackStack = router.currentBackStackEntryAsState()
 
@@ -85,7 +80,7 @@ fun PageDetailTask(
      val listCategory by taskViewModel.listCategory.observeAsState(initial = emptyList())
 
      var date by remember {
-         mutableStateOf(DateTime())
+         mutableStateOf<OffsetDateTime?>(null)
      }
      var taskId by remember {
          mutableStateOf("")
@@ -141,33 +136,7 @@ fun PageDetailTask(
          }
      }
 
-     fun getMonth(month: Int): Int {
-         if (month < 1) {
-             return month
-         }
-         return month - 1
-     }
 
-     val datePickerDialog =
-         DatePickerDialog(ctx, { _: DatePicker, year: Int, month: Int, day: Int ->
-             date = DateTime(year, (month + 1), day, 0, 0)
-             deadlineState = date.millis
-
-             updateTask()
-
-         }, date.year, getMonth(date.monthOfYear), date.dayOfMonth)
-
-
-     SideEffect {
-         systemUiController.setSystemBarsColor(
-             color = statusBar,
-             darkIcons = when(theme.getTheme()){
-                 ThemeData.DEFAULT -> !isSystemDark
-                 ThemeData.DARK -> false
-                 ThemeData.LIGHT -> true
-             }
-         )
-     }
      LaunchedEffect(key1 = Unit, block = {
          taskId = currentBackStack.value?.arguments?.getString("taskId") ?: ""
          taskViewModel.getTaskById(taskId)
@@ -180,9 +149,8 @@ fun PageDetailTask(
          taskName = TextFieldValue(text = detailTask.name)
          deadlineState = detailTask.deadline
          reminderState = detailTask.reminder
-         date = DateTime(
-             detailTask.deadline
-         )
+         date = detailTask.deadline
+
          taskCategoryId = detailTask.category_id
          selectedCategory = listCategory.firstOrNull { it.categoryId == detailTask.category_id }
                  ?: Category(name = ctx.getString(R.string.no_category))
@@ -434,7 +402,7 @@ fun PageDetailTask(
                                          vertical = 2.dp
                                      )
                                      .clickable {
-                                         datePickerDialog.show()
+                                         //todo: show date picker
                                      }
                              ) {
                                  Text(

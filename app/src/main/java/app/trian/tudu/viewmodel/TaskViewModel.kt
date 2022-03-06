@@ -1,5 +1,6 @@
 package app.trian.tudu.viewmodel
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import logcat.LogPriority
 import logcat.logcat
+import java.time.OffsetDateTime
 import javax.inject.Inject
 
 /**
@@ -55,28 +57,46 @@ class TaskViewModel @Inject constructor() : ViewModel() {
     private var _completedTaskCount = MutableLiveData<Int>(0)
     val completedTaskCount get() = _completedTaskCount
 
-    private var _unCompleteTaskCount = MutableLiveData<Int>(0)
+    private var _unCompleteTaskCount = MutableLiveData(0)
     val unCompleteTaskCount get() = _unCompleteTaskCount
 
     private var _chartCompleteTask = MutableLiveData<ChartModelData>()
     val chartCompleteTask get() = _chartCompleteTask
 
-    private var _currentDate = MutableLiveData<Long>(getNowMillis())
+    private var _currentDate = MutableLiveData(getNowMillis())
     val currentDate get() = _currentDate
+
+    private var _listTaskCalendar = MutableLiveData<List<Task>>(emptyList())
+    val listTaskCalendar get() = _listTaskCalendar
 
 
     fun getListTask()=viewModelScope.launch {
         taskRepository.getListTask().onEach {
             result->
-            _listTask.value = result
+            _listTask.postValue(result)
         }.collect()
     }
 
+    fun getListTaskByDate(date:OffsetDateTime)=viewModelScope.launch {
+        taskRepository.getListTaskByDate(date)
+            .onEach {
+                _listTaskCalendar.postValue(it)
+            }
+            .collect()
+    }
+
+    fun deleteTask(task:Task)=viewModelScope.launch {
+        taskRepository.deleteTask(task)
+            .onEach {
+
+            }
+            .collect()
+    }
 
     fun getListTaskByCategory(categoryId:String)=viewModelScope.launch {
         taskRepository.getListTaskByCategory(categoryId).onEach {
             result->
-            _listTask.value = result
+            _listTask.postValue(result)
         }.collect()
     }
 
@@ -122,7 +142,7 @@ class TaskViewModel @Inject constructor() : ViewModel() {
 
     }
 
-    private fun getStatisticChart(date:Long) = viewModelScope.launch {
+    private fun getStatisticChart(date:OffsetDateTime) = viewModelScope.launch {
         taskRepository.getWeekCompleteCount(date).onEach {
             _chartCompleteTask.postValue(it)
         }
@@ -173,11 +193,12 @@ class TaskViewModel @Inject constructor() : ViewModel() {
         taskRepository.getBackupTaskFromCloud().onEach {  }.collect()
     }
 
+    @SuppressLint("NewApi")
     fun addNewCategory(categoryName:String)=viewModelScope.launch {
         val category = Category(
             name = categoryName,
-            created_at = 0,
-            updated_at = 0,
+            created_at = OffsetDateTime.now(),
+            updated_at = OffsetDateTime.now(),
             color = HexToJetpackColor.Blue
         )
 
@@ -191,13 +212,14 @@ class TaskViewModel @Inject constructor() : ViewModel() {
         taskRepository.deleteCategory(category).onEach { }.collect()
     }
 
-    fun addNewTodo(todoName:String,taskId: String)=viewModelScope.launch {
+    @SuppressLint("NewApi")
+    fun addNewTodo(todoName:String, taskId: String)=viewModelScope.launch {
         val todo = Todo(
             name = todoName,
             done = false,
             task_id = taskId,
-            created_at = 0,
-            updated_at = 0
+            created_at = OffsetDateTime.now(),
+            updated_at = OffsetDateTime.now()
         )
 
         taskRepository.addTodo(todo).onEach{}.collect()

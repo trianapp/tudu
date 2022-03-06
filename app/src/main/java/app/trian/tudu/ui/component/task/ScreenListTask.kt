@@ -2,6 +2,7 @@ package app.trian.tudu.ui.component.task
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -28,6 +29,7 @@ import app.trian.tudu.ui.theme.TuduTheme
  * site https://trian.app
  */
 
+@ExperimentalFoundationApi
 @Composable
 fun ScreenListTask(
     modifier:Modifier=Modifier,
@@ -36,7 +38,8 @@ fun ScreenListTask(
     appSetting: AppSetting,
     onChangeListType:(type:HeaderTask)->Unit={},
     onDetail:(task:Task)->Unit={},
-    onDone:(task:Task)->Unit={}
+    onDone:(task:Task)->Unit={},
+    onDelete:(task:Task)->Unit={}
 ) {
     LazyColumn(
         modifier = modifier
@@ -64,6 +67,9 @@ fun ScreenListTask(
                         onDetail = {
                             onDetail(it)
 
+                        },
+                        onDelete = {
+                            onDelete(it)
                         }
                     )
                 }
@@ -74,11 +80,14 @@ fun ScreenListTask(
                         task = data,
                         dateFormat = appSetting.dateFormat,
                         onDone = {
-                                 onDone(it)
+                           onDone(it)
                         },
                         onDetail = {
                             onDetail(it)
 
+                        },
+                        onDelete = {
+                            onDelete(it)
                         }
                     )
                 }
@@ -88,6 +97,7 @@ fun ScreenListTask(
     }
 }
 
+@ExperimentalFoundationApi
 @Preview(
     uiMode=UI_MODE_NIGHT_NO
 )

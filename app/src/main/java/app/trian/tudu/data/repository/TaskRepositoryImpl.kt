@@ -1,8 +1,8 @@
 package app.trian.tudu.data.repository
 
+import android.annotation.SuppressLint
 import app.trian.tudu.common.*
 import app.trian.tudu.data.local.*
-import app.trian.tudu.data.local.dao.AttachmentDao
 import app.trian.tudu.data.local.dao.CategoryDao
 import app.trian.tudu.data.local.dao.TaskDao
 import app.trian.tudu.data.local.dao.TodoDao
@@ -14,14 +14,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.tasks.await
-import logcat.LogPriority
-import logcat.logcat
+import java.time.OffsetDateTime
 
 class TaskRepositoryImpl(
     private val dispatcherProvider: DispatcherProvider,
     private val taskDao: TaskDao,
     private val todoDao: TodoDao,
-    private val attachmentDao: AttachmentDao,
     private val categoryDao: CategoryDao,
     private val firestore: FirebaseFirestore,
     private val firebaseAuth: FirebaseAuth
@@ -32,6 +30,16 @@ class TaskRepositoryImpl(
         const val TODO_COLLECTION = "TODO"
     }
     override suspend fun getListTask(): Flow<List<Task>> = taskDao.getListTask().flowOn(dispatcherProvider.io())
+
+    @SuppressLint("NewApi")
+    override suspend fun getListTaskByDate(date: OffsetDateTime): Flow<List<Task>> {
+        val current = date
+        val previous = current.minusDays(1)
+       val data = taskDao.getListTaskByDate(previous,current)
+       return data.flowOn(dispatcherProvider.io())
+    }
+
+
     override suspend fun getListTaskByCategory(categoryId: String): Flow<List<Task>> =taskDao.getListTaskByCategory(categoryId).flowOn(dispatcherProvider.io())
 
     override suspend fun getTaskById(taskId: String): Flow<Task?> = flow {
@@ -40,9 +48,7 @@ class TaskRepositoryImpl(
 
     }.flowOn(dispatcherProvider.io())
 
-    override suspend fun getWeekCompleteCount(date:Long): Flow<ChartModelData> =flow {
-
-
+    override suspend fun getWeekCompleteCount(date:OffsetDateTime): Flow<ChartModelData> =flow {
 
         val startWeek = date.getPreviousWeek()
 
@@ -54,8 +60,6 @@ class TaskRepositoryImpl(
         var listEntry = listOf<BarEntry>()
         var listLabel = listOf<String>()
         dayCount.forEachIndexed { _, i ->
-
-//            logcat("date -> ",LogPriority.ERROR) { currentFrom.formatDate()+"<->"+currentTo.formatDate() }
             val dataCount = taskDao.getCountCompleteTask(currentFrom,currentTo)
 
             if(currentMax < dataCount){
@@ -70,7 +74,7 @@ class TaskRepositoryImpl(
             currentTo = currentFrom
             currentFrom = currentFrom.getPreviousDate()
 
-            listLabel = listLabel + currentTo.formatDate()
+            listLabel = listLabel + currentTo.formatDate("dd/MM")
 
         }
         emit(
@@ -111,6 +115,11 @@ class TaskRepositoryImpl(
 
     override suspend fun updateTask(task: Task): Flow<Task> =flow {
         taskDao.updateTask(task)
+        emit(task)
+    }.flowOn(dispatcherProvider.io())
+
+    override suspend fun deleteTask(task: Task): Flow<Task> =flow<Task> {
+        taskDao.deleteTask(task)
         emit(task)
     }.flowOn(dispatcherProvider.io())
 

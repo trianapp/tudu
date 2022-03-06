@@ -49,9 +49,6 @@ fun PagesRegister(
 ) {
     val ctx = LocalContext.current
     val userViewModel = hiltViewModel<UserViewModel>()
-    val systemUiController = rememberSystemUiController()
-    val isSystemDark = isSystemInDarkTheme()
-    val statusBar = MaterialTheme.colors.background
     val bottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
         skipHalfExpanded = true,
@@ -147,16 +144,7 @@ fun PagesRegister(
             Toast.makeText(ctx,"$message", Toast.LENGTH_LONG).show()
         }
     }
-    SideEffect {
-        systemUiController.setSystemBarsColor(
-            color = statusBar,
-            darkIcons = when(theme.getTheme()){
-                ThemeData.DEFAULT -> !isSystemDark
-                ThemeData.DARK -> false
-                ThemeData.LIGHT -> true
-            }
-        )
-    }
+
     DialogLoading(
         show=shouldShowDialogLoading
     )

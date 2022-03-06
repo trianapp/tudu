@@ -1,0 +1,7 @@
+1. Penambahan halaman Klender untuk melihat tugas-tugas yang akan datang
+2. Penambahan fitur hapus tugas(klik tahan pada item tugas), Maaf mimin lupa nambahin fiturnya kemarin 😬
+3. Sekarang kamu bisa mengganti tema sesuka hati 🥳
+
+Bug Fix:
+1. Perbaikan dan Peningkatan Performa
+

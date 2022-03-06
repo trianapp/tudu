@@ -4,13 +4,18 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
+import android.graphics.Paint
 import android.net.Uri
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
 import app.trian.tudu.R
+import com.google.android.material.timepicker.MaterialTimePicker
 import es.dmoral.toasty.Toasty
 import logcat.logcat
 
@@ -51,15 +56,6 @@ fun Context.gotoApp(){
     }.also { intent->
         this.startActivity(intent)
     }
-    // To count with Play market backstack, After pressing back button,
-    // to taken back to our application, we need to add following flags to intent.
-
-//    try {
-//        startActivity(goToMarket)
-//    } catch (e: ActivityNotFoundException) {
-//        startActivity(Intent(Intent.ACTION_VIEW,
-//            Uri.parse("http://play.google.com/store/apps/details?id=$packageName")))
-//    }
 }
 
 fun Boolean.getLogo():Int{
@@ -81,4 +77,28 @@ fun Context.toastInfo(message:String){
 }
 fun Context.toastNormal(message:String){
     Toasty.normal(this,message,Toast.LENGTH_LONG).show()
+}
+
+fun AppCompatActivity.showTimePicker(
+    hourMinute:Pair<Int,Int>,
+    onSelect:(Pair<Int,Int>) -> Unit,
+    onDismiss:()->Unit
+){
+    MaterialTimePicker.Builder()
+        .setHour(hourMinute.first)
+        .setMinute(hourMinute.second)
+        .build()
+        .apply {
+            addOnPositiveButtonClickListener {
+                onSelect(Pair(hour,minute))
+            }
+            addOnDismissListener { onDismiss() }
+
+            show(supportFragmentManager,"Tag")
+        }
+}
+fun Context.findActivity(): AppCompatActivity? = when (this) {
+    is AppCompatActivity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
 }

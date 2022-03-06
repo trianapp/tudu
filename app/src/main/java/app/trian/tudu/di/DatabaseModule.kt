@@ -12,7 +12,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import org.joda.time.DateTime
+
 
 /**
  * Dependency Injection for database module
@@ -66,10 +66,6 @@ object DatabaseModule {
     @Provides
     fun provideTodoDao(db:TuduDatabase):TodoDao =
         db.todoDao()
-
-    @Provides
-    fun provideAttachmentDao(db:TuduDatabase):AttachmentDao =
-        db.attachmentDao()
 
     @Provides
     fun provideCategoryDao(db:TuduDatabase):CategoryDao =

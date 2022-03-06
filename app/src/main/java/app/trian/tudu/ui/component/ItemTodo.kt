@@ -1,5 +1,6 @@
 package app.trian.tudu.ui.component
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
@@ -23,6 +24,7 @@ import compose.icons.Octicons
 import compose.icons.octicons.X16
 import kotlinx.coroutines.launch
 import logcat.logcat
+import java.time.OffsetDateTime
 
 /**
  * Item todo
@@ -121,6 +123,7 @@ fun ItemTodo(
     }
 }
 
+@SuppressLint("NewApi")
 @Preview(
     uiMode = UI_MODE_NIGHT_NO
 )
@@ -135,8 +138,8 @@ fun PreviewItemTodo() {
                name = "ini todo",
                done = true,
                 task_id = "",
-               created_at = 0,
-               updated_at = 0
+               created_at = OffsetDateTime.now(),
+               updated_at = OffsetDateTime.now()
             )
         ){
 

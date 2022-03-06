@@ -24,8 +24,8 @@ android {
         applicationId = Version.applicationId
         minSdk =21
         targetSdk =30
-        versionCode =26
-        versionName = "1.0.2"
+        versionCode =27
+        versionName = "1.0.3"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -69,7 +69,6 @@ android {
 
     compileOptions {
         // Flag to enable support for the new language APIs
-        isCoreLibraryDesugaringEnabled = true
 
         sourceCompatibility =JavaVersion.VERSION_1_8
         targetCompatibility =JavaVersion.VERSION_1_8
@@ -91,9 +90,9 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 
-    implementation("com.github.kizitonwose:CalendarView:1.0.4")
+    implementation("io.github.boguszpawlowski.composecalendar:composecalendar:0.3.0")
+    implementation ("com.google.android.material:material:1.5.0")
     implementation(Libs.AndroidX.Multidex.multidex)
     implementation(Libs.AndroidX.Core.coreKtx)
     implementation(Libs.AndroidX.Activity.activityCompose)
@@ -191,14 +190,15 @@ dependencies {
     }
 
     //datetime
-    with(Libs.JodaTime){
-        implementation(jodaTime)
-    }
+//    with(Libs.JodaTime){
+//        implementation(jodaTime)
+//    }
 
     //system ui controller
     with(Libs.Com.Google.Accompanist){
         implementation(accompanistSystemUiController)
         implementation(accompanistNavigationAnimation)
+//        implementation(accompanistPager)
     }
     //image loader
     with(Libs.Io.CoilKt){

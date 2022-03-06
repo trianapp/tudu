@@ -1,7 +1,8 @@
 package app.trian.tudu
 
-import org.junit.Test
 
+import kotlinx.coroutines.Job
+import org.junit.Test
 import org.junit.Assert.*
 
 /**
@@ -18,5 +19,12 @@ class UtilityUnitTest {
     @Test
     fun testDateFormat(){
 
+    }
+
+    @Test
+    fun generateMonth(){
+        val uninterruptedJob = Job()
+
+        assertEquals("sas","sas")
     }
 }

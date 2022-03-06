@@ -37,9 +37,7 @@ fun PagesSplash(
 ) {
 
     val userViewModel = hiltViewModel<UserViewModel>()
-    val systemUiController = rememberSystemUiController()
-    val isSystemDark = isSystemInDarkTheme()
-    val statusBar = MaterialTheme.colors.background
+
     LaunchedEffect(key1 = Unit, block = {
         //cek if user already logged in
         userViewModel.userAlreadyLogin {
@@ -60,16 +58,6 @@ fun PagesSplash(
         }
     })
 
-    SideEffect {
-        systemUiController.setSystemBarsColor(
-            color = statusBar,
-            darkIcons = when(theme.getTheme()){
-                ThemeData.DEFAULT -> !isSystemDark
-                ThemeData.DARK -> false
-                ThemeData.LIGHT -> true
-            }
-        )
-    }
 
 
     Scaffold() {

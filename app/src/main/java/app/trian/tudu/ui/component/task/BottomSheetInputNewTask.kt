@@ -40,14 +40,16 @@ import app.trian.tudu.data.local.Task
 import app.trian.tudu.data.local.Todo
 import app.trian.tudu.ui.component.ItemAddTodo
 import app.trian.tudu.ui.component.ItemTodo
+import app.trian.tudu.ui.component.dialog.DialogCalendarInputTask
 import app.trian.tudu.ui.component.dialog.DropdownPickCategory
 import app.trian.tudu.ui.theme.HexToJetpackColor
 import app.trian.tudu.ui.theme.Inactivebackground
 import app.trian.tudu.ui.theme.TuduTheme
 import compose.icons.Octicons
 import compose.icons.octicons.*
-import org.joda.time.DateTime
-import java.util.*
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
+
 
 
 /**
@@ -57,11 +59,12 @@ import java.util.*
  * site https://trian.app
  */
 
-@SuppressLint("MutableCollectionMutableState")
+@SuppressLint("MutableCollectionMutableState", "NewApi")
 @Composable
 fun BottomSheetInputNewTask(
     modifier: Modifier=Modifier,
     listCategory:List<Category> = emptyList(),
+    dateTime: OffsetDateTime?=null,
     onSubmit:(
         taskName:Task,
         todo:List<Todo>
@@ -70,37 +73,34 @@ fun BottomSheetInputNewTask(
 ){
     val ctx = LocalContext.current
 
-
-
     var showDropDownPickCategory by remember {
+        mutableStateOf(false)
+    }
+    var showDialogDatePicker by remember {
         mutableStateOf(false)
     }
     var taskName by remember {
         mutableStateOf(TextFieldValue(text = ""))
     }
     var categoryId by remember {
-        mutableStateOf(Category(name = ctx.getString(R.string.no_category), created_at = 0, updated_at = 0, color = HexToJetpackColor.Blue))
+        mutableStateOf(
+            Category(
+                name = ctx.getString(R.string.no_category),
+                created_at = OffsetDateTime.now(),
+                updated_at = OffsetDateTime.now(),
+                color = HexToJetpackColor.Blue)
+        )
     }
     var todos by remember {
         mutableStateOf<List<Todo>>(mutableListOf())
     }
     var deadline by remember {
-        mutableStateOf<Long>(0)
+        mutableStateOf<OffsetDateTime?>(null)
     }
 
     var setReminder by remember {
         mutableStateOf(false)
     }
-
-    val c = Calendar.getInstance()
-    val year = c.get(Calendar.YEAR)
-    val month = c.get(Calendar.MONTH)
-    val day = c.get(Calendar.DAY_OF_MONTH)
-    val datePickerDialog = DatePickerDialog(ctx,{
-            _:DatePicker,year:Int,month:Int,day:Int->
-            val date = DateTime(year,(month+1),day,0,0)
-        deadline = date.millis
-    },year,month,day)
 
 
     /**
@@ -117,7 +117,7 @@ fun BottomSheetInputNewTask(
                 name=taskName.text,
                 deadline=deadline,
                 done=false,
-                done_at=0,
+                done_at= OffsetDateTime.now(),
                 note="",
                 color=HexToJetpackColor.Blue,
                 secondColor=HexToJetpackColor.SecondBlue,
@@ -129,19 +129,35 @@ fun BottomSheetInputNewTask(
 
             //submit data
             onSubmit(task, todos)
+
             //clear all state to initial value each
-            deadline = 0
+            deadline = null
             setReminder = false
             taskName = TextFieldValue(text = "")
             categoryId = Category(
                 name = ctx.getString(R.string.no_category),
-                updated_at = 0,
-                created_at = 0,
+                updated_at = OffsetDateTime.now(),
+                created_at = OffsetDateTime.now(),
                 color = HexToJetpackColor.Blue
             )
             todos = mutableListOf()
         }
     }
+    DialogCalendarInputTask(
+        show = showDialogDatePicker,
+        date=dateTime?.toLocalDate(),
+        time = dateTime?.toLocalTime(),
+        dismissable = false,
+        onDismiss = {
+            showDialogDatePicker=false
+                    },
+        onConfirm = {
+            date,time,reminder ->
+            deadline = OffsetDateTime.of(date,time, ZoneOffset.UTC)
+            setReminder = reminder
+            showDialogDatePicker=false
+        }
+    )
 
 
     Box(
@@ -262,15 +278,16 @@ fun BottomSheetInputNewTask(
                 }
 
                 IconToggleButton(
-                    checked = deadline > 0,
+                    checked = deadline != null,
                     onCheckedChange = {
-                        datePickerDialog.show()
+                        showDialogDatePicker = true
+                        //datePickerDialog.show()
                     }
                 ) {
                     Icon(
                         imageVector = Octicons.Calendar24,
                         contentDescription = "",
-                        tint=if(deadline > 0) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground
+                        tint=if(deadline == null ) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground
                     )
                 }
                 IconToggleButton(
@@ -290,19 +307,6 @@ fun BottomSheetInputNewTask(
                         imageVector = Octicons.GitMerge24,
                         contentDescription = "",
                         tint=if(todos.isNotEmpty()) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground
-                    )
-                }
-                IconToggleButton(
-                    checked = setReminder,
-                    onCheckedChange = {
-                        setReminder = !setReminder
-                        Toast.makeText(ctx,if(setReminder) "Reminder on!" else "Reminder off",Toast.LENGTH_LONG).show()
-                    }
-                ) {
-                    Icon(
-                        imageVector = Octicons.Clock24,
-                        contentDescription = "",
-                        tint=if(setReminder) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground
                     )
                 }
                 IconToggleButton(

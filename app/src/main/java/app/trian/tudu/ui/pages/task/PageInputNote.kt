@@ -49,10 +49,6 @@ fun PageInputNote(
     val taskViewModel = hiltViewModel<TaskViewModel>()
     val detailTask by taskViewModel.detailTask.observeAsState(initial = Task())
 
-    val systemUiController = rememberSystemUiController()
-    val isSystemDark = isSystemInDarkTheme()
-    val statusBar = MaterialTheme.colors.background
-
     val scope = rememberCoroutineScope()
     var noteState by remember {
         mutableStateOf(TextFieldValue(text = detailTask.note))
@@ -66,16 +62,7 @@ fun PageInputNote(
         }
     }
 
-    SideEffect {
-        systemUiController.setSystemBarsColor(
-            color = statusBar,
-            darkIcons = when(theme.getTheme()){
-                ThemeData.DEFAULT -> !isSystemDark
-                ThemeData.DARK -> false
-                ThemeData.LIGHT -> true
-            }
-        )
-    }
+
     LaunchedEffect(key1 = Unit, block = {
         val taskId = router.currentBackStackEntry?.arguments?.getString("taskId") ?: ""
         taskViewModel.getTaskById(taskId)

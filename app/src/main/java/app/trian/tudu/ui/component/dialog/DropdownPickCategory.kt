@@ -1,5 +1,6 @@
 package app.trian.tudu.ui.component.dialog
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +24,7 @@ import app.trian.tudu.ui.theme.HexToJetpackColor
 import app.trian.tudu.ui.theme.TuduTheme
 import compose.icons.Octicons
 import compose.icons.octicons.Plus16
+import java.time.OffsetDateTime
 
 /**
  * Dropdown
@@ -30,6 +32,7 @@ import compose.icons.octicons.Plus16
  * created_at 31/01/22 - 20.59
  * site https://trian.app
  */
+@SuppressLint("NewApi")
 @Composable
 fun DropdownPickCategory(
     modifier:Modifier=Modifier,
@@ -86,8 +89,8 @@ fun DropdownPickCategory(
                 onPick(Category(
                     categoryId = ctx.getString(R.string.no_category),
                     name = ctx.getString(R.string.no_category),
-                    created_at = 0,
-                    updated_at = 0,
+                    created_at = OffsetDateTime.now(),
+                    updated_at = OffsetDateTime.now(),
                     color = HexToJetpackColor.Blue
                 ))
                 onHide()

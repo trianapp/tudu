@@ -46,10 +46,6 @@ fun PageChangePassword(
     val ctx = LocalContext.current
     val userViewModel = hiltViewModel<UserViewModel>()
 
-    val systemUiController = rememberSystemUiController()
-    val isSystemDark = isSystemInDarkTheme()
-    val statusBar = MaterialTheme.colors.background
-
     var shouldShowDialogLoading by remember {
         mutableStateOf(false)
     }
@@ -84,16 +80,7 @@ fun PageChangePassword(
             }
         }
     }
-    SideEffect {
-        systemUiController.setSystemBarsColor(
-            color = statusBar,
-            darkIcons = when(theme.getTheme()){
-                ThemeData.DEFAULT -> !isSystemDark
-                ThemeData.DARK -> false
-                ThemeData.LIGHT -> true
-            }
-        )
-    }
+
     DialogLoading(
         show = shouldShowDialogLoading
     )

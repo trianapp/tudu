@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import app.trian.tudu.ui.theme.HexToJetpackColor
+import java.time.OffsetDateTime
 
 /**
  * Entity Category
@@ -23,7 +24,7 @@ data class Category(
     @ColumnInfo(name="used_count")
     var usedCount:Int=0,
     @ColumnInfo(name = "created_at")
-    var created_at:Long=0,
+    var created_at:OffsetDateTime?=null,
     @ColumnInfo(name = "updated_at")
-    var updated_at:Long=0,
+    var updated_at:OffsetDateTime?=null,
 )

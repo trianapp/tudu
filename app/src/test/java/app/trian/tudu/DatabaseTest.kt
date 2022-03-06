@@ -21,6 +21,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.LooperMode
+import java.time.OffsetDateTime
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -63,14 +64,14 @@ class DatabaseTest {
             category_id = "",
             name = "",
             done = false,
-            deadline=0,
-            done_at = 0,
+            deadline= OffsetDateTime.now(),
+            done_at = OffsetDateTime.now(),
             note="",
             reminder=false,
             color = HexToJetpackColor.SecondBlue,
             secondColor = HexToJetpackColor.SecondRed,
-            created_at = 0,
-            updated_at = 0
+            created_at = OffsetDateTime.now(),
+            updated_at = OffsetDateTime.now()
         )
 
         val taskDao = tuduDatabase.taskDao()
@@ -88,8 +89,8 @@ class DatabaseTest {
             name = "Wishlist",
             color = HexToJetpackColor.Blue,
             usedCount = 0,
-            created_at = 0,
-            updated_at = 0
+            created_at = OffsetDateTime.now(),
+            updated_at = OffsetDateTime.now()
         )
 
         val categoryDao = tuduDatabase.categoryDao()
@@ -111,8 +112,8 @@ class DatabaseTest {
             name = "ini name",
             done = false,
             task_id = "aXkAs",
-            created_at = 0,
-            updated_at = 0,
+            created_at = OffsetDateTime.now(),
+            updated_at = OffsetDateTime.now(),
 
         )
 

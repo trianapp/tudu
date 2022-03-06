@@ -1,5 +1,6 @@
 package app.trian.tudu.ui.component
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
@@ -24,6 +25,7 @@ import app.trian.tudu.ui.theme.TuduTheme
 import compose.icons.Octicons
 import compose.icons.octicons.Dot16
 import compose.icons.octicons.Quote16
+import java.time.OffsetDateTime
 
 /**
  * Item Category
@@ -105,6 +107,7 @@ fun ItemCategory(
     }
 }
 
+@SuppressLint("NewApi")
 @Preview(
     uiMode=UI_MODE_NIGHT_NO
 )
@@ -119,8 +122,8 @@ fun PreviewItemCategory(){
                 categoryId = "ini id",
                 name = "Wishlist",
                 color = HexToJetpackColor.Blue,
-                created_at = 0,
-                updated_at = 0
+                created_at = OffsetDateTime.now(),
+                updated_at = OffsetDateTime.now()
             )
         )
     }

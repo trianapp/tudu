@@ -1,5 +1,6 @@
 package app.trian.tudu.ui.component
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
@@ -24,6 +25,7 @@ import compose.icons.Octicons
 import compose.icons.octicons.ArrowLeft16
 import compose.icons.octicons.ArrowLeft24
 import compose.icons.octicons.Home16
+import java.time.OffsetDateTime
 
 /**
  * App bar home
@@ -110,6 +112,7 @@ fun AppbarBasic(
         }
     )
 }
+@SuppressLint("NewApi")
 @Preview(
     uiMode = UI_MODE_NIGHT_NO
 )
@@ -122,32 +125,32 @@ fun PreviewAppbarHome(){
            AppbarHome(dataCategory = listOf(
                Category(
                    name = "All",
-                   created_at = 0,
-                   updated_at = 0,
+                   created_at = OffsetDateTime.now(),
+                   updated_at = OffsetDateTime.now(),
                    color = HexToJetpackColor.Blue,
                ),
                Category(
                    name = "Wishlist",
-                   created_at = 0,
-                   updated_at = 0,
+                   created_at = OffsetDateTime.now(),
+                   updated_at = OffsetDateTime.now(),
                    color = HexToJetpackColor.Blue,
                ),
                Category(
                    name = "Tugas",
-                   created_at = 0,
-                   updated_at = 0,
+                   created_at = OffsetDateTime.now(),
+                   updated_at = OffsetDateTime.now(),
                    color = HexToJetpackColor.Blue,
                ),
                Category(
                    name = "Kerjaan",
-                   created_at = 0,
-                   updated_at = 0,
+                   created_at = OffsetDateTime.now(),
+                   updated_at = OffsetDateTime.now(),
                    color = HexToJetpackColor.Blue,
                ),
                Category(
                    name = "Cobaan",
-                   created_at = 0,
-                   updated_at = 0,
+                   created_at = OffsetDateTime.now(),
+                   updated_at = OffsetDateTime.now(),
                    color = HexToJetpackColor.Blue,
                )
            ))

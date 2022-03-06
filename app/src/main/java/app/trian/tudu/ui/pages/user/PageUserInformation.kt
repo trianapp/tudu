@@ -49,16 +49,6 @@ fun PageUserInformation(
     val userViewModel = hiltViewModel<UserViewModel>()
     val currentUser by userViewModel.currentUser.observeAsState()
 
-    val systemUiController = rememberSystemUiController()
-
-    val statusBar = MaterialTheme.colors.primary
-
-    SideEffect {
-        systemUiController.setSystemBarsColor(
-            color = statusBar,
-            darkIcons = false
-        )
-    }
     LaunchedEffect(key1 = Unit, block = {
         userViewModel.getCurrentUser()
     })
