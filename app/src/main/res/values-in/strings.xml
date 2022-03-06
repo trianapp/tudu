@@ -141,4 +141,5 @@
     <string name="content_description_fab_add_task">Tambahkan Tugas Baru</string>
     <string name="tiltle_chart_weekly_task">Penyelesaian Tugas Mingguan</string>
     <string name="label_deadline_time">Waktu</string>
+    <string name="toast_validation_date_time">Please select date and time!</string>
 </resources>

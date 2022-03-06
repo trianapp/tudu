@@ -14,6 +14,7 @@ interface TaskRepository {
     suspend fun getWeekCompleteCount(date:OffsetDateTime):Flow<ChartModelData>
     suspend fun createNewTask(task: Task,todo:List<Todo>):Flow<DataState<Task>>
     suspend fun updateTask(task: Task):Flow<Task>
+    suspend fun deleteTask(task: Task):Flow<Task>
     suspend fun getBackupTaskFromCloud():Flow<DataState<List<Task>>>
     suspend fun sendBackupTaskToCloud():Flow<DataState<List<Task>>>
 

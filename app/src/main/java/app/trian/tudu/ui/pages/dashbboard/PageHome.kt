@@ -1,7 +1,7 @@
 package app.trian.tudu.ui.pages.dashbboard
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme
@@ -21,14 +21,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
 import app.trian.tudu.common.Routes
-import app.trian.tudu.common.getTheme
 import app.trian.tudu.common.hideKeyboard
-import app.trian.tudu.common.signOut
 import app.trian.tudu.data.local.AppSetting
 import app.trian.tudu.data.local.Category
 import app.trian.tudu.data.local.Task
-import app.trian.tudu.domain.ThemeData
 import app.trian.tudu.ui.component.AppbarHome
+import app.trian.tudu.ui.component.dialog.DialogDeleteConfirmation
 import app.trian.tudu.ui.component.dialog.DialogFormCategory
 import app.trian.tudu.ui.component.dialog.DialogSortingTask
 import app.trian.tudu.ui.component.task.BottomSheetInputNewTask
@@ -39,13 +37,12 @@ import app.trian.tudu.ui.theme.HexToJetpackColor
 import app.trian.tudu.ui.theme.TuduTheme
 import app.trian.tudu.viewmodel.TaskViewModel
 import app.trian.tudu.viewmodel.UserViewModel
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import compose.icons.Octicons
 import compose.icons.octicons.Plus16
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.OffsetDateTime
 
+@ExperimentalFoundationApi
 @SuppressLint("NewApi")
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
@@ -84,6 +81,9 @@ fun PageHome(
             true
         }
     )
+    var currentSelectedTask by remember {
+        mutableStateOf<Task?>(null)
+    }
     var listType by remember {
         mutableStateOf(HeaderTask.ROW)
     }
@@ -92,6 +92,10 @@ fun PageHome(
     }
 
     var shouldShowDialogPickSortTask by remember {
+        mutableStateOf(false)
+    }
+
+    var shouldShowDialogDelete by remember {
         mutableStateOf(false)
     }
 
@@ -109,6 +113,23 @@ fun PageHome(
         userViewModel.getCurrentUser()
         userViewModel.registerNewToken()
     })
+
+    DialogDeleteConfirmation(
+        show=shouldShowDialogDelete,
+        name = currentSelectedTask?.name ?: "",
+        onCancel = {
+            shouldShowDialogDelete = false
+        },
+        onDismiss = {
+            shouldShowDialogDelete = false
+        },
+        onConfirm = {
+            currentSelectedTask?.let {
+                taskViewModel.deleteTask(it)
+            }
+            shouldShowDialogDelete = false
+        }
+    )
 
     DialogFormCategory(
         show = shouldShowDialogAddCategory,
@@ -205,6 +226,10 @@ fun PageHome(
                         },
                         onChangeListType = {
                             listType = it
+                        },
+                        onDelete = {
+                            currentSelectedTask = it
+                            shouldShowDialogDelete = true
                         }
                     )
                 }
@@ -230,6 +255,7 @@ fun PageHome(
     }
 }
 
+@ExperimentalFoundationApi
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 @Preview

@@ -1,10 +1,16 @@
 package app.trian.tudu.ui.component
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import app.trian.tudu.R
+import app.trian.tudu.common.formatDate
+import app.trian.tudu.data.local.Task
 import app.trian.tudu.ui.theme.TuduTheme
 
 /**
@@ -15,12 +21,20 @@ import app.trian.tudu.ui.theme.TuduTheme
  */
 
 @Composable
-fun ItemTaskCalendar() {
-    Row {
-        Text(text = "00:00")
+fun ItemTaskCalendar(
+    modifier: Modifier=Modifier,
+    task: Task
+) {
+    val ctx = LocalContext.current
+    Row(
+        modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.Top
+    ) {
+        Text(text = task.deadline?.formatDate("hh:mm") ?: "00:00")
         Column {
-            Text(text = "Ini Title")
-            Text(text = "Reminder")
+            Text(text = task.name)
+            Text(text = if(task.reminder) ctx.getString(R.string.reminder_yes) else ctx.getString(R.string.reminder_no))
 
         }
     }
@@ -30,6 +44,8 @@ fun ItemTaskCalendar() {
 @Composable
 fun PreviewItemTaskCalendar(){
     TuduTheme {
-        ItemTaskCalendar()
+        ItemTaskCalendar(
+            task = Task()
+        )
     }
 }

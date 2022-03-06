@@ -85,6 +85,13 @@ class TaskViewModel @Inject constructor() : ViewModel() {
             .collect()
     }
 
+    fun deleteTask(task:Task)=viewModelScope.launch {
+        taskRepository.deleteTask(task)
+            .onEach {
+
+            }
+            .collect()
+    }
 
     fun getListTaskByCategory(categoryId:String)=viewModelScope.launch {
         taskRepository.getListTaskByCategory(categoryId).onEach {

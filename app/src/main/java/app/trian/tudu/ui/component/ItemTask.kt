@@ -3,8 +3,10 @@ package app.trian.tudu.ui.component
 import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -42,6 +44,7 @@ import java.time.OffsetDateTime
  * site https://trian.app
  */
 
+@ExperimentalFoundationApi
 @Composable
 fun ItemTaskRow(
     modifier:Modifier=Modifier,
@@ -49,25 +52,44 @@ fun ItemTaskRow(
     dateFormat:String=DateTimeFormat.DDMMYYYY.value,
     onMark:(task:Task)->Unit={},
     onDone:(task:Task)->Unit={},
-    onDetail:(task:Task)->Unit={}
+    onDetail:(task:Task)->Unit={},
+    onDelete:(task:Task)->Unit={}
 ) {
     var isDone by remember {
         mutableStateOf(task.done)
     }
+    var showDropDown by remember{
+        mutableStateOf(false)
+    }
+
     Box(modifier = modifier
         .fillMaxWidth()
         .padding(
             vertical = 4.dp,
         )
     ){
+        //
+        DropdownMenu(expanded = showDropDown, onDismissRequest = { showDropDown=false}) {
+            DropdownMenuItem(onClick = {
+                onDelete(task)
+                showDropDown=false
+            }) {
+                Text(text = "Delete")
+            }
+        }
         Row(
             modifier= modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(10.dp))
                 .background(HexToJetpackColor.getColor(task.secondColor))
-                .clickable {
-                    onDetail(task)
-                }
+                .combinedClickable(
+                    onClick = {
+                        onDetail(task)
+                    },
+                    onLongClick = {
+                        showDropDown=true
+                    }
+                )
                 .padding(
                     top = 6.dp,
                     bottom = 6.dp
@@ -75,6 +97,7 @@ fun ItemTaskRow(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
+
             Row(
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
@@ -133,6 +156,7 @@ fun ItemTaskRow(
         }
     }
 }
+@ExperimentalFoundationApi
 @Composable
 fun ItemTaskGrid(
     modifier: Modifier=Modifier,
@@ -141,7 +165,8 @@ fun ItemTaskGrid(
     dateFormat:String=DateTimeFormat.DDMMYYYY.value,
     onMark:(task:Task)->Unit={},
     onDone:(task:Task)->Unit={},
-    onDetail:(task:Task)->Unit={}
+    onDetail:(task:Task)->Unit={},
+    onDelete:(task:Task)->Unit={}
 ){
     val ctx = LocalContext.current
     val currentWidth = ctx
@@ -153,6 +178,10 @@ fun ItemTaskGrid(
     var isDone by remember {
         mutableStateOf(task.done)
     }
+    var showDropDown by remember{
+        mutableStateOf(false)
+    }
+
     Box(modifier = modifier
         .width(((currentWidth / 2)))
         .padding(
@@ -163,6 +192,16 @@ fun ItemTaskGrid(
 
         )
     ){
+        DropdownMenu(expanded = showDropDown, onDismissRequest = { showDropDown=false}) {
+            DropdownMenuItem(
+                onClick = {
+                    onDelete(task)
+                    showDropDown=false
+                }
+            ) {
+                Text(text = "Delete")
+            }
+        }
         Column(
             modifier= modifier
                 .clip(
@@ -174,15 +213,22 @@ fun ItemTaskGrid(
                     )
                 )
                 .background(HexToJetpackColor.getColor(task.secondColor))
-                .clickable {
-                    onDetail(task)
-                }
+                .combinedClickable(
+                    onClick = {
+                        onDetail(task)
+                    },
+                    onLongClick = {
+                        showDropDown = true
+                    }
+                )
+
                 .padding(
                     all = 10.dp
                 ),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
             Row(
                 modifier=modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -237,6 +283,7 @@ fun ItemTaskGrid(
         }
     }
 }
+@ExperimentalFoundationApi
 @SuppressLint("NewApi")
 @Preview(
     uiMode = UI_MODE_NIGHT_NO
@@ -268,6 +315,7 @@ fun PreviewItemTaskRow(){
     }
 }
 
+@ExperimentalFoundationApi
 @SuppressLint("NewApi")
 @Preview(
     uiMode = UI_MODE_NIGHT_NO

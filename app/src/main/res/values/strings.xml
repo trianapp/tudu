@@ -140,6 +140,7 @@
     <string name="content_description_fab_add_task">Add new task</string>
     <string name="tiltle_chart_weekly_task">Weekly Task Complete</string>
     <string name="label_deadline_time">Time</string>
+    <string name="toast_validation_date_time">Please select date and time!</string>
 
 
 </resources>

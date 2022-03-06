@@ -21,7 +21,7 @@ interface TaskDao {
     @Query("SELECT * FROM tb_task ORDER BY datetime(created_at) DESC")
     fun getListTask():Flow<List<Task>>
 
-    @Query("SELECT * FROM tb_task WHERE date(deadline) BETWEEN :from AND :to ORDER BY datetime(deadline) DESC")
+    @Query("SELECT * FROM tb_task WHERE datetime(deadline) BETWEEN :from AND :to ORDER BY datetime(deadline) DESC")
     fun getListTaskByDate(from: OffsetDateTime,to: OffsetDateTime):Flow<List<Task>>
 
     @Query("SELECT * FROM tb_task ORDER BY datetime(created_at) DESC")

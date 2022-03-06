@@ -1,6 +1,8 @@
 package app.trian.tudu.ui.pages.dashbboard
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -34,6 +36,7 @@ import app.trian.tudu.common.daysOfWeekFromLocale
 import app.trian.tudu.common.getTheme
 import app.trian.tudu.common.signOut
 import app.trian.tudu.domain.ThemeData
+import app.trian.tudu.ui.component.ItemCalendar
 import app.trian.tudu.ui.component.ItemTaskCalendar
 import app.trian.tudu.ui.component.task.BottomSheetInputNewTask
 import app.trian.tudu.ui.theme.TuduTheme
@@ -44,6 +47,9 @@ import io.github.boguszpawlowski.composecalendar.StaticCalendar
 import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
 import java.time.LocalDate
+import java.time.LocalTime
+import java.time.OffsetDateTime
+import java.time.OffsetTime
 import java.util.*
 
 
@@ -61,11 +67,7 @@ fun PageCalender(
     val userViewModel = hiltViewModel<UserViewModel>()
     val taskViewModel = hiltViewModel<TaskViewModel>()
     val ctx = LocalContext.current
-    val currentWidth = ctx
-        .resources
-        .displayMetrics.widthPixels.dp /
-            LocalDensity.current.density
-    val today = LocalDate.now()
+
 
     val listTask by taskViewModel.listTaskCalendar.observeAsState(initial = emptyList())
 
@@ -86,10 +88,9 @@ fun PageCalender(
         mutableStateOf<LocalDate?>(null)
     }
 
-
-
     LaunchedEffect(key1 = Unit, block = {
         userViewModel.getCurrentUser()
+        taskViewModel.getListTaskByDate(OffsetDateTime.now())
     })
 
     BasePagesDashboard(
@@ -147,63 +148,56 @@ fun PageCalender(
         },
         modalBottomSheetState=modalBottomSheetState
     ) {
-
-
-        SelectableCalendar(
-            showAdjacentMonths = false,
-            calendarState = calendarState,
-            monthHeader = {},
-            dayContent = {
-                day->
-                Box(
-                    modifier = modifier.size(currentWidth / 7)
-                ) {
-                    Row(
-                        modifier = modifier
-                            .align(Alignment.Center)
-
-                            .clip(CircleShape)
-                            .background(
-                                when (day.date) {
-                                    today -> MaterialTheme.colors.primary
-                                    selectedDate -> MaterialTheme.colors.primaryVariant
-                                    else -> MaterialTheme.colors.background
-                                }
-                            )
-                            .size(currentWidth / 9)
-                            .clickable {
-                                       selectedDate =day.date
-
-                            },
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = day.date.dayOfMonth.toString(),
-                            style = MaterialTheme.typography.body2.copy(
-                                color = when(day.date){
-                                    today -> MaterialTheme.colors.onPrimary
-                                   selectedDate ->MaterialTheme.colors.onPrimary
-                                    else -> MaterialTheme.colors.onBackground
-                                }
-                            )
+        Column {
+            SelectableCalendar(
+                showAdjacentMonths = false,
+                calendarState = calendarState,
+                monthHeader = {},
+                dayContent = {
+                        day->
+                   ItemCalendar(
+                       day = day.date,
+                       selectedDate = selectedDate,
+                       onDayClicked = {
+                       selectedDate =day.date
+                       taskViewModel.getListTaskByDate(day.date.atTime(OffsetTime.MAX))
+                   })
+                }
+            )
+            if(listTask.isNotEmpty()){
+                LazyColumn(content = {
+                    items(listTask){
+                            task->
+                        ItemTaskCalendar(
+                            task=task
                         )
                     }
+                })
+            }else{
+                Column(
+                    modifier = modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.calendar_no_task),
+                        contentDescription = "No at date")
+                    Text(text = "There no task yet")
                 }
+
             }
-        )
-        LazyColumn(content = {
-            items(listTask){
-                task->
-                ItemTaskCalendar()
-            }
-        })
+        }
     }
 
 }
 
 @ExperimentalMaterialApi
-@Preview
+@Preview(
+    uiMode = UI_MODE_NIGHT_NO
+)
+@Preview(
+    uiMode = UI_MODE_NIGHT_YES
+)
 @Composable
 fun PreviewPageCalendar(){
 

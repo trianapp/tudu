@@ -50,6 +50,7 @@ import compose.icons.octicons.*
 import org.joda.time.DateTime
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.util.*
 
 
@@ -65,6 +66,7 @@ import java.util.*
 fun BottomSheetInputNewTask(
     modifier: Modifier=Modifier,
     listCategory:List<Category> = emptyList(),
+    dateTime: OffsetDateTime?=null,
     onSubmit:(
         taskName:Task,
         todo:List<Todo>
@@ -72,8 +74,6 @@ fun BottomSheetInputNewTask(
     onAddCategory: ()->Unit={}
 ){
     val ctx = LocalContext.current
-
-
 
     var showDropDownPickCategory by remember {
         mutableStateOf(false)
@@ -131,8 +131,9 @@ fun BottomSheetInputNewTask(
 
             //submit data
             onSubmit(task, todos)
+
             //clear all state to initial value each
-            deadline = OffsetDateTime.now()
+            deadline = null
             setReminder = false
             taskName = TextFieldValue(text = "")
             categoryId = Category(
@@ -146,15 +147,16 @@ fun BottomSheetInputNewTask(
     }
     DialogCalendarInputTask(
         show = showDialogDatePicker,
-        currentDateTime = LocalDateTime.now(),
+        date=dateTime?.toLocalDate(),
+        time = dateTime?.toLocalTime(),
         dismissable = false,
-        onDismiss = {showDialogDatePicker=false},
+        onDismiss = {
+            showDialogDatePicker=false
+                    },
         onConfirm = {
-
-            dateTime,reminder ->
-            deadline = dateTime
+            date,time,reminder ->
+            deadline = OffsetDateTime.of(date,time, ZoneOffset.UTC)
             setReminder = reminder
-
             showDialogDatePicker=false
         }
     )
