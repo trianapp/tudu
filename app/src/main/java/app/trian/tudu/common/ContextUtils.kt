@@ -64,19 +64,19 @@ fun Boolean.getLogo():Int{
 }
 
 fun Context.toastSuccess(message:String){
-    Toasty.success(this,message,Toast.LENGTH_LONG).show()
+    Toasty.success(this,message,Toast.LENGTH_SHORT).show()
 }
 fun Context.toastError(message:String){
-    Toasty.error(this,message,Toast.LENGTH_LONG).show()
+    Toasty.error(this,message,Toast.LENGTH_SHORT).show()
 }
 fun Context.toastWarning(message:String){
-    Toasty.warning(this,message,Toast.LENGTH_LONG).show()
+    Toasty.warning(this,message,Toast.LENGTH_SHORT).show()
 }
 fun Context.toastInfo(message:String){
-    Toasty.info(this,message,Toast.LENGTH_LONG).show()
+    Toasty.info(this,message,Toast.LENGTH_SHORT).show()
 }
 fun Context.toastNormal(message:String){
-    Toasty.normal(this,message,Toast.LENGTH_LONG).show()
+    Toasty.normal(this,message,Toast.LENGTH_SHORT).show()
 }
 
 fun AppCompatActivity.showTimePicker(

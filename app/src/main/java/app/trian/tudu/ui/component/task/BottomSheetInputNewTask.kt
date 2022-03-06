@@ -153,7 +153,9 @@ fun BottomSheetInputNewTask(
                     },
         onConfirm = {
             date,time,reminder ->
-            deadline = OffsetDateTime.of(date,time, ZoneOffset.UTC)
+            if(date != null && time != null) {
+                deadline = OffsetDateTime.of(date, time, ZoneOffset.UTC)
+            }
             setReminder = reminder
             showDialogDatePicker=false
         }
@@ -287,7 +289,7 @@ fun BottomSheetInputNewTask(
                     Icon(
                         imageVector = Octicons.Calendar24,
                         contentDescription = "",
-                        tint=if(deadline == null ) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground
+                        tint=if(deadline == null ) MaterialTheme.colors.onBackground else MaterialTheme.colors.primary
                     )
                 }
                 IconToggleButton(
