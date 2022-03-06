@@ -74,7 +74,9 @@ fun ItemTaskRow(
                 onDelete(task)
                 showDropDown=false
             }) {
-                Text(text = "Delete")
+                Text(
+                    text = stringResource(id = R.string.btn_delete)
+                )
             }
         }
         Row(
@@ -87,7 +89,7 @@ fun ItemTaskRow(
                         onDetail(task)
                     },
                     onLongClick = {
-                        showDropDown=true
+                        showDropDown = true
                     }
                 )
                 .padding(
@@ -199,7 +201,9 @@ fun ItemTaskGrid(
                     showDropDown=false
                 }
             ) {
-                Text(text = "Delete")
+                Text(
+                    text = stringResource(id = R.string.btn_delete)
+                )
             }
         }
         Column(

@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -31,10 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.R
-import app.trian.tudu.common.Routes
-import app.trian.tudu.common.daysOfWeekFromLocale
-import app.trian.tudu.common.getTheme
-import app.trian.tudu.common.signOut
+import app.trian.tudu.common.*
 import app.trian.tudu.domain.ThemeData
 import app.trian.tudu.ui.component.ItemCalendar
 import app.trian.tudu.ui.component.ItemTaskCalendar
@@ -85,7 +83,7 @@ fun PageCalender(
         mutableStateOf(false)
     }
     var selectedDate by remember {
-        mutableStateOf<LocalDate?>(null)
+        mutableStateOf<LocalDate?>(LocalDate.now())
     }
 
     LaunchedEffect(key1 = Unit, block = {
@@ -181,8 +179,11 @@ fun PageCalender(
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.calendar_no_task),
-                        contentDescription = "No at date")
-                    Text(text = "There no task yet")
+                        contentDescription =
+                        stringResource(R.string.content_description_image_page_calendar_no_data,selectedDate.toReadableDate()))
+                    Text(
+                        text = stringResource(R.string.text_no_data_page_calendar,selectedDate.toReadableDate())
+                    )
                 }
 
             }

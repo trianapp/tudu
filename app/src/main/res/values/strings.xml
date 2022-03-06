@@ -141,6 +141,8 @@
     <string name="tiltle_chart_weekly_task">Weekly Task Complete</string>
     <string name="label_deadline_time">Time</string>
     <string name="toast_validation_date_time">Please select date and time!</string>
+    <string name="content_description_image_page_calendar_no_data">No Task at %1$s</string>
+    <string name="text_no_data_page_calendar">There is no Task at %1$s</string>
 
 
 </resources>
