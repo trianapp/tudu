@@ -33,7 +33,7 @@ interface TaskDao {
     @Query("SELECT * FROM tb_task WHERE taskCategoryId=:categoryId ORDER BY datetime(created_at) DESC")
     fun getListTaskByCategory(categoryId:String):Flow<List<Task>>
 
-    @Query("SELECT COUNT(taskId) from tb_task WHERE done=:done AND date(updated_at) BETWEEN :from AND :to")
+    @Query("SELECT COUNT(taskId) from tb_task WHERE done=:done AND datetime(done_at) BETWEEN :from AND :to")
     fun getCountCompleteTask(from: OffsetDateTime, to:OffsetDateTime, done:Boolean = true):Int
 
 

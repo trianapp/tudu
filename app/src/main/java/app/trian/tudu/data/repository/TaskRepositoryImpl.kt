@@ -67,8 +67,6 @@ class TaskRepositoryImpl(
         var listEntry = listOf<BarEntry>()
         var listLabel = listOf<String>()
         dayCount.forEachIndexed { _, i ->
-
-//            logcat("date -> ",LogPriority.ERROR) { currentFrom.formatDate()+"<->"+currentTo.formatDate() }
             val dataCount = taskDao.getCountCompleteTask(currentFrom,currentTo)
 
             if(currentMax < dataCount){
@@ -83,7 +81,7 @@ class TaskRepositoryImpl(
             currentTo = currentFrom
             currentFrom = currentFrom.getPreviousDate()
 
-            listLabel = listLabel + currentTo.formatDate("")
+            listLabel = listLabel + currentTo.formatDate("dd/MM")
 
         }
         emit(

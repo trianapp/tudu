@@ -62,7 +62,7 @@ fun ItemCalendar(
                 style = MaterialTheme.typography.body2.copy(
                     color = when(day){
                         today -> MaterialTheme.colors.onPrimary
-                        selectedDate ->MaterialTheme.colors.onPrimary
+                        selectedDate ->MaterialTheme.colors.onBackground
                         else -> MaterialTheme.colors.onBackground
                     }
                 )
