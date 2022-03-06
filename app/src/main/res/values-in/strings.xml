@@ -145,4 +145,6 @@
     <string name="content_description_image_page_calendar_no_data">Belum ada tugas tanggal %1$s</string>
     <string name="text_no_data_page_calendar">Belum ada tugas buat tanggal %1$s</string>
     <string name="text_today">Hari Ini</string>
+    <string name="content_description_icon_due_date">Icon Calendar</string>
+    <string name="toast_cannot_pick_lastday">Pengingat hanya bisa di set untuk hari ini atau besok dan seterusnya!</string>
 </resources>

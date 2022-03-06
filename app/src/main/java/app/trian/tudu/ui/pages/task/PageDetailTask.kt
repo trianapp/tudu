@@ -1,5 +1,6 @@
  package app.trian.tudu.ui.pages.task
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
@@ -42,6 +43,7 @@ import app.trian.tudu.data.local.Todo
 import app.trian.tudu.domain.ThemeData
 import app.trian.tudu.ui.component.ItemAddTodo
 import app.trian.tudu.ui.component.ItemTodo
+import app.trian.tudu.ui.component.dialog.DialogCalendarInputTask
 import app.trian.tudu.ui.component.dialog.DropdownPickCategory
 import app.trian.tudu.ui.theme.Inactivebackground
 import app.trian.tudu.ui.theme.TuduTheme
@@ -52,6 +54,7 @@ import compose.icons.octicons.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
  /**
  * Detail task
@@ -59,6 +62,7 @@ import java.time.OffsetDateTime
  * created_at 29/01/22 - 17.28
  * site https://trian.app
  */
+@SuppressLint("NewApi")
 @Composable
 fun PageDetailTask(
     modifier: Modifier = Modifier,
@@ -79,9 +83,11 @@ fun PageDetailTask(
      val unCompleteTodo by taskViewModel.unCompleteTodo.observeAsState(initial = emptyList())
      val listCategory by taskViewModel.listCategory.observeAsState(initial = emptyList())
 
-     var date by remember {
-         mutableStateOf<OffsetDateTime?>(null)
+     var showDialogPickCalendar by remember {
+         mutableStateOf(false)
      }
+
+
      var taskId by remember {
          mutableStateOf("")
      }
@@ -149,7 +155,7 @@ fun PageDetailTask(
          taskName = TextFieldValue(text = detailTask.name)
          deadlineState = detailTask.deadline
          reminderState = detailTask.reminder
-         date = detailTask.deadline
+
 
          taskCategoryId = detailTask.category_id
          selectedCategory = listCategory.firstOrNull { it.categoryId == detailTask.category_id }
@@ -157,6 +163,23 @@ fun PageDetailTask(
 
 
      })
+
+     DialogCalendarInputTask(
+         show=showDialogPickCalendar,
+         date = deadlineState?.toLocalDate(),
+         time = deadlineState?.toLocalTime(),
+         dismissable = true,
+         onDismiss = {
+             showDialogPickCalendar = false
+         },
+         onConfirm = {
+             date,time,reminder->
+             deadlineState = OffsetDateTime.of(date,time, ZoneOffset.UTC)
+             reminderState = reminder
+             showDialogPickCalendar = false
+             updateTask()
+         }
+     )
 
      Scaffold(
          topBar = {
@@ -377,7 +400,7 @@ fun PageDetailTask(
                              Row {
                                  Icon(
                                      imageVector = Octicons.Calendar16,
-                                     contentDescription = "",
+                                     contentDescription = stringResource(R.string.content_description_icon_due_date),
                                      tint = MaterialTheme.colors.onBackground
                                  )
                                  Spacer(modifier = modifier.width(6.dp))
@@ -396,13 +419,13 @@ fun PageDetailTask(
                                              bottomEnd = 10.dp
                                          )
                                      )
-                                     .background(MaterialTheme.colors.primary.copy(alpha=0.7f))
+                                     .background(MaterialTheme.colors.primary.copy(alpha = 0.7f))
                                      .padding(
                                          horizontal = 10.dp,
                                          vertical = 2.dp
                                      )
                                      .clickable {
-                                         //todo: show date picker
+                                         showDialogPickCalendar = true
                                      }
                              ) {
                                  Text(
@@ -456,7 +479,7 @@ fun PageDetailTask(
                                              bottomEnd = 10.dp
                                          )
                                      )
-                                     .background(MaterialTheme.colors.primary.copy(alpha=0.7f))
+                                     .background(MaterialTheme.colors.primary.copy(alpha = 0.7f))
                                      .padding(
                                          horizontal = 10.dp,
                                          vertical = 2.dp
@@ -538,7 +561,7 @@ fun PageDetailTask(
                                              bottomEnd = 10.dp
                                          )
                                      )
-                                     .background(MaterialTheme.colors.primary.copy(alpha=0.7f))
+                                     .background(MaterialTheme.colors.primary.copy(alpha = 0.7f))
                                      .padding(
                                          horizontal = 10.dp,
                                          vertical = 2.dp

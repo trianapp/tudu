@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,14 +23,14 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import app.trian.tudu.R
-import app.trian.tudu.common.findActivity
-import app.trian.tudu.common.showTimePicker
-import app.trian.tudu.common.toastError
+import app.trian.tudu.common.*
 import app.trian.tudu.ui.component.ItemCalendar
 import app.trian.tudu.ui.theme.TuduTheme
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import io.github.boguszpawlowski.composecalendar.SelectableCalendar
+import logcat.LogPriority
+import logcat.logcat
 import java.time.*
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -50,7 +51,7 @@ fun DialogCalendarInputTask(
     time:LocalTime?=null,
     reminderOn:Boolean=false,
     onDismiss:()->Unit ={},
-    onConfirm:(date:LocalDate, time:LocalTime,reminderOn:Boolean)->Unit={
+    onConfirm:(date:LocalDate?, time:LocalTime?,reminderOn:Boolean)->Unit={
         _,_,_ ->
     }
 ) {
@@ -83,10 +84,15 @@ fun ScreenDialogCalendarInputTask(
     time:LocalTime?=null,
     reminderOn:Boolean=false,
     onCancel:()->Unit,
-    onConfirm:(date:LocalDate, time:LocalTime,reminderOn:Boolean)->Unit
+    onConfirm:(date:LocalDate?, time:LocalTime?,reminderOn:Boolean)->Unit
 ) {
     val ctx = LocalContext.current
+    val currentWidth = ctx
+        .resources
+        .displayMetrics.widthPixels.dp /
+            LocalDensity.current.density
     val activity =  ctx.findActivity()
+    val today = LocalDate.now()
 
     var dateState by remember {
         mutableStateOf<LocalDate?>(LocalDate.now())
@@ -106,16 +112,28 @@ fun ScreenDialogCalendarInputTask(
     Column(
         modifier = modifier
             .wrapContentHeight()
+            .padding(
+                vertical = 16.dp,
+                horizontal = 16.dp
+            )
             .background(MaterialTheme.colors.background)
     ) {
+        Spacer(modifier = modifier.height(20.dp))
         SelectableCalendar(
+            modifier = modifier.size(currentWidth),
+            showAdjacentMonths = false,
             dayContent = {
                 day->
                 ItemCalendar(
                     day = day.date,
                     selectedDate = dateState,
+                    clickable =  true,
                     onDayClicked = {
-                        dateState = it
+                        if(today.isBefore(it) || today.isEqual(it)) {
+                            dateState = it
+                        }else{
+                            ctx.toastInfo(ctx.getString(R.string.toast_cannot_pick_lastday))
+                        }
                     })
             }
         )
@@ -125,8 +143,8 @@ fun ScreenDialogCalendarInputTask(
                 .clickable {
                     activity?.showTimePicker(
                         Pair(
-                            timeState?.hour ?: 0,
-                            timeState?.minute ?: 0
+                            time?.hour ?: 0,
+                            time?.minute ?: 0
                         ),
                         onSelect = {
                             timeState = LocalTime.of(it.first, it.second)
@@ -173,15 +191,24 @@ fun ScreenDialogCalendarInputTask(
                 )
             }
             TextButton(onClick = {
-                if(dateState == null || timeState == null){
-                    ctx.toastError(ctx.getString(R.string.toast_validation_date_time))
-                }else {
+                if(dateState==null && timeState == null){
                     onConfirm(
-                        dateState!!,
-                        timeState!!,
+                        null,
+                        null,
                         isReminderOn
                     )
+                }else{
+                    if(dateState == null || timeState == null){
+                        ctx.toastError(ctx.getString(R.string.toast_validation_date_time))
+                    }else {
+                        onConfirm(
+                            dateState,
+                            timeState,
+                            isReminderOn
+                        )
+                    }
                 }
+
             }) {
                 Text(
                     text = stringResource(id = R.string.btn_save),
