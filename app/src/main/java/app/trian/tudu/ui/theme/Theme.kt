@@ -52,10 +52,6 @@ fun TuduTheme(
             ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = darkTheme
         }
     }
-    SideEffect {
-        logcat("gee",LogPriority.ERROR){darkTheme.toString()}
-    }
-
     MaterialTheme(
         colors = colorScheme,
         typography = Typography,
