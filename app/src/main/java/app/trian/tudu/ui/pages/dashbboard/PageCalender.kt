@@ -155,7 +155,6 @@ fun PageCalender(
                    ItemCalendar(
                        day = day.date,
                        selectedDate = selectedDate,
-                       clickable = true,
                        onDayClicked = {
                        selectedDate =day.date
                        taskViewModel.getListTaskByDate(day.date.atTime(OffsetTime.MAX))

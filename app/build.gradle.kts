@@ -5,7 +5,7 @@ plugins {
     id("com.android.application")
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
+   // id("com.google.firebase.crashlytics")
     kotlin("android")
     kotlin("kapt")
 
@@ -24,7 +24,7 @@ android {
         applicationId = Version.applicationId
         minSdk =21
         targetSdk =30
-        versionCode =28
+        versionCode =29
         versionName = "1.0.3"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -57,6 +57,7 @@ android {
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled=true
             multiDexKeepProguard = file("multidex-config.txt")
+            isDebuggable=false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -69,6 +70,8 @@ android {
 
     compileOptions {
         // Flag to enable support for the new language APIs
+        // Flag to enable support for the new language APIs
+        isCoreLibraryDesugaringEnabled =true
 
         sourceCompatibility =JavaVersion.VERSION_1_8
         targetCompatibility =JavaVersion.VERSION_1_8
@@ -93,6 +96,7 @@ dependencies {
 
     implementation("io.github.boguszpawlowski.composecalendar:composecalendar:0.3.0")
     implementation ("com.google.android.material:material:1.5.0")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
     implementation(Libs.AndroidX.Multidex.multidex)
     implementation(Libs.AndroidX.Core.coreKtx)
     implementation(Libs.AndroidX.Activity.activityCompose)
@@ -152,7 +156,7 @@ dependencies {
         implementation(roomRuntime)
         implementation(roomPaging)
         implementation(roomKtx)
-        annotationProcessor(roomCompiler)
+//        annotationProcessor(roomCompiler)
         kapt(roomCompiler)
         testImplementation(roomTesting)
 
@@ -165,8 +169,9 @@ dependencies {
         implementation(firestore)
         implementation(storage)
         implementation(messaging)
-        implementation(crashlytics)
-        implementation(analytics)
+        //implementation(crashlytics)
+       // implementation(analytics)
+//        implementation(installations)
 
     }
     //google auth

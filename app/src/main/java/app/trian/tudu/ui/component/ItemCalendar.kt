@@ -25,7 +25,6 @@ fun ItemCalendar(
     modifier:Modifier=Modifier,
     day:LocalDate,
     selectedDate:LocalDate?=null,
-    clickable:Boolean,
     onDayClicked:(date:LocalDate)->Unit
 
 ) {
