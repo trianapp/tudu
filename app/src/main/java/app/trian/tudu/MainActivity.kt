@@ -45,16 +45,7 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.google.firebase.FirebaseApp
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.messaging.ktx.messaging
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import javax.inject.Inject
 
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
@@ -71,10 +62,8 @@ class MainActivity : AppCompatActivity() {
             val systemUiController = rememberSystemUiController()
 
 
-
             val userViewModel = hiltViewModel<UserViewModel>()
             val currentSetting by userViewModel.appSetting.observeAsState(initial = AppSetting())
-            val useDark by userViewModel.isDarkTheme.observeAsState(initial = ThemeData.DEFAULT)
             val dark = isSystemInDarkTheme()
 
             LaunchedEffect(key1 = Unit, block = {
@@ -326,7 +315,7 @@ class MainActivity : AppCompatActivity() {
 
                                     },
                                 ){
-                                    val uiColor = MaterialTheme.colors.background
+
                                     val uiColorPrimary = MaterialTheme.colors.primary
                                     SideEffect {
                                         systemUiController.setSystemBarsColor(
@@ -436,6 +425,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
         }
+
 
     }
 

@@ -5,15 +5,12 @@ import android.graphics.Typeface
 import androidx.core.content.res.ResourcesCompat
 import androidx.multidex.MultiDexApplication
 import com.google.firebase.FirebaseApp
-import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.google.firebase.crashlytics.ktx.crashlytics
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.HiltAndroidApp
 import es.dmoral.toasty.Toasty
 import logcat.AndroidLogcatLogger
 import logcat.LogPriority
-import logcat.logcat
-import app.trian.tudu.R
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 
 
 /**
@@ -30,7 +27,10 @@ class MainApplication:MultiDexApplication(){
         AndroidLogcatLogger.installOnDebuggableApp(this, minPriority = LogPriority.VERBOSE)
         try {
             FirebaseApp.initializeApp(this)
-            FirebaseCrashlytics.getInstance()
+
+           // if(googlePlayServiceAvailable()){
+                //FirebaseCrashlytics.getInstance()
+            //}
 
             //configure toast
             val typeface: Typeface? = ResourcesCompat.getFont(this, R.font.poppins_regular)
@@ -49,5 +49,21 @@ class MainApplication:MultiDexApplication(){
         }
 
 
+    }
+
+    private fun googlePlayServiceAvailable():Boolean{
+
+        val googleService = GoogleApiAvailability.getInstance()
+        val available = googleService.isGooglePlayServicesAvailable(this)
+
+        if(available != ConnectionResult.SUCCESS){
+            if(googleService.isUserResolvableError(available)){
+                googleService.showErrorNotification(this,available)
+            }
+            return false
+        }
+
+
+        return true
     }
 }

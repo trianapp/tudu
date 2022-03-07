@@ -127,7 +127,6 @@ fun ScreenDialogCalendarInputTask(
                 ItemCalendar(
                     day = day.date,
                     selectedDate = dateState,
-                    clickable =  true,
                     onDayClicked = {
                         if(today.isBefore(it) || today.isEqual(it)) {
                             dateState = it
