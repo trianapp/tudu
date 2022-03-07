@@ -1,16 +1,18 @@
 package app.trian.tudu
 
 
+import android.app.Application
+import android.content.Context
 import android.graphics.Typeface
 import androidx.core.content.res.ResourcesCompat
-import androidx.multidex.MultiDexApplication
+import androidx.multidex.MultiDex
+
 import com.google.firebase.FirebaseApp
 import dagger.hilt.android.HiltAndroidApp
 import es.dmoral.toasty.Toasty
 import logcat.AndroidLogcatLogger
 import logcat.LogPriority
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GoogleApiAvailability
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 
 /**
@@ -20,18 +22,21 @@ import com.google.android.gms.common.GoogleApiAvailability
  * site https://trian.app
  */
 @HiltAndroidApp
-class MainApplication:MultiDexApplication(){
+class MainApplication:Application(){
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
+    }
 
     override fun onCreate() {
         super.onCreate()
-        AndroidLogcatLogger.installOnDebuggableApp(this, minPriority = LogPriority.VERBOSE)
+
+
+        FirebaseApp.initializeApp(this)
+        FirebaseCrashlytics.getInstance()
+
+
         try {
-            FirebaseApp.initializeApp(this)
-
-           // if(googlePlayServiceAvailable()){
-                //FirebaseCrashlytics.getInstance()
-            //}
-
             //configure toast
             val typeface: Typeface? = ResourcesCompat.getFont(this, R.font.poppins_regular)
             Toasty.Config.getInstance()
@@ -42,8 +47,7 @@ class MainApplication:MultiDexApplication(){
                 .setGravity(1,0,1)
                 .supportDarkTheme(true)
                 .apply()
-
-
+            AndroidLogcatLogger.installOnDebuggableApp(this, minPriority = LogPriority.VERBOSE)
         }catch (e:Exception){
 
         }
@@ -51,19 +55,4 @@ class MainApplication:MultiDexApplication(){
 
     }
 
-    private fun googlePlayServiceAvailable():Boolean{
-
-        val googleService = GoogleApiAvailability.getInstance()
-        val available = googleService.isGooglePlayServicesAvailable(this)
-
-        if(available != ConnectionResult.SUCCESS){
-            if(googleService.isUserResolvableError(available)){
-                googleService.showErrorNotification(this,available)
-            }
-            return false
-        }
-
-
-        return true
-    }
 }

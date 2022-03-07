@@ -5,7 +5,7 @@ plugins {
     id("com.android.application")
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
-   // id("com.google.firebase.crashlytics")
+    id("com.google.firebase.crashlytics")
     kotlin("android")
     kotlin("kapt")
 
@@ -24,8 +24,8 @@ android {
         applicationId = Version.applicationId
         minSdk =21
         targetSdk =30
-        versionCode =29
-        versionName = "1.0.3"
+        versionCode =30
+        versionName = "1.0.3(4)"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -55,9 +55,11 @@ android {
 
         getByName("release") {
             signingConfig = signingConfigs.getByName("release")
-            isMinifyEnabled=true
-            multiDexKeepProguard = file("multidex-config.txt")
+            isShrinkResources = false
+            isMinifyEnabled=false
             isDebuggable=false
+            multiDexKeepProguard = file("multidex-config.txt")
+
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -169,9 +171,9 @@ dependencies {
         implementation(firestore)
         implementation(storage)
         implementation(messaging)
-        //implementation(crashlytics)
-       // implementation(analytics)
-//        implementation(installations)
+        implementation(crashlytics)
+        implementation(analytics)
+        implementation(installations)
 
     }
     //google auth
