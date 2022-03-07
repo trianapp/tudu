@@ -1,1 +1,2 @@
 com/google/firebase/provider/FirebaseInitProvider.class
+android/app/Application

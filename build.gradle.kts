@@ -8,7 +8,7 @@ buildscript {
         classpath("com.google.gms:google-services:4.3.10")
 
         // Add the Crashlytics Gradle plugin
-      //  classpath("com.google.firebase:firebase-crashlytics-gradle:2.8.1")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:2.8.1")
     }
 }
 plugins {
