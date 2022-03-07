@@ -21,29 +21,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
-
+-keepattributes Signature
 -keep class * extends androidx.room.RoomDatabase
 -keep @androidx.room.Entity class *
 -dontwarn androidx.room.paging.**
-
-### Crashlytics
-# In order to provide the most meaningful crash reports
--keepattributes SourceFile,LineNumberTable
-# If you're using custom Eception
--keep public class * extends java.lang.Exception
--keep class com.crashlytics.** { *; }
--dontwarn com.crashlytics.**
--keep class com.google.firebase.crashlytics.** { *; }
--dontwarn com.google.firebase.crashlytics.**
-
-
 -dontwarn kotlinx.coroutines.flow.**
-
--keep class com.google.firebase.analytics.connector.AnalyticsConnectorImpl { *; }
-
--keepnames class com.google.android.gms.** {*;}
--keep class com.google.android.gms.** {*;}
-
-
-#
--keep public class * extends android.app.Application
+### Crashlytics

@@ -24,8 +24,8 @@ android {
         applicationId = Version.applicationId
         minSdk =21
         targetSdk =30
-        versionCode =30
-        versionName = "1.0.3(4)"
+        versionCode =31
+        versionName = "1.0.3(5)"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -55,12 +55,12 @@ android {
 
         getByName("release") {
             signingConfig = signingConfigs.getByName("release")
-            isShrinkResources = false
-            isMinifyEnabled=false
+            isShrinkResources = true
+            isMinifyEnabled=true
             isDebuggable=false
-            multiDexKeepProguard = file("multidex-config.txt")
+         //   multiDexKeepProguard = file("multidex-config.txt")
 
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+           // proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
 
