@@ -1,0 +1,7 @@
+1. Added page Calendar for tracking your Task
+2. You can delete Task by using Long click at Item Task (We forgot that one 🤭)
+3. Now you can change theme any time 🥳
+
+Bug Fix:
+1. Some bug fix and Increasing performance
+

@@ -30,13 +30,10 @@ class MainApplication:Application(){
 
     override fun onCreate() {
         super.onCreate()
-
-
         FirebaseApp.initializeApp(this)
         FirebaseCrashlytics.getInstance()
-
-
         try {
+
             //configure toast
             val typeface: Typeface? = ResourcesCompat.getFont(this, R.font.poppins_regular)
             Toasty.Config.getInstance()

@@ -15,13 +15,6 @@
 .classpath
 .project
 
-.idea/misc.xml
-.idea/
-
-.settings
-.classpath
-.project
-
 .DS_Store
 /build
 /captures
@@ -118,6 +111,8 @@ lint/tmp/
 
 /keystore.properties
 /app/todo_keystore.jks
+/app/google-services.json
+/app/google-services.json.b64
 /secrets/todo_keystore.jks.
 /secrets/todo_keystore.jks.b64
 /play_config.json
