@@ -3,7 +3,7 @@ name: Release (Production)
 on:
   push:
     paths:
-      - 'app/**'
+      - 'androidApp/**'
     branches: [ main ]
 
 jobs:

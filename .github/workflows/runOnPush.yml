@@ -2,7 +2,7 @@ name: Android-CI
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main,feature/Migrate-1]
 
 env:
   APP_PATH: app
