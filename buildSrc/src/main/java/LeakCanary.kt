@@ -5,12 +5,6 @@
  * Proprietary and confidential
  */
 
-import org.gradle.kotlin.dsl.`kotlin-dsl`
-
-plugins {
-    `kotlin-dsl`
-}
-
-repositories {
-    mavenCentral()
+object LeakCanary {
+    val leakCanary by lazy {"com.squareup.leakcanary:leakcanary-android:2.10"}
 }

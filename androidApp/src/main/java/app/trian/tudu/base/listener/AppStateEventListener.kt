@@ -5,12 +5,8 @@
  * Proprietary and confidential
  */
 
-import org.gradle.kotlin.dsl.`kotlin-dsl`
+package app.trian.tudu.base.listener
 
-plugins {
-    `kotlin-dsl`
-}
-
-repositories {
-    mavenCentral()
+fun interface AppStateEventListener {
+    fun onEvent(eventName:String)
 }

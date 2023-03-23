@@ -1,0 +1,41 @@
+CREATE TABLE IF NOT EXISTS TaskCategory(
+    taskCategoryId TEXT NOT NULL PRIMARY KEY,
+    taskId TEXT NOT NULL,
+    categoryId TEXT NOT NULL
+);
+
+getAllTaskCategory:
+SELECT *
+FROM TaskCategory;
+
+getAllTaskCategoryByTaskId:
+SELECT *
+FROM TaskCategory
+WHERE taskId=?;
+
+getAllTaskCategoryByCategoryId:
+SELECT *
+FROM TaskCategory
+WHERE categoryId=:categoryId;
+
+insertTaskCategory:
+INSERT INTO TaskCategory(
+    taskCategoryId,
+    taskId,
+    categoryId
+) VALUES (?,?,?);
+
+deletTaskCategory:
+DELETE
+FROM TaskCategory
+WHERE taskCategoryId=?;
+
+deletTaskCategoryByTaskAndCategory:
+DELETE
+FROM TaskCategory
+WHERE categoryId=? AND taskId=?;
+
+deleteTaskCategoryByTask:
+DELETE
+FROM TaskCategory
+WHERE taskId=?;

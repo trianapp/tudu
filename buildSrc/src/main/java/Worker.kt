@@ -5,12 +5,6 @@
  * Proprietary and confidential
  */
 
-import org.gradle.kotlin.dsl.`kotlin-dsl`
-
-plugins {
-    `kotlin-dsl`
-}
-
-repositories {
-    mavenCentral()
+object Worker {
+    val workRuntime by lazy { "androidx.work:work-runtime-ktx:2.7.1" }
 }

@@ -1,0 +1,79 @@
+{
+  "project_info": {
+    "project_number": "496234949728",
+    "project_id": "tudu-app-5eb1f",
+    "storage_bucket": "tudu-app-5eb1f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:496234949728:android:db6d88a9bd59b383d96705",
+        "android_client_info": {
+          "package_name": "app.trian.tudu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "496234949728-1po98t5mjicg3jbqavshu86ilg3dr30o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.trian.tudu",
+            "certificate_hash": "90398e21b3e3cb37dcb02d7ab5239b6c44173686"
+          }
+        },
+        {
+          "client_id": "496234949728-ig1uc4tuepp06gcr5e98u2c8c3b78m2b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.trian.tudu",
+            "certificate_hash": "8c8a3a950a7f6fd9dccf60ba7a00bc736a26ebc3"
+          }
+        },
+        {
+          "client_id": "496234949728-m4q95uk382t79o1vjo834mv9cifhc2g7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.trian.tudu",
+            "certificate_hash": "fa969b923ce6dc8bf89b7106ae4d4b5bdf4a7dca"
+          }
+        },
+        {
+          "client_id": "496234949728-o5kq3bacsk8eibvchp7j0l46bem1f4gb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.trian.tudu",
+            "certificate_hash": "bb0176da6a89703ba44022117815b777e167f494"
+          }
+        },
+        {
+          "client_id": "496234949728-s833svnp3m5jos29dv5ip4t6mvb4ck1m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.trian.tudu",
+            "certificate_hash": "76c17b074428ce23021377924b5a5f21d813b902"
+          }
+        },
+        {
+          "client_id": "496234949728-hdu85od2mv4gfvhbjff5ldbqkm7epcog.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfh-eEzt4Q2ESuZ0MNJDI5Ypb5l-jMcx8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "496234949728-hdu85od2mv4gfvhbjff5ldbqkm7epcog.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,44 @@
+CREATE TABLE IF NOT EXISTS Todo(
+    todoId TEXT NOT NULL PRIMARY KEY,
+    todoName TEXT,
+    todoDone INTEGER,
+    todoTaskId TEXT,
+    createdAt TEXT
+);
+
+getListTodoByTask:
+SELECT *
+FROM Todo
+WHERE todoTaskId=?
+ORDER BY Datetime(createdAt) DESC;
+
+
+insertTodo:
+INSERT INTO Todo(
+    todoId,
+    todoName,
+    todoTaskId,
+    todoDone,
+    createdAt
+) VALUES (?,?,?,?,?);
+
+updateTodoDone:
+UPDATE Todo
+SET
+    todoDone=?
+WHERE todoId=?;
+
+updateTodoName:
+UPDATE Todo
+SET
+    todoName=?
+WHERE todoId=?;
+
+deleteTodo:
+DELETE
+FROM Todo
+WHERE todoId=?;
+
+deleteTodoByTask:
+DELETE FROM Todo
+WHERE todoTaskId=?;
