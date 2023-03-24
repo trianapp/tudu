@@ -9,8 +9,6 @@ import app.trian.tudu.feature.auth.signin.SignIn
 import app.trian.tudu.feature.auth.signup.SignUpEvent.SignUpWithEmail
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @HiltViewModel

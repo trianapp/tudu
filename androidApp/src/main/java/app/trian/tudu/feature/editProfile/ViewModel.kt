@@ -6,7 +6,6 @@ import app.trian.tudu.data.sdk.auth.AuthSDK
 import app.trian.tudu.data.utils.Response
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
 import javax.inject.Inject
 
 @HiltViewModel
