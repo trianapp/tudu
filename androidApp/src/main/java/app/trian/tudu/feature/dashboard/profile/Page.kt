@@ -4,7 +4,9 @@ import android.os.Build.VERSION_CODES
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize.Min
 import androidx.compose.foundation.layout.Row
@@ -20,7 +22,9 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.Icons.Outlined
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Logout
 import androidx.compose.material.icons.outlined.ModeEdit
 import androidx.compose.material.icons.outlined.MonetizationOn
@@ -60,6 +64,7 @@ import app.trian.tudu.components.ButtonIcon
 import app.trian.tudu.components.TuduBottomNavigation
 import app.trian.tudu.components.chart.BarChartView
 import app.trian.tudu.feature.appSetting.AppSetting
+import app.trian.tudu.feature.editProfile.EditProfile
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest.Builder
 import coil.size.Size
@@ -123,18 +128,33 @@ internal fun ScreenProfile(
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Image(
-                painter = painterProfilePicture,
-                contentDescription = "",
-                contentScale = ContentScale.FillBounds,
+            Box(
                 modifier = Modifier
                     .size(
                         120.dp
                     )
                     .clip(RoundedCornerShape(10.dp))
-            )
+                    .clickable {
 
+                    }
+            ) {
+                Image(
+                    painter = painterProfilePicture,
+                    contentDescription = "",
+                    contentScale = ContentScale.FillBounds,
+                    modifier = Modifier.fillMaxSize()
+                )
+                Icon(
+                    imageVector = Outlined.Edit,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .clip(MaterialTheme.shapes.medium)
+                        .background(MaterialTheme.colorScheme.primary),
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
 
+            }
             IconButton(
                 onClick = {
                     commit { copy(showDropdownMoreOption = true) }
@@ -157,7 +177,8 @@ internal fun ScreenProfile(
                             )
                         },
                         onClick = {
-
+                            commit { copy(showDropdownMoreOption = false) }
+                            navigateSingleTop(EditProfile.routeName)
                         }
                     )
                     DropdownMenuItem(
@@ -316,7 +337,7 @@ internal fun ScreenProfile(
                     .getPreviousWeek()
                     .getDateUntil(state.selectedDate),
                 items = dataState.chartData.items,
-                labels =dataState.chartData.labels,
+                labels = dataState.chartData.labels,
                 onArrowClicked = {
                     dispatch(ProfileEvent.GetStatistic(it))
                 }

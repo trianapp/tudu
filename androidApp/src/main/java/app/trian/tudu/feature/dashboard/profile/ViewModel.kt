@@ -19,8 +19,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun getCurrentUser() = async {
-        authSDK.getCurrentUser()
-            .collect {
+        authSDK.getCurrentUser().collect {
                 when (it) {
                     is Response.Error -> Unit
                     Response.Loading -> Unit

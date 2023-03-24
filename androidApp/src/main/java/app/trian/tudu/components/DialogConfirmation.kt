@@ -67,7 +67,8 @@ fun DialogConfirmation(
             properties = DialogProperties(
                 dismissOnBackPress = false,
                 dismissOnClickOutside = false,
-                securePolicy = SecureFlagPolicy.SecureOn
+                securePolicy = SecureFlagPolicy.SecureOn,
+                usePlatformDefaultWidth = false
             ),
             tonalElevation = 10.dp
         )

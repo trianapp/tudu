@@ -174,4 +174,9 @@
     <string name="text_total_todo">Pending</string>
     <string name="app_version">Version %1$s</string>
     <string name="message_success_reset_password">Email reset password sudah dikirim ke email Anda</string>
+    <string name="label_input_diplay_name">Full Name</string>
+    <string name="label_placeholder_input_display_name">Input your name</string>
+    <string name="title_appbar_edit_profile">Edit Profile</string>
+    <string name="text_message_welcome_user">Selamat datang %1$s</string>
+    <string name="text_message_success_change_profile">Berhasil merubah nama</string>
 </resources>

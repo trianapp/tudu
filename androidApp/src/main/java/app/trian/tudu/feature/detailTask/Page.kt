@@ -80,6 +80,7 @@ import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.MainAxisAlignment
 import com.google.accompanist.flowlayout.SizeMode
+import java.time.LocalDate
 
 object DetailTask {
     const val routeName = "DetailTask"
@@ -236,6 +237,7 @@ internal fun ScreenDetailTask(
     )
 
     DialogDatePicker(
+        minDate= LocalDate.now(),
         show = state.showDialogPickDate,
         currentSelectedDate =state.taskDueDate,
         onDismiss = {

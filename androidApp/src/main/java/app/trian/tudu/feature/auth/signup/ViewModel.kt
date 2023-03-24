@@ -21,6 +21,8 @@ class SignUpViewModel @Inject constructor(
         handleActions()
     }
 
+    private fun showLoading() = commit { copy(isLoading = true) }
+    private fun hideLoading() = commit { copy(isLoading = true) }
     private fun validateData(cb: suspend (String, String, String) -> Unit) = async {
         with(uiState.value) {
             when {
@@ -39,9 +41,15 @@ class SignUpViewModel @Inject constructor(
 
     private fun handleResponse(result: Response<FirebaseUser?>) {
         when (result) {
-            is Response.Error -> showSnackbar(result.message)
-            Response.Loading -> Unit
-            is Response.Result -> navigateAndReplaceAll(SignIn.routeName)
+            is Response.Error -> {
+                hideLoading()
+                showSnackbar(result.message)
+            }
+            Response.Loading -> showLoading()
+            is Response.Result -> {
+                hideLoading()
+                navigateAndReplaceAll(SignIn.routeName)
+            }
         }
     }
 
@@ -49,7 +57,6 @@ class SignUpViewModel @Inject constructor(
         when (it) {
             SignUpWithEmail -> validateData { displayName, email, password ->
                 authSDK.registerWithEmail(displayName = displayName, email = email, password = password)
-                    .catch { }
                     .collect(::handleResponse)
             }
 

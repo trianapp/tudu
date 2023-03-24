@@ -8,6 +8,7 @@
 package app.trian.tudu.data.sdk.auth
 
 
+import android.graphics.Bitmap
 import app.trian.tudu.base.UnAuthorizedException
 import app.trian.tudu.data.DriverFactory
 import app.trian.tudu.data.createDatabase
@@ -99,6 +100,25 @@ class AuthSDK(
     suspend fun resetPasswordByEmail(email: String): Flow<Response<Boolean>> = flow<Response<Boolean>> {
         emit(Response.Loading)
         firebaseAuth.sendPasswordResetEmail(email)
+        emit(Response.Result(true))
+    }.flowOn(Dispatchers.IO)
+
+    suspend fun updateProfile(displayName: String): Flow<Response<FirebaseUser?>> = flow {
+        emit(Response.Loading)
+        val updateProfileChangeRequest = userProfileChangeRequest {
+            this.displayName = displayName
+        }
+        firebaseAuth.currentUser?.updateProfile(updateProfileChangeRequest)
+        emit(Response.Result(firebaseAuth.currentUser))
+    }.flowOn(Dispatchers.IO)
+
+    suspend fun updateProfilePicture(picture:Bitmap): Flow<Response<Boolean>> = flow {
+        emit(Response.Loading)
+        //todo
+        val updateProfileChangeRequest = userProfileChangeRequest {
+            this.displayName = displayName
+        }
+        firebaseAuth.currentUser?.updateProfile(updateProfileChangeRequest)
         emit(Response.Result(true))
     }.flowOn(Dispatchers.IO)
 

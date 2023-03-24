@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 import app.trian.tudu.ApplicationState
 import app.trian.tudu.base.BaseMainApp
 import app.trian.tudu.base.UIWrapper
+import app.trian.tudu.components.DialogLoading
 
 object Splash {
     const val routeName = "Splash"
@@ -32,8 +33,9 @@ internal fun ScreenSplash(
 ) = UIWrapper<SplashViewModel>(appState = state) {
     state.hideTopAppBar()
     LaunchedEffect(key1 = this, block = {
-        dispatch(SplashEvent.CheckSession)
+       dispatch(SplashEvent.CheckSession)
     })
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,

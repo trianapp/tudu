@@ -10,7 +10,6 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -22,7 +21,10 @@ class SignInViewModel @Inject constructor(
         handleActions()
     }
 
-    private fun signInWithEmail(
+    private fun showLoading() = commit { copy(isLoading = true) }
+    private fun hideLoading() = commit { copy(isLoading = false) }
+
+    private fun validateData(
         cb: suspend (String, String) -> Unit
     ) = async {
         with(uiState.value) {
@@ -41,10 +43,15 @@ class SignInViewModel @Inject constructor(
 
     private fun handleResponse(result: Response<FirebaseUser?>) {
         when (result) {
-            is Response.Error -> showSnackbar(result.message)
-            Response.Loading -> Unit
+            is Response.Error -> {
+                hideLoading()
+                showSnackbar(result.message)
+            }
+
+            Response.Loading -> showLoading()
             is Response.Result -> {
-                showSnackbar("Selamat datang ${result.data?.displayName}")
+                hideLoading()
+                showSnackbar(R.string.text_message_welcome_user, result.data?.displayName.orEmpty())
                 navigateAndReplaceAll(Home.routeName)
             }
         }
@@ -64,7 +71,7 @@ class SignInViewModel @Inject constructor(
 
     override fun handleActions() = onEvent { event ->
         when (event) {
-            SignInEvent.SignInWithEmail -> signInWithEmail { email, password ->
+            SignInEvent.SignInWithEmail -> validateData { email, password ->
                 authSDK
                     .signInWithEmail(email, password)
                     .catch {

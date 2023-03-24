@@ -13,6 +13,7 @@ import app.trian.tudu.feature.dashboard.calendar.routeCalendar
 import app.trian.tudu.feature.dashboard.home.routeHome
 import app.trian.tudu.feature.dashboard.profile.routeProfile
 import app.trian.tudu.feature.detailTask.routeDetailTask
+import app.trian.tudu.feature.editProfile.routeEditProfile
 import app.trian.tudu.feature.inputNote.routeInputNote
 import app.trian.tudu.feature.splash.Splash
 import app.trian.tudu.feature.splash.routeSplash
@@ -50,6 +51,8 @@ fun AppNavigation(
         routeDetailTask(applicationState)
 
         routeInputNote(applicationState)
+
+        routeEditProfile(applicationState)
 
     }
 }

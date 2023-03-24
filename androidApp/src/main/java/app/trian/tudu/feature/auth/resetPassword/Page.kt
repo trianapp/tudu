@@ -24,6 +24,7 @@ import app.trian.tudu.components.AppbarBasic
 import app.trian.tudu.components.ButtonPrimary
 import app.trian.tudu.components.FormInput
 
+
 object ResetPassword {
     const val routeName = "ResetPassword"
 }

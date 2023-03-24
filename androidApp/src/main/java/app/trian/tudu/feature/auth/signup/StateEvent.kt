@@ -7,10 +7,11 @@ import kotlinx.parcelize.Parcelize
 @Immutable
 @Parcelize
 data class SignUpState(
-    var agreeTnc:Boolean=false,
-    var displayName: String = "",
-    var email: String = "",
-    var password: String = ""
+    val agreeTnc:Boolean=false,
+    val displayName: String = "",
+    val email: String = "",
+    val password: String = "",
+    val isLoading:Boolean=false
 ) : Parcelable
 
 @Immutable

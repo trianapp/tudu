@@ -28,6 +28,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.SecureFlagPolicy
 import app.trian.tudu.R
 import app.trian.tudu.base.BaseMainApp
 import app.trian.tudu.data.dateTime.DateFormat
@@ -46,7 +48,15 @@ fun DialogDateFormat(
         DateFormat.DDMMYYYY,
     )
     if(show){
-        Dialog(onDismissRequest = onDismiss) {
+        Dialog(
+            onDismissRequest = onDismiss,
+            properties = DialogProperties(
+                dismissOnClickOutside = true,
+                dismissOnBackPress = true,
+                securePolicy = SecureFlagPolicy.Inherit,
+                usePlatformDefaultWidth = false
+            )
+        ) {
             ScreenDialogDateFormat(
                 title= stringResource(R.string.title_dialog_date_format),
                 items=listFormat,
@@ -72,7 +82,15 @@ fun DialogTimeFormat(
         TimeFormat.TWENTY
     )
     if(show){
-        Dialog(onDismissRequest = onDismiss) {
+        Dialog(
+            onDismissRequest = onDismiss,
+            properties = DialogProperties(
+                dismissOnClickOutside = true,
+                dismissOnBackPress = true,
+                securePolicy = SecureFlagPolicy.Inherit,
+                usePlatformDefaultWidth = false
+            )
+        ) {
             ScreenDialogTimeFormat(
                 title= stringResource(R.string.title_dialog_time_format),
                 items=listFormat,

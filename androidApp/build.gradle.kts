@@ -25,7 +25,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-        buildConfigField("String","SHARED_PREF_KEY","\"${findProperty("SHARED_PREF_KEY")}\"")
     }
     buildFeatures {
         compose = true

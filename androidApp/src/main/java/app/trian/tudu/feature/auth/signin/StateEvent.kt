@@ -10,7 +10,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class SignInState(
     val email: String = "",
-    val password: String = ""
+    val password: String = "",
+    val isLoading:Boolean=false
 ) : Parcelable
 
 @Immutable

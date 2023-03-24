@@ -56,7 +56,7 @@ jobs:
       - name: Detekt
         run: ./gradlew detekt
 
-      - name: Build with Gradle(Detekt)
+      - name: Build with Gradle
         run: ./gradlew assembleDebug lintDebug --stacktrace
 
       - name: Upload build output(APKs)

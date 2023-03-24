@@ -36,6 +36,7 @@ import app.trian.tudu.components.AnnotationTextItem
 import app.trian.tudu.components.AppbarAuth
 import app.trian.tudu.components.ButtonPrimary
 import app.trian.tudu.components.ButtonSocial
+import app.trian.tudu.components.DialogLoading
 import app.trian.tudu.components.FormInput
 import app.trian.tudu.components.TextWithAction
 import app.trian.tudu.feature.auth.resetPassword.ResetPassword
@@ -87,6 +88,9 @@ internal fun ScreenSignIn(
         }
     }
 
+    DialogLoading(
+        show = uiState.isLoading
+    )
     Column(
         modifier = Modifier
             .fillMaxSize()

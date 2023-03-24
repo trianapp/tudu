@@ -32,6 +32,7 @@ import app.trian.tudu.components.AnnotationTextItem
 import app.trian.tudu.components.AppbarAuth
 import app.trian.tudu.components.ButtonPrimary
 import app.trian.tudu.components.CheckBoxWithAction
+import app.trian.tudu.components.DialogLoading
 import app.trian.tudu.components.FormInput
 import app.trian.tudu.components.TextWithAction
 import app.trian.tudu.feature.auth.signin.SignIn
@@ -71,6 +72,9 @@ internal fun ScreenSignUp(
             )
         }
     }
+    DialogLoading(
+        show = uiState.isLoading
+    )
     Column(
         modifier = Modifier
             .fillMaxSize()

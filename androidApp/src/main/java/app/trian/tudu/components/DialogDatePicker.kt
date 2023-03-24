@@ -42,6 +42,7 @@ import java.time.LocalDate
 @Composable
 fun DialogDatePicker(
     show: Boolean = false,
+    minDate:LocalDate=LocalDate.now().minusYears(10),
     currentSelectedDate: LocalDate = LocalDate.now(),
     onDismiss: () -> Unit = {},
     onSubmit: (LocalDate) -> Unit = {},
@@ -86,10 +87,9 @@ fun DialogDatePicker(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         WheelDatePicker(
-                            minDate = LocalDate.now(),
+                            minDate = minDate,
                             startDate = currentSelectedDate,
-                            selectorProperties = WheelPickerDefaults.selectorProperties(
-                            ),
+                            selectorProperties = WheelPickerDefaults.selectorProperties(),
                             onSnappedDate = {
                                 selectedDate = it
                             }

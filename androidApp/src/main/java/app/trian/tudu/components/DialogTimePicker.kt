@@ -42,6 +42,7 @@ import java.time.LocalTime
 @Composable
 fun DialogTimePicker(
     show: Boolean = false,
+    minTime:LocalTime= LocalTime.now().minusHours(24),
     currentSelectedTime: LocalTime = LocalTime.now(),
     onDismiss: () -> Unit = {},
     onSubmit: (LocalTime) -> Unit = {},
@@ -86,9 +87,9 @@ fun DialogTimePicker(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         WheelTimePicker(
+                            minTime=minTime,
                             startTime = currentSelectedTime,
-                            selectorProperties = WheelPickerDefaults.selectorProperties(
-                            ),
+                            selectorProperties = WheelPickerDefaults.selectorProperties(),
                             onSnappedTime = {
                                 selectedTime = it
                             }
