@@ -53,8 +53,10 @@ jobs:
           KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
           KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
           KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+      - name: Detekt
+        run: ./gradlew detekt
 
-      - name: Build with Gradle
+      - name: Build with Gradle(Detekt)
         run: ./gradlew assembleDebug lintDebug --stacktrace
 
       - name: Upload build output(APKs)
