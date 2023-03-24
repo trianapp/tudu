@@ -58,7 +58,7 @@ jobs:
         run: ./gradlew assembleDebug lintDebug --stacktrace
 
       - name: Upload build output(APKs)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build-outputs
           path: ${{env.APP_PATH}}/build/outputs
