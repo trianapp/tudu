@@ -13,7 +13,6 @@ import androidx.navigation.compose.composable
 import app.trian.tudu.ApplicationState
 import app.trian.tudu.base.BaseMainApp
 import app.trian.tudu.base.UIWrapper
-import app.trian.tudu.components.DialogLoading
 
 object Splash {
     const val routeName = "Splash"
