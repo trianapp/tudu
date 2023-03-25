@@ -444,7 +444,7 @@ internal fun ScreenProfile(
             text = stringResource(R.string.app_version, version()),
             style = MaterialTheme.typography.labelLarge,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.surfaceVariant,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(
