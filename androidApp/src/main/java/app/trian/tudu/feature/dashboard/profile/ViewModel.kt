@@ -9,10 +9,8 @@ import app.trian.tudu.data.domain.user.GetUserProfileUseCase
 import app.trian.tudu.data.domain.user.SignOutUseCase
 import app.trian.tudu.data.domain.user.UpdateProfilePictureUseCase
 import app.trian.tudu.data.utils.Response
-import app.trian.tudu.feature.auth.signin.SignIn
 import app.trian.tudu.feature.splash.Splash
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
 import java.time.LocalDate
 import javax.inject.Inject
 
