@@ -196,4 +196,5 @@
     <string name="text_message_failed_load_task">Gagal mengambil data</string>
     <string name="text_message_confirmation_delete_task">Yakin menghapus?</string>
     <string name="text_message_success_task_finsih">Task has been finsihed</string>
+    <string name="text_message_leave_page_confirmation">Yakin mau keluar?, perubahan pada note belum disimpan</string>
 </resources>

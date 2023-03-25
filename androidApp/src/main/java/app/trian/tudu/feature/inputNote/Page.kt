@@ -123,7 +123,7 @@ internal fun ScreenInputNote(
 
     DialogConfirmation(
         show = state.showDialogBackConfirmation,
-        message = "Yakin mau keluar?",
+        message = stringResource(R.string.text_message_leave_page_confirmation),
         onConfirm = {
             commit {
                 copy(
