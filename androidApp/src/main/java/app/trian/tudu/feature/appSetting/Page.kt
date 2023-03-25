@@ -10,6 +10,7 @@ import androidx.compose.material.icons.outlined.Doorbell
 import androidx.compose.material.icons.outlined.Feedback
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.QuestionMark
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material.icons.outlined.Verified
@@ -38,6 +39,7 @@ import app.trian.tudu.components.SubItemSetting
 import app.trian.tudu.data.dateTime.DateFormat
 import app.trian.tudu.data.dateTime.TimeFormat
 import app.trian.tudu.feature.auth.changePassword.ChangePassword
+import app.trian.tudu.feature.editProfile.EditProfile
 
 object AppSetting {
     const val routeName = "AppSetting"
@@ -61,7 +63,7 @@ internal fun ScreenAppSetting(
             children = listOf(
                 SubItemSetting(
                     name = stringResource(R.string.setting_sub_profile_information),
-                    route = "EDIT",
+                    route = EditProfile.routeName,
                     type = "link",
                     icon = Icons.Outlined.Person,
                     description = stringResource(R.string.setting_sub_description_profile_information)
@@ -75,14 +77,14 @@ internal fun ScreenAppSetting(
             )
         ),
         ItemSetting(
-            name = stringResource(R.string.setting_notification_setting),
+            name = stringResource(R.string.text_parent_setting_personalisation),
             children = listOf(
                 SubItemSetting(
                     name = stringResource(R.string.menu_theme),
-                    route = "EDIT",
-                    type = "link",
+                    route = "theme",
+                    type = "button",
                     icon = Icons.Outlined.Person,
-                    description = stringResource(R.string.setting_sub_description_profile_information)
+                    description = stringResource(R.string.setting_sub_description_theme)
                 ),
                 SubItemSetting(
                     name = stringResource(R.string.setting_sub_push_notification),
@@ -90,20 +92,6 @@ internal fun ScreenAppSetting(
                     type = "",
                     icon = Icons.Outlined.Doorbell,
                     description = stringResource(R.string.setting_sub_description_push_notification)
-                ),
-                SubItemSetting(
-                    name = stringResource(R.string.setting_sub_date_format),
-                    route = "date_format",
-                    type = "button",
-                    icon = Icons.Outlined.CalendarToday,
-                    description = "November,22 2020"
-                ),
-                SubItemSetting(
-                    name = stringResource(R.string.setting_sub_tim_format),
-                    route = "time_format",
-                    type = "button",
-                    icon = Icons.Outlined.Timer,
-                    description = "24 Hour"
                 )
             )
         ),
@@ -135,7 +123,7 @@ internal fun ScreenAppSetting(
                     name = stringResource(R.string.menu_faq),
                     route = "faq",
                     type = "button",
-                    icon = Icons.Outlined.Verified,
+                    icon = Icons.Outlined.QuestionMark,
                     description = stringResource(R.string.setting_sub_description_privacy_policy)
                 )
             )

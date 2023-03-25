@@ -19,8 +19,8 @@ android {
         applicationId = AppConfig.applicationId
         minSdk = 24
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 32
+        versionName = "2.0"
         multiDexEnabled = true
         vectorDrawables {
             useSupportLibrary = true
@@ -136,6 +136,7 @@ dependencies {
         implementation(pager)
         implementation(pagerIndicator)
         implementation(flowLayout)
+        implementation(shimmer)
     }
     with(Hilt) {
         implementation(hiltNavigationCompose)
@@ -155,6 +156,8 @@ dependencies {
     implementation(Jetbrains.Kotlinx.kotlinxCoroutineAndroid)
 
     debugImplementation(LeakCanary.leakCanary)
+
+    testImplementation("junit:junit:4.13.2")
 }
 sqldelight{
     databases{

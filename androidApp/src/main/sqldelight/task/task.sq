@@ -20,13 +20,12 @@ SELECT *
 FROM Task
 ORDER BY Date(createdAt) ASC;
 
-getListByDate:
+getListByDueDate:
 SELECT *
 FROM Task
 WHERE Date(taskDueDate)
 BETWEEN  Date(?) AND Date(?)
-ORDER BY Date(createdAt) ASC;
-
+ORDER BY Date(updatedAt) ASC;
 
 insertTask:
 INSERT INTO Task(
@@ -87,3 +86,7 @@ deleteTask:
 DELETE
 FROM Task
 WHERE taskId=?;
+
+clearTask:
+DELETE
+FROM Task;

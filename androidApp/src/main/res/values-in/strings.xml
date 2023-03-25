@@ -118,7 +118,8 @@
     <string name="menu_settings">Pengaturan</string>
     <string name="setting_account_setting">Pengaturan Akun</string>
     <string name="setting_sub_profile_information">Informasi Profil</string>
-    <string name="setting_sub_description_profile_information">Nama,Email, dan Bio</string>
+    <string name="setting_sub_description_profile_information">Nama,Email</string>
+    <string name="setting_sub_description_theme">Ubah tema ke gelap atau terang</string>
     <string name="setting_sub_change_password">Ubah Password</string>
     <string name="setting_sub_description_change_password">Ubah password akun kamu</string>
     <string name="setting_notification_setting">Pengaturan Notification</string>
@@ -185,4 +186,5 @@
     <string name="text_message_loading_signin">Signing in...</string>
     <string name="text_message_loading_reset_password">Sending email...</string>
     <string name="text_message_loading_update_password">Updating your password</string>
+    <string name="text_parent_setting_personalisation">Personalisasi</string>
 </resources>

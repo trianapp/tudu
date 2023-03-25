@@ -75,7 +75,7 @@ class InputNoteViewModel @Inject constructor(
         when (it) {
             is SetTaskNote -> commit {
                 copy(
-                    taskNote = taskNote,
+                    taskNote = it.note,
                     isUpdateNote = true
                 )
             }

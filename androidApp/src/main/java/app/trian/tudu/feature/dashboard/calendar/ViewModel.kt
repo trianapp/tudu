@@ -28,7 +28,7 @@ class CalendarViewModel @Inject constructor(
     private fun getListTask() = async {
         val from = uiState.value.selectedDate
         val to = from.plusDays(1)
-        getListTaskByDateUseCase(from.toString(),to.toString())
+        getListTaskByDateUseCase(from.toString(),from.toString())
             .collect{
                 when(it){
                     is Response.Error -> showSnackbar(R.string.message_failed_fetch_data)

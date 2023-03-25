@@ -2,7 +2,6 @@ package app.trian.tudu.data.domain.user
 
 import android.graphics.Bitmap
 import app.trian.tudu.data.utils.Response
-import app.trian.tudu.data.utils.ResponseWithProgress
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.storage.FirebaseStorage
@@ -11,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 

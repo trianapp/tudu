@@ -7,6 +7,7 @@
 
 package app.trian.tudu.base
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.defaultMinSize
@@ -69,7 +70,7 @@ fun BaseMainApp(
                     }
                 },
                 sheetState = appState.bottomSheetState,
-                sheetBackgroundColor = Color.Transparent,
+                sheetBackgroundColor = MaterialTheme.colorScheme.surface,
                 sheetShape = RoundedCornerShape(
                     topStart = 10.dp,
                     topEnd = 10.dp

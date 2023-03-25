@@ -39,3 +39,6 @@ deleteTaskCategoryByTask:
 DELETE
 FROM TaskCategory
 WHERE taskId=?;
+
+clearTaskCategory:
+DELETE FROM TaskCategory;

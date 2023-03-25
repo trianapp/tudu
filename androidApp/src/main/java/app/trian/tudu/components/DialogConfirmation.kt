@@ -1,5 +1,6 @@
 package app.trian.tudu.components
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,7 +28,9 @@ fun DialogConfirmation(
 ) {
     if (show) {
         AlertDialog(
-            modifier = Modifier,
+            modifier = Modifier.padding(
+                horizontal = 16.dp
+            ),
             onDismissRequest = { },
             dismissButton = {
                 TextButton(

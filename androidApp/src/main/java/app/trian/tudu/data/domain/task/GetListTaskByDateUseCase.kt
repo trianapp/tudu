@@ -17,7 +17,7 @@ class GetListTaskByDateUseCase @Inject constructor(
         emit(Response.Loading)
         val result = db.transactionWithResult {
             val tasks = db.taskQueries
-                .getListByDate(
+                .getListByDueDate(
                     from,
                     to
                 )

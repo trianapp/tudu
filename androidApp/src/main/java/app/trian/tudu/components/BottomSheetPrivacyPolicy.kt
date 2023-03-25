@@ -1,5 +1,6 @@
 package app.trian.tudu.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,6 +38,7 @@ fun BottomSheetPrivacyPolicy(
             .padding(
                 horizontal = 16.dp
             )
+            .background(MaterialTheme.colorScheme.surface)
     ) {
         Spacer(modifier = modifier.height(20.dp))
         Text(
@@ -49,6 +51,7 @@ fun BottomSheetPrivacyPolicy(
         )
         Spacer(modifier = modifier.height(10.dp))
         MarkdownText(
+            color = MaterialTheme.colorScheme.onSurface,
             markdown = """
          
               ### Privacy Policy of Tudu - Task Planner & To Do Reminders

@@ -13,7 +13,7 @@ import java.time.LocalTime
 @Immutable
 data class ProfileState(
     val showDropdownMoreOption:Boolean=false,
-    val selectedDate:LocalDate= LocalDate.now(),
+    val currentDate:LocalDate= LocalDate.now(),
 
     val showDialogTakePicture:Boolean = false,
     val showDialogRequestPermission:Boolean = false,
@@ -37,8 +37,9 @@ data class ProfileDataState(
 @Immutable
 sealed class ProfileEvent{
     object GetProfile:ProfileEvent()
+    object SignOut:ProfileEvent()
 
-    class GetStatistic(val isNext:Boolean):ProfileEvent()
+    class GetStatistic(val isNext:Boolean,val isFirstLoad:Boolean):ProfileEvent()
 
     data class SubmitProfilePicture(val bitmap: Bitmap?):ProfileEvent()
 }

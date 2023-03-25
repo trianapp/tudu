@@ -205,7 +205,7 @@ fun ItemTaskRow(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = taskDueDate,
+                            text = taskDueDate.ifEmpty { "N/A" },
                             style = MaterialTheme.typography.titleSmall.copy(
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Light,
@@ -222,7 +222,7 @@ fun ItemTaskRow(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = taskDueTime,
+                            text = taskDueTime.ifEmpty { "N/A" },
                             style = MaterialTheme.typography.titleSmall.copy(
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Light,

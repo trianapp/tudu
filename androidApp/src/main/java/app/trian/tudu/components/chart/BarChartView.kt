@@ -34,6 +34,7 @@ import app.trian.tudu.R
 import app.trian.tudu.base.BaseMainApp
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
@@ -49,6 +50,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 fun BarChartView(
     modifier: Modifier =Modifier,
     title:String = "",
+    maxAxis:Float=5f,
     items:List<BarEntry> = listOf(),
     labels:List<String> = listOf(),
     onArrowClicked:(isNext:Boolean) ->Unit ={}
@@ -58,7 +60,7 @@ fun BarChartView(
         .resources
         .displayMetrics.widthPixels.dp /
             LocalDensity.current.density
-    val isLight = isSystemInDarkTheme()
+    val isDark = isSystemInDarkTheme()
     Column(
         modifier = modifier
             .width(currentWidth)
@@ -117,7 +119,7 @@ fun BarChartView(
                         setDrawLabels(false)
 
                         valueFormatter = YAxisValueFormatter()
-                        textColor = if(isLight) Color.DKGRAY else Color.WHITE
+                        textColor = if(isDark) Color.WHITE else Color.DKGRAY
                     }
                     axisLeft.apply {
                         setDrawGridLines(false)
@@ -126,32 +128,36 @@ fun BarChartView(
 
                         spaceTop = 4f
                         valueFormatter = YAxisValueFormatter()
-                        textColor = if(isLight) Color.DKGRAY else Color.WHITE
+                        textColor = if(isDark) Color.WHITE else Color.DKGRAY
                     }
                     xAxis.apply {
+                        axisMaximum = 7f
                         setDrawLabels(true)
                         setDrawGridLines(false)
                         setDrawAxisLine(true)
                         position= XAxis.XAxisPosition.BOTTOM
-                        textColor = if(isLight) Color.DKGRAY else Color.WHITE
+                        textColor = if(isDark) Color.WHITE else Color.DKGRAY
                     }
+                    setVisibleYRangeMaximum(
+                        maxAxis,
+                        YAxis.AxisDependency.LEFT
+                    )
+
                     legend.apply {
-                        textColor = if(isLight) Color.DKGRAY else Color.WHITE
+                        textColor = if(isDark) Color.WHITE else Color.DKGRAY
                     }
                     description.apply {
-                        textColor = if(isLight) Color.DKGRAY else Color.WHITE
+                        textColor = if(isDark) Color.WHITE else Color.DKGRAY
                     }
-
 
                 }
             },
             update = {chart->
-                chart.setRadius(50)
+                chart.setRadius(30)
                 if(items.isNotEmpty()) {
-
                     chart.xAxis.valueFormatter = XAxisTimeFormatter(labels)
                     chart.data = BarData(listOf(BarDataSet(items, "Tudu"))).apply {
-                        setValueTextColor(if(isLight) Color.DKGRAY else Color.WHITE)
+                        setValueTextColor(if(isDark) Color.WHITE else Color.DKGRAY)
                     }
                     chart.invalidate()
                 }

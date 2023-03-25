@@ -2,15 +2,18 @@ package app.trian.tudu.feature.dashboard.profile
 
 import android.graphics.Bitmap
 import app.trian.tudu.base.BaseViewModelData
-import app.trian.tudu.base.extensions.getNextWeek
-import app.trian.tudu.base.extensions.getPreviousWeek
+import app.trian.tudu.base.extensions.getFirstDays
 import app.trian.tudu.data.domain.task.GetStatisticChartTaskUseCase
 import app.trian.tudu.data.domain.task.GetStatisticCountTaskUseCase
 import app.trian.tudu.data.domain.user.GetUserProfileUseCase
+import app.trian.tudu.data.domain.user.SignOutUseCase
 import app.trian.tudu.data.domain.user.UpdateProfilePictureUseCase
 import app.trian.tudu.data.utils.Response
+import app.trian.tudu.feature.auth.signin.SignIn
+import app.trian.tudu.feature.splash.Splash
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,7 +21,8 @@ class ProfileViewModel @Inject constructor(
     private val getUserProfileUseCase: GetUserProfileUseCase,
     private val updateProfilePictureUseCase: UpdateProfilePictureUseCase,
     private val getStatisticCountTaskUseCase: GetStatisticCountTaskUseCase,
-    private val getStatisticChartTaskUseCase: GetStatisticChartTaskUseCase
+    private val getStatisticChartTaskUseCase: GetStatisticChartTaskUseCase,
+    private val signOutUseCase: SignOutUseCase
 ) : BaseViewModelData<ProfileState, ProfileDataState, ProfileEvent>(ProfileState(), ProfileDataState()) {
     init {
         handleActions()
@@ -61,8 +65,8 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    private fun getChartData() = async {
-        getStatisticChartTaskUseCase(uiState.value.selectedDate).collect {
+    private fun getChartData(date: LocalDate) = async {
+        getStatisticChartTaskUseCase(date).collect {
             when (it) {
                 is Response.Error -> Unit
                 Response.Loading -> Unit
@@ -77,11 +81,18 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    private fun getStatistic(isNext: Boolean) = async {
+    private fun getStatistic(isFirstLoad: Boolean = true, isNext: Boolean) = async {
         with(uiState.value) {
-            val date = if (isNext) selectedDate.getNextWeek() else selectedDate.getPreviousWeek()
-            getChartData()
-            commit { copy(selectedDate = date) }
+            val date = if (isFirstLoad) {
+                currentDate.getFirstDays().first
+            } else {
+                if (isNext) currentDate.plusDays(6)
+                else currentDate.minusDays(6)
+            }
+            commit {
+                copy(currentDate = date)
+            }
+            getChartData(date)
         }
     }
 
@@ -107,11 +118,25 @@ class ProfileViewModel @Inject constructor(
                 showSnackbar(result.message)
                 hideLoadingProfilePicture()
             }
+
             Response.Loading -> {
                 showLoadingProfilePicture()
             }
+
             is Response.Result -> {
                 hideLoadingProfilePicture()
+            }
+        }
+    }
+
+    private fun signOut() = async {
+        signOutUseCase().collect{
+            when(it){
+                is Response.Error -> showSnackbar(it.message)
+                Response.Loading -> Unit
+                is Response.Result -> {
+                    navigateAndReplaceAll(Splash.routeName)
+                }
             }
         }
     }
@@ -121,12 +146,18 @@ class ProfileViewModel @Inject constructor(
             ProfileEvent.GetProfile -> {
                 getCurrentUser()
                 getCountTask()
+                getStatistic(
+                    isFirstLoad = true,
+                    isNext = false
+                )
             }
 
-            is ProfileEvent.GetStatistic -> getStatistic(it.isNext)
+            is ProfileEvent.GetStatistic -> getStatistic(it.isFirstLoad, it.isNext)
             is ProfileEvent.SubmitProfilePicture -> onProfilePictureChanged(it.bitmap) {
                 updateProfilePictureUseCase(it.bitmap).collect(::handleResponseProfilePicture)
             }
+
+            ProfileEvent.SignOut -> signOut()
         }
     }
 

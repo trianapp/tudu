@@ -42,3 +42,7 @@ WHERE todoId=?;
 deleteTodoByTask:
 DELETE FROM Todo
 WHERE todoTaskId=?;
+
+clearTodo:
+DELETE FROM
+Todo;

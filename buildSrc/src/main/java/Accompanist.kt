@@ -10,4 +10,5 @@ object Accompanist {
     val pager by lazy { "com.google.accompanist:accompanist-pager:$pagerVersion" }
     val pagerIndicator by lazy { "com.google.accompanist:accompanist-pager-indicators:$pagerVersion" }
     val flowLayout by lazy { "com.google.accompanist:accompanist-flowlayout:$pagerVersion" }
+    val shimmer by lazy {"com.google.accompanist:accompanist-placeholder-material:0.30.0"}
 }

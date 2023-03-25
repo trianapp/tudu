@@ -65,8 +65,7 @@ import app.trian.tudu.R
 import app.trian.tudu.base.BaseMainApp
 import app.trian.tudu.base.UIWrapper
 import app.trian.tudu.base.checkGrantedPermissionFrom
-import app.trian.tudu.base.extensions.getDateUntil
-import app.trian.tudu.base.extensions.getPreviousWeek
+import app.trian.tudu.base.extensions.getHeaderChart
 import app.trian.tudu.base.getBitmap
 import app.trian.tudu.components.ButtonIcon
 import app.trian.tudu.components.DialogConfirmation
@@ -78,8 +77,6 @@ import app.trian.tudu.feature.editProfile.EditProfile
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest.Builder
 import coil.size.Scale
-import coil.size.Size
-import com.google.firebase.auth.ktx.oAuthProvider
 
 object Profile {
     const val routeName = "Profile"
@@ -233,7 +230,7 @@ internal fun ScreenProfile(
                     contentDescription = "",
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
-                        .clip(MaterialTheme.shapes.medium)
+                        .clip(RoundedCornerShape(10.dp))
                         .background(MaterialTheme.colorScheme.primary),
                     tint = MaterialTheme.colorScheme.onPrimary
                 )
@@ -429,11 +426,12 @@ internal fun ScreenProfile(
                 .padding(horizontal = 20.dp)
         ) {
             BarChartView(
-                title = state.selectedDate.getPreviousWeek().getDateUntil(state.selectedDate),
+                title = state.currentDate.getHeaderChart(),
                 items = dataState.chartData.items,
                 labels = dataState.chartData.labels,
+                maxAxis = dataState.chartData.max,
                 onArrowClicked = {
-                    dispatch(ProfileEvent.GetStatistic(it))
+                    dispatch(ProfileEvent.GetStatistic(it,false))
                 }
             )
         }
