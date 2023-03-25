@@ -7,8 +7,6 @@ import app.trian.tudu.data.domain.task.UpdateTaskNoteUseCase
 import app.trian.tudu.data.utils.Response
 import app.trian.tudu.feature.inputNote.InputNoteEvent.SetTaskNote
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
-import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel

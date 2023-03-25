@@ -3,18 +3,14 @@ package app.trian.tudu.feature.category
 import app.trian.tudu.base.BaseViewModelData
 import app.trian.tudu.data.domain.category.CreateCategoryUseCase
 import app.trian.tudu.data.domain.category.DeleteCategoryUseCase
-import app.trian.tudu.data.domain.category.GetListCategoryUseCase
 import app.trian.tudu.data.domain.category.GetListCategoryWithCounterUseCase
 import app.trian.tudu.data.domain.task.UpdateCategoryUseCase
 import app.trian.tudu.data.model.CategoryModel
-import app.trian.tudu.data.model.CategoryWithCount
 import app.trian.tudu.data.utils.Response
 import app.trian.tudu.feature.category.CategoryEvent.SetCategoryName
 import app.trian.tudu.feature.category.CategoryEvent.ShowFormCategory
 import app.trian.tudu.feature.category.CategoryEvent.SubmitCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.LocalDate
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel

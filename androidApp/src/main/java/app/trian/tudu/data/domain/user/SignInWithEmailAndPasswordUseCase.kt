@@ -1,10 +1,8 @@
 package app.trian.tudu.data.domain.user;
 
-import app.trian.tudu.base.UnAuthorizedException
 import app.trian.tudu.data.utils.Response
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

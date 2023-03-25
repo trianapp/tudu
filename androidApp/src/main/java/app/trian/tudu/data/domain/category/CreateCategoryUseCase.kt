@@ -1,6 +1,5 @@
 package app.trian.tudu.data.domain.category
 
-import app.trian.tudu.data.model.CategoryModel
 import app.trian.tudu.data.utils.Response
 import app.trian.tudu.sqldelight.Database
 import kotlinx.coroutines.Dispatchers
