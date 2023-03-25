@@ -314,7 +314,7 @@ internal fun ScreenProfile(
                             )
                         },
                         onClick = {
-                            showSnackbar("Coming soon")
+                            showSnackbar(R.string.text_message_coming_soon)
                         }
                     )
 

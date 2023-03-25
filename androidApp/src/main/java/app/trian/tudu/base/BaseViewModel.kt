@@ -98,7 +98,7 @@ abstract class BaseViewModel<State : Parcelable, Action>(
     //region snakcbar
     fun showSnackbar(message:String) = _app.showSnackbar(message)
     fun showSnackbar(message:Int) = _app.showSnackbar(message)
-    fun showSnackbar(message:Int,vararg params:Any) = _app.showSnackbar(message,params)
+    fun showSnackbar(message:Int,vararg params:String) = _app.showSnackbar(message,*params)
     //
 
     //region navigation

@@ -32,7 +32,7 @@ class SignUpWithEmailAndPasswordUseCase @Inject constructor(
         }
         user?.updateProfile(profileChangeRequest)
         user?.sendEmailVerification()
-
+        auth.signOut()
         emit(Response.Result(authenticate.user!!))
     }.flowOn(Dispatchers.IO)
 }

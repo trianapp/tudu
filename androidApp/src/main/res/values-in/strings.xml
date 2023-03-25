@@ -181,12 +181,17 @@
     <string name="text_message_welcome_user">Selamat datang %1$s</string>
     <string name="text_message_success_change_profile">Berhasil merubah nama</string>
     <string name="text_title_dialog_take_picture_method">Select picture with</string>
-    <string name="text_message_loading_signup">Registering...</string>
+    <string name="text_message_loading_signup">Mendaftarkan…</string>
     <string name="text_title_loading">Please wait</string>
-    <string name="text_message_loading_signin">Signing in...</string>
-    <string name="text_message_loading_reset_password">Sending email...</string>
-    <string name="text_message_loading_update_password">Updating your password</string>
+    <string name="text_message_loading_signin">Masuk…</string>
+    <string name="text_message_loading_reset_password">Mengirim Email…</string>
+    <string name="text_message_loading_update_password">Ubah password</string>
     <string name="text_parent_setting_personalisation">Personalisasi</string>
     <string name="text_message_need_permission_camera">Untuk mengambil gambar aplikasi membutuhkan izin, Lanjutkan?</string>
     <string name="text_message_signout_confrimation">Apakah kamu yakin mau keluar?</string>
+    <string name="text_message_success_register">Register berhasil, silahkan cek email anda untuk memverifikasi</string>
+    <string name="text_message_success_change_password">Paassword berhasil dirubah, silahkan masuk ulang dengan password baru Anda</string>
+    <string name="text_message_coming_soon">Coming soon</string>
+    <string name="text_message_failed_take_picture">Gagal mengambil gambar</string>
+    <string name="text_message_failed_load_task">Gagal mengambil data</string>
 </resources>

@@ -46,6 +46,7 @@ class SignUpViewModel @Inject constructor(
             Response.Loading -> showLoading()
             is Response.Result -> {
                 hideLoading()
+                showSnackbar(R.string.text_message_success_register)
                 navigateAndReplaceAll(SignIn.routeName)
             }
         }

@@ -30,6 +30,7 @@ import app.trian.tudu.base.UIWrapper
 import app.trian.tudu.base.extensions.navigateUp
 import app.trian.tudu.components.AnnotationTextItem
 import app.trian.tudu.components.AppbarAuth
+import app.trian.tudu.components.BottomSheetPrivacyPolicy
 import app.trian.tudu.components.ButtonPrimary
 import app.trian.tudu.components.CheckBoxWithAction
 import app.trian.tudu.components.DialogLoading
@@ -70,6 +71,9 @@ internal fun ScreenSignUp(
                     navigateUp()
                 }
             )
+        }
+        setupBottomSheet {
+            BottomSheetPrivacyPolicy()
         }
     }
     DialogLoading(
@@ -158,7 +162,11 @@ internal fun ScreenSignUp(
             CheckBoxWithAction(
                 labels = privacyPolicy,
                 checked = uiState.agreeTnc,
-                onTextClick = {},
+                onTextClick = {
+                    if (it == 1) {
+                        showBottomSheet()
+                    }
+                },
                 onCheckedChange = {
                     commit { copy(agreeTnc = it) }
                 }

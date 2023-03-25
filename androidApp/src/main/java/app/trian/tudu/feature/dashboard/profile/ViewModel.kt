@@ -1,6 +1,7 @@
 package app.trian.tudu.feature.dashboard.profile
 
 import android.graphics.Bitmap
+import app.trian.tudu.R
 import app.trian.tudu.base.BaseViewModelData
 import app.trian.tudu.base.extensions.getFirstDays
 import app.trian.tudu.data.domain.task.GetStatisticChartTaskUseCase
@@ -96,7 +97,7 @@ class ProfileViewModel @Inject constructor(
 
     private fun onProfilePictureChanged(picture: Bitmap?, cb: suspend () -> Unit) = async {
         when (picture) {
-            null -> showSnackbar("Gagal mengambil gambar")
+            null -> showSnackbar(R.string.text_message_failed_take_picture)
             else -> {
                 commitData {
                     copy(

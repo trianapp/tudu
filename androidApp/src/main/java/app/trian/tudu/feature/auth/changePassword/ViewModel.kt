@@ -44,7 +44,7 @@ class ChangePasswordViewModel @Inject constructor(
             Response.Loading -> showLoading()
             is Response.Result -> {
                 hideLoading()
-                showSnackbar("Password has ben changed, Logout and try login with new password")
+                showSnackbar(R.string.text_message_success_change_password)
             }
         }
     }

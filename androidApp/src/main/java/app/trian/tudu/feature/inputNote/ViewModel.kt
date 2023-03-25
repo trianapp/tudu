@@ -1,6 +1,7 @@
 package app.trian.tudu.feature.inputNote
 
 import androidx.lifecycle.SavedStateHandle
+import app.trian.tudu.R
 import app.trian.tudu.base.BaseViewModel
 import app.trian.tudu.data.domain.task.GetDetailTaskUseCase
 import app.trian.tudu.data.domain.task.UpdateTaskNoteUseCase
@@ -26,7 +27,7 @@ class InputNoteViewModel @Inject constructor(
         getDetailTaskUseCase(taskId)
             .collect {
                 when (it) {
-                    is Response.Error -> showSnackbar("Failed to load task")
+                    is Response.Error -> showSnackbar(R.string.text_message_failed_load_task)
                     Response.Loading -> Unit
                     is Response.Result -> commit {
                         copy(
