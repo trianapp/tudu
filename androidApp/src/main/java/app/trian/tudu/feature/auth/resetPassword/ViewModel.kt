@@ -16,6 +16,9 @@ class ResetPasswordViewModel @Inject constructor(
         handleActions()
     }
 
+    private fun showLoading() = commit { copy(isLoading=true) }
+    private fun hideLoading() = commit { copy(isLoading=true) }
+
     private fun validateData(cb: suspend (String) -> Unit) = async {
         with(uiState.value) {
             when {
@@ -31,9 +34,13 @@ class ResetPasswordViewModel @Inject constructor(
 
     private fun handleResponse(result: Response<Boolean>) {
         when (result) {
-            is Response.Error -> showSnackbar(result.message)
-            Response.Loading -> Unit
+            is Response.Error -> {
+                hideLoading()
+                showSnackbar(result.message)
+            }
+            Response.Loading -> showLoading()
             is Response.Result -> {
+                hideLoading()
                 showSnackbar(R.string.message_success_reset_password)
                 navigateUp()
             }

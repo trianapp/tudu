@@ -22,6 +22,7 @@ import app.trian.tudu.base.UIWrapper
 import app.trian.tudu.base.extensions.navigateUp
 import app.trian.tudu.components.AppbarBasic
 import app.trian.tudu.components.ButtonPrimary
+import app.trian.tudu.components.DialogLoading
 import app.trian.tudu.components.FormInput
 
 
@@ -41,45 +42,50 @@ fun NavGraphBuilder.routeResetPassword(
 internal fun ScreenResetPassword(
     appState: ApplicationState,
 ) = UIWrapper<ResetPasswordViewModel>(appState = appState) {
-        val state by uiState.collectAsState()
-        with(appState) {
-            hideBottomAppBar()
-            hideBottomSheet()
-            setupTopAppBar {
-                AppbarBasic(
-                    title = stringResource(id = R.string.title_appbar_reset_password),
-                    onBackPressed = {
-                        navigateUp()
-                    }
-                )
-            }
-        }
-
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 20.dp)
-        ) {
-            FormInput(
-                label = {
-                    Text(
-                        text = stringResource(id = R.string.label_input_email),
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                },
-                placeholder = stringResource(R.string.placeholder_email_reset_password),
-                initialValue = state.email,
-                onChange = {
-                    commit { copy(email = it) }
+    val state by uiState.collectAsState()
+    with(appState) {
+        hideBottomAppBar()
+        hideBottomSheet()
+        setupTopAppBar {
+            AppbarBasic(
+                title = stringResource(id = R.string.title_appbar_reset_password),
+                onBackPressed = {
+                    navigateUp()
                 }
             )
-            Spacer(modifier = Modifier.height(30.dp))
-            ButtonPrimary(
-                text = stringResource(R.string.btn_reset_password)
-            ) {
-                dispatch(ResetPasswordEvent.Submit)
-            }
         }
     }
+    DialogLoading(
+        show = state.isLoading,
+        message = "Sending email...",
+        title = "Please wait"
+    )
+
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 20.dp)
+    ) {
+        FormInput(
+            label = {
+                Text(
+                    text = stringResource(id = R.string.label_input_email),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            },
+            placeholder = stringResource(R.string.placeholder_email_reset_password),
+            initialValue = state.email,
+            onChange = {
+                commit { copy(email = it) }
+            }
+        )
+        Spacer(modifier = Modifier.height(30.dp))
+        ButtonPrimary(
+            text = stringResource(R.string.btn_reset_password)
+        ) {
+            dispatch(ResetPasswordEvent.Submit)
+        }
+    }
+}
 
 
 @Preview

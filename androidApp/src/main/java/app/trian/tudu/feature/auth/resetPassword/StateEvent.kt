@@ -7,7 +7,9 @@ import kotlinx.parcelize.Parcelize
 @Immutable
 @Parcelize
 data class ResetPasswordState(
-    val email: String = ""
+    val email: String = "",
+
+    val isLoading:Boolean=false
 ) : Parcelable
 
 @Immutable

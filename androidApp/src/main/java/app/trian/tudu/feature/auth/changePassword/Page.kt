@@ -20,6 +20,7 @@ import app.trian.tudu.base.BaseMainApp
 import app.trian.tudu.base.UIWrapper
 import app.trian.tudu.components.AppbarBasic
 import app.trian.tudu.components.ButtonPrimary
+import app.trian.tudu.components.DialogLoading
 import app.trian.tudu.components.FormInput
 
 object ChangePassword {
@@ -52,7 +53,11 @@ internal fun ScreenChangePassword(
             )
         }
     }
-
+    DialogLoading(
+        show = state.isLoading,
+        message = "Updating your password",
+        title = "Please wait"
+    )
     Column(
         modifier = Modifier
             .padding(
