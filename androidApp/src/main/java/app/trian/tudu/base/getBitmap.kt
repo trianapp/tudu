@@ -15,7 +15,15 @@ import android.net.Uri
 fun Uri.getBitmap(c: ContentResolver): Bitmap?{
     return try {
         val input =  c.openInputStream(this)
-        BitmapFactory.decodeStream(input)
+       val btmp = BitmapFactory.decodeStream(input)
+
+        Bitmap.createScaledBitmap(
+            btmp,
+            120,
+            120,
+            false
+        )
+
     }catch (e:Exception){
         null
     }

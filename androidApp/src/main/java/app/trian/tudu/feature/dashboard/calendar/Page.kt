@@ -304,7 +304,7 @@ internal fun ScreenCalendar(
                 .align(
                     Alignment.BottomEnd
                 )
-                .padding(end = 30.dp),
+                .padding(end = 16.dp),
             shape = RoundedCornerShape(
                 8.dp
             )

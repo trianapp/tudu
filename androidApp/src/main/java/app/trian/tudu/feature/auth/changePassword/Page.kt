@@ -55,8 +55,8 @@ internal fun ScreenChangePassword(
     }
     DialogLoading(
         show = state.isLoading,
-        message = "Updating your password",
-        title = "Please wait"
+        message = stringResource(R.string.text_message_loading_update_password),
+        title = stringResource(R.string.text_title_loading)
     )
     Column(
         modifier = Modifier

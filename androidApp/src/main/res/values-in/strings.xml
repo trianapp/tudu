@@ -180,4 +180,9 @@
     <string name="text_message_welcome_user">Selamat datang %1$s</string>
     <string name="text_message_success_change_profile">Berhasil merubah nama</string>
     <string name="text_title_dialog_take_picture_method">Select picture with</string>
+    <string name="text_message_loading_signup">Registering...</string>
+    <string name="text_title_loading">Please wait</string>
+    <string name="text_message_loading_signin">Signing in...</string>
+    <string name="text_message_loading_reset_password">Sending email...</string>
+    <string name="text_message_loading_update_password">Updating your password</string>
 </resources>

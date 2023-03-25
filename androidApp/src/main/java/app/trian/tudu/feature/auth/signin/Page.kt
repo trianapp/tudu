@@ -90,8 +90,8 @@ internal fun ScreenSignIn(
 
     DialogLoading(
         show = uiState.isLoading,
-        message = "Signing in...",
-        title = "Please wait"
+        message = stringResource(string.text_message_loading_signin),
+        title = stringResource(string.text_title_loading)
     )
     Column(
         modifier = Modifier

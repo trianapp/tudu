@@ -1,5 +1,6 @@
 package app.trian.tudu.feature.dashboard.profile
 
+import android.Manifest
 import android.os.Build.VERSION_CODES
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -33,6 +34,7 @@ import androidx.compose.material.icons.outlined.MonetizationOn
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -47,6 +49,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -60,10 +64,12 @@ import app.trian.tudu.ApplicationState
 import app.trian.tudu.R
 import app.trian.tudu.base.BaseMainApp
 import app.trian.tudu.base.UIWrapper
+import app.trian.tudu.base.checkGrantedPermissionFrom
 import app.trian.tudu.base.extensions.getDateUntil
 import app.trian.tudu.base.extensions.getPreviousWeek
 import app.trian.tudu.base.getBitmap
 import app.trian.tudu.components.ButtonIcon
+import app.trian.tudu.components.DialogConfirmation
 import app.trian.tudu.components.DialogTakePicture
 import app.trian.tudu.components.TuduBottomNavigation
 import app.trian.tudu.components.chart.BarChartView
@@ -71,7 +77,9 @@ import app.trian.tudu.feature.appSetting.AppSetting
 import app.trian.tudu.feature.editProfile.EditProfile
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest.Builder
+import coil.size.Scale
 import coil.size.Size
+import com.google.firebase.auth.ktx.oAuthProvider
 
 object Profile {
     const val routeName = "Profile"
@@ -96,6 +104,9 @@ internal fun ScreenProfile(
         "0"
     }
 
+    val listPermission = arrayOf(
+        Manifest.permission.CAMERA
+    )
     val state by uiState.collectAsState()
     val dataState by uiDataState.collectAsState()
 
@@ -104,7 +115,7 @@ internal fun ScreenProfile(
             .data(data = dataState.profilePicture)
             .placeholder(R.drawable.dummy_avatar)
             .error(R.drawable.dummy_avatar)
-            .size(Size.ORIGINAL)
+            .scale(Scale.FILL)
             .crossfade(true)
             .build()
     )
@@ -122,12 +133,33 @@ internal fun ScreenProfile(
             dispatch(ProfileEvent.SubmitProfilePicture(image))
         }
     )
+    val requestPermissionContract = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = {
+            if (it) {
+                openCameraContract.launch()
+            }
+        }
+    )
     with(appState) {
         hideTopAppBar()
         setupBottomAppBar {
             TuduBottomNavigation(appState = appState)
         }
     }
+    DialogConfirmation(
+        show = state.showDialogRequestPermission,
+        message = "Untuk mengambil gambar aplikasi membutuhkan izin, Lanjutkan?",
+        onCancel = {
+            commit { copy(showDialogRequestPermission = false) }
+        },
+        onConfirm = {
+            commit { copy(showDialogRequestPermission = false) }
+            requestPermissionContract.launch(
+                Manifest.permission.CAMERA
+            )
+        }
+    )
 
     DialogTakePicture(
         show = state.showDialogTakePicture,
@@ -136,9 +168,11 @@ internal fun ScreenProfile(
             commit { copy(showDialogTakePicture = false) }
         },
         openCamera = {
-            runSuspend {
-                commit { copy(showDialogTakePicture = false) }
+            commit { copy(showDialogTakePicture = false) }
+            if (listPermission.checkGrantedPermissionFrom(ctx)) {
                 openCameraContract.launch()
+            } else {
+                commit { copy(showDialogRequestPermission = true) }
             }
         },
         openGallery = {
@@ -167,20 +201,33 @@ internal fun ScreenProfile(
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Box(modifier = Modifier
-                .size(
-                    120.dp
-                )
-                .clip(RoundedCornerShape(10.dp))
-                .clickable {
-                    commit { copy(showDialogTakePicture = true) }
-                }) {
-                Image(
-                    painter = painterProfilePicture,
-                    contentDescription = "",
-                    contentScale = ContentScale.FillBounds,
-                    modifier = Modifier.fillMaxSize()
-                )
+            Box(
+                modifier = Modifier
+                    .size(
+                        120.dp
+                    )
+                    .clip(RoundedCornerShape(10.dp))
+                    .clickable {
+                        if (!state.isLoadingProfilePicture) {
+                            commit { copy(showDialogTakePicture = true) }
+                        }
+                    }
+            ) {
+                if(dataState.profileBitmap == null) {
+                    Image(
+                        painter = painterProfilePicture,
+                        contentDescription = "",
+                        contentScale = ContentScale.FillBounds,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }else{
+                    Image(
+                        bitmap = dataState.profileBitmap!!.asImageBitmap(),
+                        contentDescription = "",
+                        contentScale = ContentScale.FillBounds,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
                 Icon(
                     imageVector = Outlined.Edit,
                     contentDescription = "",
@@ -190,7 +237,22 @@ internal fun ScreenProfile(
                         .background(MaterialTheme.colorScheme.primary),
                     tint = MaterialTheme.colorScheme.onPrimary
                 )
+                if (state.isLoadingProfilePicture) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                Color.DarkGray.copy(
+                                    alpha = 0.8f
+                                )
+                            ),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
 
+                }
             }
             IconButton(
                 onClick = {

@@ -15,7 +15,9 @@ data class ProfileState(
     val showDropdownMoreOption:Boolean=false,
     val selectedDate:LocalDate= LocalDate.now(),
 
-    val showDialogTakePicture:Boolean = false
+    val showDialogTakePicture:Boolean = false,
+    val showDialogRequestPermission:Boolean = false,
+    val isLoadingProfilePicture:Boolean=false
 ): Parcelable
 
 @Parcelize

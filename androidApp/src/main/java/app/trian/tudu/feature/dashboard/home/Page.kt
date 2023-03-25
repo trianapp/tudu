@@ -249,14 +249,12 @@ internal fun ScreenHome(
         FloatingActionButton(
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             containerColor = MaterialTheme.colorScheme.primaryContainer,
-            onClick = {
-                showBottomSheet()
-            },
+            onClick = { showBottomSheet() },
             modifier = Modifier
                 .align(
                     Alignment.BottomEnd
                 )
-                .padding(end = 30.dp),
+                .padding(end = 16.dp),
             shape = MaterialTheme.shapes.medium,
         ) {
             Icon(

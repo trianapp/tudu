@@ -74,8 +74,8 @@ internal fun ScreenSignUp(
     }
     DialogLoading(
         show = uiState.isLoading,
-        message = "Registering...",
-        title = "Please wait"
+        message = stringResource(string.text_message_loading_signup),
+        title = stringResource(string.text_title_loading)
     )
     Column(
         modifier = Modifier

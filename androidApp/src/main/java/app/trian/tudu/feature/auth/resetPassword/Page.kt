@@ -57,8 +57,8 @@ internal fun ScreenResetPassword(
     }
     DialogLoading(
         show = state.isLoading,
-        message = "Sending email...",
-        title = "Please wait"
+        message = stringResource(R.string.text_message_loading_reset_password),
+        title = stringResource(R.string.text_title_loading)
     )
 
     Column(

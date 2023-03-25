@@ -13,12 +13,9 @@ sealed class Response<out R>{
     data class Error(val message:String="",val code:Int=0): Response<Nothing>()
 }
 
-fun <T> Response<T>.getValue(cb:(T)->Unit){
-    when(this){
-        is Response.Error -> Unit
-        Response.Loading -> Unit
-        is Response.Result -> {
-            cb(this.data)
-        }
-    }
+sealed class ResponseWithProgress<out R>{
+    object Loading: ResponseWithProgress<Nothing>()
+    data class Result<out Result>(val data:Result): ResponseWithProgress<Result>()
+    data class Progress<out Result>(val progress:Int): ResponseWithProgress<Result>()
+    data class Error(val message:String="",val code:Int=0): ResponseWithProgress<Nothing>()
 }
