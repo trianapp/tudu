@@ -20,5 +20,6 @@ class SignOutUseCase @Inject constructor(
         db.taskCategoryQueries.clearTaskCategory()
         db.todoQueries.clearTodo()
         db.categoryQueries.clearCategory()
+        emit(Response.Result(true))
     }.flowOn(Dispatchers.IO)
 }

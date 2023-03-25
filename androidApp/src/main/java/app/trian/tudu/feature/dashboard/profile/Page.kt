@@ -146,7 +146,7 @@ internal fun ScreenProfile(
     }
     DialogConfirmation(
         show = state.showDialogRequestPermission,
-        message = "Untuk mengambil gambar aplikasi membutuhkan izin, Lanjutkan?",
+        message = stringResource(R.string.text_message_need_permission_camera),
         onCancel = {
             commit { copy(showDialogRequestPermission = false) }
         },
@@ -155,6 +155,18 @@ internal fun ScreenProfile(
             requestPermissionContract.launch(
                 Manifest.permission.CAMERA
             )
+        }
+    )
+
+    DialogConfirmation(
+        show = state.showDialogSignOutConfirmation,
+        message = stringResource(R.string.text_message_signout_confrimation),
+        onCancel = {
+            commit { copy(showDialogSignOutConfirmation = false) }
+        },
+        onConfirm = {
+            commit { copy(showDialogSignOutConfirmation = false) }
+            dispatch(ProfileEvent.SignOut)
         }
     )
 
@@ -210,14 +222,14 @@ internal fun ScreenProfile(
                         }
                     }
             ) {
-                if(dataState.profileBitmap == null) {
+                if (dataState.profileBitmap == null) {
                     Image(
                         painter = painterProfilePicture,
                         contentDescription = "",
                         contentScale = ContentScale.FillBounds,
                         modifier = Modifier.fillMaxSize()
                     )
-                }else{
+                } else {
                     Image(
                         bitmap = dataState.profileBitmap!!.asImageBitmap(),
                         contentDescription = "",
@@ -317,7 +329,7 @@ internal fun ScreenProfile(
                             )
                         },
                         onClick = {
-                            dispatch(ProfileEvent.SignOut)
+                            commit { copy(showDialogSignOutConfirmation = true) }
                         }
                     )
                 }
@@ -432,7 +444,7 @@ internal fun ScreenProfile(
                 labels = dataState.chartData.labels,
                 maxAxis = dataState.chartData.max,
                 onArrowClicked = {
-                    dispatch(ProfileEvent.GetStatistic(it,false))
+                    dispatch(ProfileEvent.GetStatistic(it, false))
                 }
             )
         }

@@ -17,6 +17,7 @@ data class ProfileState(
 
     val showDialogTakePicture:Boolean = false,
     val showDialogRequestPermission:Boolean = false,
+    val showDialogSignOutConfirmation:Boolean = false,
     val isLoadingProfilePicture:Boolean=false
 ): Parcelable
 

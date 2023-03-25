@@ -187,4 +187,6 @@
     <string name="text_message_loading_reset_password">Sending email...</string>
     <string name="text_message_loading_update_password">Updating your password</string>
     <string name="text_parent_setting_personalisation">Personalisasi</string>
+    <string name="text_message_need_permission_camera">Untuk mengambil gambar aplikasi membutuhkan izin, Lanjutkan?</string>
+    <string name="text_message_signout_confrimation">Apakah kamu yakin mau keluar?</string>
 </resources>
