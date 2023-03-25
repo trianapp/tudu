@@ -29,6 +29,7 @@ import app.trian.tudu.R
 import app.trian.tudu.base.BaseMainApp
 import app.trian.tudu.base.UIWrapper
 import app.trian.tudu.components.AnnotationTextItem
+import app.trian.tudu.components.BottomSheetPrivacyPolicy
 import app.trian.tudu.components.ButtonPrimary
 import app.trian.tudu.components.ButtonSecondary
 import app.trian.tudu.components.TextWithAction
@@ -58,6 +59,13 @@ internal fun ScreenOnboard(
     )
     with(appState) {
         hideTopAppBar()
+        setupBottomSheet{
+            BottomSheetPrivacyPolicy(
+                onAccept = {
+                    hideBottomSheet()
+                }
+            )
+        }
     }
 
     Column(
@@ -136,7 +144,9 @@ internal fun ScreenOnboard(
             TextWithAction(
                 labels = privacyPolicyText,
                 onTextClick = {
-
+                    if(it==1){
+                        showBottomSheet()
+                    }
                 }
             )
 

@@ -6,8 +6,6 @@ import app.trian.tudu.data.domain.user.SignInWithEmailAndPasswordUseCase
 import app.trian.tudu.data.domain.user.SignInWithGoogleUseCase
 import app.trian.tudu.data.utils.Response
 import app.trian.tudu.feature.dashboard.home.Home
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -26,22 +24,16 @@ class SignInViewModel @Inject constructor(
 
     private fun validateData(
         cb: suspend (String, String) -> Unit
-    ) = async {
-        with(uiState.value) {
-            when {
-                email.isEmpty() || password.isEmpty() -> {
-                    showSnackbar(R.string.message_password_or_email_cannot_empty)
-                }
-
-                password.length < 8 ->
-                    showSnackbar(R.string.message_password_less_than_8)
-
-                else -> cb(email, password)
+    ) = asyncWithState {
+        when {
+            email.isEmpty() || password.isEmpty() -> {
+                showSnackbar(R.string.message_password_or_email_cannot_empty)
             }
+            else -> cb(email, password)
         }
     }
 
-    private fun handleResponse(result: Response<FirebaseUser?>) {
+    private fun handleResponse(result: Response<FirebaseUser>) {
         when (result) {
             is Response.Error -> {
                 hideLoading()
@@ -50,22 +42,17 @@ class SignInViewModel @Inject constructor(
             Response.Loading -> showLoading()
             is Response.Result -> {
                 hideLoading()
-                showSnackbar(R.string.text_message_welcome_user, result.data?.displayName.orEmpty())
+                showSnackbar(R.string.text_message_welcome_user, result.data.displayName.orEmpty().ifEmpty { "" })
                 navigateAndReplaceAll(Home.routeName)
             }
         }
     }
-
-    private fun signInWithGoogle(result: Task<GoogleSignInAccount>?) = async {
-        signInWithGoogleUseCase(result).collect(::handleResponse)
-    }
-
     override fun handleActions() = onEvent { event ->
         when (event) {
             SignInEvent.SignInWithEmail -> validateData { email, password ->
                 signInWithEmailUseCase(email, password).collect(::handleResponse)
             }
-            is SignInEvent.SignInWithGoogle -> signInWithGoogle(event.result)
+            is SignInEvent.SignInWithGoogle -> signInWithGoogleUseCase(event.result).collect(::handleResponse)
         }
     }
 

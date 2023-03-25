@@ -15,32 +15,25 @@ class ChangePasswordViewModel @Inject constructor(
         handleActions()
     }
 
-    private fun showLoading()  = commit { copy(isLoading = true) }
-    private fun hideLoading()  = commit { copy(isLoading = false) }
+    private fun showLoading() = commit { copy(isLoading = true) }
+    private fun hideLoading() = commit { copy(isLoading = false) }
 
 
     private fun validateData(
         cb: suspend (String) -> Unit
-    ) = async {
-        with(uiState.value) {
-            when {
-                newPassword != confirmPassword ->
-                    showSnackbar(R.string.message_confirm_password_not_match)
+    ) = asyncWithState {
+        when {
+            newPassword != confirmPassword -> showSnackbar(R.string.message_confirm_password_not_match)
+            newPassword.isEmpty() || confirmPassword.isEmpty() ->
+                showSnackbar(R.string.message_change_password_field_empty)
 
-                newPassword.isEmpty() || confirmPassword.isEmpty() ->
-                    showSnackbar(R.string.message_change_password_field_empty)
-
-                else -> cb(newPassword)
-            }
+            else -> cb(newPassword)
         }
-
     }
 
     private fun handleResponse(result: Response<Boolean>) = async {
-        when(result){
-            is Response.Error -> {
-                hideLoading()
-            }
+        when (result) {
+            is Response.Error -> hideLoading()
             Response.Loading -> showLoading()
             is Response.Result -> {
                 hideLoading()

@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import java.util.UUID
 import javax.inject.Inject
 
 class UpdateTaskCategoryUseCase @Inject constructor(
@@ -29,7 +30,7 @@ class UpdateTaskCategoryUseCase @Inject constructor(
             }
             newCategories.forEach {
                 db.taskCategoryQueries.insertTaskCategory(
-                    taskCategoryId = it.taskCategoryId,
+                    taskCategoryId = UUID.randomUUID().toString(),
                     taskId = it.taskId,
                     categoryId = it.categoryId
                 )

@@ -69,44 +69,30 @@ class ProfileViewModel @Inject constructor(
             when (it) {
                 is Response.Error -> Unit
                 Response.Loading -> Unit
-                is Response.Result -> {
-                    commitData {
-                        copy(
-                            chartData = it.data
-                        )
-                    }
-                }
+                is Response.Result -> commitData { copy(chartData = it.data) }
             }
         }
     }
 
-    private fun getStatistic(isFirstLoad: Boolean = true, isNext: Boolean) = async {
-        with(uiState.value) {
-            val date = if (isFirstLoad) {
-                currentDate.getFirstDays().first
-            } else {
-                if (isNext) currentDate.plusDays(6)
-                else currentDate.minusDays(6)
-            }
-            commit {
-                copy(currentDate = date)
-            }
-            getChartData(date)
+    /** get statistic by date
+     * when page load for the first time current date measured(search first day of the week
+     */
+    private fun getStatistic(isFirstLoad: Boolean = true, isNext: Boolean) = asyncWithState {
+        val date = if (isFirstLoad) currentDate.getFirstDays().first
+        else {
+            if (isNext) currentDate.plusDays(6)
+            else currentDate.minusDays(6)
         }
+        commit { copy(currentDate = date) }
+        getChartData(date)
     }
 
     private fun onProfilePictureChanged(picture: Bitmap?, cb: suspend () -> Unit) = async {
         when (picture) {
             null -> showSnackbar(R.string.text_message_failed_take_picture)
             else -> {
-                commitData {
-                    copy(
-                        profilePicture = "",
-                        profileBitmap = picture
-                    )
-                }
+                commitData { copy(profilePicture = "", profileBitmap = picture) }
                 cb()
-
             }
         }
     }
@@ -117,25 +103,17 @@ class ProfileViewModel @Inject constructor(
                 showSnackbar(result.message)
                 hideLoadingProfilePicture()
             }
-
-            Response.Loading -> {
-                showLoadingProfilePicture()
-            }
-
-            is Response.Result -> {
-                hideLoadingProfilePicture()
-            }
+            Response.Loading -> showLoadingProfilePicture()
+            is Response.Result -> hideLoadingProfilePicture()
         }
     }
 
     private fun signOut() = async {
-        signOutUseCase().collect{
-            when(it){
+        signOutUseCase().collect {
+            when (it) {
                 is Response.Error -> showSnackbar(it.message)
                 Response.Loading -> Unit
-                is Response.Result -> {
-                    navigateAndReplaceAll(Splash.routeName)
-                }
+                is Response.Result -> navigateAndReplaceAll(Splash.routeName)
             }
         }
     }
@@ -145,17 +123,13 @@ class ProfileViewModel @Inject constructor(
             ProfileEvent.GetProfile -> {
                 getCurrentUser()
                 getCountTask()
-                getStatistic(
-                    isFirstLoad = true,
-                    isNext = false
-                )
+                getStatistic(isFirstLoad = true, isNext = false)
             }
 
             is ProfileEvent.GetStatistic -> getStatistic(it.isFirstLoad, it.isNext)
             is ProfileEvent.SubmitProfilePicture -> onProfilePictureChanged(it.bitmap) {
                 updateProfilePictureUseCase(it.bitmap).collect(::handleResponseProfilePicture)
             }
-
             ProfileEvent.SignOut -> signOut()
         }
     }

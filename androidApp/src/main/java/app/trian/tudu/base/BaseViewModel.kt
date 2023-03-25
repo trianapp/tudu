@@ -62,6 +62,10 @@ abstract class BaseViewModel<State : Parcelable, Action>(
         launch { block() }
     }
 
+    protected inline fun asyncWithState(crossinline block: suspend State.() -> Unit) = with(viewModelScope) {
+        launch { block(uiState.value) }
+    }
+
     protected suspend inline fun <T> await(crossinline block: suspend () -> T): T =
         withContext(dispatcher) { block() }
 
@@ -132,6 +136,10 @@ abstract class BaseViewModelData<State : Parcelable, DataState : Parcelable, Act
 ) : BaseViewModel<State, Action>(initialState) {
     private val _uiDataState: MutableStateFlow<DataState> = MutableStateFlow(initialData)
     val uiDataState get() = _uiDataState.asStateFlow()
+
+    protected inline fun asyncWithData(crossinline block: suspend DataState.() -> Unit) = with(viewModelScope) {
+        launch { block(uiDataState.value) }
+    }
 
     fun commitData(dataState: DataState) {
         _uiDataState.tryEmit(dataState)

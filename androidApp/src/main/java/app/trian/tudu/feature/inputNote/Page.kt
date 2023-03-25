@@ -26,20 +26,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import app.trian.tudu.R
 import app.trian.tudu.ApplicationState
+import app.trian.tudu.R
 import app.trian.tudu.base.BaseMainApp
 import app.trian.tudu.base.UIWrapper
 import app.trian.tudu.components.DialogConfirmation
@@ -165,15 +163,13 @@ internal fun ScreenInputNote(
                 placeholder = {
                     Text(
                         text = stringResource(R.string.placeholder_input_note),
-                        style = TextStyle(
-                            fontSize = 36.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.surfaceVariant
-                        )
+                        style = MaterialTheme.typography.displaySmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.surfaceVariant
+
                     )
                 },
                 textStyle = MaterialTheme.typography.bodyLarge.copy(
-                    fontSize = 36.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary
                 ),

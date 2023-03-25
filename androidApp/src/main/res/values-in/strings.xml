@@ -194,4 +194,6 @@
     <string name="text_message_coming_soon">Coming soon</string>
     <string name="text_message_failed_take_picture">Gagal mengambil gambar</string>
     <string name="text_message_failed_load_task">Gagal mengambil data</string>
+    <string name="text_message_confirmation_delete_task">Yakin menghapus?</string>
+    <string name="text_message_success_task_finsih">Task has been finsihed</string>
 </resources>

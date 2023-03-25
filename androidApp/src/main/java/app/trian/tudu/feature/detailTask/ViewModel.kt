@@ -1,6 +1,7 @@
 package app.trian.tudu.feature.detailTask
 
 import androidx.lifecycle.SavedStateHandle
+import app.trian.tudu.R
 import app.trian.tudu.base.BaseViewModelData
 import app.trian.tudu.data.domain.category.GetListCategoryByTaskUseCase
 import app.trian.tudu.data.domain.category.GetListCategoryUseCase
@@ -23,7 +24,6 @@ import app.trian.tudu.data.utils.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import java.time.LocalTime
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -59,33 +59,6 @@ class DetailTaskViewModel @Inject constructor(
 
     private fun getTaskId() = savedStateHandle.get<String>(DetailTask.keyArgs).orEmpty()
 
-    private fun checkIsEditBeforeNavigate() = async {
-        if (
-            uiState.value.isUpdateTodo ||
-            uiState.value.isUpdateCategory ||
-            uiState.value.isUpdateTask
-        ) {
-            commit { copy(showDialogBackConfirmation = true) }
-        } else {
-            navigateUp()
-        }
-    }
-
-    private fun getListCategory() = async {
-        getListCategoryUseCase().collect {
-            when (it) {
-                is Response.Error -> Unit
-                Response.Loading -> Unit
-                is Response.Result -> {
-                    commitData {
-                        copy(
-                            allCategories = it.data
-                        )
-                    }
-                }
-            }
-        }
-    }
 
     private fun getDetailTask(taskId: String) = async {
         getDetailTaskUseCase(taskId).collect {
@@ -108,20 +81,7 @@ class DetailTaskViewModel @Inject constructor(
     }
 
     private fun changeTaskName(taskName: String) = async {
-        if (!uiState.value.isUpdateTask) {
-            commit {
-                copy(
-                    isUpdateTask = true,
-                    taskName = taskName
-                )
-            }
-        } else {
-            commit {
-                copy(
-                    taskName = taskName
-                )
-            }
-        }
+        commit { copy(taskName = taskName) }
         updateTaskName(taskName = taskName)
     }
 
@@ -134,25 +94,15 @@ class DetailTaskViewModel @Inject constructor(
     }
 
     private fun updateTaskDueDate(taskDueDate: LocalDate) = async {
-        commit {
-            copy(
-                taskDueDate = taskDueDate,
-                showDialogPickDate = false
-            )
-        }
+        commit { copy(taskDueDate = taskDueDate, showDialogPickDate = false) }
         updateTaskDueDateUseCase(
             taskId = getTaskId(),
-            taskDueDate = taskDueDate,
+            taskDueDate = taskDueDate
         ).collect {}
     }
 
     private fun updateTaskDueTime(taskDueTime: LocalTime) = async {
-        commit {
-            copy(
-                taskDueTime = taskDueTime,
-                showDialogPickTime = false
-            )
-        }
+        commit { copy(taskDueTime = taskDueTime, showDialogPickTime = false) }
         updateTaskDueTimeUseCase(
             taskId = getTaskId(),
             taskDueTime = taskDueTime
@@ -161,10 +111,7 @@ class DetailTaskViewModel @Inject constructor(
 
     private fun updateTaskReminder(taskReminder: Boolean) = async {
         commit { copy(taskReminder = taskReminder) }
-        updateTaskReminderUseCase(
-            taskId = getTaskId(),
-            taskReminder = taskReminder,
-        ).collect {}
+        updateTaskReminderUseCase(taskId = getTaskId(), taskReminder = taskReminder).collect {}
     }
 
     private fun updateTaskDone(taskDone: Boolean) = async {
@@ -172,44 +119,59 @@ class DetailTaskViewModel @Inject constructor(
         updateTaskDoneUseCase(
             taskId = getTaskId(),
             taskDone = taskDone
-        ).collect {}
-    }
-
-    private fun updateTaskCategory(categories: List<CategoryModel>) = async {
-        val taskId = getTaskId()
-        val oldCategory = uiDataState.value.categories
-        commitData {
-            copy(
-                categories = categories,
-            )
-        }
-        commit { copy(showDialogPickCategory = false) }
-        updateTaskCategoryUseCase(
-            getTaskId(),
-            oldCategories = oldCategory,
-            newCategories = categories.map {
-                TaskCategoryModel(
-                    taskId = taskId,
-                    categoryId = it.categoryId,
-                    taskCategoryId = UUID.randomUUID().toString()
-                )
+        ).collect {
+            when (it) {
+                is Response.Error -> Unit
+                Response.Loading -> Unit
+                is Response.Result -> showSnackbar(R.string.text_message_success_task_finsih)
             }
-        ).collect {}
+        }
+
     }
 
     private fun deleteTask() = async {
-        deleteTaskUseCase(getTaskId())
-            .collect {
-                when (it) {
-                    is Response.Error -> Unit
-                    Response.Loading -> Unit
-                    is Response.Result -> {
-                        onCleared()
-                        navigateUp()
+        deleteTaskUseCase(getTaskId()).collect {
+            when (it) {
+                is Response.Error -> Unit
+                Response.Loading -> Unit
+                is Response.Result -> {
+                    onCleared()
+                    navigateUp()
+                }
+            }
+        }
+    }
+
+    private fun getListCategory() = async {
+        getListCategoryUseCase().collect {
+            when (it) {
+                is Response.Error -> Unit
+                Response.Loading -> Unit
+                is Response.Result -> {
+                    commitData {
+                        copy(
+                            allCategories = it.data
+                        )
                     }
                 }
             }
+        }
     }
+
+    private fun updateTaskCategory(newCategories: List<CategoryModel>) = asyncWithData {
+        val taskId = getTaskId()
+        val oldCategory = this.categories
+
+        //save to state first, save to db then
+        commitData { copy(categories = newCategories) }
+        commit { copy(showDialogPickCategory = false) }
+        updateTaskCategoryUseCase(
+            taskId = taskId,
+            oldCategories = oldCategory,
+            newCategories = newCategories.map { TaskCategoryModel(taskId = taskId, categoryId = it.categoryId) }
+        ).collect {}
+    }
+
 
     private fun getTaskCategories(taskId: String) = async {
         getListCategoryByTaskUseCase(taskId).collect {
@@ -229,126 +191,79 @@ class DetailTaskViewModel @Inject constructor(
             when (it) {
                 is Response.Error -> Unit
                 Response.Loading -> Unit
-                is Response.Result -> commitData {
-                    copy(
-                        todos = it.data
-                    )
-                }
+                is Response.Result -> commitData { copy(todos = it.data) }
             }
         }
     }
 
-    private fun deleteTaskTodo(todoId: String) = async {
-        deleteTodoUseCase(todoId).collect {}
-    }
 
     private fun createTaskTodo() = async {
-        createTodoUseCase(
-            taskId = getTaskId(),
-            todoName = ""
-        ).collect {
+        createTodoUseCase(taskId = getTaskId(), todoName = "").collect {
             when (it) {
                 is Response.Error -> Unit
                 Response.Loading -> Unit
-                is Response.Result -> {
-                    getTaskTodos(getTaskId())
-                }
+                is Response.Result -> getTaskTodos(getTaskId())
             }
         }
     }
 
-    private fun updateTempTodoName(todoId: String, todoName: String) = async {
-        val find = uiDataState
-            .value
-            .todos
+    private fun updateTempTodoName(todoId: String, todoName: String) = asyncWithData {
+        val findIndex = todos
             .withIndex()
             .first { (_, value) -> value.todoId == todoId }
             .index
 
-        if (find != -1) {
-            val td = uiDataState.value.todos.toMutableList()
-            td[find] = td[find].copy(todoName = todoName)
-            commitData {
-                copy(
-                    todos = td
-                )
-            }
+        if (findIndex != -1) {
+            val todo = todos.toMutableList()
+            todo[findIndex] = todo[findIndex].copy(todoName = todoName)
+            commitData { copy(todos = todo) }
         }
-        updateTodoName(
-            todoId = todoId,
-            todoName = todoName
-        )
-    }
-
-    private fun updateTodoName(todoId: String, todoName: String) = async {
         updateTodoNameUseCase(
             todoName = todoName,
-            todoId = todoId,
+            todoId = todoId
         ).collect {}
+
     }
 
-    private fun updateTempTodoDone(todoId: String, todoDone: Boolean) = async {
-        val find = uiDataState
-            .value
-            .todos
+
+    private fun updateTempTodoDone(todoId: String, todoDone: Boolean) = asyncWithData {
+        val findIndex = todos
             .withIndex()
             .first { (_, value) -> value.todoId == todoId }
             .index
 
-        if (find != -1) {
-            val td = uiDataState.value.todos.toMutableList()
-            td[find] = td[find].copy(todoDone = todoDone)
-            commitData {
-                copy(
-                    todos = td
-                )
-            }
+        if (findIndex != -1) {
+            val todo = todos.toMutableList()
+            todo[findIndex] = todo[findIndex].copy(todoDone = todoDone)
+            commitData { copy(todos = todo) }
         }
-        updateTodoDone(
-            todoId = todoId,
-            todoDone = todoDone
-        )
-    }
-
-    private fun updateTodoDone(todoId: String, todoDone: Boolean) = async {
         updateTodoDoneUseCase(
             todoId = todoId,
             todoDone = todoDone
-        )
-            .collect {}
+        ).collect {}
     }
 
-    private fun deleteTempTodo(todoId: String) = async {
-        val find = uiDataState
-            .value
-            .todos
+
+    private fun deleteTempTodo(todoId: String) = asyncWithData {
+        val findIndex = todos
             .withIndex()
             .first { (_, value) -> value.todoId == todoId }
             .index
 
-        if (find != -1) {
-            val td = uiDataState.value.todos.toMutableList()
-            td.removeAt(find)
-            commitData {
-                copy(
-                    todos = td
-                )
-            }
+        if (findIndex != -1) {
+            val todo = todos.toMutableList()
+            todo.removeAt(findIndex)
+            commitData { copy(todos = todo) }
         }
-        deleteTaskTodo(todoId)
+        deleteTodoUseCase(todoId).collect {}
     }
 
     private fun resetFormState() {
-        showSnackbar("Task has been saved!")
         commit {
             copy(
-                isUpdateTask = false,
-                isUpdateCategory = false,
-                isUpdateTodo = false,
                 showDialogPickTime = false,
                 showDialogPickDate = false,
                 showDialogPickCategory = false,
-                showDialogBackConfirmation = false,
                 showDialogDeleteConfirmation = false
             )
         }
@@ -357,7 +272,7 @@ class DetailTaskViewModel @Inject constructor(
     override fun handleActions() = onEvent {
         when (it) {
             DetailTaskEvent.GetDetailTask -> getDetailTask()
-            DetailTaskEvent.CheckBackPressed -> checkIsEditBeforeNavigate()
+            DetailTaskEvent.CheckBackPressed -> navigateUp()
             is DetailTaskEvent.UpdateTaskName -> changeTaskName(it.taskName)
             is DetailTaskEvent.UpdateTaskCategory -> updateTaskCategory(it.categories)
             is DetailTaskEvent.UpdateTaskDueDate -> updateTaskDueDate(it.dueDate)
@@ -368,15 +283,8 @@ class DetailTaskViewModel @Inject constructor(
             DetailTaskEvent.SubmitTask -> resetFormState()
             is DetailTaskEvent.DeleteTodo -> deleteTempTodo(it.todoId)
             DetailTaskEvent.CreateTodo -> createTaskTodo()
-            is DetailTaskEvent.UpdateTodoDone -> updateTempTodoDone(
-                todoId = it.todoId,
-                todoDone = it.isDone
-            )
-
-            is DetailTaskEvent.UpdateTodoName -> updateTempTodoName(
-                todoId = it.todoId,
-                todoName = it.todoName
-            )
+            is DetailTaskEvent.UpdateTodoDone -> updateTempTodoDone(todoId = it.todoId, todoDone = it.isDone)
+            is DetailTaskEvent.UpdateTodoName -> updateTempTodoName(todoId = it.todoId, todoName = it.todoName)
         }
     }
 

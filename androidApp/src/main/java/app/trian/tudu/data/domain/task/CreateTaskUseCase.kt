@@ -41,7 +41,7 @@ class CreateTaskUseCase @Inject constructor(
                     todoName = todo.todoName,
                     todoId = todo.todoId,
                     todoDone = if (todo.todoDone) 1 else 0,
-                    todoTaskId = taskModel.taskId,
+                    todoTaskId = taskId,
                     createdAt = todo.createdAt
                 )
             }

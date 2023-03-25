@@ -25,12 +25,11 @@ class CalendarViewModel @Inject constructor(
     }
 
     //region task
-    private fun getListTask() = async {
-        val from = uiState.value.selectedDate
-        val to = from.plusDays(1)
-        getListTaskByDateUseCase(from.toString(),from.toString())
-            .collect{
-                when(it){
+    private fun getListTask() = asyncWithState {
+        val from = selectedDate
+        getListTaskByDateUseCase(from.toString(), from.toString())
+            .collect {
+                when (it) {
                     is Response.Error -> showSnackbar(R.string.message_failed_fetch_data)
                     Response.Loading -> Unit
                     is Response.Result -> commitData { copy(task = it.data) }
@@ -38,34 +37,33 @@ class CalendarViewModel @Inject constructor(
             }
     }
 
-    private fun saveTask() = async {
+    private fun saveTask() = asyncWithState {
         createTaskUseCase(
             taskModel = TaskModel(
-                taskReminder = uiState.value.hasDueTime,
-                taskName = uiState.value.taskName,
-                taskDueDate = uiState.value.dueDate?.toString().orEmpty(),
-                taskDueTime = uiState.value.dueTime?.toString().orEmpty(),
+                taskReminder = hasDueTime,
+                taskName = taskName,
+                taskDueDate = dueDate?.toString().orEmpty(),
+                taskDueTime = dueTime?.toString().orEmpty(),
                 taskDone = false
             ),
-            taskCategoryModels = uiState.value.categories.map {
+            taskCategoryModels = categories.map {
                 TaskCategoryModel(
                     categoryId = it.categoryId
                 )
             },
-            todos = uiState.value.todos
-        )
-            .collect {
-                when (it) {
-                    is Response.Error -> showSnackbar(it.message)
-                    Response.Loading -> Unit
-                    is Response.Result -> {
-                        hideBottomSheet()
-                        resetState()
-                        showSnackbar(R.string.message_success_save_task)
-                        getListTask()
-                    }
+            todos = todos
+        ).collect {
+            when (it) {
+                is Response.Error -> showSnackbar(it.message)
+                Response.Loading -> Unit
+                is Response.Result -> {
+                    hideBottomSheet()
+                    resetState()
+                    showSnackbar(R.string.message_success_save_task)
+                    getListTask()
                 }
             }
+        }
     }
 
     //end region
@@ -88,8 +86,8 @@ class CalendarViewModel @Inject constructor(
     //end region
     //region todo
 
-    private fun createNewPlainTodo(todoName: String) = async {
-        if (uiState.value.todos.size <= 8) {
+    private fun createNewPlainTodo(todoName: String) = asyncWithState {
+        if (todos.size <= 8) {
             commit {
                 copy(
                     todos = todos.toMutableList().plus(
@@ -107,41 +105,29 @@ class CalendarViewModel @Inject constructor(
         }
     }
 
-    private fun updatePlainTodo(todo: TodoModel) = async {
-        val find = uiState
-            .value
-            .todos
+    private fun updatePlainTodo(todoModel: TodoModel) = asyncWithState {
+        val findIndex = todos
             .withIndex()
-            .first { (_, value) -> value.todoId == todo.todoId }
+            .first { (_, value) -> value.todoId == todoModel.todoId }
             .index
 
-        if (find != -1) {
-            val td = uiState.value.todos.toMutableList()
-            td[find] = todo
-            commit {
-                copy(
-                    todos = td
-                )
-            }
+        if (findIndex != -1) {
+            val todo = todos.toMutableList()
+            todo[findIndex] = todoModel
+            commit { copy(todos = todo) }
         }
     }
 
-    private fun deletePlainTodo(todoId: String) = async {
-        val find = uiState
-            .value
-            .todos
+    private fun deletePlainTodo(todoId: String) = asyncWithState {
+        val find =todos
             .withIndex()
             .first { (_, value) -> value.todoId == todoId }
             .index
 
         if (find != -1) {
-            val td = uiState.value.todos.toMutableList()
-            td.removeAt(find)
-            commit {
-                copy(
-                    todos = td
-                )
-            }
+            val todo = todos.toMutableList()
+            todo.removeAt(find)
+            commit { copy(todos = todo) }
         }
     }
 

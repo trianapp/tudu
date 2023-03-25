@@ -26,13 +26,7 @@ data class DetailTaskState(
     val showDialogPickCategory: Boolean = false,
     val showDialogPickTime: Boolean = false,
     val showDialogPickDate: Boolean = false,
-    val showDialogBackConfirmation: Boolean = false,
-    val showDialogDeleteConfirmation: Boolean = false,
-
-
-    val isUpdateTask: Boolean = false,
-    val isUpdateCategory: Boolean = false,
-    val isUpdateTodo: Boolean = false
+    val showDialogDeleteConfirmation: Boolean = false
 ) : Parcelable
 
 @Parcelize

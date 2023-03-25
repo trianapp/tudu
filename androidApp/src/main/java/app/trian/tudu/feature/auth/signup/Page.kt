@@ -74,7 +74,16 @@ internal fun ScreenSignUp(
             )
         }
         setupBottomSheet {
-            BottomSheetPrivacyPolicy()
+            BottomSheetPrivacyPolicy(
+                onAccept = {
+                    hideBottomSheet()
+                    commit {
+                        copy(
+                            agreeTnc = true
+                        )
+                    }
+                }
+            )
         }
     }
     DialogLoading(

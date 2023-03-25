@@ -15,7 +15,6 @@ import java.time.LocalTime
 @Parcelize
 @Immutable
 data class HomeState(
-    var showDialogPickSortTask: Boolean = false,
     var showDialogDeleteTask: Boolean = false,
     var showDropdownMoreOption: Boolean = false,
     override val hasCategory: Boolean = false,

@@ -75,8 +75,8 @@ internal fun ScreenHome(
                     commit { copy(showDropdownMoreOption = false) }
                     when (it) {
                         R.string.option_category_management -> navigateSingleTop(Category.routeName)
-                        R.string.option_search -> navigateSingleTop("")
-                        R.string.option_sort -> commit { copy(showDialogPickSortTask = false) }
+                        R.string.option_search -> showSnackbar(R.string.text_message_coming_soon)
+                        R.string.option_sort ->showSnackbar(R.string.text_message_coming_soon)
                     }
                 },
                 onSelectCategory = {

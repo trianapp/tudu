@@ -21,28 +21,26 @@ class SignUpViewModel @Inject constructor(
 
     private fun showLoading() = commit { copy(isLoading = true) }
     private fun hideLoading() = commit { copy(isLoading = true) }
-    private fun validateData(cb: suspend (String, String, String) -> Unit) = async {
-        with(uiState.value) {
-            when {
-                email.isEmpty() ||
-                        password.isEmpty() ||
-                        displayName.isEmpty() -> showSnackbar(R.string.message_password_or_email_cannot_empty)
+    private fun validateData(cb: suspend (String, String, String) -> Unit) = asyncWithState {
+        when {
+            email.isEmpty() ||
+                    password.isEmpty() ||
+                    displayName.isEmpty() -> showSnackbar(R.string.message_password_or_email_cannot_empty)
 
-                !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> showSnackbar(R.string.alert_validation_email)
-                else -> {
-                    cb(displayName, email, password)
-                }
+            !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> showSnackbar(R.string.alert_validation_email)
+            else -> {
+                cb(displayName, email, password)
             }
-
         }
     }
 
-    private fun handleResponse(result: Response<FirebaseUser?>) {
+    private fun handleResponse(result: Response<FirebaseUser>) {
         when (result) {
             is Response.Error -> {
                 hideLoading()
                 showSnackbar(result.message)
             }
+
             Response.Loading -> showLoading()
             is Response.Result -> {
                 hideLoading()

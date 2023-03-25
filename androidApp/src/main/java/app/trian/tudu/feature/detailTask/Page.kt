@@ -1,8 +1,6 @@
 package app.trian.tudu.feature.detailTask
 
-import android.os.Build.VERSION_CODES
 import androidx.activity.compose.BackHandler
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,16 +19,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons.Outlined
 import androidx.compose.material.icons.outlined.AccessTime
 import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Archive
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Category
 import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Done
-import androidx.compose.material.icons.outlined.DoneAll
 import androidx.compose.material.icons.outlined.Note
-import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
@@ -65,8 +59,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import app.trian.tudu.R
 import app.trian.tudu.ApplicationState
+import app.trian.tudu.R
 import app.trian.tudu.base.BaseMainApp
 import app.trian.tudu.base.UIWrapper
 import app.trian.tudu.base.extensions.hideKeyboard
@@ -144,12 +138,7 @@ internal fun ScreenDetailTask(
         setupBottomAppBar {
             BottomAppBar(
                 actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            imageVector = Outlined.Archive,
-                            contentDescription = ""
-                        )
-                    }
+
                     IconButton(onClick = {
                         commit {
                             copy(
@@ -162,29 +151,18 @@ internal fun ScreenDetailTask(
                             contentDescription = ""
                         )
                     }
-                    IconButton(
-                        onClick = {
-                            dispatch(DetailTaskEvent.UpdateTaskDone(!state.taskDone))
-                        }
-                    ) {
-                        Icon(
-                            imageVector = if (state.taskDone) Outlined.DoneAll else Outlined.Done,
-                            tint = if (state.taskDone) MaterialTheme.colorScheme.primary
-                            else MaterialTheme.colorScheme.onSurface,
-                            contentDescription = ""
-                        )
-                    }
                 },
                 floatingActionButton = {
                     FloatingActionButton(
                         onClick = {
-                            dispatch(DetailTaskEvent.SubmitTask)
+                            dispatch(DetailTaskEvent.UpdateTaskDone(!state.taskDone))
                         },
                         shape = RoundedCornerShape(8.dp)
                     ) {
-                        Icon(
-                            imageVector = Outlined.Save,
-                            contentDescription = ""
+                        Text(
+                            text = "Done",
+                            color = if (state.taskDone) MaterialTheme.colorScheme.primary
+                            else MaterialTheme.colorScheme.onSurface,
                         )
                     }
                 },
@@ -200,19 +178,8 @@ internal fun ScreenDetailTask(
         dispatch(DetailTaskEvent.CheckBackPressed)
     }
     DialogConfirmation(
-        show = state.showDialogBackConfirmation,
-        message = stringResource(R.string.text_confirmation_back),
-        onCancel = {
-            commit { copy(showDialogBackConfirmation = false) }
-        },
-        onConfirm = {
-            commit { copy(showDialogBackConfirmation = false) }
-            navigateUp()
-        }
-    )
-    DialogConfirmation(
         show = state.showDialogDeleteConfirmation,
-        message = "Yakin menghapus?",
+        message = stringResource(R.string.text_message_confirmation_delete_task),
         onCancel = {
             commit { copy(showDialogDeleteConfirmation = false) }
         },
@@ -287,10 +254,9 @@ internal fun ScreenDetailTask(
                         placeholder = {
                             Text(
                                 text = stringResource(R.string.placeholder_input_task),
-                                style = MaterialTheme.typography.displaySmall.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.surfaceVariant
-                                )
+                                style = MaterialTheme.typography.displaySmall,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.surfaceVariant
                             )
                         },
                         textStyle = MaterialTheme.typography.displaySmall.copy(
@@ -404,8 +370,7 @@ internal fun ScreenDetailTask(
                         modifier = Modifier.clickable {
                             commit {
                                 copy(
-                                    showDialogPickDate = true,
-                                    isUpdateTask = true
+                                    showDialogPickDate = true
                                 )
                             }
                         },
@@ -440,8 +405,7 @@ internal fun ScreenDetailTask(
                         modifier = Modifier.clickable {
                             commit {
                                 copy(
-                                    showDialogPickTime = true,
-                                    isUpdateTask = true
+                                    showDialogPickTime = true
                                 )
                             }
                         },
@@ -597,7 +561,6 @@ internal fun ScreenDetailTask(
 }
 
 
-@RequiresApi(VERSION_CODES.O)
 @Preview
 @Composable
 fun PreviewScreenDetailTask() {

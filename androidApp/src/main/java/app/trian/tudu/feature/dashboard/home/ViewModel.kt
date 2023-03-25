@@ -63,22 +63,22 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun saveTask() = async {
-        createTaskUseCase(
-            taskModel = TaskModel(
-                taskReminder = uiState.value.hasDueTime,
-                taskName = uiState.value.taskName,
-                taskDueDate = uiState.value.dueDate?.toString().orEmpty(),
-                taskDueTime = uiState.value.dueTime?.toString().orEmpty(),
-                taskDone = false
-            ),
-            taskCategoryModels = uiState.value.categories.map {
-                TaskCategoryModel(
-                    categoryId = it.categoryId
-                )
-            },
-            todos = uiState.value.todos
-        )
-            .collect {
+        with(uiState.value) {
+            createTaskUseCase(
+                taskModel = TaskModel(
+                    taskReminder = hasDueTime,
+                    taskName = taskName,
+                    taskDueDate = dueDate?.toString().orEmpty(),
+                    taskDueTime = dueTime?.toString().orEmpty(),
+                    taskDone = false
+                ),
+                taskCategoryModels = categories.map {
+                    TaskCategoryModel(
+                        categoryId = it.categoryId
+                    )
+                },
+                todos = todos
+            ).collect {
                 when (it) {
                     is Response.Error -> showSnackbar(it.message)
                     Response.Loading -> Unit
@@ -90,6 +90,7 @@ class HomeViewModel @Inject constructor(
                     }
                 }
             }
+        }
     }
 
     private fun deleteTask() = async {

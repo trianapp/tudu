@@ -26,23 +26,22 @@ class CategoryViewModel @Inject constructor(
     }
 
     private fun getListCategory() = async {
-        getListCategoryWithCounterUseCase()
-            .collect {
-                when (it) {
-                    is Response.Error -> Unit
-                    Response.Loading -> Unit
-                    is Response.Result -> {
-                        commitData { copy(category = it.data) }
-                    }
+        getListCategoryWithCounterUseCase().collect {
+            when (it) {
+                is Response.Error -> Unit
+                Response.Loading -> Unit
+                is Response.Result -> {
+                    commitData { copy(category = it.data) }
                 }
             }
+        }
     }
 
-    private fun updateCategory() = async {
+    private fun updateCategory() = asyncWithState {
         updateCategoryUseCase(
             CategoryModel(
-                categoryId = uiState.value.categoryId,
-                categoryName = uiState.value.categoryName
+                categoryId = categoryId,
+                categoryName = categoryName
             )
         ).collect {
             when (it) {
@@ -62,29 +61,28 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
-    private fun createCategory() = async {
-        with(uiState.value) {
-            createCategoryUseCase(categoryName = categoryName).collect { response ->
-                when (response) {
-                    is Response.Error -> Unit
-                    Response.Loading -> Unit
-                    is Response.Result -> {
-                        commit {
-                            copy(
-                                showFormCategory = false,
-                                categoryId = "",
-                                categoryName = ""
-                            )
-                        }
-                        getListCategory()
+    private fun createCategory() = asyncWithState {
+        createCategoryUseCase(categoryName = categoryName).collect { response ->
+            when (response) {
+                is Response.Error -> Unit
+                Response.Loading -> Unit
+                is Response.Result -> {
+                    commit {
+                        copy(
+                            showFormCategory = false,
+                            categoryId = "",
+                            categoryName = ""
+                        )
                     }
+                    getListCategory()
                 }
             }
+
         }
     }
 
-    private fun deleteCategory() = async {
-        deleteCategoryUseCase(uiState.value.categoryId)
+    private fun deleteCategory() = asyncWithState {
+        deleteCategoryUseCase(categoryId)
             .collect {
                 when (it) {
                     is Response.Error -> Unit
@@ -117,6 +115,7 @@ class CategoryViewModel @Inject constructor(
                     )
                 }
             }
+
             is CategoryEvent.DeleteCategory -> deleteCategory()
             is CategoryEvent.ShowDialogDeleteCategory -> commit { copy(showDialogDeleteCategory = it.isShow) }
         }

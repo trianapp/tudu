@@ -24,73 +24,41 @@ class InputNoteViewModel @Inject constructor(
     private fun getTaskId() = savedStateHandle.get<String>(InputNote.keyArgs).orEmpty()
 
     private fun getDetailTask(taskId: String) = async {
-        getDetailTaskUseCase(taskId)
-            .collect {
-                when (it) {
-                    is Response.Error -> showSnackbar(R.string.text_message_failed_load_task)
-                    Response.Loading -> Unit
-                    is Response.Result -> commit {
-                        copy(
-                            taskName = it.data.taskName,
-                            taskId = it.data.taskId,
-                            taskNote = it.data.taskNote
-                        )
-                    }
-                }
-            }
-    }
-
-    private fun updateTaskNote() = async {
-        with(uiState.value) {
-            updateTaskNoteUseCase(
-                taskId = getTaskId(),
-                taskNote = taskNote
-            ).collect {
-                when (it) {
-                    is Response.Error -> {
-                        showSnackbar("Failed to save")
-                        commit {
-                            copy(
-                                isUpdateNote = false,
-                                showDialogBackConfirmation = false
-                            )
-                        }
-                    }
-
-                    Response.Loading -> Unit
-                    is Response.Result -> {
-                        showSnackbar("Success update note!")
-                        commit {
-                            copy(
-                                isUpdateNote = false,
-                                showDialogBackConfirmation = false
-                            )
-                        }
-                    }
+        getDetailTaskUseCase(taskId).collect {
+            when (it) {
+                is Response.Error -> showSnackbar(R.string.text_message_failed_load_task)
+                Response.Loading -> Unit
+                is Response.Result -> commit {
+                    copy(
+                        taskName = it.data.taskName,
+                        taskId = it.data.taskId,
+                        taskNote = it.data.taskNote
+                    )
                 }
             }
         }
     }
 
+    private fun updateTaskNote() = asyncWithState {
+        updateTaskNoteUseCase(taskId = getTaskId(), taskNote = taskNote).collect {
+            when (it) {
+                is Response.Error -> commit { copy(isUpdateNote = false, showDialogBackConfirmation = false) }
+                Response.Loading -> Unit
+                is Response.Result -> {
+                    showSnackbar("Success update note!")
+                    commit { copy(isUpdateNote = false, showDialogBackConfirmation = false) }
+                }
+            }
+        }
+    }
+
+
     override fun handleActions() = onEvent {
         when (it) {
-            is SetTaskNote -> commit {
-                copy(
-                    taskNote = it.note,
-                    isUpdateNote = true
-                )
-            }
-
+            is SetTaskNote -> commit { copy(taskNote = it.note, isUpdateNote = true) }
             InputNoteEvent.CheckBackPressed -> if (uiState.value.isUpdateNote) {
-                commit {
-                    copy(
-                        showDialogBackConfirmation = true
-                    )
-                }
-            } else {
-                navigateUp()
-            }
-
+                commit { copy(showDialogBackConfirmation = true) }
+            } else navigateUp()
             InputNoteEvent.SubmitNote -> updateTaskNote()
             InputNoteEvent.GetDetailTask -> getDetailTask(getTaskId())
         }

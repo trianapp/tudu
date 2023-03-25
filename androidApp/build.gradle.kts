@@ -7,6 +7,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt")
     id("app.cash.sqldelight")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
     id("kotlin-parcelize")
     kotlin("android")
     kotlin("kapt")
@@ -48,7 +49,7 @@ android {
                 "BASE_URL",
                 "\"${findProperty("BASE_URL").toString()}\""
             )
-            isMinifyEnabled = false
+            isMinifyEnabled = true
         }
 
         getByName("debug") {
@@ -109,6 +110,8 @@ dependencies {
         implementation(platform(firebaseBom))
         implementation(auth)
         implementation(firebaseStorage)
+        implementation(analytics)
+        implementation(crashAnalytics)
     }
 
 

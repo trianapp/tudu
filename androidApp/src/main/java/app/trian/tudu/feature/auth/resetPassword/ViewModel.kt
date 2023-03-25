@@ -16,19 +16,17 @@ class ResetPasswordViewModel @Inject constructor(
         handleActions()
     }
 
-    private fun showLoading() = commit { copy(isLoading=true) }
-    private fun hideLoading() = commit { copy(isLoading=true) }
+    private fun showLoading() = commit { copy(isLoading = true) }
+    private fun hideLoading() = commit { copy(isLoading = true) }
 
-    private fun validateData(cb: suspend (String) -> Unit) = async {
-        with(uiState.value) {
-            when {
-                email.isEmpty() -> showSnackbar(R.string.alert_email_empty)
-                !Patterns.EMAIL_ADDRESS
-                    .matcher(email)
-                    .matches() -> showSnackbar(R.string.alert_validation_email)
+    private fun validateData(cb: suspend (String) -> Unit) = asyncWithState {
+        when {
+            email.isEmpty() -> showSnackbar(R.string.alert_email_empty)
+            !Patterns.EMAIL_ADDRESS
+                .matcher(email)
+                .matches() -> showSnackbar(R.string.alert_validation_email)
 
-                else -> cb(email)
-            }
+            else -> cb(email)
         }
     }
 
