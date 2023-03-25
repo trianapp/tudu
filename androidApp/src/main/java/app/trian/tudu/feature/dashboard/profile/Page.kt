@@ -329,7 +329,12 @@ internal fun ScreenProfile(
                             )
                         },
                         onClick = {
-                            commit { copy(showDialogSignOutConfirmation = true) }
+                            commit {
+                                copy(
+                                    showDialogSignOutConfirmation = true,
+                                    showDropdownMoreOption = false
+                                )
+                            }
                         }
                     )
                 }
