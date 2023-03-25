@@ -2,7 +2,8 @@ package app.trian.tudu.feature.editProfile
 
 import app.trian.tudu.R
 import app.trian.tudu.base.BaseViewModel
-import app.trian.tudu.data.sdk.auth.AuthSDK
+import app.trian.tudu.data.domain.user.GetUserProfileUseCase
+import app.trian.tudu.data.domain.user.UpdateDisplayNameUseCase
 import app.trian.tudu.data.utils.Response
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,7 +11,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditProfileViewModel @Inject constructor(
-    private val authSDK: AuthSDK
+    private val updateDisplayNameUseCase: UpdateDisplayNameUseCase,
+    private val getUserProfileUseCase: GetUserProfileUseCase
 ) : BaseViewModel<EditProfileState, EditProfileEvent>(EditProfileState()) {
     init {
         handleActions()
@@ -20,7 +22,7 @@ class EditProfileViewModel @Inject constructor(
     private fun showLoading() = commit { copy(isLoading = true) }
     private fun hideLoading() = commit { copy(isLoading = false) }
     private fun getProfileUser() = async {
-        authSDK.getCurrentUser().collect(::handleProfileResponse)
+        getUserProfileUseCase().collect(::handleProfileResponse)
     }
 
     private fun validateData(cb: suspend (String) -> Unit) = async {
@@ -62,8 +64,7 @@ class EditProfileViewModel @Inject constructor(
     override fun handleActions() = onEvent { event ->
         when (event) {
             EditProfileEvent.Submit -> validateData { displayName ->
-                authSDK.updateProfile(displayName)
-                    .collect(::handleSubmitResponse)
+                updateDisplayNameUseCase(displayName).collect(::handleSubmitResponse)
             }
         }
     }

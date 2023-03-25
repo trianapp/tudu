@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS Task(
     taskDueDate TEXT,
     taskDueTime TEXT,
     taskDone INTEGER,
-    taskDoneAt TEXT,
     taskReminder INTEGER,
     taskNote TEXT,
     createdAt TEXT,
@@ -81,7 +80,6 @@ updateTaskToDone:
 UPDATE Task
 SET
     taskDone=?,
-    taskDoneAt=?,
     updatedAt=?
 WHERE taskId=?;
 

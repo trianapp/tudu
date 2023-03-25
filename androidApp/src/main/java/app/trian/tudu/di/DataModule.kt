@@ -1,12 +1,11 @@
 package app.trian.tudu.di
 
 import android.content.Context
-import app.trian.tudu.data.DriverFactory
-import app.trian.tudu.data.sdk.auth.AuthSDK
-import app.trian.tudu.data.sdk.task.CategorySDK
-import app.trian.tudu.data.sdk.task.TaskSDK
-import app.trian.tudu.data.sdk.task.TodoSDK
+import app.cash.sqldelight.db.SqlDriver
+import app.cash.sqldelight.driver.android.AndroidSqliteDriver
+import app.trian.tudu.sqldelight.Database
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,39 +18,27 @@ import dagger.hilt.components.SingletonComponent
 )
 object DataModule {
 
-
     @Provides
-    fun provideDriverFactory(
-        @ApplicationContext appContext: Context
-    ): DriverFactory = DriverFactory(appContext)
-
-    @Provides
-    fun providerAuthSDK(
-        driverFactory: DriverFactory
-    ): AuthSDK = AuthSDK(
-        driverFactory = driverFactory,
-        firebaseAuth = FirebaseAuth.getInstance()
+    fun provideSqlDriver(
+        @ApplicationContext context: Context
+    ): SqlDriver = AndroidSqliteDriver(
+        Database.Schema,
+        context,
+        "tudu_trian_app.db"
     )
+    @Provides
+    fun provideDatabase(
+        sqlDriver: SqlDriver
+    ): Database = Database(sqlDriver)
 
     @Provides
-    fun provideTaskSdk(
-        driverFactory: DriverFactory
-    ): TaskSDK = TaskSDK(
-        driverFactory = driverFactory
-    )
+    fun provideFirebaseAuth(): FirebaseAuth =
+        FirebaseAuth.getInstance()
+
 
     @Provides
-    fun provideTodoSdk(
-        driverFactory: DriverFactory
-    ): TodoSDK = TodoSDK(
-        driverFactory = driverFactory
-    )
+    fun provideFirebaseStorage(): FirebaseStorage =
+        FirebaseStorage.getInstance()
 
-    @Provides
-    fun provideCategorySdk(
-        driverFactory: DriverFactory
-    ): CategorySDK = CategorySDK(
-        driverFactory = driverFactory
-    )
 
 }

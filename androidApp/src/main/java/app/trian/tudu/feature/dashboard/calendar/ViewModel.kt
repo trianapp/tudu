@@ -2,22 +2,23 @@ package app.trian.tudu.feature.dashboard.calendar
 
 import app.trian.tudu.R
 import app.trian.tudu.base.BaseViewModelData
+import app.trian.tudu.data.domain.category.GetListCategoryUseCase
+import app.trian.tudu.data.domain.task.CreateTaskUseCase
+import app.trian.tudu.data.domain.task.GetListTaskByDateUseCase
 import app.trian.tudu.data.model.TaskCategoryModel
 import app.trian.tudu.data.model.TaskModel
 import app.trian.tudu.data.model.TodoModel
-import app.trian.tudu.data.sdk.task.CategorySDK
-import app.trian.tudu.data.sdk.task.TaskSDK
 import app.trian.tudu.data.utils.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
 import java.time.LocalDate
 import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class CalendarViewModel @Inject constructor(
-    private val taskSDK: TaskSDK,
-    private val categorySDK: CategorySDK
+    private val getListTaskByDateUseCase: GetListTaskByDateUseCase,
+    private val createTaskUseCase: CreateTaskUseCase,
+    private val getListCategoryUseCase: GetListCategoryUseCase
 ) : BaseViewModelData<CalendarState, CalendarDataState, CalendarEvent>(CalendarState(), CalendarDataState()) {
     init {
         handleActions()
@@ -27,8 +28,7 @@ class CalendarViewModel @Inject constructor(
     private fun getListTask() = async {
         val from = uiState.value.selectedDate
         val to = from.plusDays(1)
-        taskSDK.getLisTaskByDate(from.toString(),to.toString())
-            .catch {  }
+        getListTaskByDateUseCase(from.toString(),to.toString())
             .collect{
                 when(it){
                     is Response.Error -> showSnackbar(R.string.message_failed_fetch_data)
@@ -37,26 +37,18 @@ class CalendarViewModel @Inject constructor(
                 }
             }
     }
+
     private fun saveTask() = async {
-        val taskId = UUID.randomUUID().toString()
-        val currentDateString = LocalDate.now().toString()
-        taskSDK.createNewTask(
+        createTaskUseCase(
             taskModel = TaskModel(
-                taskId = taskId,
                 taskReminder = uiState.value.hasDueTime,
-                taskNote = "",
                 taskName = uiState.value.taskName,
                 taskDueDate = uiState.value.dueDate?.toString().orEmpty(),
                 taskDueTime = uiState.value.dueTime?.toString().orEmpty(),
-                taskDone = false,
-                taskDoneAt = currentDateString,
-                createdAt = currentDateString,
-                updatedAt = currentDateString
+                taskDone = false
             ),
             taskCategoryModels = uiState.value.categories.map {
                 TaskCategoryModel(
-                    taskId = taskId,
-                    taskCategoryId = UUID.randomUUID().toString(),
                     categoryId = it.categoryId
                 )
             },
@@ -67,9 +59,10 @@ class CalendarViewModel @Inject constructor(
                     is Response.Error -> showSnackbar(it.message)
                     Response.Loading -> Unit
                     is Response.Result -> {
+                        hideBottomSheet()
                         resetState()
                         showSnackbar(R.string.message_success_save_task)
-                        hideBottomSheet()
+                        getListTask()
                     }
                 }
             }
@@ -79,7 +72,7 @@ class CalendarViewModel @Inject constructor(
 
     //region category
     private fun getListCategory() = async {
-        categorySDK.getListCategory().collect {
+        getListCategoryUseCase().collect {
             when (it) {
                 is Response.Error -> Unit
                 Response.Loading -> Unit

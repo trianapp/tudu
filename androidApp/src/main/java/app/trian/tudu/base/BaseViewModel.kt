@@ -18,8 +18,10 @@ import app.trian.tudu.base.extensions.navigateAndReplace
 import app.trian.tudu.base.extensions.navigateAndReplaceAll
 import app.trian.tudu.base.extensions.navigateSingleTop
 import app.trian.tudu.base.extensions.navigateUp
+import app.trian.tudu.base.extensions.runSuspend
 import app.trian.tudu.base.extensions.showBottomSheet
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
@@ -68,6 +70,8 @@ abstract class BaseViewModel<State : Parcelable, Action>(
             block()
         }
     }
+
+    fun runSuspend(cb:suspend CoroutineScope. ()->Unit)=_app.runSuspend(block = cb)
 
     protected abstract fun handleActions()
     fun commit(state: State) {

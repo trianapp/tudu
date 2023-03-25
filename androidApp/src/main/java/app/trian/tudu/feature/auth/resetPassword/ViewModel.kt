@@ -3,15 +3,14 @@ package app.trian.tudu.feature.auth.resetPassword
 import android.util.Patterns
 import app.trian.tudu.R
 import app.trian.tudu.base.BaseViewModel
-import app.trian.tudu.data.sdk.auth.AuthSDK
+import app.trian.tudu.data.domain.user.ChangePasswordUseCase
 import app.trian.tudu.data.utils.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
 import javax.inject.Inject
 
 @HiltViewModel
 class ResetPasswordViewModel @Inject constructor(
-    private val authSDK: AuthSDK
+    private val resetPasswordUseCase: ChangePasswordUseCase
 ) : BaseViewModel<ResetPasswordState, ResetPasswordEvent>(ResetPasswordState()) {
     init {
         handleActions()
@@ -44,9 +43,7 @@ class ResetPasswordViewModel @Inject constructor(
     override fun handleActions() = onEvent { event ->
         when (event) {
             ResetPasswordEvent.Submit -> validateData { email ->
-                authSDK.resetPasswordByEmail(email)
-                    .catch { }
-                    .collect(::handleResponse)
+                resetPasswordUseCase(email).collect(::handleResponse)
             }
         }
     }

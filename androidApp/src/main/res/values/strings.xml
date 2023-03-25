@@ -179,4 +179,5 @@
     <string name="title_appbar_edit_profile">Edit Profile</string>
     <string name="text_message_welcome_user">Selamat datang %1$s</string>
     <string name="text_message_success_change_profile">Berhasil merubah nama</string>
+    <string name="text_title_dialog_take_picture_method">Select picture with</string>
 </resources>

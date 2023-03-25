@@ -2,7 +2,8 @@ package app.trian.tudu.feature.inputNote
 
 import androidx.lifecycle.SavedStateHandle
 import app.trian.tudu.base.BaseViewModel
-import app.trian.tudu.data.sdk.task.TaskSDK
+import app.trian.tudu.data.domain.task.GetDetailTaskUseCase
+import app.trian.tudu.data.domain.task.UpdateTaskNoteUseCase
 import app.trian.tudu.data.utils.Response
 import app.trian.tudu.feature.inputNote.InputNoteEvent.SetTaskNote
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,17 +14,18 @@ import javax.inject.Inject
 @HiltViewModel
 class InputNoteViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val taskSDK: TaskSDK
+    private val getDetailTaskUseCase: GetDetailTaskUseCase,
+    private val updateTaskNoteUseCase: UpdateTaskNoteUseCase
 ) : BaseViewModel<InputNoteState, InputNoteEvent>(InputNoteState()) {
     init {
         handleActions()
         getDetailTask(getTaskId())
     }
+
     private fun getTaskId() = savedStateHandle.get<String>(InputNote.keyArgs).orEmpty()
 
     private fun getDetailTask(taskId: String) = async {
-        taskSDK.getDetailTask(taskId)
-            .catch { }
+        getDetailTaskUseCase(taskId)
             .collect {
                 when (it) {
                     is Response.Error -> showSnackbar("Failed to load task")
@@ -40,14 +42,11 @@ class InputNoteViewModel @Inject constructor(
     }
 
     private fun updateTaskNote() = async {
-
-        taskSDK.updateTaskNote(
-            taskId = getTaskId(),
-            taskNote = uiState.value.taskNote,
-            updatedAt = LocalDate.now().toString()
-        )
-            .catch { }
-            .collect {
+        with(uiState.value) {
+            updateTaskNoteUseCase(
+                taskId = getTaskId(),
+                taskNote = taskNote
+            ).collect {
                 when (it) {
                     is Response.Error -> {
                         showSnackbar("Failed to save")
@@ -71,21 +70,16 @@ class InputNoteViewModel @Inject constructor(
                     }
                 }
             }
+        }
     }
 
     override fun handleActions() = onEvent {
         when (it) {
-            is SetTaskNote -> {
-                if (uiState.value.isUpdateNote) {
-                    commit { copy(taskNote = it.note) }
-                } else {
-                    commit {
-                        copy(
-                            taskNote =it.note,
-                            isUpdateNote = true
-                        )
-                    }
-                }
+            is SetTaskNote -> commit {
+                copy(
+                    taskNote = taskNote,
+                    isUpdateNote = true
+                )
             }
 
             InputNoteEvent.CheckBackPressed -> if (uiState.value.isUpdateNote) {

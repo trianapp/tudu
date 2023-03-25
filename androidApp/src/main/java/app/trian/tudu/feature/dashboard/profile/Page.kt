@@ -1,6 +1,9 @@
 package app.trian.tudu.feature.dashboard.profile
 
 import android.os.Build.VERSION_CODES
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.launch
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -51,6 +54,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toFile
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import app.trian.tudu.ApplicationState
@@ -59,7 +63,9 @@ import app.trian.tudu.base.BaseMainApp
 import app.trian.tudu.base.UIWrapper
 import app.trian.tudu.base.extensions.getDateUntil
 import app.trian.tudu.base.extensions.getPreviousWeek
+import app.trian.tudu.base.getBitmap
 import app.trian.tudu.components.ButtonIcon
+import app.trian.tudu.components.DialogTakePicture
 import app.trian.tudu.components.TuduBottomNavigation
 import app.trian.tudu.components.chart.BarChartView
 import app.trian.tudu.feature.appSetting.AppSetting
@@ -95,12 +101,27 @@ internal fun ScreenProfile(
     val dataState by uiDataState.collectAsState()
 
     val painterProfilePicture = rememberAsyncImagePainter(
-        Builder(LocalContext.current).data(data = dataState.profilePicture)
+        Builder(LocalContext.current)
+            .data(data = dataState.profilePicture)
             .placeholder(R.drawable.dummy_avatar)
             .error(R.drawable.dummy_avatar)
             .size(Size.ORIGINAL)
             .crossfade(true)
             .build()
+    )
+
+    val openCameraContract = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicturePreview(),
+        onResult = { image ->
+            dispatch(ProfileEvent.SubmitProfilePicture(image))
+        }
+    )
+    val openGalleryContract = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { imageUri ->
+            val image = imageUri?.getBitmap(ctx.contentResolver)
+            dispatch(ProfileEvent.SubmitProfilePicture(image))
+        }
     )
     with(appState) {
         hideTopAppBar()
@@ -108,6 +129,26 @@ internal fun ScreenProfile(
             TuduBottomNavigation(appState = appState)
         }
     }
+
+    DialogTakePicture(
+        show = state.showDialogTakePicture,
+        title = stringResource(R.string.text_title_dialog_take_picture_method),
+        dismiss = {
+            commit { copy(showDialogTakePicture = false) }
+        },
+        openCamera = {
+            runSuspend {
+                commit { copy(showDialogTakePicture = false) }
+                openCameraContract.launch()
+            }
+        },
+        openGallery = {
+            runSuspend {
+                commit { copy(showDialogTakePicture = false) }
+                openGalleryContract.launch("image/*")
+            }
+        }
+    )
 
     LaunchedEffect(key1 = this, block = {
         dispatch(ProfileEvent.GetProfile)
@@ -127,16 +168,14 @@ internal fun ScreenProfile(
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Box(
-                modifier = Modifier
-                    .size(
-                        120.dp
-                    )
-                    .clip(RoundedCornerShape(10.dp))
-                    .clickable {
-
-                    }
-            ) {
+            Box(modifier = Modifier
+                .size(
+                    120.dp
+                )
+                .clip(RoundedCornerShape(10.dp))
+                .clickable {
+                    commit { copy(showDialogTakePicture = true) }
+                }) {
                 Image(
                     painter = painterProfilePicture,
                     contentDescription = "",
@@ -201,11 +240,12 @@ internal fun ScreenProfile(
                         },
                         leadingIcon = {
                             Icon(
-                                imageVector = Outlined.MonetizationOn,
-                                contentDescription = ""
+                                imageVector = Outlined.MonetizationOn, contentDescription = ""
                             )
                         },
-                        onClick = { /*TODO*/ }
+                        onClick = {
+
+                        }
                     )
 
                     DropdownMenuItem(
@@ -218,12 +258,14 @@ internal fun ScreenProfile(
                                 contentDescription = ""
                             )
                         },
-                        onClick = { /*TODO*/ }
+                        onClick = {
+                        }
                     )
-
-
                 }
-                Icon(imageVector = Outlined.MoreVert, contentDescription = "")
+                Icon(
+                    imageVector = Outlined.MoreVert,
+                    contentDescription = ""
+                )
             }
 
         }
@@ -237,24 +279,24 @@ internal fun ScreenProfile(
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = dataState.displayName.ifEmpty { stringResource(R.string.text_user_display_name_placeholder) },
-                style = MaterialTheme.typography.headlineMedium.copy(
-                    fontWeight = FontWeight.Bold
-                )
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold
             )
             Text(
                 text = dataState.email.ifEmpty { stringResource(R.string.text_user_email_placeholder) },
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.tertiary
-                )
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.tertiary
             )
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(
+            modifier = Modifier
+                .height(20.dp)
+        )
         Row(
-            modifier = Modifier.padding(
-                horizontal = 16.dp
-            )
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
         ) {
             ButtonIcon(
                 fullWidth = true,
@@ -263,7 +305,10 @@ internal fun ScreenProfile(
                 onClick = {}
             )
         }
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(
+            modifier = Modifier
+                .height(20.dp)
+        )
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -272,69 +317,58 @@ internal fun ScreenProfile(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column() {
+            Column {
                 Text(
                     text = stringResource(R.string.text_total_task),
                 )
                 Text(
                     text = dataState.totalAllTask.toString(),
-                    style = MaterialTheme.typography.headlineSmall.copy(
-                        fontWeight = FontWeight.SemiBold
-                    )
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.SemiBold
                 )
             }
             Divider(
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier
-                    .fillMaxHeight(
-                        fraction = 0.6f
-                    )
+                    .fillMaxHeight(fraction = 0.6f)
                     .width(1.dp)
             )
-            Column(
-            ) {
+            Column {
                 Text(
                     text = stringResource(R.string.text_total_completed_task),
                 )
                 Text(
                     text = dataState.totalCompletedTask.toString(),
-                    style = MaterialTheme.typography.headlineSmall.copy(
-                        fontWeight = FontWeight.SemiBold
-                    )
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.SemiBold
                 )
             }
             Divider(
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier
-                    .fillMaxHeight(
-                        fraction = 0.6f
-                    )  //fill the max height
+                    .fillMaxHeight(fraction = 0.6f)
                     .width(1.dp)
             )
-            Column() {
-
-                Text(
-                    text = stringResource(R.string.text_total_todo)
-                )
+            Column {
+                Text(text = stringResource(R.string.text_total_todo))
                 Text(
                     text = dataState.totalUnCompletedTask.toString(),
-                    style = MaterialTheme.typography.headlineSmall.copy(
-                        fontWeight = FontWeight.SemiBold
-                    )
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.SemiBold
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(
+            modifier = Modifier
+                .height(10.dp)
+        )
         Column(
-            modifier = Modifier.padding(
-                horizontal = 20.dp
-            )
+            modifier = Modifier
+                .padding(horizontal = 20.dp)
         ) {
             BarChartView(
-                title = state.selectedDate
-                    .getPreviousWeek()
-                    .getDateUntil(state.selectedDate),
+                title = state.selectedDate.getPreviousWeek().getDateUntil(state.selectedDate),
                 items = dataState.chartData.items,
                 labels = dataState.chartData.labels,
                 onArrowClicked = {
@@ -342,17 +376,21 @@ internal fun ScreenProfile(
                 }
             )
         }
-
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(
+            modifier = Modifier
+                .height(20.dp)
+        )
         Text(
             text = stringResource(R.string.app_version, version()),
-            style = MaterialTheme.typography.labelLarge.copy(
-                color = MaterialTheme.colorScheme.surfaceVariant
-            ),
+            style = MaterialTheme.typography.labelLarge,
             textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.surfaceVariant,
             modifier = Modifier.fillMaxWidth()
         )
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(
+            modifier = Modifier
+                .height(20.dp)
+        )
     }
 
 }

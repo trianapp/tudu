@@ -1,5 +1,6 @@
 package app.trian.tudu.feature.dashboard.profile
 
+import android.graphics.Bitmap
 import android.os.Parcelable
 import androidx.compose.runtime.Immutable
 import app.trian.tudu.data.model.ChartModelData
@@ -12,14 +13,16 @@ import java.time.LocalTime
 @Immutable
 data class ProfileState(
     val showDropdownMoreOption:Boolean=false,
-    val selectedDate:LocalDate= LocalDate.now()
+    val selectedDate:LocalDate= LocalDate.now(),
 
+    val showDialogTakePicture:Boolean = false
 ): Parcelable
 
 @Parcelize
 @Immutable
 data class ProfileDataState(
     val profilePicture:String="",
+    val profileBitmap:Bitmap?=null,
     val displayName:String="",
     val email:String="",
     val totalAllTask:Int=0,
@@ -34,4 +37,6 @@ sealed class ProfileEvent{
     object GetProfile:ProfileEvent()
 
     class GetStatistic(val isNext:Boolean):ProfileEvent()
+
+    data class SubmitProfilePicture(val bitmap: Bitmap?):ProfileEvent()
 }

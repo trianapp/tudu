@@ -300,7 +300,6 @@ fun PreviewItemTaskRow() {
             taskName = "task pertama",
             taskDueDate = LocalDate.now().formatDate("dd MMM yy"),
             taskDone = false,
-            taskDoneAt = LocalDate.now().formatDate("dd MMM yy"),
             taskNote = "When I first tried to write a Compose integration UI test" +
                     " (that was when Jetpack Compose became stable, in July 2021), ",
             taskReminder = false,
@@ -312,7 +311,6 @@ fun PreviewItemTaskRow() {
             taskName = "task pertama",
             taskDueDate = LocalDate.now().formatDate("dd MMM yy"),
             taskDone = false,
-            taskDoneAt = LocalDate.now().formatDate("dd MMM yy"),
             taskNote = ". Hilt testing guide examples use the old View system so" +
                     " it can serve as a guidepost,",
             taskReminder = false,

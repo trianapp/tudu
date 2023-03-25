@@ -3,11 +3,14 @@ package app.trian.tudu.feature.dashboard.home
 
 import app.trian.tudu.R
 import app.trian.tudu.base.BaseViewModelData
+import app.trian.tudu.data.domain.category.GetListCategoryUseCase
+import app.trian.tudu.data.domain.task.CreateTaskUseCase
+import app.trian.tudu.data.domain.task.DeleteTaskUseCase
+import app.trian.tudu.data.domain.task.GetListTaskUseCase
+import app.trian.tudu.data.domain.task.UpdateTaskDoneUseCase
 import app.trian.tudu.data.model.TaskCategoryModel
 import app.trian.tudu.data.model.TaskModel
 import app.trian.tudu.data.model.TodoModel
-import app.trian.tudu.data.sdk.task.CategorySDK
-import app.trian.tudu.data.sdk.task.TaskSDK
 import app.trian.tudu.data.utils.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
@@ -16,8 +19,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val taskSDK: TaskSDK,
-    private val categorySDK: CategorySDK
+    private val getListTaskUseCase: GetListTaskUseCase,
+    private val createTaskUseCase: CreateTaskUseCase,
+    private val deleteTaskUseCase: DeleteTaskUseCase,
+    private val updateTaskDoneUseCase: UpdateTaskDoneUseCase,
+    private val getListCategoryUseCase: GetListCategoryUseCase
 ) : BaseViewModelData<HomeState, HomeDataState, HomeEvent>(HomeState(), HomeDataState()) {
     init {
         handleActions()
@@ -25,7 +31,7 @@ class HomeViewModel @Inject constructor(
 
     //region task
     private fun getListTask() = async {
-        taskSDK.getLisTask().collect {
+        getListTaskUseCase().collect {
             when (it) {
                 is Response.Error -> Unit
                 Response.Loading -> Unit
@@ -57,25 +63,16 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun saveTask() = async {
-        val taskId = UUID.randomUUID().toString()
-        val currentDateString = LocalDate.now().toString()
-        taskSDK.createNewTask(
+        createTaskUseCase(
             taskModel = TaskModel(
-                taskId = taskId,
                 taskReminder = uiState.value.hasDueTime,
-                taskNote = "",
                 taskName = uiState.value.taskName,
                 taskDueDate = uiState.value.dueDate?.toString().orEmpty(),
                 taskDueTime = uiState.value.dueTime?.toString().orEmpty(),
-                taskDone = false,
-                taskDoneAt = currentDateString,
-                createdAt = currentDateString,
-                updatedAt = currentDateString
+                taskDone = false
             ),
             taskCategoryModels = uiState.value.categories.map {
                 TaskCategoryModel(
-                    taskId = taskId,
-                    taskCategoryId = UUID.randomUUID().toString(),
                     categoryId = it.categoryId
                 )
             },
@@ -96,7 +93,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun deleteTask() = async {
-        taskSDK.deleteTask(uiState.value.taskId)
+        deleteTaskUseCase(uiState.value.taskId)
             .collect {
                 when (it) {
                     is Response.Error -> Unit
@@ -119,10 +116,9 @@ class HomeViewModel @Inject constructor(
         taskId: String,
         isDone: Boolean
     ) = async {
-        taskSDK.updateTaskDone(
+        updateTaskDoneUseCase(
             taskId = taskId,
-            isDone = isDone,
-            doneAt = LocalDate.now().toString()
+            taskDone = isDone
         )
             .collect {
                 when (it) {
@@ -140,7 +136,7 @@ class HomeViewModel @Inject constructor(
 
     //region category
     private fun getListCategory() = async {
-        categorySDK.getListCategory().collect {
+        getListCategoryUseCase().collect {
             when (it) {
                 is Response.Error -> Unit
                 Response.Loading -> Unit

@@ -2,20 +2,20 @@ package app.trian.tudu.feature.auth.signin
 
 import app.trian.tudu.R
 import app.trian.tudu.base.BaseViewModel
-import app.trian.tudu.data.sdk.auth.AuthSDK
+import app.trian.tudu.data.domain.user.SignInWithEmailAndPasswordUseCase
+import app.trian.tudu.data.domain.user.SignInWithGoogleUseCase
 import app.trian.tudu.data.utils.Response
 import app.trian.tudu.feature.dashboard.home.Home
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val authSDK: AuthSDK
+    private val signInWithEmailUseCase: SignInWithEmailAndPasswordUseCase,
+    private val signInWithGoogleUseCase: SignInWithGoogleUseCase
 ) : BaseViewModel<SignInState, SignInEvent>(SignInState()) {
     init {
         handleActions()
@@ -47,7 +47,6 @@ class SignInViewModel @Inject constructor(
                 hideLoading()
                 showSnackbar(result.message)
             }
-
             Response.Loading -> showLoading()
             is Response.Result -> {
                 hideLoading()
@@ -58,28 +57,14 @@ class SignInViewModel @Inject constructor(
     }
 
     private fun signInWithGoogle(result: Task<GoogleSignInAccount>?) = async {
-        if (result == null) {
-            showSnackbar("Cancel by provider")
-        } else {
-            val task = result.await()
-            authSDK.signInWithGoogle(
-                idToken = task.idToken,
-            ).catch { showSnackbar(it.message.orEmpty()) }
-                .collect(::handleResponse)
-        }
+        signInWithGoogleUseCase(result).collect(::handleResponse)
     }
 
     override fun handleActions() = onEvent { event ->
         when (event) {
             SignInEvent.SignInWithEmail -> validateData { email, password ->
-                authSDK
-                    .signInWithEmail(email, password)
-                    .catch {
-                        showSnackbar(it.message.orEmpty())
-                    }
-                    .collect(::handleResponse)
+                signInWithEmailUseCase(email, password).collect(::handleResponse)
             }
-
             is SignInEvent.SignInWithGoogle -> signInWithGoogle(event.result)
         }
     }

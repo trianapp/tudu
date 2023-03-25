@@ -1,10 +1,13 @@
 package app.trian.tudu.feature.category
 
 import app.trian.tudu.base.BaseViewModelData
+import app.trian.tudu.data.domain.category.CreateCategoryUseCase
+import app.trian.tudu.data.domain.category.DeleteCategoryUseCase
+import app.trian.tudu.data.domain.category.GetListCategoryUseCase
+import app.trian.tudu.data.domain.category.GetListCategoryWithCounterUseCase
+import app.trian.tudu.data.domain.task.UpdateCategoryUseCase
 import app.trian.tudu.data.model.CategoryModel
 import app.trian.tudu.data.model.CategoryWithCount
-import app.trian.tudu.data.sdk.task.CategorySDK
-import app.trian.tudu.data.sdk.task.TaskSDK
 import app.trian.tudu.data.utils.Response
 import app.trian.tudu.feature.category.CategoryEvent.SetCategoryName
 import app.trian.tudu.feature.category.CategoryEvent.ShowFormCategory
@@ -16,8 +19,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
-    private val taskSDK: TaskSDK,
-    private val categoryTaskSDK: CategorySDK
+    private val getListCategoryWithCounterUseCase: GetListCategoryWithCounterUseCase,
+    private val updateCategoryUseCase: UpdateCategoryUseCase,
+    private val createCategoryUseCase: CreateCategoryUseCase,
+    private val deleteCategoryUseCase: DeleteCategoryUseCase
 ) : BaseViewModelData<CategoryState, CategoryDataState, CategoryEvent>(CategoryState(), CategoryDataState()) {
     init {
         handleActions()
@@ -25,7 +30,7 @@ class CategoryViewModel @Inject constructor(
     }
 
     private fun getListCategory() = async {
-        categoryTaskSDK.getListCategoryWithCounter()
+        getListCategoryWithCounterUseCase()
             .collect {
                 when (it) {
                     is Response.Error -> Unit
@@ -38,11 +43,10 @@ class CategoryViewModel @Inject constructor(
     }
 
     private fun updateCategory() = async {
-        categoryTaskSDK.updateCategory(
+        updateCategoryUseCase(
             CategoryModel(
                 categoryId = uiState.value.categoryId,
-                categoryName = uiState.value.categoryName,
-                updatedAt = LocalDate.now().toString()
+                categoryName = uiState.value.categoryName
             )
         ).collect {
             when (it) {
@@ -63,30 +67,20 @@ class CategoryViewModel @Inject constructor(
     }
 
     private fun createCategory() = async {
-        categoryTaskSDK.createNewCategory(
-            CategoryModel(
-                categoryId = UUID.randomUUID().toString(),
-                categoryName = uiState.value.categoryName,
-                createdAt = LocalDate.now().toString(),
-                updatedAt = LocalDate.now().toString()
-            )
-        ).collect { response ->
-            when (response) {
-                is Response.Error -> Unit
-                Response.Loading -> Unit
-                is Response.Result -> {
-                    commit {
-                        copy(showFormCategory = false, categoryId = "", categoryName = "")
-                    }
-                    commitData {
-                        copy(
-                            category = category.plus(
-                                CategoryWithCount(
-                                    category = response.data,
-                                    count = 0
-                                )
+        with(uiState.value) {
+            createCategoryUseCase(categoryName = categoryName).collect { response ->
+                when (response) {
+                    is Response.Error -> Unit
+                    Response.Loading -> Unit
+                    is Response.Result -> {
+                        commit {
+                            copy(
+                                showFormCategory = false,
+                                categoryId = "",
+                                categoryName = ""
                             )
-                        )
+                        }
+                        getListCategory()
                     }
                 }
             }
@@ -94,7 +88,7 @@ class CategoryViewModel @Inject constructor(
     }
 
     private fun deleteCategory() = async {
-        categoryTaskSDK.deleteCategory(uiState.value.categoryId)
+        deleteCategoryUseCase(uiState.value.categoryId)
             .collect {
                 when (it) {
                     is Response.Error -> Unit
@@ -115,13 +109,7 @@ class CategoryViewModel @Inject constructor(
 
     override fun handleActions() = onEvent {
         when (it) {
-            SubmitCategory -> {
-                if (uiState.value.categoryId.isEmpty()) {
-                    createCategory()
-                } else {
-                    updateCategory()
-                }
-            }
+            SubmitCategory -> if (uiState.value.categoryId.isEmpty()) createCategory() else updateCategory()
             is ShowFormCategory -> commit { copy(showFormCategory = it.isShow) }
             is SetCategoryName -> commit { copy(categoryName = it.categoryName) }
             is CategoryEvent.SetUpdateCategory -> {

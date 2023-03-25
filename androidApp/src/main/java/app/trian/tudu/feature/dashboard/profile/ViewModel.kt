@@ -3,32 +3,36 @@ package app.trian.tudu.feature.dashboard.profile
 import app.trian.tudu.base.BaseViewModelData
 import app.trian.tudu.base.extensions.getNextWeek
 import app.trian.tudu.base.extensions.getPreviousWeek
-import app.trian.tudu.data.sdk.auth.AuthSDK
-import app.trian.tudu.data.sdk.task.TaskSDK
+import app.trian.tudu.data.domain.task.GetStatisticChartTaskUseCase
+import app.trian.tudu.data.domain.task.GetStatisticCountTaskUseCase
+import app.trian.tudu.data.domain.user.GetUserProfileUseCase
+import app.trian.tudu.data.domain.user.UpdateProfilePictureUseCase
 import app.trian.tudu.data.utils.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val authSDK: AuthSDK,
-    private val taskSDK: TaskSDK
+    private val getUserProfileUseCase: GetUserProfileUseCase,
+    private val updateProfilePictureUseCase: UpdateProfilePictureUseCase,
+    private val getStatisticCountTaskUseCase: GetStatisticCountTaskUseCase,
+    private val getStatisticChartTaskUseCase: GetStatisticChartTaskUseCase
 ) : BaseViewModelData<ProfileState, ProfileDataState, ProfileEvent>(ProfileState(), ProfileDataState()) {
     init {
         handleActions()
     }
 
     private fun getCurrentUser() = async {
-        authSDK.getCurrentUser().collect {
+        getUserProfileUseCase().collect {
                 when (it) {
                     is Response.Error -> Unit
                     Response.Loading -> Unit
                     is Response.Result -> {
                         commitData {
                             copy(
-                                displayName = it.data?.displayName.orEmpty(),
-                                email = it.data?.email.orEmpty(),
-                                profilePicture = it.data?.photoUrl?.toString().orEmpty()
+                                displayName = it.data.displayName.orEmpty(),
+                                email = it.data.email.orEmpty(),
+                                profilePicture = it.data.photoUrl.toString()
                             )
                         }
                     }
@@ -37,7 +41,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun getCountTask() = async {
-        taskSDK.getStatisticTask().collect {
+        getStatisticCountTaskUseCase().collect {
             when (it) {
                 is Response.Error -> Unit
                 Response.Loading -> Unit
@@ -53,7 +57,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun getChartData() = async {
-        taskSDK.getChartTask(uiState.value.selectedDate).collect {
+        getStatisticChartTaskUseCase(uiState.value.selectedDate).collect {
             when (it) {
                 is Response.Error -> Unit
                 Response.Loading -> Unit
@@ -84,7 +88,7 @@ class ProfileViewModel @Inject constructor(
             }
 
             is ProfileEvent.GetStatistic -> getStatistic(it.isNext)
-
+            is ProfileEvent.SubmitProfilePicture -> updateProfilePictureUseCase(it.bitmap)
         }
     }
 

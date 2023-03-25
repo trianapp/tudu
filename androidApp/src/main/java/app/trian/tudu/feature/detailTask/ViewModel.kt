@@ -2,14 +2,25 @@ package app.trian.tudu.feature.detailTask
 
 import androidx.lifecycle.SavedStateHandle
 import app.trian.tudu.base.BaseViewModelData
+import app.trian.tudu.data.domain.category.GetListCategoryByTaskUseCase
+import app.trian.tudu.data.domain.category.GetListCategoryUseCase
+import app.trian.tudu.data.domain.task.DeleteTaskUseCase
+import app.trian.tudu.data.domain.task.GetDetailTaskUseCase
+import app.trian.tudu.data.domain.task.UpdateTaskCategoryUseCase
+import app.trian.tudu.data.domain.task.UpdateTaskDoneUseCase
+import app.trian.tudu.data.domain.task.UpdateTaskDueDateUseCase
+import app.trian.tudu.data.domain.task.UpdateTaskDueTimeUseCase
+import app.trian.tudu.data.domain.task.UpdateTaskNameUseCase
+import app.trian.tudu.data.domain.task.UpdateTaskReminderUseCase
+import app.trian.tudu.data.domain.todo.CreateTodoUseCase
+import app.trian.tudu.data.domain.todo.DeleteTodoUseCase
+import app.trian.tudu.data.domain.todo.GetListTodoUseCase
+import app.trian.tudu.data.domain.todo.UpdateTodoDoneUseCase
+import app.trian.tudu.data.domain.todo.UpdateTodoNameUseCase
 import app.trian.tudu.data.model.CategoryModel
 import app.trian.tudu.data.model.TaskCategoryModel
-import app.trian.tudu.data.sdk.task.CategorySDK
-import app.trian.tudu.data.sdk.task.TaskSDK
-import app.trian.tudu.data.sdk.task.TodoSDK
 import app.trian.tudu.data.utils.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.UUID
@@ -18,21 +29,34 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailTaskViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val taskSDK: TaskSDK,
-    private val todoSDK: TodoSDK,
-    private val categorySDK: CategorySDK
+    private val getDetailTaskUseCase: GetDetailTaskUseCase,
+    private val getListCategoryUseCase: GetListCategoryUseCase,
+    private val updateTaskNameUseCase: UpdateTaskNameUseCase,
+    private val updateTaskDueDateUseCase: UpdateTaskDueDateUseCase,
+    private val updateTaskDueTimeUseCase: UpdateTaskDueTimeUseCase,
+    private val updateTaskReminderUseCase: UpdateTaskReminderUseCase,
+    private val updateTaskDoneUseCase: UpdateTaskDoneUseCase,
+    private val updateTaskCategoryUseCase: UpdateTaskCategoryUseCase,
+    private val deleteTaskUseCase: DeleteTaskUseCase,
+    private val getListCategoryByTaskUseCase: GetListCategoryByTaskUseCase,
+    private val getListTodoUseCase: GetListTodoUseCase,
+    private val createTodoUseCase: CreateTodoUseCase,
+    private val deleteTodoUseCase: DeleteTodoUseCase,
+    private val updateTodoNameUseCase: UpdateTodoNameUseCase,
+    private val updateTodoDoneUseCase: UpdateTodoDoneUseCase
 ) : BaseViewModelData<DetailTaskState, DetailTaskDataState, DetailTaskEvent>(DetailTaskState(), DetailTaskDataState()) {
     init {
         handleActions()
         getDetailTask()
     }
 
-    private fun getDetailTask(){
+    private fun getDetailTask() {
         getDetailTask(getTaskId())
         getTaskCategories(getTaskId())
         getTaskTodos(getTaskId())
         getListCategory()
     }
+
     private fun getTaskId() = savedStateHandle.get<String>(DetailTask.keyArgs).orEmpty()
 
     private fun checkIsEditBeforeNavigate() = async {
@@ -48,7 +72,7 @@ class DetailTaskViewModel @Inject constructor(
     }
 
     private fun getListCategory() = async {
-        categorySDK.getListCategory().collect {
+        getListCategoryUseCase().collect {
             when (it) {
                 is Response.Error -> Unit
                 Response.Loading -> Unit
@@ -64,27 +88,23 @@ class DetailTaskViewModel @Inject constructor(
     }
 
     private fun getDetailTask(taskId: String) = async {
-        taskSDK.getDetailTask(taskId)
-            .catch {
-                showSnackbar("Failed to load data")
-            }
-            .collect {
-                when (it) {
-                    is Response.Error -> showSnackbar(it.message)
-                    Response.Loading -> Unit
-                    is Response.Result -> commit {
-                        copy(
-                            taskId = it.data.taskId,
-                            taskName = it.data.taskName,
-                            taskNote = it.data.taskNote,
-                            taskDueDate = LocalDate.parse(it.data.taskDueDate.ifEmpty { LocalDate.now().toString() }),
-                            taskReminder = it.data.taskReminder,
-                            taskDueTime = LocalTime.parse(it.data.taskDueTime.ifEmpty { LocalTime.now().toString() })
-                        )
-                    }
-
+        getDetailTaskUseCase(taskId).collect {
+            when (it) {
+                is Response.Error -> showSnackbar(it.message)
+                Response.Loading -> Unit
+                is Response.Result -> commit {
+                    copy(
+                        taskId = it.data.taskId,
+                        taskName = it.data.taskName,
+                        taskNote = it.data.taskNote,
+                        taskDueDate = LocalDate.parse(it.data.taskDueDate.ifEmpty { LocalDate.now().toString() }),
+                        taskReminder = it.data.taskReminder,
+                        taskDueTime = LocalTime.parse(it.data.taskDueTime.ifEmpty { LocalTime.now().toString() })
+                    )
                 }
+
             }
+        }
     }
 
     private fun changeTaskName(taskName: String) = async {
@@ -107,13 +127,10 @@ class DetailTaskViewModel @Inject constructor(
 
     private fun updateTaskName(taskName: String) = async {
         commit { copy(taskName = taskName) }
-        taskSDK.updateTaskName(
+        updateTaskNameUseCase(
             taskId = getTaskId(),
-            taskName = taskName,
-            updatedAt = LocalDate.now().toString()
-        )
-            .catch { }
-            .collect {}
+            taskName = taskName
+        ).collect {}
     }
 
     private fun updateTaskDueDate(taskDueDate: LocalDate) = async {
@@ -123,13 +140,10 @@ class DetailTaskViewModel @Inject constructor(
                 showDialogPickDate = false
             )
         }
-        taskSDK.updateTaskDueDate(
+        updateTaskDueDateUseCase(
             taskId = getTaskId(),
-            taskDueDate = taskDueDate.toString(),
-            updatedAt = LocalDate.now().toString()
-        )
-            .catch { }
-            .collect {}
+            taskDueDate = taskDueDate,
+        ).collect {}
     }
 
     private fun updateTaskDueTime(taskDueTime: LocalTime) = async {
@@ -139,35 +153,26 @@ class DetailTaskViewModel @Inject constructor(
                 showDialogPickTime = false
             )
         }
-        taskSDK.updateTaskDueTime(
+        updateTaskDueTimeUseCase(
             taskId = getTaskId(),
-            taskDueTime = taskDueTime.toString(),
-            updatedAt = LocalDate.now().toString()
-        )
-            .catch { }
-            .collect {}
+            taskDueTime = taskDueTime
+        ).collect {}
     }
 
     private fun updateTaskReminder(taskReminder: Boolean) = async {
         commit { copy(taskReminder = taskReminder) }
-        taskSDK.updateTaskReminder(
+        updateTaskReminderUseCase(
             taskId = getTaskId(),
             taskReminder = taskReminder,
-            updatedAt = LocalDate.now().toString()
-        )
-            .catch { }
-            .collect {}
+        ).collect {}
     }
 
     private fun updateTaskDone(taskDone: Boolean) = async {
         commit { copy(taskDone = taskDone) }
-        taskSDK.updateTaskDone(
+        updateTaskDoneUseCase(
             taskId = getTaskId(),
-            isDone = taskDone,
-            doneAt = LocalDate.now().toString()
-        )
-            .catch { }
-            .collect {}
+            taskDone = taskDone
+        ).collect {}
     }
 
     private fun updateTaskCategory(categories: List<CategoryModel>) = async {
@@ -179,7 +184,7 @@ class DetailTaskViewModel @Inject constructor(
             )
         }
         commit { copy(showDialogPickCategory = false) }
-        taskSDK.updateTaskCategory(
+        updateTaskCategoryUseCase(
             getTaskId(),
             oldCategories = oldCategory,
             newCategories = categories.map {
@@ -189,11 +194,11 @@ class DetailTaskViewModel @Inject constructor(
                     taskCategoryId = UUID.randomUUID().toString()
                 )
             }
-        ).collect{}
+        ).collect {}
     }
 
     private fun deleteTask() = async {
-        taskSDK.deleteTask(getTaskId())
+        deleteTaskUseCase(getTaskId())
             .collect {
                 when (it) {
                     is Response.Error -> Unit
@@ -207,58 +212,49 @@ class DetailTaskViewModel @Inject constructor(
     }
 
     private fun getTaskCategories(taskId: String) = async {
-        categorySDK.getCategoryByTask(taskId)
-            .catch { }
-            .collect {
-                when (it) {
-                    is Response.Error -> Unit
-                    Response.Loading -> Unit
-                    is Response.Result -> commitData {
-                        copy(categories = it.data)
-                    }
+        getListCategoryByTaskUseCase(taskId).collect {
+            when (it) {
+                is Response.Error -> Unit
+                Response.Loading -> Unit
+                is Response.Result -> commitData {
+                    copy(categories = it.data)
                 }
             }
+        }
 
     }
 
     private fun getTaskTodos(taskId: String) = async {
-        todoSDK.getListTodoByTask(taskId)
-            .catch { }
-            .collect {
-                when (it) {
-                    is Response.Error -> Unit
-                    Response.Loading -> Unit
-                    is Response.Result -> commitData {
-                        copy(
-                            todos = it.data
-                        )
-                    }
+        getListTodoUseCase(taskId).collect {
+            when (it) {
+                is Response.Error -> Unit
+                Response.Loading -> Unit
+                is Response.Result -> commitData {
+                    copy(
+                        todos = it.data
+                    )
                 }
             }
+        }
     }
 
     private fun deleteTaskTodo(todoId: String) = async {
-        todoSDK.deleteTodo(todoId)
-            .catch { }
-            .collect {}
+        deleteTodoUseCase(todoId).collect {}
     }
 
     private fun createTaskTodo() = async {
-        todoSDK.createNewTodo(
+        createTodoUseCase(
             taskId = getTaskId(),
-            todoId = UUID.randomUUID().toString(),
-            todoName = "",
-            createdAt = LocalDate.now().toString()
-        )
-            .collect {
-                when (it) {
-                    is Response.Error -> Unit
-                    Response.Loading -> Unit
-                    is Response.Result -> {
-                        getTaskTodos(getTaskId())
-                    }
+            todoName = ""
+        ).collect {
+            when (it) {
+                is Response.Error -> Unit
+                Response.Loading -> Unit
+                is Response.Result -> {
+                    getTaskTodos(getTaskId())
                 }
             }
+        }
     }
 
     private fun updateTempTodoName(todoId: String, todoName: String) = async {
@@ -285,12 +281,10 @@ class DetailTaskViewModel @Inject constructor(
     }
 
     private fun updateTodoName(todoId: String, todoName: String) = async {
-        todoSDK.updateTodoName(
+        updateTodoNameUseCase(
             todoName = todoName,
             todoId = todoId,
-        )
-            .catch { }
-            .collect {}
+        ).collect {}
     }
 
     private fun updateTempTodoDone(todoId: String, todoDone: Boolean) = async {
@@ -317,11 +311,10 @@ class DetailTaskViewModel @Inject constructor(
     }
 
     private fun updateTodoDone(todoId: String, todoDone: Boolean) = async {
-        todoSDK.updateTodoDone(
-            todoDone = todoDone,
+        updateTodoDoneUseCase(
             todoId = todoId,
+            todoDone = todoDone
         )
-            .catch { }
             .collect {}
     }
 
@@ -346,7 +339,7 @@ class DetailTaskViewModel @Inject constructor(
     }
 
     private fun resetFormState() {
-        showSnackbar("Tsk has been saved!")
+        showSnackbar("Task has been saved!")
         commit {
             copy(
                 isUpdateTask = false,

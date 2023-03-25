@@ -7,8 +7,10 @@ import kotlinx.parcelize.Parcelize
 @Immutable
 @Parcelize
 data class ChangePasswordState(
-    var newPassword: String = "",
-    var confirmPassword: String = ""
+    val newPassword: String = "",
+    val confirmPassword: String = "",
+
+    val isLoading:Boolean=false
 ) : Parcelable
 
 @Immutable
