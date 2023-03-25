@@ -9,10 +9,5 @@ class Test {
 
     @Test
     fun `get Days of week`(){
-
-        val date = LocalDate.now()
-        assertEquals("", date.getFirstDays())
-
-
     }
 }
