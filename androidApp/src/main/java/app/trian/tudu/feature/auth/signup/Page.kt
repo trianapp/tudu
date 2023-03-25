@@ -65,6 +65,7 @@ internal fun ScreenSignUp(
     )
     val uiState by uiState.collectAsState()
     with(state) {
+        hideBottomAppBar()
         setupTopAppBar {
             AppbarAuth(
                 onBackPressed = {

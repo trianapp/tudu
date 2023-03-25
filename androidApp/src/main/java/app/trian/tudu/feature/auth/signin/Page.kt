@@ -79,6 +79,7 @@ internal fun ScreenSignIn(
     )
 
     with(appState) {
+        hideBottomAppBar()
         setupTopAppBar {
             AppbarAuth(
                 onBackPressed = {
