@@ -7,7 +7,6 @@
 
 package app.trian.tudu.base
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.defaultMinSize
@@ -23,12 +22,11 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.trian.tudu.ApplicationState
-import app.trian.tudu.theme.MyApplicationTheme
 import app.trian.tudu.rememberApplicationState
+import app.trian.tudu.theme.MyApplicationTheme
 
 @Composable
 fun BaseMainApp(

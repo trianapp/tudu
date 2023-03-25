@@ -302,7 +302,7 @@ internal fun ScreenProfile(
                             )
                         },
                         onClick = {
-
+                            showSnackbar("Coming soon")
                         }
                     )
 
@@ -317,6 +317,7 @@ internal fun ScreenProfile(
                             )
                         },
                         onClick = {
+                            dispatch(ProfileEvent.SignOut)
                         }
                     )
                 }

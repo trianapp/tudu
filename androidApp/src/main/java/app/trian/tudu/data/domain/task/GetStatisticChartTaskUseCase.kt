@@ -1,6 +1,5 @@
 package app.trian.tudu.data.domain.task
 
-import app.trian.tudu.base.extensions.getFirstDays
 import app.trian.tudu.data.model.ChartModelData
 import app.trian.tudu.data.utils.Response
 import app.trian.tudu.sqldelight.Database

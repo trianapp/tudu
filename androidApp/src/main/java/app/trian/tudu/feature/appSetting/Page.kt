@@ -5,14 +5,12 @@ import android.os.Build
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material.icons.outlined.Doorbell
 import androidx.compose.material.icons.outlined.Feedback
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.QuestionMark
 import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material.icons.outlined.Verified
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
