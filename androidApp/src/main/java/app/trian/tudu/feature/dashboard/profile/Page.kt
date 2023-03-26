@@ -331,7 +331,7 @@ internal fun ScreenProfile(
                         onClick = {
                             commit {
                                 copy(
-                                    showDialogSignOutConfirmation = false,
+                                    showDialogSignOutConfirmation = true,
                                     showDropdownMoreOption = false
                                 )
                             }

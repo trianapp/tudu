@@ -25,8 +25,8 @@ android {
         applicationId = AppConfig.applicationId
         minSdk = 24
         targetSdk = 33
-        versionCode = 37
-        versionName = "2.0.202303261516"
+        versionCode = 38
+        versionName = "2.0.202303261616"
         multiDexEnabled = true
         vectorDrawables {
             useSupportLibrary = true
@@ -87,6 +87,7 @@ android {
 dependencies {
     coreLibraryDesugaring(DesugarJdkLibs.desugarJdkLib)
 
+    implementation ("com.google.android.material:material:1.8.0")
     implementation(AndroidX.Core.coreKtx)
     implementation(AndroidX.Lifecycle.runtimeLifecycleKtx)
     implementation(AndroidX.Activity.activityCompose)
