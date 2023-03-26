@@ -1,0 +1,92 @@
+CREATE TABLE IF NOT EXISTS Task(
+    taskId TEXT NOT NULL PRIMARY KEY,
+    taskName TEXT NOT NULL,
+    taskDueDate TEXT,
+    taskDueTime TEXT,
+    taskDone INTEGER,
+    taskReminder INTEGER,
+    taskNote TEXT,
+    createdAt TEXT,
+    updatedAt TEXT
+);
+
+getTaskById:
+SELECT *
+FROM Task
+WHERE taskId=:taskId;
+
+getListTask:
+SELECT *
+FROM Task
+ORDER BY Datetime(createdAt) DESC;
+
+getListByDueDate:
+SELECT *
+FROM Task
+WHERE Date(taskDueDate)
+BETWEEN  Date(?) AND Date(?)
+ORDER BY taskDueTime ASC;
+
+insertTask:
+INSERT INTO Task(
+    taskId,
+    taskName,
+    taskNote,
+    taskDueDate,
+    taskDueTime,
+    taskDone,
+    taskReminder,
+    createdAt,
+    updatedAt
+) VALUES (?,?,?,?,?,?,?,?,?);
+
+updateTaskName:
+UPDATE Task
+SET
+    taskName=?,
+    updatedAt=?
+WHERE taskId=?;
+
+updateTaskNote:
+UPDATE Task
+SET
+    taskNote=?,
+    updatedAt=?
+WHERE taskId=?;
+
+updateTaskDueDate:
+UPDATE Task
+SET
+    taskDueDate=?,
+    updatedAt=?
+WHERE taskId=?;
+
+updateTaskDueTime:
+UPDATE Task
+SET
+    taskDueTime=?,
+    updatedAt=?
+WHERE taskId=?;
+
+updateTaskReminder:
+UPDATE Task
+SET
+    taskReminder=?,
+    updatedAt=?
+WHERE taskId=?;
+
+updateTaskToDone:
+UPDATE Task
+SET
+    taskDone=?,
+    updatedAt=?
+WHERE taskId=?;
+
+deleteTask:
+DELETE
+FROM Task
+WHERE taskId=?;
+
+clearTask:
+DELETE
+FROM Task;

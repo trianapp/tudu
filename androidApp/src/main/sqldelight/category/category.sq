@@ -1,0 +1,40 @@
+CREATE TABLE IF NOT EXISTS Category (
+    categoryId TEXT NOT NULL PRIMARY KEY,
+    categoryName TEXT NOT NULL,
+    createdAt TEXT NOT NULL,
+    updatedAt TEXT NOT NULL
+);
+
+getById:
+SELECT *
+FROM Category
+WHERE categoryId=?;
+
+getListCategory:
+SELECT *
+FROM Category
+ORDER BY Datetime(createdAt) DESC;
+
+insertCategory:
+INSERT INTO Category(
+    categoryId,
+    categoryName,
+    createdAt,
+    updatedAt
+)
+VALUES (?,?,?,?);
+
+updateCategory:
+UPDATE Category
+SET
+  categoryName =?,
+  updatedAt=?
+WHERE categoryId=?;
+
+deleteCategory:
+DELETE
+FROM Category
+WHERE categoryId=?;
+
+clearCategory:
+DELETE FROM Category;

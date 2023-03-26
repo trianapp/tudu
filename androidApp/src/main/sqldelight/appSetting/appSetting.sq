@@ -1,0 +1,34 @@
+CREATE TABLE IF NOT EXISTS AppSetting(
+    settingId TEXT NOT NULL PRIMARY KEY,
+    theme TEXT NOT NULL,
+    lastSync TEXT NOT NULL,
+    dateFormat TEXT,
+    timeFormat TEXT,
+    createdAt TEXT NOT NULL,
+    updatedAt TEXT NOT NULL
+);
+
+getAppSetting:
+SELECT *
+FROM AppSetting
+WHERE settingId=:userId;
+
+insertSetting:
+INSERT INTO AppSetting(
+    settingId,
+    theme,
+    lastSync,
+    dateFormat,
+    timeFormat,
+    createdAt,
+    updatedAt
+) VALUES (?,?,?,?,?,?,?);
+
+updateSetting:
+UPDATE AppSetting
+SET theme=?,
+    lastSync=?,
+    dateFormat=?,
+    timeFormat=?,
+    updatedAt=?
+WHERE settingId=?;
