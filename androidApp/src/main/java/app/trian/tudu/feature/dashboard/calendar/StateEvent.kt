@@ -17,8 +17,6 @@ import java.time.LocalTime
 data class CalendarState(
     var selectedDate: LocalDate = LocalDate.now(),
     override val showDialogPickCategory: Boolean=false,
-    override val showDialogAddDate: Boolean=false,
-    override val showDialogAddTime: Boolean=false,
     override val hasCategory: Boolean=false,
     override val hasDueDate: Boolean=false,
     override val hasDueTime: Boolean=false,

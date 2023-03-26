@@ -24,8 +24,6 @@ data class DetailTaskState(
     val taskDone:Boolean=false,
 
     val showDialogPickCategory: Boolean = false,
-    val showDialogPickTime: Boolean = false,
-    val showDialogPickDate: Boolean = false,
     val showDialogDeleteConfirmation: Boolean = false
 ) : Parcelable
 
