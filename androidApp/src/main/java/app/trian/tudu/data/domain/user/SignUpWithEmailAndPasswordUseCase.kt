@@ -20,19 +20,22 @@ class SignUpWithEmailAndPasswordUseCase @Inject constructor(
         password: String
     ): Flow<Response<FirebaseUser>> = flow {
         emit(Response.Loading)
+        try {
+            val authenticate = auth.createUserWithEmailAndPassword(
+                email,
+                password
+            ).await()
 
-        val authenticate = auth.createUserWithEmailAndPassword(
-            email,
-            password
-        ).await()
-
-        val user = auth.currentUser
-        val profileChangeRequest = userProfileChangeRequest {
-            this.displayName = displayName
+            val user = auth.currentUser
+            val profileChangeRequest = userProfileChangeRequest {
+                this.displayName = displayName
+            }
+            user?.updateProfile(profileChangeRequest)
+            user?.sendEmailVerification()
+            auth.signOut()
+            emit(Response.Result(authenticate.user!!))
+        } catch (e: Exception) {
+            emit(Response.Error(e.message.orEmpty()))
         }
-        user?.updateProfile(profileChangeRequest)
-        user?.sendEmailVerification()
-        auth.signOut()
-        emit(Response.Result(authenticate.user!!))
     }.flowOn(Dispatchers.IO)
 }
