@@ -1,5 +1,6 @@
 @file:Suppress("UnstableApiUsage")
-
+import java.util.Properties
+import java.io.FileInputStream
 
 plugins {
     id("com.android.application")
@@ -12,6 +13,10 @@ plugins {
     kotlin("android")
     kotlin("kapt")
 }
+
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
 android {
     namespace = AppConfig.nameSpace
@@ -44,29 +49,23 @@ android {
     }
     buildTypes {
         getByName("release") {
-            buildConfigField(
-                "String",
-                "BASE_URL",
-                "\"${findProperty("BASE_URL").toString()}\""
-            )
-            isMinifyEnabled = true
+            isShrinkResources = true
+            isMinifyEnabled=true
+            isDebuggable=false
         }
 
         getByName("debug") {
-            buildConfigField(
-                "String",
-                "BASE_URL",
-                "\"${findProperty("BASE_URL_DEV").toString()}\""
-            )
             isDebuggable = true
         }
     }
+
     signingConfigs {
         create("release") {
-            keyAlias = findProperty("KEY_ALIAS").toString()
-            keyPassword = findProperty("KEY_PASSWORD").toString()
-            storeFile = file(findProperty("STORE_PATH").toString())
-            storePassword = findProperty("STORE_PASSWORD").toString()
+            val filePath = keystoreProperties.getProperty("storeFile")
+            keyAlias = keystoreProperties.getProperty("keyAlias")
+            keyPassword = keystoreProperties.getProperty("keyPassword")
+            storeFile = file(filePath)
+            storePassword = keystoreProperties.getProperty("storePassword")
         }
     }
     compileOptions {
