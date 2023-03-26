@@ -25,8 +25,8 @@ android {
         applicationId = AppConfig.applicationId
         minSdk = 24
         targetSdk = 33
-        versionCode = 32
-        versionName = "2.0"
+        versionCode = 34
+        versionName = "2.0.202303261449"
         multiDexEnabled = true
         vectorDrawables {
             useSupportLibrary = true
@@ -47,17 +47,7 @@ android {
         baseline = file("lint-baseline.xml")
         abortOnError = false
     }
-    buildTypes {
-        getByName("release") {
-            isShrinkResources = true
-            isMinifyEnabled=true
-            isDebuggable=false
-        }
 
-        getByName("debug") {
-            isDebuggable = true
-        }
-    }
 
     signingConfigs {
         create("release") {
@@ -66,6 +56,14 @@ android {
             keyPassword = keystoreProperties.getProperty("keyPassword")
             storeFile = file(filePath)
             storePassword = keystoreProperties.getProperty("storePassword")
+        }
+    }
+    buildTypes {
+        getByName("release") {
+            signingConfig = signingConfigs.getByName("release")
+            isShrinkResources = true
+            isMinifyEnabled=true
+            isDebuggable=false
         }
     }
     compileOptions {
@@ -87,7 +85,6 @@ android {
 }
 
 dependencies {
-//    implementation(project(":shared"))
     coreLibraryDesugaring(DesugarJdkLibs.desugarJdkLib)
 
     implementation(AndroidX.Core.coreKtx)
