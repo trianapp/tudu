@@ -36,7 +36,7 @@ platform :android do
     gradle(task: "clean bundleRelease")
     upload_to_play_store(
         track: "alpha",
-        release_status: "draft"
+        release_status: "completed"
      )
   end
 end
