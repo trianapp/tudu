@@ -65,16 +65,17 @@ import app.trian.tudu.base.BaseMainApp
 import app.trian.tudu.base.UIWrapper
 import app.trian.tudu.base.extensions.hideKeyboard
 import app.trian.tudu.components.DialogConfirmation
-import app.trian.tudu.components.DialogDatePicker
 import app.trian.tudu.components.DialogPickCategory
-import app.trian.tudu.components.DialogTimePicker
 import app.trian.tudu.components.ItemTodo
 import app.trian.tudu.feature.inputNote.InputNote
 import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.MainAxisAlignment
 import com.google.accompanist.flowlayout.SizeMode
-import java.time.LocalDate
+import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import com.maxkeppeler.sheets.date_time.DateTimeDialog
+import com.maxkeppeler.sheets.date_time.models.DateTimeConfig
+import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 
 object DetailTask {
     const val routeName = "DetailTask"
@@ -112,6 +113,8 @@ internal fun ScreenDetailTask(
     val visibleTitle by remember {
         derivedStateOf { lazyState.firstVisibleItemIndex > 1 }
     }
+    val datePickerUseCase = rememberUseCaseState()
+    val timPickerUseCase = rememberUseCaseState()
 
     with(appState) {
         setupTopAppBar {
@@ -160,8 +163,8 @@ internal fun ScreenDetailTask(
                         shape = RoundedCornerShape(8.dp)
                     ) {
                         Text(
-                            text = if(state.taskDone) "Undone" else "Done",
-                            color =MaterialTheme.colorScheme.primary
+                            text = if (state.taskDone) "Undone" else "Done",
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
                 },
@@ -186,30 +189,19 @@ internal fun ScreenDetailTask(
             dispatch(DetailTaskEvent.DeleteTask)
         }
     )
-    DialogTimePicker(
-        show = state.showDialogPickTime,
-        currentSelectedTime = state.taskDueTime,
-        onDismiss = {
-            commit {
-                copy(
-                    showDialogPickTime = false,
-                )
-            }
-        },
-        onSubmit = {
-            dispatch(DetailTaskEvent.UpdateTaskDueTime(it))
-        }
-    )
-
-    DialogDatePicker(
-        minDate= LocalDate.now(),
-        show = state.showDialogPickDate,
-        currentSelectedDate =state.taskDueDate,
-        onDismiss = {
-            commit { copy(showDialogPickDate = false) }
-        },
-        onSubmit = {
+    DateTimeDialog(
+        state = datePickerUseCase,
+        selection = DateTimeSelection.Date {
             dispatch(DetailTaskEvent.UpdateTaskDueDate(it))
+        },
+        config = DateTimeConfig(
+
+        )
+    )
+    DateTimeDialog(
+        state = timPickerUseCase,
+        selection = DateTimeSelection.Time {
+            dispatch(DetailTaskEvent.UpdateTaskDueTime(it))
         }
     )
     DialogPickCategory(
@@ -362,11 +354,7 @@ internal fun ScreenDetailTask(
                     Spacer(modifier = Modifier.height(16.dp))
                     ListItem(
                         modifier = Modifier.clickable {
-                            commit {
-                                copy(
-                                    showDialogPickDate = true
-                                )
-                            }
+                            datePickerUseCase.show()
                         },
                         leadingContent = {
                             Icon(
@@ -397,11 +385,7 @@ internal fun ScreenDetailTask(
                 item {
                     ListItem(
                         modifier = Modifier.clickable {
-                            commit {
-                                copy(
-                                    showDialogPickTime = true
-                                )
-                            }
+                            timPickerUseCase.show()
                         },
                         leadingContent = {
                             Icon(

@@ -94,7 +94,7 @@ class DetailTaskViewModel @Inject constructor(
     }
 
     private fun updateTaskDueDate(taskDueDate: LocalDate) = async {
-        commit { copy(taskDueDate = taskDueDate, showDialogPickDate = false) }
+        commit { copy(taskDueDate = taskDueDate) }
         updateTaskDueDateUseCase(
             taskId = getTaskId(),
             taskDueDate = taskDueDate
@@ -102,7 +102,7 @@ class DetailTaskViewModel @Inject constructor(
     }
 
     private fun updateTaskDueTime(taskDueTime: LocalTime) = async {
-        commit { copy(taskDueTime = taskDueTime, showDialogPickTime = false) }
+        commit { copy(taskDueTime = taskDueTime) }
         updateTaskDueTimeUseCase(
             taskId = getTaskId(),
             taskDueTime = taskDueTime
@@ -264,8 +264,6 @@ class DetailTaskViewModel @Inject constructor(
     private fun resetFormState() {
         commit {
             copy(
-                showDialogPickTime = false,
-                showDialogPickDate = false,
                 showDialogPickCategory = false,
                 showDialogDeleteConfirmation = false
             )

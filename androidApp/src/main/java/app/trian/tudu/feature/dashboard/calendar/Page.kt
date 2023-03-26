@@ -42,12 +42,14 @@ import app.trian.tudu.base.extensions.addOnBottomSheetStateChangeListener
 import app.trian.tudu.base.extensions.hideKeyboard
 import app.trian.tudu.base.extensions.toReadableDate
 import app.trian.tudu.components.BottomSheetInputNewTask
-import app.trian.tudu.components.DialogDatePicker
 import app.trian.tudu.components.DialogPickCategory
-import app.trian.tudu.components.DialogTimePicker
 import app.trian.tudu.components.ItemCalendar
 import app.trian.tudu.components.ItemTaskCalendar
 import app.trian.tudu.components.TuduBottomNavigation
+import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import com.maxkeppeler.sheets.date_time.DateTimeDialog
+import com.maxkeppeler.sheets.date_time.models.DateTimeConfig
+import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 import io.github.boguszpawlowski.composecalendar.WeekCalendar
 import io.github.boguszpawlowski.composecalendar.header.WeekState
 import io.github.boguszpawlowski.composecalendar.rememberSelectableWeekCalendarState
@@ -85,6 +87,8 @@ internal fun ScreenCalendar(
             true
         }
     )
+    val datePickerUseCase = rememberUseCaseState()
+    val timPickerUseCase = rememberUseCaseState()
 
 
     val ctx = LocalContext.current
@@ -137,10 +141,10 @@ internal fun ScreenCalendar(
                     commit { copy(showDialogPickCategory = true) }
                 },
                 onAddDate = {
-                    commit { copy(showDialogAddDate = true) }
+                    datePickerUseCase.show()
                 },
                 onAddTime = {
-                    commit { copy(showDialogAddTime = true) }
+                    timPickerUseCase.show()
                 },
                 onAddTodo = {
                     dispatch(CalendarEvent.AddPlainTodo(""))
@@ -184,30 +188,25 @@ internal fun ScreenCalendar(
             commit { copy(showDialogPickCategory = false) }
         }
     )
-    DialogDatePicker(
-        show = state.showDialogAddDate,
-        onDismiss = {
-            commit { copy(showDialogAddDate = false) }
-        },
-        onSubmit = {
+    DateTimeDialog(
+        state = datePickerUseCase,
+        selection = DateTimeSelection.Date {
             commit {
                 copy(
-                    showDialogAddDate = false,
                     dueDate = it,
                     hasDueDate = true
                 )
             }
-        }
-    )
-    DialogTimePicker(
-        show = state.showDialogAddTime,
-        onDismiss = {
-            commit { copy(showDialogAddTime = false) }
         },
-        onSubmit = {
+        config = DateTimeConfig(
+
+        )
+    )
+    DateTimeDialog(
+        state = timPickerUseCase,
+        selection = DateTimeSelection.Time {
             commit {
                 copy(
-                    showDialogAddTime = false,
                     dueTime = it,
                     hasDueTime = true
                 )
