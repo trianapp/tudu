@@ -25,11 +25,15 @@ class SignInWithGoogleUseCase @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     private suspend fun process(idToken: String): Response<FirebaseUser> {
-        val user = auth.signInWithCredential(
-            GoogleAuthProvider.getCredential(idToken, null)
-        ).await().user
+        return try {
+            val user = auth.signInWithCredential(
+                GoogleAuthProvider.getCredential(idToken, null)
+            ).await().user
 
-        return if (user == null) Response.Error("")
-        else Response.Result(user)
+            if (user == null) Response.Error("")
+            else Response.Result(user)
+        } catch (e: Exception) {
+            Response.Error(e.message.orEmpty())
+        }
     }
 }

@@ -11,15 +11,20 @@ import javax.inject.Inject
 
 class SignOutUseCase @Inject constructor(
     private val auth: FirebaseAuth,
-    private val db:Database
+    private val db: Database
 ) {
-    operator fun invoke():Flow<Response<Boolean>> = flow{
+    operator fun invoke(): Flow<Response<Boolean>> = flow {
         emit(Response.Loading)
-        auth.signOut()
-        db.taskQueries.clearTask()
-        db.taskCategoryQueries.clearTaskCategory()
-        db.todoQueries.clearTodo()
-        db.categoryQueries.clearCategory()
-        emit(Response.Result(true))
+        try {
+            auth.signOut()
+            db.taskQueries.clearTask()
+            db.taskCategoryQueries.clearTaskCategory()
+            db.todoQueries.clearTodo()
+            db.categoryQueries.clearCategory()
+            emit(Response.Result(true))
+        } catch (e: Exception) {
+            emit(Response.Error(e.message.orEmpty()))
+        }
+
     }.flowOn(Dispatchers.IO)
 }

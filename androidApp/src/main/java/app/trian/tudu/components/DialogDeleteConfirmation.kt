@@ -88,17 +88,15 @@ fun ScreenDialogDeleteConfirmation(
                 TextButton(onClick = { onCancel() }) {
                     Text(
                         text = stringResource(id = R.string.btn_cancel),
-                        style = MaterialTheme.typography.displayMedium.copy(
-                            color=MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
-                        )
+                        style = MaterialTheme.typography.bodyMedium,
+                        color=MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
                     )
                 }
                 TextButton(onClick = { onConfirm() }) {
                     Text(
                         text = stringResource(R.string.btn_delete),
-                        style = MaterialTheme.typography.displayMedium.copy(
-                            color=MaterialTheme.colorScheme.primary
-                        )
+                        style = MaterialTheme.typography.bodyMedium,
+                        color=MaterialTheme.colorScheme.primary
                     )
                 }
             }

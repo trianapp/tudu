@@ -12,14 +12,19 @@ import javax.inject.Inject
 
 class SignInWithEmailAndPasswordUseCase @Inject constructor(private val auth: FirebaseAuth) {
     operator fun invoke(email: String, password: String): Flow<Response<FirebaseUser>> = flow {
-        val user = auth.signInWithEmailAndPassword(
-            email, password
-        ).await().user
+        try {
+            val user = auth.signInWithEmailAndPassword(
+                email, password
+            ).await().user
 
-        when {
-            user == null -> emit(Response.Error(""))
-            user.isEmailVerified -> emit(Response.Error(""))
-            else -> emit(Response.Result(user))
+            when {
+                user == null -> emit(Response.Error(""))
+                user.isEmailVerified -> emit(Response.Error(""))
+                else -> emit(Response.Result(user))
+            }
+        } catch (e: Exception) {
+            emit(Response.Error(e.message.orEmpty()))
         }
+
     }.flowOn(Dispatchers.IO)
 }
