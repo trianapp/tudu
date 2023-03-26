@@ -163,10 +163,6 @@ class ApplicationState internal constructor(
         }
     }
 
-    fun reset() {
-        bottomAppBar = CreateContent { }
-        currentRoute = Splash.routeName
-    }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -179,7 +175,7 @@ fun rememberApplicationState(
 ): ApplicationState {
     val state = rememberModalBottomSheetState(
         initialValue = Hidden,
-        confirmStateChange = {
+        confirmValueChange={
             event.changeBottomSheetState(it)
             true
         }
