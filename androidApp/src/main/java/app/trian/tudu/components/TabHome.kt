@@ -79,7 +79,14 @@ fun TabBarHome(
 fun PreviewTabHome() {
     BaseMainApp {
         TabBarHome(
-            tabData = listOf()
+            tabData = listOf(
+                CategoryModel(
+                    categoryName = "All"
+                ),
+                CategoryModel(
+                    categoryName = "Kerja"
+                )
+            )
         )
     }
 }

@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import java.time.LocalDateTime
 import java.time.LocalTime
 import javax.inject.Inject
 
@@ -20,7 +21,7 @@ class UpdateTaskReminderUseCase @Inject constructor(
         db.taskQueries.updateTaskReminder(
             taskId = taskId,
             taskReminder = if (taskReminder) 1 else 0,
-            updatedAt = LocalTime.now().toString()
+            updatedAt = LocalDateTime.now().toString()
         )
         emit(Response.Result(true))
     }.flowOn(Dispatchers.Default)

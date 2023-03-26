@@ -13,7 +13,7 @@ import app.trian.tudu.data.model.TaskModel
 import app.trian.tudu.data.model.TodoModel
 import app.trian.tudu.data.utils.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.UUID
 import javax.inject.Inject
 
@@ -46,12 +46,12 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun filterTask(categoryId: String) {
+    private fun filterTask(categoryId: String) = asyncWithData {
         val filtered = if (categoryId.isEmpty() || categoryId == "all") {
-            uiDataState.value.task
+            task
         } else {
-            uiDataState.value.task.filter {
-                categoryId in it.category.map { it.categoryId }
+            task.filter {
+                categoryId in it.category.map { ct -> ct.categoryId }
             }
         }
 
@@ -154,8 +154,8 @@ class HomeViewModel @Inject constructor(
 
     //region todo
 
-    private fun createNewPlainTodo(todoName: String) = async {
-        if (uiState.value.todos.size <= 8) {
+    private fun createNewPlainTodo(todoName: String) = asyncWithState {
+        if (todos.size <= 8) {
             commit {
                 copy(
                     todos = todos.toMutableList().plus(
@@ -163,7 +163,7 @@ class HomeViewModel @Inject constructor(
                             todoId = UUID.randomUUID().toString(),
                             todoDone = false,
                             todoName = todoName,
-                            createdAt = LocalDate.now().toString()
+                            createdAt = LocalDateTime.now().toString()
                         )
                     )
                 )
@@ -173,46 +173,37 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun updatePlainTodo(todo: TodoModel) = async {
-        val find = uiState
-            .value
-            .todos
+    private fun updatePlainTodo(todoModel: TodoModel) = asyncWithState {
+        val findIndex = todos
             .withIndex()
-            .first { (_, value) -> value.todoId == todo.todoId }
+            .first { (_, value) -> value.todoId == todoModel.todoId }
             .index
 
-        if (find != -1) {
-            val td = uiState.value.todos.toMutableList()
-            td[find] = todo
+        if (findIndex != -1) {
+            val todo = todos.toMutableList()
+            todo[findIndex] = todoModel
             commit {
                 copy(
-                    todos = td
+                    todos = todo
                 )
             }
         }
     }
 
-    private fun deletePlainTodo(todoId: String) = async {
-        val find = uiState
-            .value
-            .todos
+    private fun deletePlainTodo(todoId: String) = asyncWithState {
+        val findIndex = todos
             .withIndex()
             .first { (_, value) -> value.todoId == todoId }
             .index
 
-        if (find != -1) {
-            val td = uiState.value.todos.toMutableList()
-            td.removeAt(find)
-            commit {
-                copy(
-                    todos = td
-                )
-            }
+        if (findIndex != -1) {
+            val todo = todos.toMutableList()
+            todo.removeAt(findIndex)
+            commit { copy(todos = todo) }
         }
     }
 
     //end region
-
 
     override fun handleActions() = onEvent {
         when (it) {

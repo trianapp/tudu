@@ -11,6 +11,7 @@ import app.trian.tudu.data.model.TodoModel
 import app.trian.tudu.data.utils.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.UUID
 import javax.inject.Inject
 
@@ -95,7 +96,7 @@ class CalendarViewModel @Inject constructor(
                             todoId = UUID.randomUUID().toString(),
                             todoDone = false,
                             todoName = todoName,
-                            createdAt = LocalDate.now().toString()
+                            createdAt = LocalDateTime.now().toString()
                         )
                     )
                 )

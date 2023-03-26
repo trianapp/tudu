@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.UUID
 import javax.inject.Inject
 
@@ -20,8 +21,8 @@ class CreateCategoryUseCase @Inject constructor(
         db.categoryQueries.insertCategory(
             categoryName = categoryName,
             categoryId = UUID.randomUUID().toString(),
-            createdAt = LocalDate.now().toString(),
-            updatedAt = LocalDate.now().toString()
+            createdAt = LocalDateTime.now().toString(),
+            updatedAt = LocalDateTime.now().toString()
         )
         emit(Response.Result(true))
     }.flowOn(Dispatchers.Default)

@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import java.time.LocalDate
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 class UpdateTaskNameUseCase @Inject constructor(
@@ -20,7 +21,7 @@ class UpdateTaskNameUseCase @Inject constructor(
         db.taskQueries.updateTaskName(
             taskId = taskId,
             taskName = taskName,
-            updatedAt = LocalDate.now().toString()
+            updatedAt = LocalDateTime.now().toString()
         )
         emit(Response.Result(true))
     }.flowOn(Dispatchers.Default)

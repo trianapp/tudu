@@ -160,9 +160,8 @@ internal fun ScreenDetailTask(
                         shape = RoundedCornerShape(8.dp)
                     ) {
                         Text(
-                            text = "Done",
-                            color = if (state.taskDone) MaterialTheme.colorScheme.primary
-                            else MaterialTheme.colorScheme.onSurface,
+                            text = if(state.taskDone) "Undone" else "Done",
+                            color =MaterialTheme.colorScheme.primary
                         )
                     }
                 },
@@ -199,7 +198,6 @@ internal fun ScreenDetailTask(
         },
         onSubmit = {
             dispatch(DetailTaskEvent.UpdateTaskDueTime(it))
-
         }
     )
 
@@ -208,11 +206,7 @@ internal fun ScreenDetailTask(
         show = state.showDialogPickDate,
         currentSelectedDate =state.taskDueDate,
         onDismiss = {
-            commit {
-                copy(
-                    showDialogPickDate = false,
-                )
-            }
+            commit { copy(showDialogPickDate = false) }
         },
         onSubmit = {
             dispatch(DetailTaskEvent.UpdateTaskDueDate(it))

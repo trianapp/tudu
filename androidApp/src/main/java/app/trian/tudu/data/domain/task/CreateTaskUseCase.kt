@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.UUID
 import javax.inject.Inject
 
@@ -23,7 +24,7 @@ class CreateTaskUseCase @Inject constructor(
     ): Flow<Response<TaskModel>> = flow {
         emit(Response.Loading)
         val taskId:String = UUID.randomUUID().toString()
-        val currentDateString = LocalDate.now().toString()
+        val currentDateString = LocalDateTime.now().toString()
         db.taskQueries.insertTask(
             taskId = taskId,
             taskDone = if (taskModel.taskDone) 1 else 0,

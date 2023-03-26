@@ -18,8 +18,7 @@ class GetStatisticChartTaskUseCase @Inject constructor(
     operator fun invoke(from:LocalDate):Flow<Response<ChartModelData>> = flow {
         emit(Response.Loading)
         val result = db.transactionWithResult {
-            val startWeek = from
-            var currentDate = startWeek
+            var currentDate = from
             var currentMaxAxis = 0f
 
             val totalDays = listOf(6, 5, 4, 3, 2, 1, 0).reversed()

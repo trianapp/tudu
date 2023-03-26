@@ -168,7 +168,10 @@ class DetailTaskViewModel @Inject constructor(
         updateTaskCategoryUseCase(
             taskId = taskId,
             oldCategories = oldCategory,
-            newCategories = newCategories.map { TaskCategoryModel(taskId = taskId, categoryId = it.categoryId) }
+            newCategories = newCategories
+                .filter {
+                    it.categoryId != "all"
+                }.map { TaskCategoryModel(taskId = taskId, categoryId = it.categoryId) }
         ).collect {}
     }
 

@@ -18,14 +18,14 @@ WHERE taskId=:taskId;
 getListTask:
 SELECT *
 FROM Task
-ORDER BY Date(createdAt) ASC;
+ORDER BY Datetime(createdAt) DESC;
 
 getListByDueDate:
 SELECT *
 FROM Task
 WHERE Date(taskDueDate)
 BETWEEN  Date(?) AND Date(?)
-ORDER BY Date(updatedAt) ASC;
+ORDER BY taskDueTime ASC;
 
 insertTask:
 INSERT INTO Task(
