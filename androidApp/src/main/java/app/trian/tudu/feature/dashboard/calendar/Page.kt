@@ -32,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import app.trian.tudu.ApplicationState
@@ -200,6 +201,9 @@ internal fun ScreenCalendar(
         },
         config = DateTimeConfig(
 
+        ),
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false
         )
     )
     DateTimeDialog(
@@ -211,7 +215,10 @@ internal fun ScreenCalendar(
                     hasDueTime = true
                 )
             }
-        }
+        },
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false
+        )
     )
     LaunchedEffect(key1 = this, block = {
         dispatch(CalendarEvent.GetData)

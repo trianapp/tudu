@@ -10,16 +10,17 @@
     <uses-permission-sdk-23 android:name="android.permission.CAMERA"/>
     <application
         android:name=".TuduApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:supportsRtl="true"
         android:icon="@mipmap/ic_launcher"
         android:theme="@style/AppTheme"
+        android:label="@string/app_name"
         >
         <activity
-            android:label="@string/app_name"
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustResize"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
