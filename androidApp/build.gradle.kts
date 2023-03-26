@@ -25,8 +25,8 @@ android {
         applicationId = AppConfig.applicationId
         minSdk = 24
         targetSdk = 33
-        versionCode = 34
-        versionName = "2.0.202303261449"
+        versionCode = 35
+        versionName = "2.0.202303261339"
         multiDexEnabled = true
         vectorDrawables {
             useSupportLibrary = true
@@ -98,6 +98,10 @@ dependencies {
     implementation(AndroidChart.mpAndroidChart)
     implementation(DateTimePicker.wheelPicker)
 
+    with(SheetComposeDialog){
+        implementation(core)
+        implementation(dateTime)
+    }
     with(SQLDelight.Sqldelight){
         implementation(androidDriver)
     }

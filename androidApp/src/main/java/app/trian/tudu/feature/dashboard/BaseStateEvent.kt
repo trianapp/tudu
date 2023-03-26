@@ -13,8 +13,6 @@ abstract class BaseDashboardState:Parcelable  {
     abstract val todos:List<TodoModel>
 
     abstract val showDialogPickCategory:Boolean
-    abstract val showDialogAddDate:Boolean
-    abstract val showDialogAddTime:Boolean
 
     abstract val hasCategory: Boolean
     abstract val hasDueDate: Boolean

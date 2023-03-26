@@ -22,8 +22,6 @@ data class HomeState(
     override val hasDueTime: Boolean = false,
     override val hasTodos: Boolean = false,
     override val showDialogPickCategory: Boolean = false,
-    override val showDialogAddDate: Boolean = false,
-    override val showDialogAddTime: Boolean = false,
     override val taskName: String = "",
     override val categories: @RawValue List<CategoryModel> = listOf(),
     override val todos: @RawValue List<TodoModel> = listOf(),

@@ -25,8 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import app.trian.tudu.R
 import app.trian.tudu.ApplicationState
+import app.trian.tudu.R
 import app.trian.tudu.base.BaseMainApp
 import app.trian.tudu.base.UIWrapper
 import app.trian.tudu.base.extensions.addOnBottomSheetStateChangeListener
@@ -35,14 +35,16 @@ import app.trian.tudu.base.extensions.navigateSingleTop
 import app.trian.tudu.components.AppbarHome
 import app.trian.tudu.components.BottomSheetInputNewTask
 import app.trian.tudu.components.DialogConfirmation
-import app.trian.tudu.components.DialogDatePicker
 import app.trian.tudu.components.DialogPickCategory
-import app.trian.tudu.components.DialogTimePicker
 import app.trian.tudu.components.ItemTaskRow
 import app.trian.tudu.components.ScreenEmptyTask
 import app.trian.tudu.components.TuduBottomNavigation
 import app.trian.tudu.feature.category.Category
 import app.trian.tudu.feature.detailTask.DetailTask
+import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import com.maxkeppeler.sheets.date_time.DateTimeDialog
+import com.maxkeppeler.sheets.date_time.models.DateTimeConfig
+import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 
 object Home {
     const val routeName = "Home"
@@ -61,6 +63,9 @@ internal fun ScreenHome(
     val state by uiState.collectAsState()
     val dataState by uiDataState.collectAsState()
     val ctx = LocalContext.current
+    val datePickerUseCase = rememberUseCaseState()
+    val timPickerUseCase = rememberUseCaseState()
+
 
     LaunchedEffect(key1 = this, block = {
         dispatch(HomeEvent.GetData)
@@ -76,7 +81,7 @@ internal fun ScreenHome(
                     when (it) {
                         R.string.option_category_management -> navigateSingleTop(Category.routeName)
                         R.string.option_search -> showSnackbar(R.string.text_message_coming_soon)
-                        R.string.option_sort ->showSnackbar(R.string.text_message_coming_soon)
+                        R.string.option_sort -> showSnackbar(R.string.text_message_coming_soon)
                     }
                 },
                 onSelectCategory = {
@@ -102,10 +107,10 @@ internal fun ScreenHome(
                     commit { copy(showDialogPickCategory = true) }
                 },
                 onAddDate = {
-                    commit { copy(showDialogAddDate = true) }
+                    datePickerUseCase.show()
                 },
                 onAddTime = {
-                    commit { copy(showDialogAddTime = true) }
+                    timPickerUseCase.show()
                 },
                 onAddTodo = {
                     dispatch(HomeEvent.AddPlainTodo(""))
@@ -159,37 +164,31 @@ internal fun ScreenHome(
             commit { copy(showDialogPickCategory = false) }
         }
     )
-    DialogDatePicker(
-        show = state.showDialogAddDate,
-        onDismiss = {
-            commit { copy(showDialogAddDate = false) }
-        },
-        onSubmit = {
+    DateTimeDialog(
+        state = datePickerUseCase,
+        selection = DateTimeSelection.Date {
             commit {
                 copy(
-                    showDialogAddDate = false,
                     dueDate = it,
                     hasDueDate = true
                 )
             }
-        }
-    )
-    DialogTimePicker(
-        show = state.showDialogAddTime,
-        onDismiss = {
-            commit { copy(showDialogAddTime = false) }
         },
-        onSubmit = {
+        config = DateTimeConfig(
+
+        )
+    )
+    DateTimeDialog(
+        state = timPickerUseCase,
+        selection = DateTimeSelection.Time {
             commit {
                 copy(
-                    showDialogAddTime = false,
                     dueTime = it,
                     hasDueTime = true
                 )
             }
         }
     )
-
     Box(
         modifier = Modifier
             .padding(bottom = 8.dp)
@@ -214,7 +213,7 @@ internal fun ScreenHome(
                         ItemTaskRow(
                             taskName = data.task.taskName,
                             taskDueDate = data.task.taskDueDate,
-                            taskDueTime=data.task.taskDueTime,
+                            taskDueTime = data.task.taskDueTime,
                             taskNote = data.task.taskNote,
                             taskDone = data.task.taskDone,
                             categories = data.category.map { it.categoryName },
