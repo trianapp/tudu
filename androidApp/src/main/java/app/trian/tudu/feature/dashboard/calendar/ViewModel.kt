@@ -10,7 +10,6 @@ import app.trian.tudu.data.model.TaskModel
 import app.trian.tudu.data.model.TodoModel
 import app.trian.tudu.data.utils.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.UUID
 import javax.inject.Inject
