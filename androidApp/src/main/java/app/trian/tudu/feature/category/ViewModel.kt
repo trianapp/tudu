@@ -19,7 +19,10 @@ class CategoryViewModel @Inject constructor(
     private val updateCategoryUseCase: UpdateCategoryUseCase,
     private val createCategoryUseCase: CreateCategoryUseCase,
     private val deleteCategoryUseCase: DeleteCategoryUseCase
-) : BaseViewModelData<CategoryState, CategoryDataState, CategoryEvent>(CategoryState(), CategoryDataState()) {
+) : BaseViewModelData<CategoryState, CategoryDataState, CategoryEvent>(
+    CategoryState(),
+    CategoryDataState()
+) {
     init {
         handleActions()
         getListCategory()
@@ -103,7 +106,9 @@ class CategoryViewModel @Inject constructor(
 
     override fun handleActions() = onEvent {
         when (it) {
-            SubmitCategory -> if (uiState.value.categoryId.isEmpty()) createCategory() else updateCategory()
+            SubmitCategory -> if (uiState.value.categoryId.isEmpty()) createCategory()
+            else updateCategory()
+
             is ShowFormCategory -> commit { copy(showFormCategory = it.isShow) }
             is SetCategoryName -> commit { copy(categoryName = it.categoryName) }
             is CategoryEvent.SetUpdateCategory -> {
@@ -117,7 +122,9 @@ class CategoryViewModel @Inject constructor(
             }
 
             is CategoryEvent.DeleteCategory -> deleteCategory()
-            is CategoryEvent.ShowDialogDeleteCategory -> commit { copy(showDialogDeleteCategory = it.isShow) }
+            is CategoryEvent.ShowDialogDeleteCategory -> commit {
+                copy(showDialogDeleteCategory = it.isShow)
+            }
         }
     }
 
