@@ -2,7 +2,7 @@ name: Android-CI
 
 on:
   pull_request:
-    branches: [main, feature/**]
+    branches: [ beta ]
 
 env:
   APP_PATH: androidApp
@@ -71,7 +71,7 @@ jobs:
     timeout-minutes: 30
     strategy:
       matrix:
-        api-level: [29]
+        api-level: [ 29 ]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -111,14 +111,14 @@ jobs:
           KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
       - name: Run unit test
         run: ./gradlew test --stacktrace
-    #disable
-#      - name: Run instrumentation tests
-#        uses: reactivecircus/android-emulator-runner@v2
-#        with:
-#          api-level: ${{ matrix.api-level }}
-#          arch: x86
-#          disable-animations: true
-#          script: ./gradlew connectedCheck --stacktrace
+      #disable
+      #      - name: Run instrumentation tests
+      #        uses: reactivecircus/android-emulator-runner@v2
+      #        with:
+      #          api-level: ${{ matrix.api-level }}
+      #          arch: x86
+      #          disable-animations: true
+      #          script: ./gradlew connectedCheck --stacktrace
       - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v3

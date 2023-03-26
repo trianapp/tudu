@@ -11,6 +11,8 @@
 .idea/
 .idea/*
 
+play_config.json
+
 .settings
 .classpath
 .project
