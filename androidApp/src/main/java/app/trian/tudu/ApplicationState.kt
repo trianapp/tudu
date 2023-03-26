@@ -22,7 +22,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.base.EventListener
 import app.trian.tudu.base.extensions.runSuspend
-import app.trian.tudu.feature.splash.Splash
 import kotlinx.coroutines.CoroutineScope
 
 
