@@ -39,9 +39,8 @@ fun DialogConfirmation(
                 ) {
                     Text(
                         text = stringResource(id = R.string.btn_cancel),
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
-                        )
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
                     )
                 }
             },
@@ -52,18 +51,16 @@ fun DialogConfirmation(
                 ) {
                     Text(
                         text = stringResource(R.string.btn_confirm),
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            color = MaterialTheme.colorScheme.primary
-                        )
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             },
             title = {
                 Text(
                     text = message,
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             },
             shape = MaterialTheme.shapes.medium,
