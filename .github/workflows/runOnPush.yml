@@ -2,28 +2,30 @@ name: Android-CI
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main, feature/**]
 
 env:
-  APP_PATH: app
+  APP_PATH: androidApp
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: actions/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '2.6'
 
       - name: set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
           java-version: 11
+          distribution: 'temurin'
+          cache: gradle
 
       - name: Cache Gradle and wrapper
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches
@@ -41,7 +43,7 @@ jobs:
       - name: Configure Keystore
         run: |
           echo "$ANDROID_KEYSTORE_FILE" > keystore.jks.b64
-          base64 -d -i keystore.jks.b64 > app/keystore.jks
+          base64 -d -i keystore.jks.b64 > "$APP_PATH"/keystore.jks
           echo "storeFile=keystore.jks" >> keystore.properties
           echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> keystore.properties
           echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> keystore.properties
@@ -51,12 +53,14 @@ jobs:
           KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
           KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
           KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+      - name: Detekt
+        run: ./gradlew detekt
 
       - name: Build with Gradle
         run: ./gradlew assembleDebug lintDebug --stacktrace
 
       - name: Upload build output(APKs)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build-outputs
           path: ${{env.APP_PATH}}/build/outputs
@@ -70,14 +74,16 @@ jobs:
         api-level: [29]
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
           java-version: 11
+          distribution: 'temurin'
+          cache: gradle
       - name: Cache Gradle and wrapper
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches
@@ -93,7 +99,7 @@ jobs:
       - name: Configure Keystore
         run: |
           echo "$ANDROID_KEYSTORE_FILE" > keystore.jks.b64
-          base64 -d -i keystore.jks.b64 > app/keystore.jks
+          base64 -d -i keystore.jks.b64 > "$APP_PATH"/keystore.jks
           echo "storeFile=keystore.jks" >> keystore.properties
           echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> keystore.properties
           echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> keystore.properties
@@ -115,7 +121,7 @@ jobs:
 #          script: ./gradlew connectedCheck --stacktrace
       - name: Upload test reports
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: test-reports
           path: ${{ env.APP_PATH }}/build/reports

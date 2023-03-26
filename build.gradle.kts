@@ -1,24 +1,26 @@
+plugins {
+    //trick: for the same plugin versions in all sub-modules
+    id("com.android.application") version "7.4.2"  apply false
+    id("com.android.library") version "7.4.2" apply false
+    id("com.google.dagger.hilt.android") version "2.44" apply false
+    id("app.cash.sqldelight") version "2.0.0-alpha05" apply false
+    id("io.gitlab.arturbosch.detekt") version "1.22.0" apply false
+    kotlin("android") version "1.8.0"  apply false
+    kotlin("multiplatform") version "1.8.0" apply false
+}
 buildscript {
-
     dependencies{
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.38.1")
-
-        // Check that you have the Google services Gradle plugin v4.3.2 or later
-        // (if not, add it).
-        classpath("com.google.gms:google-services:4.3.10")
-
-        // Add the Crashlytics Gradle plugin
-        classpath("com.google.firebase:firebase-crashlytics-gradle:2.8.1")
+        classpath("com.google.gms:google-services:4.3.15")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.4")
     }
 }
-plugins {
-    id("com.android.application") version "7.2.0-beta01" apply false
-    id("com.android.library") version "7.2.0-beta01" apply false
-    kotlin("android") version "1.6.10" /*"1.5.31"*/ apply false
-    id("org.jetbrains.kotlin.jvm") version "1.6.10" apply false
+extensions.findByName("buildScan")?.withGroovyBuilder {
+    setProperty("termsOfServiceUrl", "https://gradle.com/terms-of-service")
+    setProperty("termsOfServiceAgree", "yes")
 }
-tasks.create<Delete>("cleanRp"){
-    delete(
-        rootProject.buildDir
-    )
+
+tasks.register("clean", Delete::class) {
+    delete(rootProject.buildDir)
 }
+
+tasks.getByPath(":androidApp:preBuild").dependsOn("installGitHook")
