@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -16,8 +18,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,6 +31,7 @@ import app.trian.tudu.ApplicationState
 import app.trian.tudu.R.string
 import app.trian.tudu.base.BaseMainApp
 import app.trian.tudu.base.UIWrapper
+import app.trian.tudu.base.extensions.hideKeyboard
 import app.trian.tudu.base.extensions.navigateUp
 import app.trian.tudu.components.AnnotationTextItem
 import app.trian.tudu.components.AppbarAuth
@@ -64,6 +69,8 @@ internal fun ScreenSignUp(
         AnnotationTextItem.Button(stringResource(id = string.text_signin))
     )
     val uiState by uiState.collectAsState()
+    val ctx = LocalContext.current
+
     with(state) {
         hideBottomAppBar()
         setupTopAppBar {
@@ -133,7 +140,10 @@ internal fun ScreenSignUp(
                 placeholder = stringResource(string.placeholder_input_display_name),
                 onChange = {
                     commit { copy(displayName = it) }
-                }
+                },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                )
             )
             Spacer(modifier = Modifier.height(16.dp))
             FormInput(
@@ -147,7 +157,10 @@ internal fun ScreenSignUp(
                 placeholder = stringResource(id = string.placeholder_input_email),
                 onChange = {
                     commit { copy(email = it) }
-                }
+                },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                )
             )
             Spacer(modifier = Modifier.height(16.dp))
             FormInput(
@@ -162,7 +175,16 @@ internal fun ScreenSignUp(
                 placeholder = stringResource(id = string.placeholder_input_password),
                 onChange = {
                     commit { copy(password = it) }
-                }
+                },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Send
+                ),
+                keyboardActions = KeyboardActions(
+                    onSend = {
+                        ctx.hideKeyboard()
+                        dispatch(SignUpEvent.SignUpWithEmail)
+                    }
+                )
             )
         }
         Spacer(modifier = Modifier.height(10.dp))
@@ -188,6 +210,7 @@ internal fun ScreenSignUp(
             enabled = uiState.agreeTnc
 
         ) {
+            ctx.hideKeyboard()
             dispatch(SignUpEvent.SignUpWithEmail)
         }
     }
