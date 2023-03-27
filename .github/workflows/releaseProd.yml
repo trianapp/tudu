@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - 'androidApp/**'
-    branches: [ main ]
+    branches: [ beta ]
 
 env:
   APP_PATH: androidApp

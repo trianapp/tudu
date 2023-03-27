@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.material3.Divider
@@ -19,8 +21,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,6 +36,7 @@ import app.trian.tudu.base.BaseMainApp
 import app.trian.tudu.base.UIWrapper
 import app.trian.tudu.base.contract.GoogleAuthContract
 import app.trian.tudu.base.extensions.backPressedAndClose
+import app.trian.tudu.base.extensions.hideKeyboard
 import app.trian.tudu.components.AnnotationTextItem
 import app.trian.tudu.components.AppbarAuth
 import app.trian.tudu.components.ButtonPrimary
@@ -77,6 +82,8 @@ internal fun ScreenSignIn(
             dispatch(SignInEvent.SignInWithGoogle(it))
         }
     )
+
+    val ctx = LocalContext.current
 
     with(appState) {
         hideBottomAppBar()
@@ -138,8 +145,10 @@ internal fun ScreenSignIn(
                 placeholder = stringResource(string.placeholder_input_email),
                 onChange = {
                     commit { copy(email = it) }
-                }
-
+                },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                )
             )
             Spacer(modifier = Modifier.height(10.dp))
             FormInput(
@@ -155,10 +164,20 @@ internal fun ScreenSignIn(
                 onChange = {
                     commit { copy(password = it) }
                 },
-                showPasswordObsecure = true
+                showPasswordObsecure = true,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Send
+                ),
+                keyboardActions = KeyboardActions(
+                    onSend = {
+                        ctx.hideKeyboard()
+                        dispatch(SignInEvent.SignInWithEmail)
+                    }
+                )
             )
             Spacer(modifier = Modifier.height(30.dp))
             ButtonPrimary(text = stringResource(id = string.btn_signin)) {
+                ctx.hideKeyboard()
                 dispatch(SignInEvent.SignInWithEmail)
             }
             Spacer(modifier = Modifier.height(10.dp))
@@ -178,7 +197,10 @@ internal fun ScreenSignIn(
                     modifier = Modifier.padding(horizontal = 36.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    ButtonSocial(text = stringResource(id = string.btn_login_google), fullWidth = true) {
+                    ButtonSocial(
+                        text = stringResource(id = string.btn_login_google),
+                        fullWidth = true
+                    ) {
                         signInGoogle.launch(1)
                     }
                     Spacer(modifier = Modifier.height(20.dp))

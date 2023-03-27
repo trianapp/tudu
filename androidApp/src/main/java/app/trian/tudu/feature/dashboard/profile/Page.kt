@@ -378,7 +378,9 @@ internal fun ScreenProfile(
                 fullWidth = true,
                 text = stringResource(R.string.btn_share_profile),
                 icon = Outlined.Share,
-                onClick = {}
+                onClick = {
+                    showSnackbar(R.string.text_message_coming_soon)
+                }
             )
         }
         Spacer(

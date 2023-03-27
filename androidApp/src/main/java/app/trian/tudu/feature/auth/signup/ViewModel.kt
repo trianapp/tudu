@@ -20,7 +20,7 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun showLoading() = commit { copy(isLoading = true) }
-    private fun hideLoading() = commit { copy(isLoading = true) }
+    private fun hideLoading() = commit { copy(isLoading = false) }
     private fun validateData(cb: suspend (String, String, String) -> Unit) = asyncWithState {
         when {
             email.isEmpty() ||
@@ -36,12 +36,11 @@ class SignUpViewModel @Inject constructor(
 
     private fun handleResponse(result: Response<FirebaseUser>) {
         when (result) {
+            Response.Loading -> showLoading()
             is Response.Error -> {
                 hideLoading()
                 showSnackbar(result.message)
             }
-
-            Response.Loading -> showLoading()
             is Response.Result -> {
                 hideLoading()
                 showSnackbar(R.string.text_message_success_register)

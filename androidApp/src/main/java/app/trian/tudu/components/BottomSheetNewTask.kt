@@ -154,10 +154,9 @@ fun BottomSheetInputNewTask(
                 placeholder = {
                     Text(
                         text = stringResource(R.string.placeholder_input_new_task),
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 },
                 textStyle = MaterialTheme.typography.bodyMedium.copy(
@@ -214,7 +213,7 @@ fun BottomSheetInputNewTask(
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Category,
-                        contentDescription = "",
+                        contentDescription = "Select Category",
                         tint = if (hasCategory) MaterialTheme.colorScheme.primary
                         else MaterialTheme.colorScheme.onSurface
                     )
@@ -228,7 +227,7 @@ fun BottomSheetInputNewTask(
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.CalendarMonth,
-                        contentDescription = "",
+                        contentDescription = "Select Due Date",
                         tint = if (hasDueDate) MaterialTheme.colorScheme.primary
                         else MaterialTheme.colorScheme.onSurface
                     )
@@ -241,7 +240,7 @@ fun BottomSheetInputNewTask(
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.AccessAlarm,
-                        contentDescription = "",
+                        contentDescription = "Select Due Time",
                         tint = if (hasReminder) MaterialTheme.colorScheme.primary
                         else MaterialTheme.colorScheme.onSurface
                     )
@@ -254,7 +253,7 @@ fun BottomSheetInputNewTask(
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.AddTask,
-                        contentDescription = "",
+                        contentDescription = "Add sub task",
                         tint = if (todos.isNotEmpty()) MaterialTheme.colorScheme.primary
                         else MaterialTheme.colorScheme.onSurface
                     )

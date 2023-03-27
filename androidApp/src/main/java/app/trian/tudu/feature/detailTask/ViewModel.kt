@@ -44,7 +44,10 @@ class DetailTaskViewModel @Inject constructor(
     private val deleteTodoUseCase: DeleteTodoUseCase,
     private val updateTodoNameUseCase: UpdateTodoNameUseCase,
     private val updateTodoDoneUseCase: UpdateTodoDoneUseCase
-) : BaseViewModelData<DetailTaskState, DetailTaskDataState, DetailTaskEvent>(DetailTaskState(), DetailTaskDataState()) {
+) : BaseViewModelData<DetailTaskState, DetailTaskDataState, DetailTaskEvent>(
+    DetailTaskState(),
+    DetailTaskDataState()
+) {
     init {
         handleActions()
         getDetailTask()
@@ -70,9 +73,13 @@ class DetailTaskViewModel @Inject constructor(
                         taskId = it.data.taskId,
                         taskName = it.data.taskName,
                         taskNote = it.data.taskNote,
-                        taskDueDate = LocalDate.parse(it.data.taskDueDate.ifEmpty { LocalDate.now().toString() }),
+                        taskDueDate = LocalDate.parse(it.data.taskDueDate.ifEmpty {
+                            LocalDate.now().toString()
+                        }),
                         taskReminder = it.data.taskReminder,
-                        taskDueTime = LocalTime.parse(it.data.taskDueTime.ifEmpty { LocalTime.now().toString() })
+                        taskDueTime = LocalTime.parse(it.data.taskDueTime.ifEmpty {
+                            LocalTime.now().toString()
+                        })
                     )
                 }
 
@@ -284,8 +291,15 @@ class DetailTaskViewModel @Inject constructor(
             DetailTaskEvent.SubmitTask -> resetFormState()
             is DetailTaskEvent.DeleteTodo -> deleteTempTodo(it.todoId)
             DetailTaskEvent.CreateTodo -> createTaskTodo()
-            is DetailTaskEvent.UpdateTodoDone -> updateTempTodoDone(todoId = it.todoId, todoDone = it.isDone)
-            is DetailTaskEvent.UpdateTodoName -> updateTempTodoName(todoId = it.todoId, todoName = it.todoName)
+            is DetailTaskEvent.UpdateTodoDone -> updateTempTodoDone(
+                todoId = it.todoId,
+                todoDone = it.isDone
+            )
+
+            is DetailTaskEvent.UpdateTodoName -> updateTempTodoName(
+                todoId = it.todoId,
+                todoName = it.todoName
+            )
         }
     }
 

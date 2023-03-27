@@ -1,10 +1,8 @@
 package app.trian.tudu.components
 
-import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
@@ -72,7 +70,6 @@ import java.time.OffsetDateTime
  * site https://trian.app
  */
 
-@ExperimentalFoundationApi
 @Composable
 fun ItemTaskRow(
     modifier: Modifier = Modifier,
@@ -140,22 +137,20 @@ fun ItemTaskRow(
                         maxLines = 1,
                         modifier = modifier.fillMaxWidth(fraction = 0.8f),
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            textDecoration = if (taskDone) TextDecoration.LineThrough else TextDecoration.None
-                        )
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textDecoration = if (taskDone) TextDecoration.LineThrough else TextDecoration.None
                     )
                     Text(
                         text = taskNote,
                         maxLines = 2,
                         modifier = modifier.fillMaxWidth(fraction = 0.8f),
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            fontWeight = FontWeight.Normal,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
+                        style = MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                     FlowRow(
                         modifier = Modifier.fillMaxWidth(),
@@ -200,7 +195,7 @@ fun ItemTaskRow(
                     ) {
                         Icon(
                             imageVector = Outlined.CalendarMonth,
-                            contentDescription = "",
+                            contentDescription = "Due Date",
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Spacer(modifier = Modifier.width(8.dp))
@@ -217,17 +212,17 @@ fun ItemTaskRow(
                     Spacer(modifier = Modifier.width(12.dp))
                     Row {
                         Icon(
-                            imageVector = Outlined.Timer, contentDescription = "",
+                            imageVector = Outlined.Timer,
+                            contentDescription = "Due Time",
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = taskDueTime.ifEmpty { "N/A" },
-                            style = MaterialTheme.typography.titleSmall.copy(
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Light,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
+                            style = MaterialTheme.typography.titleSmall,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Light,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -264,14 +259,20 @@ fun ItemTaskRow(
                         )
                     },
                     leadingIcon = {
-                        Icon(imageVector = Outlined.Delete, contentDescription = "")
+                        Icon(
+                            imageVector = Outlined.Delete,
+                            contentDescription = "Delete Task"
+                        )
                     },
                     colors = MenuDefaults.itemColors(
                         textColor = MaterialTheme.colorScheme.onSurface
                     )
                 )
             }
-            Icon(imageVector = Outlined.MoreVert, contentDescription = "")
+            Icon(
+                imageVector = Outlined.MoreVert,
+                contentDescription = "More Options"
+            )
         }
         Checkbox(
             checked = taskDone,
@@ -284,8 +285,6 @@ fun ItemTaskRow(
 }
 
 
-@ExperimentalFoundationApi
-@SuppressLint("NewApi")
 @Preview(
     uiMode = UI_MODE_NIGHT_NO
 )
