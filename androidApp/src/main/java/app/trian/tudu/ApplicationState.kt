@@ -141,9 +141,9 @@ class ApplicationState internal constructor(
         }
     }
 
-    fun showSnackbar(message: Int, vararg params: String) {
+    fun showSnackbar(message: Int,vararg params: String) {
         runSuspend {
-            snackbarHostState.showSnackbar(context.getString(message, params))
+            snackbarHostState.showSnackbar(context.getString(message, *params))
         }
     }
 
