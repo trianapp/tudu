@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
@@ -45,6 +47,8 @@ fun FormInput(
     label: @Composable () -> Unit = {},
     maxLines: Int = 1,
     showPasswordObsecure: Boolean = false,
+    keyboardOptions: KeyboardOptions = KeyboardOptions(),
+    keyboardActions: KeyboardActions = KeyboardActions(),
     onChange: (value: String) -> Unit = {}
 ) {
 
@@ -64,9 +68,8 @@ fun FormInput(
             placeholder = {
                 Text(
                     text = placeholder,
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             },
             onValueChange = {
@@ -98,7 +101,9 @@ fun FormInput(
             textStyle = MaterialTheme.typography.bodyLarge.copy(
                 color = MaterialTheme.colorScheme.onSurface
             ),
-            maxLines = maxLines
+            maxLines = maxLines,
+            keyboardActions = keyboardActions,
+            keyboardOptions = keyboardOptions
         )
         Spacer(modifier = modifier.height(10.dp))
     }

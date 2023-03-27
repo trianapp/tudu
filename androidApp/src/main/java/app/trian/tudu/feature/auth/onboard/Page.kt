@@ -59,6 +59,7 @@ internal fun ScreenOnboard(
     )
     with(appState) {
         hideTopAppBar()
+        hideBottomAppBar()
         setupBottomSheet{
             BottomSheetPrivacyPolicy(
                 onAccept = {

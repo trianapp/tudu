@@ -1,6 +1,7 @@
 package app.trian.tudu.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import app.trian.tudu.sqldelight.Database
@@ -40,5 +41,16 @@ object DataModule {
     fun provideFirebaseStorage(): FirebaseStorage =
         FirebaseStorage.getInstance()
 
+    @Provides
+    fun provideSharedPreferences(
+        @ApplicationContext appContext: Context
+    ):SharedPreferences = appContext.getSharedPreferences(
+        "tudu",
+        Context.MODE_PRIVATE
+    )
 
+    @Provides
+    fun provideSharedPrefEditor(
+        sp:SharedPreferences
+    ):SharedPreferences.Editor =  sp.edit()
 }

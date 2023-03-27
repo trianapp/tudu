@@ -42,10 +42,15 @@ class InputNoteViewModel @Inject constructor(
     private fun updateTaskNote() = asyncWithState {
         updateTaskNoteUseCase(taskId = getTaskId(), taskNote = taskNote).collect {
             when (it) {
-                is Response.Error -> commit { copy(isUpdateNote = false, showDialogBackConfirmation = false) }
+                is Response.Error -> commit {
+                    copy(
+                        isUpdateNote = false,
+                        showDialogBackConfirmation = false
+                    )
+                }
                 Response.Loading -> Unit
                 is Response.Result -> {
-                    showSnackbar("Success update note!")
+                    showSnackbar(R.string.text_message_success_update_note)
                     commit { copy(isUpdateNote = false, showDialogBackConfirmation = false) }
                 }
             }
@@ -59,6 +64,7 @@ class InputNoteViewModel @Inject constructor(
             InputNoteEvent.CheckBackPressed -> if (uiState.value.isUpdateNote) {
                 commit { copy(showDialogBackConfirmation = true) }
             } else navigateUp()
+
             InputNoteEvent.SubmitNote -> updateTaskNote()
             InputNoteEvent.GetDetailTask -> getDetailTask(getTaskId())
         }

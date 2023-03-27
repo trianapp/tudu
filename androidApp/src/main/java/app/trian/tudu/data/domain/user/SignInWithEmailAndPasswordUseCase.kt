@@ -12,6 +12,7 @@ import javax.inject.Inject
 
 class SignInWithEmailAndPasswordUseCase @Inject constructor(private val auth: FirebaseAuth) {
     operator fun invoke(email: String, password: String): Flow<Response<FirebaseUser>> = flow {
+        emit(Response.Loading)
         try {
             val user = auth.signInWithEmailAndPassword(
                 email, password

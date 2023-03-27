@@ -32,7 +32,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import app.trian.tudu.ApplicationState
@@ -49,7 +48,6 @@ import app.trian.tudu.components.ItemTaskCalendar
 import app.trian.tudu.components.TuduBottomNavigation
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
-import com.maxkeppeler.sheets.date_time.models.DateTimeConfig
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 import io.github.boguszpawlowski.composecalendar.WeekCalendar
 import io.github.boguszpawlowski.composecalendar.header.WeekState
@@ -198,13 +196,7 @@ internal fun ScreenCalendar(
                     hasDueDate = true
                 )
             }
-        },
-        config = DateTimeConfig(
-
-        ),
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false
-        )
+        }
     )
     DateTimeDialog(
         state = timPickerUseCase,
@@ -215,10 +207,7 @@ internal fun ScreenCalendar(
                     hasDueTime = true
                 )
             }
-        },
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false
-        )
+        }
     )
     LaunchedEffect(key1 = this, block = {
         dispatch(CalendarEvent.GetData)

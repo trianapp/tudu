@@ -19,7 +19,10 @@ class CalendarViewModel @Inject constructor(
     private val getListTaskByDateUseCase: GetListTaskByDateUseCase,
     private val createTaskUseCase: CreateTaskUseCase,
     private val getListCategoryUseCase: GetListCategoryUseCase
-) : BaseViewModelData<CalendarState, CalendarDataState, CalendarEvent>(CalendarState(), CalendarDataState()) {
+) : BaseViewModelData<CalendarState, CalendarDataState, CalendarEvent>(
+    CalendarState(),
+    CalendarDataState()
+) {
     init {
         handleActions()
     }
@@ -27,14 +30,13 @@ class CalendarViewModel @Inject constructor(
     //region task
     private fun getListTask() = asyncWithState {
         val from = selectedDate
-        getListTaskByDateUseCase(from.toString(), from.toString())
-            .collect {
-                when (it) {
-                    is Response.Error -> showSnackbar(R.string.message_failed_fetch_data)
-                    Response.Loading -> Unit
-                    is Response.Result -> commitData { copy(task = it.data) }
-                }
+        getListTaskByDateUseCase(from.toString(), from.toString()).collect {
+            when (it) {
+                is Response.Error -> showSnackbar(R.string.message_failed_fetch_data)
+                Response.Loading -> Unit
+                is Response.Result -> commitData { copy(task = it.data) }
             }
+        }
     }
 
     private fun saveTask() = asyncWithState {
@@ -119,14 +121,14 @@ class CalendarViewModel @Inject constructor(
     }
 
     private fun deletePlainTodo(todoId: String) = asyncWithState {
-        val find =todos
+        val findIndex = todos
             .withIndex()
             .first { (_, value) -> value.todoId == todoId }
             .index
 
-        if (find != -1) {
+        if (findIndex != -1) {
             val todo = todos.toMutableList()
-            todo.removeAt(find)
+            todo.removeAt(findIndex)
             commit { copy(todos = todo) }
         }
     }

@@ -4,12 +4,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
@@ -18,6 +22,7 @@ import app.trian.tudu.R
 import app.trian.tudu.ApplicationState
 import app.trian.tudu.base.BaseMainApp
 import app.trian.tudu.base.UIWrapper
+import app.trian.tudu.base.extensions.hideKeyboard
 import app.trian.tudu.components.AppbarBasic
 import app.trian.tudu.components.ButtonPrimary
 import app.trian.tudu.components.DialogLoading
@@ -40,6 +45,7 @@ internal fun ScreenChangePassword(
     appState: ApplicationState,
 ) = UIWrapper<ChangePasswordViewModel>(appState = appState) {
     val state by uiState.collectAsState()
+    val ctx = LocalContext.current
 
     with(appState) {
         hideBottomAppBar()
@@ -74,7 +80,10 @@ internal fun ScreenChangePassword(
             onChange = {
                 commit { copy(newPassword = it) }
             },
-            maxLines = 1
+            maxLines = 1,
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next
+            )
         )
         Spacer(modifier = Modifier.height(16.dp))
         FormInput(
@@ -87,12 +96,22 @@ internal fun ScreenChangePassword(
             onChange = {
                 commit { copy(confirmPassword = it) }
             },
-            maxLines = 1
+            maxLines = 1,
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Send
+            ),
+            keyboardActions = KeyboardActions(
+                onSend = {
+                    ctx.hideKeyboard()
+                    dispatch(ChangePasswordEvent.Submit)
+                }
+            )
         )
         Spacer(modifier = Modifier.height(30.dp))
         ButtonPrimary(
             text = stringResource(R.string.btn_change_password)
         ) {
+            ctx.hideKeyboard()
             dispatch(ChangePasswordEvent.Submit)
         }
     }

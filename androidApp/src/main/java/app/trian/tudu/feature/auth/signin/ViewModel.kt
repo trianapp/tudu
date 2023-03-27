@@ -35,11 +35,11 @@ class SignInViewModel @Inject constructor(
 
     private fun handleResponse(result: Response<FirebaseUser>) {
         when (result) {
+            Response.Loading -> showLoading()
             is Response.Error -> {
                 hideLoading()
                 showSnackbar(result.message)
             }
-            Response.Loading -> showLoading()
             is Response.Result -> {
                 hideLoading()
                 showSnackbar(R.string.text_message_welcome_user, result.data.displayName.orEmpty().ifEmpty { "" })
