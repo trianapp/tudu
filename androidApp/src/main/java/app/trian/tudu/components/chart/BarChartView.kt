@@ -74,9 +74,8 @@ fun BarChartView(
     ) {
         Text(
             text = stringResource(R.string.title_chart_task_statistics),
-            style = MaterialTheme.typography.bodyLarge.copy(
-                fontWeight = FontWeight.Bold
-            )
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Bold
         )
         Row(
             modifier = modifier.fillMaxWidth(),
@@ -91,7 +90,7 @@ fun BarChartView(
             ) {
                 Icon(
                     imageVector =Icons.Outlined.ArrowLeft,
-                    contentDescription = ""
+                    contentDescription = "Previous week"
                 )
             }
             Text(text = title)
@@ -103,7 +102,7 @@ fun BarChartView(
             ) {
                 Icon(
                     imageVector = Icons.Outlined.ArrowRight,
-                    contentDescription = ""
+                    contentDescription = "Next Week"
                 )
             }
         }
