@@ -54,7 +54,7 @@ fun ItemTodo(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Box() {
+        Box {
             RadioButton(
                 selected = todoDone,
                 enabled = true,
@@ -88,10 +88,9 @@ fun ItemTodo(
                 placeholder = {
                     Text(
                         stringResource(id = R.string.placeholder_input_todo),
-                        style = MaterialTheme.typography.labelMedium.copy(
-                            textDecoration = if (todoDone) TextDecoration.LineThrough else TextDecoration.None,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                        )
+                        style = MaterialTheme.typography.labelMedium,
+                        textDecoration = if (todoDone) TextDecoration.LineThrough else TextDecoration.None,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                     )
                 },
                 textStyle = MaterialTheme.typography.labelMedium.copy(
@@ -116,7 +115,6 @@ fun ItemTodo(
     }
 }
 
-@SuppressLint("NewApi")
 @Preview(
     uiMode = UI_MODE_NIGHT_NO
 )

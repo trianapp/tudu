@@ -48,7 +48,6 @@ class InputNoteViewModel @Inject constructor(
                         showDialogBackConfirmation = false
                     )
                 }
-
                 Response.Loading -> Unit
                 is Response.Result -> {
                     showSnackbar(R.string.text_message_success_update_note)

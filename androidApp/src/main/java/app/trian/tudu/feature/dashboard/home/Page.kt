@@ -173,10 +173,7 @@ internal fun ScreenHome(
                     hasDueDate = true
                 )
             }
-        },
-        config = DateTimeConfig(
-
-        )
+        }
     )
     DateTimeDialog(
         state = timPickerUseCase,

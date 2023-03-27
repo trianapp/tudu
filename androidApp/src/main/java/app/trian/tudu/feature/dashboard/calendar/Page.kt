@@ -198,13 +198,7 @@ internal fun ScreenCalendar(
                     hasDueDate = true
                 )
             }
-        },
-        config = DateTimeConfig(
-
-        ),
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false
-        )
+        }
     )
     DateTimeDialog(
         state = timPickerUseCase,
@@ -215,10 +209,7 @@ internal fun ScreenCalendar(
                     hasDueTime = true
                 )
             }
-        },
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false
-        )
+        }
     )
     LaunchedEffect(key1 = this, block = {
         dispatch(CalendarEvent.GetData)

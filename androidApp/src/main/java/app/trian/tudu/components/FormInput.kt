@@ -68,9 +68,8 @@ fun FormInput(
             placeholder = {
                 Text(
                     text = placeholder,
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             },
             onValueChange = {

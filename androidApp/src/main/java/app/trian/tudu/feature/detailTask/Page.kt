@@ -128,7 +128,7 @@ internal fun ScreenDetailTask(
                     ) {
                         Icon(
                             imageVector = Outlined.ArrowBack,
-                            contentDescription = ""
+                            contentDescription = "Back"
                         )
                     }
                 },
@@ -151,7 +151,7 @@ internal fun ScreenDetailTask(
                     }) {
                         Icon(
                             imageVector = Outlined.Delete,
-                            contentDescription = ""
+                            contentDescription = "Delete"
                         )
                     }
                 },
@@ -276,7 +276,7 @@ internal fun ScreenDetailTask(
                             ) {
                                 Icon(
                                     imageVector = Outlined.Add,
-                                    contentDescription = "",
+                                    contentDescription = "Add Sub Task",
                                     tint = MaterialTheme.colorScheme.onSurface
                                 )
                             }
@@ -366,18 +366,16 @@ internal fun ScreenDetailTask(
                         headlineText = {
                             Text(
                                 text = stringResource(R.string.label_due_date),
-                                style = MaterialTheme.typography.bodyLarge.copy(
-                                    color = MaterialTheme.colorScheme.tertiary
-                                )
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.tertiary
                             )
 
                         },
                         supportingText = {
                             Text(
                                 text = state.taskDueDate.toString(),
-                                style = MaterialTheme.typography.bodyMedium.copy(
-                                    color = MaterialTheme.colorScheme.tertiary
-                                )
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.tertiary
                             )
                         }
                     )
@@ -397,18 +395,16 @@ internal fun ScreenDetailTask(
                         headlineText = {
                             Text(
                                 text = stringResource(R.string.label_due_time),
-                                style = MaterialTheme.typography.bodyLarge.copy(
-                                    color = MaterialTheme.colorScheme.tertiary
-                                )
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.tertiary
                             )
 
                         },
                         supportingText = {
                             Text(
                                 text = state.taskDueTime.toString(),
-                                style = MaterialTheme.typography.bodyMedium.copy(
-                                    color = MaterialTheme.colorScheme.tertiary
-                                )
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.tertiary
                             )
                         }
                     )
@@ -425,9 +421,8 @@ internal fun ScreenDetailTask(
                         headlineText = {
                             Text(
                                 text = stringResource(R.string.label_reminder),
-                                style = MaterialTheme.typography.bodyLarge.copy(
-                                    color = MaterialTheme.colorScheme.tertiary
-                                )
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.tertiary
                             )
 
                         },
@@ -435,9 +430,8 @@ internal fun ScreenDetailTask(
                             Text(
                                 text = if (state.taskReminder) stringResource(R.string.reminder_yes)
                                 else stringResource(R.string.reminder_no),
-                                style = MaterialTheme.typography.bodyMedium.copy(
-                                    color = MaterialTheme.colorScheme.tertiary
-                                )
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.tertiary
                             )
                         },
                         trailingContent = {
@@ -455,7 +449,7 @@ internal fun ScreenDetailTask(
                         leadingContent = {
                             Icon(
                                 imageVector = Outlined.Note,
-                                contentDescription = "",
+                                contentDescription = "Note",
                                 tint = MaterialTheme.colorScheme.tertiary
                             )
                         },
@@ -484,7 +478,7 @@ internal fun ScreenDetailTask(
                             ) {
                                 Icon(
                                     imageVector = Outlined.ChevronRight,
-                                    contentDescription = "",
+                                    contentDescription = "Edit Note",
                                     tint = MaterialTheme.colorScheme.primary
                                 )
                             }
@@ -500,16 +494,15 @@ internal fun ScreenDetailTask(
                         leadingContent = {
                             Icon(
                                 imageVector = Outlined.Category,
-                                contentDescription = "",
+                                contentDescription = "Category",
                                 tint = MaterialTheme.colorScheme.tertiary
                             )
                         },
                         headlineText = {
                             Text(
                                 text = stringResource(R.string.label_category),
-                                style = MaterialTheme.typography.bodyLarge.copy(
-                                    color = MaterialTheme.colorScheme.tertiary
-                                )
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.tertiary
                             )
                         },
                         supportingText = {
@@ -522,9 +515,8 @@ internal fun ScreenDetailTask(
                                 dataState.categories.forEach {
                                     Text(
                                         text = "#${it.categoryName}",
-                                        style = MaterialTheme.typography.bodyMedium.copy(
-                                            color = MaterialTheme.colorScheme.tertiary
-                                        )
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.tertiary
                                     )
 
                                 }

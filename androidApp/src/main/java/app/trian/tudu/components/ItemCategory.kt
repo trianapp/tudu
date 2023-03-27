@@ -79,7 +79,6 @@ fun ItemCategory(
     )
 }
 
-@SuppressLint("NewApi")
 @Preview(
     uiMode = UI_MODE_NIGHT_NO
 )
