@@ -27,6 +27,7 @@ class SignUpViewModel @Inject constructor(
                     password.isEmpty() ||
                     displayName.isEmpty() -> showSnackbar(R.string.message_password_or_email_cannot_empty)
 
+            password != confirmPassword -> showSnackbar(R.string.message_confirm_password_not_match)
             !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> showSnackbar(R.string.alert_validation_email)
             else -> {
                 cb(displayName, email, password)

@@ -1,7 +1,9 @@
 package app.trian.tudu.data.model
 
-import taskCategory.TaskCategory
+import app.trian.tudu.table.taskCategory.TaskCategory
+import com.google.errorprone.annotations.Keep
 
+@Keep
 data class TaskCategoryModel(
     val taskCategoryId: String = "",
     val taskId: String = "",
@@ -14,10 +16,3 @@ fun TaskCategory.toModel() = TaskCategoryModel(
     taskId = taskId,
     categoryId = categoryId
 )
-
-fun TaskCategory.toEntity() = TaskCategory(
-    taskCategoryId = taskCategoryId,
-    taskId = taskId,
-    categoryId = categoryId
-)
-

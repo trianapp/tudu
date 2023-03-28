@@ -72,6 +72,7 @@
     <string name="option_category_management">Category Management</string>
     <string name="option_search">Search</string>
     <string name="option_sort">Sort</string>
+    <string name="option_sync">Sync</string>
     <string name="category_all">All</string>
     <string name="btn_logout">Logout</string>
     <string name="text_confirmation_signout">Are you sure sign out from app?</string>
@@ -198,4 +199,8 @@
     <string name="text_message_success_task_finsih">Task has been finsihed</string>
     <string name="text_message_leave_page_confirmation">Yakin mau keluar?, perubahan pada note belum disimpan</string>
     <string name="text_message_success_update_note">Success update note!</string>
+    <string name="text_message_failed_email_not_verified">Your account note verified, Please check your email for verification</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="system">Default</string>
 </resources>

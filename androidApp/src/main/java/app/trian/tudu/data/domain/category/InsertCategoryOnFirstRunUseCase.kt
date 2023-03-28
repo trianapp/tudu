@@ -6,7 +6,7 @@ import app.trian.tudu.data.model.listCategoriesIn
 import app.trian.tudu.data.model.toEntity
 import app.trian.tudu.data.utils.Response
 import app.trian.tudu.sqldelight.Database
-import category.Category
+import app.trian.tudu.table.category.Category
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

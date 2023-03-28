@@ -20,6 +20,7 @@ import app.trian.tudu.base.extensions.navigateSingleTop
 import app.trian.tudu.base.extensions.navigateUp
 import app.trian.tudu.base.extensions.runSuspend
 import app.trian.tudu.base.extensions.showBottomSheet
+import app.trian.tudu.data.theme.ThemeData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -62,9 +63,10 @@ abstract class BaseViewModel<State : Parcelable, Action>(
         launch { block() }
     }
 
-    protected inline fun asyncWithState(crossinline block: suspend State.() -> Unit) = with(viewModelScope) {
-        launch { block(uiState.value) }
-    }
+    protected inline fun asyncWithState(crossinline block: suspend State.() -> Unit) =
+        with(viewModelScope) {
+            launch { block(uiState.value) }
+        }
 
     protected suspend inline fun <T> await(crossinline block: suspend () -> T): T =
         withContext(dispatcher) { block() }
@@ -75,7 +77,7 @@ abstract class BaseViewModel<State : Parcelable, Action>(
         }
     }
 
-    fun runSuspend(cb:suspend CoroutineScope. ()->Unit)=_app.runSuspend(block = cb)
+    fun runSuspend(cb: suspend CoroutineScope. () -> Unit) = _app.runSuspend(block = cb)
 
     protected abstract fun handleActions()
     fun commit(state: State) {
@@ -90,7 +92,7 @@ abstract class BaseViewModel<State : Parcelable, Action>(
         commit(s(uiState.value))
     }
 
-    fun resetState(){
+    fun resetState() {
         commit(initialState)
     }
 
@@ -99,20 +101,27 @@ abstract class BaseViewModel<State : Parcelable, Action>(
     fun setAppState(appState: ApplicationState) {
         _app = appState
     }
+
     //region snakcbar
-    fun showSnackbar(message:String) = _app.showSnackbar(message)
-    fun showSnackbar(message:Int) = _app.showSnackbar(message)
-    fun showSnackbar(message:Int,vararg params:String) = _app.showSnackbar(message,*params)
+    fun showSnackbar(message: String) = _app.showSnackbar(message)
+    fun showSnackbar(message: Int) = _app.showSnackbar(message)
+    fun showSnackbar(message: Int, vararg params: String) = _app.showSnackbar(message, *params)
     //
 
     //region navigation
     fun backAndClose() = _app.backPressedAndClose()
     fun navigateUp() = _app.navigateUp()
     fun navigate(routeName: String, vararg args: String) = _app.navigate(routeName, *args)
-    fun navigateSingleTop(routeName: String,vararg args:String) = _app.navigateSingleTop(routeName, *args)
+    fun navigateSingleTop(routeName: String, vararg args: String) =
+        _app.navigateSingleTop(routeName, *args)
+
     fun navigateSingleTop(routeName: String) = _app.navigateSingleTop(routeName)
-    fun navigateAndReplace(routeName: String,vararg args:String) =_app.navigateAndReplace(routeName, *args)
-    fun navigateAndReplaceAll(routeName: String,vararg args:String) = _app.navigateAndReplaceAll(routeName, *args)
+    fun navigateAndReplace(routeName: String, vararg args: String) =
+        _app.navigateAndReplace(routeName, *args)
+
+    fun navigateAndReplaceAll(routeName: String, vararg args: String) =
+        _app.navigateAndReplaceAll(routeName, *args)
+
     fun navigateAndReplaceAll(routeName: String) = _app.navigateAndReplaceAll(routeName)
     //end region
 
@@ -120,6 +129,14 @@ abstract class BaseViewModel<State : Parcelable, Action>(
     fun showBottomSheet() = _app.showBottomSheet()
     fun hideBottomSheet() = _app.hideBottomSheet()
     //end region
+
+    //region theme
+    fun setTheme(theme: ThemeData) {
+        if (theme != _app.theme) {
+            _app.theme = theme
+        }
+    }
+    //edn region
 
     override fun onCleared() {
         super.onCleared()
@@ -137,9 +154,10 @@ abstract class BaseViewModelData<State : Parcelable, DataState : Parcelable, Act
     private val _uiDataState: MutableStateFlow<DataState> = MutableStateFlow(initialData)
     val uiDataState get() = _uiDataState.asStateFlow()
 
-    protected inline fun asyncWithData(crossinline block: suspend DataState.() -> Unit) = with(viewModelScope) {
-        launch { block(uiDataState.value) }
-    }
+    protected inline fun asyncWithData(crossinline block: suspend DataState.() -> Unit) =
+        with(viewModelScope) {
+            launch { block(uiDataState.value) }
+        }
 
     fun commitData(dataState: DataState) {
         _uiDataState.tryEmit(dataState)
@@ -149,7 +167,7 @@ abstract class BaseViewModelData<State : Parcelable, DataState : Parcelable, Act
         commitData(dataState(uiDataState.value))
     }
 
-    fun resetDataState(){
+    fun resetDataState() {
         commitData(initialData)
     }
 

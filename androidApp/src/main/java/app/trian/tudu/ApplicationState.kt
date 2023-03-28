@@ -22,6 +22,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.tudu.base.EventListener
 import app.trian.tudu.base.extensions.runSuspend
+import app.trian.tudu.data.theme.ThemeData
 import kotlinx.coroutines.CoroutineScope
 
 
@@ -57,6 +58,9 @@ class ApplicationState internal constructor(
 
     var snackbarHostState by mutableStateOf(
         SnackbarHostState()
+    )
+    var theme by mutableStateOf(
+        ThemeData.DEFAULT
     )
 
     internal var showBottomAppBar by mutableStateOf(false)
@@ -131,31 +135,47 @@ class ApplicationState internal constructor(
 
     fun showSnackbar(message: String) {
         runSuspend {
-            snackbarHostState.showSnackbar(message)
+            snackbarHostState.showSnackbar(
+                message,
+                duration = SnackbarDuration.Short
+            )
         }
     }
 
     fun showSnackbar(message: Int) {
         runSuspend {
-            snackbarHostState.showSnackbar(context.getString(message))
+            snackbarHostState.showSnackbar(
+                context.getString(message),
+                duration = SnackbarDuration.Short
+            )
         }
     }
 
-    fun showSnackbar(message: Int,vararg params: String) {
+    fun showSnackbar(message: Int, vararg params: String) {
         runSuspend {
-            snackbarHostState.showSnackbar(context.getString(message, *params))
+            snackbarHostState.showSnackbar(
+                context.getString(message, *params),
+                duration = SnackbarDuration.Short
+            )
         }
     }
 
     fun showSnackbar(message: String, duration: SnackbarDuration) {
         runSuspend {
-            snackbarHostState.showSnackbar(message, duration = duration)
+            snackbarHostState.showSnackbar(
+                message,
+                duration = duration
+            )
         }
     }
 
     fun showSnackbar(message: String, actionLabel: String, onAction: () -> Unit = {}) {
         runSuspend {
-            when (snackbarHostState.showSnackbar(message, actionLabel = actionLabel, withDismissAction = true)) {
+            when (snackbarHostState.showSnackbar(
+                message,
+                actionLabel = actionLabel,
+                withDismissAction = true
+            )) {
                 SnackbarResult.Dismissed -> Unit
                 SnackbarResult.ActionPerformed -> onAction()
             }
@@ -174,7 +194,7 @@ fun rememberApplicationState(
 ): ApplicationState {
     val state = rememberModalBottomSheetState(
         initialValue = Hidden,
-        confirmValueChange={
+        confirmValueChange = {
             event.changeBottomSheetState(it)
             true
         }

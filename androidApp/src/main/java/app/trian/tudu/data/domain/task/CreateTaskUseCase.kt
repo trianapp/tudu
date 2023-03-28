@@ -32,6 +32,7 @@ class CreateTaskUseCase @Inject constructor(
             taskName = taskModel.taskName,
             taskNote = taskModel.taskNote,
             taskReminder = if (taskModel.taskReminder) 1 else 0,
+            isUploaded=0,
             createdAt = currentDateString,
             updatedAt = currentDateString,
         )

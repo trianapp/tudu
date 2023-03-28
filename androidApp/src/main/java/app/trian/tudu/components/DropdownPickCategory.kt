@@ -24,7 +24,7 @@ import androidx.compose.ui.window.PopupProperties
 import androidx.compose.ui.window.SecureFlagPolicy
 import app.trian.tudu.R
 import app.trian.tudu.base.BaseMainApp
-import category.Category
+import app.trian.tudu.table.category.Category
 import java.time.OffsetDateTime
 
 /**

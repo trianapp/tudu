@@ -17,16 +17,14 @@ import java.time.LocalTime
 data class CalendarState(
     var selectedDate: LocalDate = LocalDate.now(),
     override val showDialogPickCategory: Boolean=false,
-    override val hasCategory: Boolean=false,
-    override val hasDueDate: Boolean=false,
-    override val hasDueTime: Boolean=false,
-    override val hasTodos: Boolean=false,
     override val taskName: String="",
     override val categories:@RawValue List<CategoryModel> = listOf(),
     override val todos:@RawValue List<TodoModel> = listOf(),
     override val dueDate: LocalDate?=null,
     override val dueTime: LocalTime?=null,
     override val taskId: String="",
+    override val showDialogPickDueDate: Boolean=false,
+    override val showDialogPickDueTime: Boolean=false,
 ): BaseDashboardState(),Parcelable
 
 @Parcelize
@@ -45,6 +43,7 @@ sealed class CalendarEvent {
     data class GetTask(val date:LocalDate): CalendarEvent()
     data class UpdatePlainTodo(val todo: TodoModel) : CalendarEvent()
     data class DeletePlainTodo(val todoId: String) : CalendarEvent()
+
     object SubmitTask : CalendarEvent()
 
 }

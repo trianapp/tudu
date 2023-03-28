@@ -177,6 +177,29 @@ internal fun ScreenSignUp(
                     commit { copy(password = it) }
                 },
                 keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onSend = {
+                        ctx.hideKeyboard()
+                        dispatch(SignUpEvent.SignUpWithEmail)
+                    }
+                )
+            )
+            FormInput(
+                initialValue = uiState.confirmPassword,
+                label = {
+                    Text(
+                        text = stringResource(id = string.label_input_confirm_new_password),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                },
+                showPasswordObsecure = true,
+                placeholder = stringResource(id = string.placeholder_input_confirm_new_password),
+                onChange = {
+                    commit { copy(confirmPassword = it) }
+                },
+                keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Send
                 ),
                 keyboardActions = KeyboardActions(
@@ -213,6 +236,7 @@ internal fun ScreenSignUp(
             ctx.hideKeyboard()
             dispatch(SignUpEvent.SignUpWithEmail)
         }
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 

@@ -1,8 +1,10 @@
 package app.trian.tudu.data.model
 
 import com.github.mikephil.charting.data.BarEntry
+import com.google.errorprone.annotations.Keep
 import java.time.LocalDate
 
+@Keep
 data class CountTask(
     val totalTask: Int = 0,
     val completedTask: Int = 0,

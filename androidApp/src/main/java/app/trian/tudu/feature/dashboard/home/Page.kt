@@ -35,15 +35,15 @@ import app.trian.tudu.base.extensions.navigateSingleTop
 import app.trian.tudu.components.AppbarHome
 import app.trian.tudu.components.BottomSheetInputNewTask
 import app.trian.tudu.components.DialogConfirmation
+import app.trian.tudu.components.DialogDatePicker
+import app.trian.tudu.components.DialogLoading
 import app.trian.tudu.components.DialogPickCategory
+import app.trian.tudu.components.DialogTimePicker
 import app.trian.tudu.components.ItemTaskRow
 import app.trian.tudu.components.ScreenEmptyTask
 import app.trian.tudu.components.TuduBottomNavigation
 import app.trian.tudu.feature.category.Category
 import app.trian.tudu.feature.detailTask.DetailTask
-import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
-import com.maxkeppeler.sheets.date_time.DateTimeDialog
-import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 
 object Home {
     const val routeName = "Home"
@@ -62,9 +62,6 @@ internal fun ScreenHome(
     val state by uiState.collectAsState()
     val dataState by uiDataState.collectAsState()
     val ctx = LocalContext.current
-    val datePickerUseCase = rememberUseCaseState()
-    val timPickerUseCase = rememberUseCaseState()
-
 
     LaunchedEffect(key1 = this, block = {
         dispatch(HomeEvent.GetData)
@@ -81,6 +78,7 @@ internal fun ScreenHome(
                         R.string.option_category_management -> navigateSingleTop(Category.routeName)
                         R.string.option_search -> showSnackbar(R.string.text_message_coming_soon)
                         R.string.option_sort -> showSnackbar(R.string.text_message_coming_soon)
+                        R.string.option_sync -> dispatch(HomeEvent.SyncTask)
                     }
                 },
                 onSelectCategory = {
@@ -96,9 +94,9 @@ internal fun ScreenHome(
                 taskName = state.taskName,
                 todos = state.todos,
                 categories = state.categories,
-                hasCategory = state.hasCategory,
-                hasDueDate = state.hasDueDate,
-                hasReminder = state.hasDueTime,
+                hasCategory = state.categories.isNotEmpty(),
+                hasDueDate = state.dueDate != null,
+                hasReminder = state.dueTime != null,
                 onChangeTaskName = {
                     commit { copy(taskName = it) }
                 },
@@ -106,10 +104,10 @@ internal fun ScreenHome(
                     commit { copy(showDialogPickCategory = true) }
                 },
                 onAddDate = {
-                    datePickerUseCase.show()
+                    commit { copy(showDialogPickDueDate = true) }
                 },
                 onAddTime = {
-                    timPickerUseCase.show()
+                    commit { copy(showDialogPickDueTime = true) }
                 },
                 onAddTodo = {
                     dispatch(HomeEvent.AddPlainTodo(""))
@@ -136,6 +134,11 @@ internal fun ScreenHome(
         }
     }
 
+    DialogLoading(
+        show = state.isLoading,
+        title = "Please wait",
+        message = state.message
+    )
     DialogConfirmation(
         show = state.showDialogDeleteTask,
         message = stringResource(R.string.text_confirmation_delete, state.taskName),
@@ -154,8 +157,7 @@ internal fun ScreenHome(
             commit {
                 copy(
                     categories = it.filter { it.categoryId != "all" },
-                    showDialogPickCategory = false,
-                    hasCategory = it.isNotEmpty()
+                    showDialogPickCategory = false
                 )
             }
         },
@@ -163,26 +165,23 @@ internal fun ScreenHome(
             commit { copy(showDialogPickCategory = false) }
         }
     )
-    DateTimeDialog(
-        state = datePickerUseCase,
-        selection = DateTimeSelection.Date {
-            commit {
-                copy(
-                    dueDate = it,
-                    hasDueDate = true
-                )
-            }
+    DialogDatePicker(
+        show = state.showDialogPickDueDate,
+        onSubmit = {
+            commit { copy(showDialogPickDueDate = false, dueDate = it) }
+        },
+        onDismiss = {
+            commit { copy(showDialogPickDueDate = false) }
         }
     )
-    DateTimeDialog(
-        state = timPickerUseCase,
-        selection = DateTimeSelection.Time {
-            commit {
-                copy(
-                    dueTime = it,
-                    hasDueTime = true
-                )
-            }
+
+    DialogTimePicker(
+        show = state.showDialogPickDueTime,
+        onSubmit = {
+            commit { copy(showDialogPickDueTime = false, dueTime = it) }
+        },
+        onDismiss = {
+            commit { copy(showDialogPickDueTime = false) }
         }
     )
     Box(
@@ -253,7 +252,9 @@ internal fun ScreenHome(
             shape = MaterialTheme.shapes.medium,
         ) {
             Icon(
-                imageVector = Outlined.Add, contentDescription = "", tint = MaterialTheme.colorScheme.onPrimaryContainer
+                imageVector = Outlined.Add,
+                contentDescription = "",
+                tint = MaterialTheme.colorScheme.onPrimaryContainer
             )
         }
     }

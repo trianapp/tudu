@@ -6,6 +6,9 @@ CREATE TABLE IF NOT EXISTS Todo(
     createdAt TEXT
 );
 
+getListTodos:
+SELECT * FROM Todo ORDER BY Datetime(createdAt) DESC;
+
 getListTodoByTask:
 SELECT *
 FROM Todo

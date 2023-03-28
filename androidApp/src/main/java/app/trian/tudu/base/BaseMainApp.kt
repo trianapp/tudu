@@ -7,6 +7,7 @@
 
 package app.trian.tudu.base
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.defaultMinSize
@@ -25,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.trian.tudu.ApplicationState
+import app.trian.tudu.data.theme.ThemeData
 import app.trian.tudu.rememberApplicationState
 import app.trian.tudu.theme.MyApplicationTheme
 
@@ -49,7 +51,13 @@ fun BaseMainApp(
     bottomSheet: @Composable (ApplicationState) -> Unit = { it.bottomSheet.invoke() },
     content: @Composable (appState: ApplicationState) -> Unit = { }
 ) {
-    MyApplicationTheme {
+    MyApplicationTheme(
+        darkTheme = when (appState.theme) {
+            ThemeData.DEFAULT -> isSystemInDarkTheme()
+            ThemeData.DARK -> true
+            ThemeData.LIGHT -> false
+        }
+    ) {
         // A surface container using the 'background' color from the theme
         Surface(
             modifier = Modifier.fillMaxSize(),
