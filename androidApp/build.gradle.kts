@@ -25,8 +25,8 @@ android {
         applicationId = AppConfig.applicationId
         minSdk = 24
         targetSdk = 33
-        versionCode = 40
-        versionName = "2.0.202303270930"
+        versionCode = 41
+        versionName = "2.0.202303281534"
         multiDexEnabled = true
         vectorDrawables {
             useSupportLibrary = true
