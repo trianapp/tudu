@@ -1,0 +1,10 @@
+1. Aplikasi sepenuhnya dibuat dari awal
+2. Dynamic Theme dimana aplikasi bisa menggunakan tema menyesuaikan dengan Walpaper(Android 13)
+3. Penggunaan kategori lebih dari 1
+4. Edit profile(Foto dan Nama)
+5. Kamu sudah bisa memilih tema gelap & terang
+6. Support fitur Sinkronisasi data
+
+Bug Fix & Improvements:
+1. Perbaikan Bug dan Peningkatan Performa
+
