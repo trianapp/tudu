@@ -1,6 +1,5 @@
 package app.trian.tudu.feature.splash
 
-import androidx.compose.ui.text.toUpperCase
 import app.trian.tudu.base.BaseViewModel
 import app.trian.tudu.data.domain.category.InsertCategoryOnFirstRunUseCase
 import app.trian.tudu.data.domain.user.ChangeThemeUseCase

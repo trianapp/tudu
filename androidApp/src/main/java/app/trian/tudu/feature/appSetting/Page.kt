@@ -29,14 +29,10 @@ import app.trian.tudu.base.extensions.gotoApp
 import app.trian.tudu.base.extensions.hideBottomSheet
 import app.trian.tudu.components.AppbarBasic
 import app.trian.tudu.components.BottomSheetPrivacyPolicy
-import app.trian.tudu.components.DialogDateFormat
 import app.trian.tudu.components.DialogSelectTheme
-import app.trian.tudu.components.DialogTimeFormat
 import app.trian.tudu.components.ItemParentSetting
 import app.trian.tudu.components.ItemSetting
 import app.trian.tudu.components.SubItemSetting
-import app.trian.tudu.data.dateTime.DateFormat
-import app.trian.tudu.data.dateTime.TimeFormat
 import app.trian.tudu.data.theme.ThemeData
 import app.trian.tudu.feature.auth.changePassword.ChangePassword
 import app.trian.tudu.feature.editProfile.EditProfile

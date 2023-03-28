@@ -1,7 +1,5 @@
 package app.trian.tudu.data.model
 
-import app.trian.tudu.data.dateTime.DateFormat
-import app.trian.tudu.data.dateTime.TimeFormat
 import app.trian.tudu.data.theme.ThemeData
 import app.trian.tudu.table.appSetting.AppSetting
 import com.google.errorprone.annotations.Keep
