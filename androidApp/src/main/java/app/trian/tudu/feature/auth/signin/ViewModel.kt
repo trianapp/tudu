@@ -26,9 +26,9 @@ class SignInViewModel @Inject constructor(
         cb: suspend (String, String) -> Unit
     ) = asyncWithState {
         when {
-            email.isEmpty() || password.isEmpty() -> {
+            email.isEmpty() || password.isEmpty() ->
                 showSnackbar(R.string.message_password_or_email_cannot_empty)
-            }
+
             else -> cb(email, password)
         }
     }
@@ -38,20 +38,23 @@ class SignInViewModel @Inject constructor(
             Response.Loading -> showLoading()
             is Response.Error -> {
                 hideLoading()
-                showSnackbar(result.message)
+                result.showErrorSnackbar()
             }
+
             is Response.Result -> {
                 hideLoading()
-                showSnackbar(R.string.text_message_welcome_user, result.data.displayName.orEmpty().ifEmpty { "" })
+                showSnackbar(R.string.text_message_welcome_user, result.data.displayName.orEmpty())
                 navigateAndReplaceAll(Home.routeName)
             }
         }
     }
+
     override fun handleActions() = onEvent { event ->
         when (event) {
             SignInEvent.SignInWithEmail -> validateData { email, password ->
                 signInWithEmailUseCase(email, password).collect(::handleResponse)
             }
+
             is SignInEvent.SignInWithGoogle -> signInWithGoogleUseCase(event.result).collect(::handleResponse)
         }
     }
