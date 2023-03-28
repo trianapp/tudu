@@ -19,8 +19,8 @@ class SignInWithEmailAndPasswordUseCase @Inject constructor(private val auth: Fi
             ).await().user
 
             when {
-                user == null -> emit(Response.Error(""))
-                user.isEmailVerified -> emit(Response.Error(""))
+                user == null -> emit(Response.Error("Sign in failed"))
+                !user.isEmailVerified -> emit(Response.Error("Your account note verified, Please check your email for verification"))
                 else -> emit(Response.Result(user))
             }
         } catch (e: Exception) {

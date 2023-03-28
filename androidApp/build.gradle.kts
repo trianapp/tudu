@@ -110,7 +110,8 @@ dependencies {
     with(Firebase){
         implementation(platform(firebaseBom))
         implementation(auth)
-        implementation(firebaseStorage)
+        implementation(storage)
+        implementation(firestore)
         implementation(analytics)
         implementation(crashAnalytics)
     }

@@ -7,12 +7,15 @@ import app.trian.tudu.data.domain.category.GetListCategoryUseCase
 import app.trian.tudu.data.domain.task.CreateTaskUseCase
 import app.trian.tudu.data.domain.task.DeleteTaskUseCase
 import app.trian.tudu.data.domain.task.GetListTaskUseCase
+import app.trian.tudu.data.domain.task.SyncTaskToCloudUseCase
 import app.trian.tudu.data.domain.task.UpdateTaskDoneUseCase
 import app.trian.tudu.data.model.TaskCategoryModel
 import app.trian.tudu.data.model.TaskModel
 import app.trian.tudu.data.model.TodoModel
 import app.trian.tudu.data.utils.Response
+import app.trian.tudu.data.utils.ResponseWithProgress
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
 import java.time.LocalDateTime
 import java.util.UUID
 import javax.inject.Inject
@@ -23,7 +26,8 @@ class HomeViewModel @Inject constructor(
     private val createTaskUseCase: CreateTaskUseCase,
     private val deleteTaskUseCase: DeleteTaskUseCase,
     private val updateTaskDoneUseCase: UpdateTaskDoneUseCase,
-    private val getListCategoryUseCase: GetListCategoryUseCase
+    private val getListCategoryUseCase: GetListCategoryUseCase,
+    private val syncTaskToCloudUseCase: SyncTaskToCloudUseCase
 ) : BaseViewModelData<HomeState, HomeDataState, HomeEvent>(HomeState(), HomeDataState()) {
     init {
         handleActions()
@@ -205,6 +209,31 @@ class HomeViewModel @Inject constructor(
 
     //end region
 
+    private fun syncTaskWithCloud() = async {
+        syncTaskToCloudUseCase()
+            .collect { res ->
+                when (res) {
+                    is ResponseWithProgress.Error -> {
+                        showSnackbar(res.message)
+                        commit { copy(isLoading = false) }
+                    }
+
+                    is ResponseWithProgress.Finish -> {
+                        commit { copy(isLoading = false) }
+                        getListTask()
+                        getListCategory()
+                    }
+
+                    ResponseWithProgress.Loading -> commit { copy(isLoading = true) }
+                    is ResponseWithProgress.Progress -> commit {
+                        copy(
+                            message = "Sync.. ${res.progress}%"
+                        )
+                    }
+                }
+            }
+    }
+
     override fun handleActions() = onEvent {
         when (it) {
             is HomeEvent.AddPlainTodo -> createNewPlainTodo(it.todoName)
@@ -218,6 +247,8 @@ class HomeViewModel @Inject constructor(
                 getListTask()
                 getListCategory()
             }
+
+            HomeEvent.SyncTask -> syncTaskWithCloud()
         }
     }
 

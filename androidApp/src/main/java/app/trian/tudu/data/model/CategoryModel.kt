@@ -1,9 +1,11 @@
 package app.trian.tudu.data.model
 
-import category.Category
+import app.trian.tudu.table.category.Category
+import com.google.errorprone.annotations.Keep
 import java.time.LocalDateTime
 import java.util.UUID
 
+@Keep
 data class CategoryModel(
     val categoryId: String = "",
     val categoryName: String = "",
@@ -11,6 +13,7 @@ data class CategoryModel(
     val updatedAt: String = ""
 )
 
+@Keep
 data class CategoryWithCount(
     val category: CategoryModel = CategoryModel(),
     val count: Int = 0
@@ -33,19 +36,19 @@ fun Category.toModel() = CategoryModel(
 
 val listCategoriesEnglish = listOf(
     CategoryModel(
-        categoryId = UUID.randomUUID().toString(),
+        categoryId = "da8bb576-6966-4fb1-88d7-11f0258389ab",
         categoryName = "Work",
         createdAt = LocalDateTime.now().toString(),
         updatedAt = LocalDateTime.now().toString()
     ),
     CategoryModel(
-        categoryId = UUID.randomUUID().toString(),
+        categoryId = "da8bb576-6966-4fb1-88d7-11f0258389ac",
         categoryName = "Meeting",
         createdAt = LocalDateTime.now().toString(),
         updatedAt = LocalDateTime.now().toString()
     ),
     CategoryModel(
-        categoryId = UUID.randomUUID().toString(),
+        categoryId = "da8bb576-6966-4fb1-88d7-11f0258389ad",
         categoryName = "Ideas",
         createdAt = LocalDateTime.now().toString(),
         updatedAt = LocalDateTime.now().toString()
@@ -54,19 +57,19 @@ val listCategoriesEnglish = listOf(
 
 val listCategoriesIn = listOf(
     CategoryModel(
-        categoryId = UUID.randomUUID().toString(),
+        categoryId ="da8bb576-6966-4fb1-88d7-11f0258389ab",
         categoryName = "Work",
         createdAt = LocalDateTime.now().toString(),
         updatedAt = LocalDateTime.now().toString()
     ),
     CategoryModel(
-        categoryId = UUID.randomUUID().toString(),
+        categoryId =  "da8bb576-6966-4fb1-88d7-11f0258389ac",
         categoryName = "Meeting",
         createdAt = LocalDateTime.now().toString(),
         updatedAt = LocalDateTime.now().toString()
     ),
     CategoryModel(
-        categoryId = UUID.randomUUID().toString(),
+        categoryId = "da8bb576-6966-4fb1-88d7-11f0258389ad",
         categoryName = "Ideas",
         createdAt = LocalDateTime.now().toString(),
         updatedAt = LocalDateTime.now().toString()

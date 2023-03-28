@@ -1,21 +1,15 @@
 package app.trian.tudu.data.model
 
-import todo.Todo
+import app.trian.tudu.table.todo.Todo
+import com.google.errorprone.annotations.Keep
 
+@Keep
 data class TodoModel(
     val todoId: String = "",
     val todoName: String = "",
     val todoDone: Boolean = false,
     val todoTaskId: String = "",
     val createdAt: String = ""
-)
-
-fun TodoModel.toEntity() = Todo(
-    todoId = todoId,
-    todoName = todoName,
-    todoDone = if (todoDone) 1 else 0,
-    todoTaskId = todoTaskId,
-    createdAt = createdAt
 )
 
 fun Todo.toModel() = TodoModel(

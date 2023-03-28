@@ -15,7 +15,7 @@ sealed class Response<out R>{
 
 sealed class ResponseWithProgress<out R>{
     object Loading: ResponseWithProgress<Nothing>()
-    data class Result<out Result>(val data:Result): ResponseWithProgress<Result>()
-    data class Progress<out Result>(val progress:Int): ResponseWithProgress<Result>()
+    data class Finish<out Result>(val data:Result): ResponseWithProgress<Result>()
+    data class Progress(val progress:Int): ResponseWithProgress<Nothing>()
     data class Error(val message:String="",val code:Int=0): ResponseWithProgress<Nothing>()
 }

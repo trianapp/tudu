@@ -15,8 +15,10 @@ import java.time.LocalTime
 @Parcelize
 @Immutable
 data class HomeState(
-    var showDialogDeleteTask: Boolean = false,
-    var showDropdownMoreOption: Boolean = false,
+    val showDialogDeleteTask: Boolean = false,
+    val showDropdownMoreOption: Boolean = false,
+    val isLoading:Boolean=false,
+    val message:String="Sync...",
     override val hasCategory: Boolean = false,
     override val hasDueDate: Boolean = false,
     override val hasDueTime: Boolean = false,
@@ -33,14 +35,15 @@ data class HomeState(
 @Parcelize
 @Immutable
 data class HomeDataState constructor(
-    var task: @RawValue List<TaskWithCategory> = listOf(),
-    var filteredTask: @RawValue List<TaskWithCategory> = listOf(),
+    val task: @RawValue List<TaskWithCategory> = listOf(),
+    val filteredTask: @RawValue List<TaskWithCategory> = listOf(),
     override val categories:@RawValue List<CategoryModel> = listOf(),
     override val todos:@RawValue List<TodoModel> = listOf()
 ) : BaseDashboardDataState(), Parcelable
 
 @Immutable
 sealed class HomeEvent {
+    object SyncTask:HomeEvent()
     data class AddPlainTodo(val todoName: String) : HomeEvent()
     object GetData : HomeEvent()
     data class UpdatePlainTodo(val todo: TodoModel) : HomeEvent()

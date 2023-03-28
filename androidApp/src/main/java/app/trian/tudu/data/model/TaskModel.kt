@@ -1,7 +1,9 @@
 package app.trian.tudu.data.model
 
-import task.Task
+import app.trian.tudu.table.task.Task
+import com.google.errorprone.annotations.Keep
 
+@Keep
 data class TaskModel(
     val taskId: String = "",
     val taskName: String = "",
@@ -10,26 +12,22 @@ data class TaskModel(
     val taskDone: Boolean = false,
     val taskReminder: Boolean = false,
     val taskNote: String = "",
+    val isUoloaded: Boolean = false,
     val createdAt: String = "",
     val updatedAt: String = ""
 )
 
+@Keep
 data class TaskWithCategory(
     val task: TaskModel = TaskModel(),
-    val category:List<CategoryModel> = listOf()
+    val category: List<CategoryModel> = listOf()
 )
 
-
-fun TaskModel.toEntity() = Task(
-    taskId = taskId,
-    taskName = taskName,
-    taskDueDate = taskDueDate,
-    taskDueTime = taskDueTime,
-    taskDone = if (taskDone) 1 else 0,
-    taskReminder = if (taskReminder) 1 else 0,
-    taskNote = taskNote,
-    createdAt = createdAt,
-    updatedAt = updatedAt
+@Keep
+data class TaskWithCategoryAndTodo(
+    val task: TaskModel = TaskModel(),
+    val category: List<CategoryModel> = listOf(),
+    val todos: List<TodoModel> = listOf()
 )
 
 fun Task.toModel() = TaskModel(
@@ -40,6 +38,7 @@ fun Task.toModel() = TaskModel(
     taskDone = taskDone?.toInt() == 1,
     taskReminder = taskReminder?.toInt() == 1,
     taskNote = taskNote.orEmpty(),
+    isUoloaded = isUploaded?.toInt() == 1,
     createdAt = createdAt.orEmpty(),
     updatedAt = updatedAt.orEmpty()
 )

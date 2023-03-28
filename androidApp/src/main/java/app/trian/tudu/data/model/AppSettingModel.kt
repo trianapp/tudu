@@ -3,8 +3,10 @@ package app.trian.tudu.data.model
 import app.trian.tudu.data.dateTime.DateFormat
 import app.trian.tudu.data.dateTime.TimeFormat
 import app.trian.tudu.data.theme.ThemeData
-import appSetting.AppSetting
+import app.trian.tudu.table.appSetting.AppSetting
+import com.google.errorprone.annotations.Keep
 
+@Keep
 data class AppSettingModel(
     val settingId: String = "",
     val theme: ThemeData = ThemeData.DEFAULT,
@@ -13,17 +15,6 @@ data class AppSettingModel(
     val timeFormat: TimeFormat = TimeFormat.TWENTY,
     val createdAt: String = "",
     val updatedAt:String=""
-)
-
-
-fun AppSettingModel.toEntity()= AppSetting(
-    settingId = settingId,
-    theme = theme.value,
-    lastSync = lastSync,
-    dateFormat = dateFormat.value,
-    timeFormat = timeFormat.value,
-    createdAt = createdAt,
-    updatedAt = updatedAt
 )
 
 fun AppSetting.toModel()= AppSettingModel(

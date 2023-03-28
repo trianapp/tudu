@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Category
+import androidx.compose.material.icons.outlined.CloudSync
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Sort
@@ -76,6 +77,10 @@ fun AppbarHome(
                         Pair(
                             Icons.Outlined.Sort,
                             R.string.option_sort
+                        ),
+                        Pair(
+                            Icons.Outlined.CloudSync,
+                            R.string.option_sync
                         )
                     )
                     DropdownMenu(

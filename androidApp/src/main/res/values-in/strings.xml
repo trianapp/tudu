@@ -72,6 +72,7 @@
     <string name="option_category_management">Manajemen Kategori</string>
     <string name="option_search">Cari</string>
     <string name="option_sort">Urutkan</string>
+    <string name="option_sync">Sinkronisasi Backup</string>
     <string name="category_all">Semua</string>
     <string name="btn_logout">Keluar</string>
     <string name="text_confirmation_signout">Apakah kamu yakin mau keluar dari akun kamu?</string>

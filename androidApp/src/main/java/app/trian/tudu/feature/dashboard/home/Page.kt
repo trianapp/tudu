@@ -35,6 +35,7 @@ import app.trian.tudu.base.extensions.navigateSingleTop
 import app.trian.tudu.components.AppbarHome
 import app.trian.tudu.components.BottomSheetInputNewTask
 import app.trian.tudu.components.DialogConfirmation
+import app.trian.tudu.components.DialogLoading
 import app.trian.tudu.components.DialogPickCategory
 import app.trian.tudu.components.ItemTaskRow
 import app.trian.tudu.components.ScreenEmptyTask
@@ -81,6 +82,7 @@ internal fun ScreenHome(
                         R.string.option_category_management -> navigateSingleTop(Category.routeName)
                         R.string.option_search -> showSnackbar(R.string.text_message_coming_soon)
                         R.string.option_sort -> showSnackbar(R.string.text_message_coming_soon)
+                        R.string.option_sync -> dispatch(HomeEvent.SyncTask)
                     }
                 },
                 onSelectCategory = {
@@ -136,6 +138,11 @@ internal fun ScreenHome(
         }
     }
 
+    DialogLoading(
+        show = state.isLoading,
+        title = "Please wait",
+        message = state.message
+    )
     DialogConfirmation(
         show = state.showDialogDeleteTask,
         message = stringResource(R.string.text_confirmation_delete, state.taskName),

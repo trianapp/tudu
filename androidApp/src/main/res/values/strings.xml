@@ -72,6 +72,7 @@
     <string name="option_category_management">Category Management</string>
     <string name="option_search">Search</string>
     <string name="option_sort">Sort</string>
+    <string name="option_sync">Sync</string>
     <string name="category_all">All</string>
     <string name="btn_logout">Logout</string>
     <string name="text_confirmation_signout">Are you sure sign out from app?</string>
