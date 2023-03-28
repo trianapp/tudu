@@ -42,10 +42,13 @@ import app.trian.tudu.base.extensions.addOnBottomSheetStateChangeListener
 import app.trian.tudu.base.extensions.hideKeyboard
 import app.trian.tudu.base.extensions.toReadableDate
 import app.trian.tudu.components.BottomSheetInputNewTask
+import app.trian.tudu.components.DialogDatePicker
 import app.trian.tudu.components.DialogPickCategory
+import app.trian.tudu.components.DialogTimePicker
 import app.trian.tudu.components.ItemCalendar
 import app.trian.tudu.components.ItemTaskCalendar
 import app.trian.tudu.components.TuduBottomNavigation
+import app.trian.tudu.feature.dashboard.home.HomeEvent
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
@@ -86,9 +89,6 @@ internal fun ScreenCalendar(
             true
         }
     )
-    val datePickerUseCase = rememberUseCaseState()
-    val timPickerUseCase = rememberUseCaseState()
-
 
     val ctx = LocalContext.current
     val today = LocalDate.now()
@@ -130,9 +130,9 @@ internal fun ScreenCalendar(
                 taskName = state.taskName,
                 todos = state.todos,
                 categories = state.categories,
-                hasCategory = state.hasCategory,
-                hasDueDate = state.hasDueDate,
-                hasReminder = state.hasDueTime,
+                hasCategory = state.categories.isNotEmpty(),
+                hasDueDate = state.dueDate != null,
+                hasReminder = state.dueTime != null,
                 onChangeTaskName = {
                     commit { copy(taskName = it) }
                 },
@@ -140,10 +140,10 @@ internal fun ScreenCalendar(
                     commit { copy(showDialogPickCategory = true) }
                 },
                 onAddDate = {
-                    datePickerUseCase.show()
+                    commit { copy(showDialogPickDueDate = true) }
                 },
                 onAddTime = {
-                    timPickerUseCase.show()
+                    commit { copy(showDialogPickDueTime = true) }
                 },
                 onAddTodo = {
                     dispatch(CalendarEvent.AddPlainTodo(""))
@@ -179,7 +179,6 @@ internal fun ScreenCalendar(
                 copy(
                     categories = it.filter { it.categoryId != "all" },
                     showDialogPickCategory = false,
-                    hasCategory = it.isNotEmpty()
                 )
             }
         },
@@ -187,26 +186,24 @@ internal fun ScreenCalendar(
             commit { copy(showDialogPickCategory = false) }
         }
     )
-    DateTimeDialog(
-        state = datePickerUseCase,
-        selection = DateTimeSelection.Date {
-            commit {
-                copy(
-                    dueDate = it,
-                    hasDueDate = true
-                )
-            }
+
+    DialogDatePicker(
+        show = state.showDialogPickDueDate,
+        onSubmit = {
+            commit { copy(showDialogPickDueDate = false, dueDate = it) }
+        },
+        onDismiss = {
+            commit { copy(showDialogPickDueDate = false) }
         }
     )
-    DateTimeDialog(
-        state = timPickerUseCase,
-        selection = DateTimeSelection.Time {
-            commit {
-                copy(
-                    dueTime = it,
-                    hasDueTime = true
-                )
-            }
+
+    DialogTimePicker(
+        show = state.showDialogPickDueTime,
+        onSubmit = {
+            commit { copy(showDialogPickDueTime = false, dueTime = it) }
+        },
+        onDismiss = {
+            commit { copy(showDialogPickDueTime = false) }
         }
     )
     LaunchedEffect(key1 = this, block = {

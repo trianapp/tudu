@@ -10,9 +10,6 @@ import com.google.errorprone.annotations.Keep
 data class AppSettingModel(
     val settingId: String = "",
     val theme: ThemeData = ThemeData.DEFAULT,
-    val lastSync: String = "",
-    val dateFormat: DateFormat = DateFormat.DEFAULT,
-    val timeFormat: TimeFormat = TimeFormat.TWENTY,
     val createdAt: String = "",
     val updatedAt:String=""
 )
@@ -20,9 +17,6 @@ data class AppSettingModel(
 fun AppSetting.toModel()= AppSettingModel(
     settingId = settingId,
     theme = ThemeData.valueOf(theme),
-    lastSync = lastSync,
-    dateFormat =  DateFormat.valueOf(dateFormat.orEmpty().ifEmpty { DateFormat.DEFAULT.value }),
-    timeFormat = TimeFormat.valueOf(timeFormat.orEmpty().ifEmpty { TimeFormat.DEFAULT.value }),
     createdAt=createdAt,
     updatedAt=updatedAt
 )

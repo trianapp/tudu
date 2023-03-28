@@ -65,7 +65,9 @@ import app.trian.tudu.base.BaseMainApp
 import app.trian.tudu.base.UIWrapper
 import app.trian.tudu.base.extensions.hideKeyboard
 import app.trian.tudu.components.DialogConfirmation
+import app.trian.tudu.components.DialogDatePicker
 import app.trian.tudu.components.DialogPickCategory
+import app.trian.tudu.components.DialogTimePicker
 import app.trian.tudu.components.ItemTodo
 import app.trian.tudu.feature.inputNote.InputNote
 import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
@@ -113,8 +115,6 @@ internal fun ScreenDetailTask(
     val visibleTitle by remember {
         derivedStateOf { lazyState.firstVisibleItemIndex > 1 }
     }
-    val datePickerUseCase = rememberUseCaseState()
-    val timPickerUseCase = rememberUseCaseState()
 
     with(appState) {
         setupTopAppBar {
@@ -189,19 +189,25 @@ internal fun ScreenDetailTask(
             dispatch(DetailTaskEvent.DeleteTask)
         }
     )
-    DateTimeDialog(
-        state = datePickerUseCase,
-        selection = DateTimeSelection.Date {
+    DialogDatePicker(
+        show = state.showDialogPickDueDate,
+        currentSelectedDate = state.taskDueDate,
+        onSubmit = {
             dispatch(DetailTaskEvent.UpdateTaskDueDate(it))
         },
-        config = DateTimeConfig(
-
-        )
+        onDismiss = {
+            commit { copy(showDialogPickDueDate = false) }
+        }
     )
-    DateTimeDialog(
-        state = timPickerUseCase,
-        selection = DateTimeSelection.Time {
+
+    DialogTimePicker(
+        show = state.showDialogPickDueTime,
+        currentSelectedTime = state.taskDueTime,
+        onSubmit = {
             dispatch(DetailTaskEvent.UpdateTaskDueTime(it))
+        },
+        onDismiss = {
+            commit { copy(showDialogPickDueTime = false) }
         }
     )
     DialogPickCategory(
@@ -354,7 +360,11 @@ internal fun ScreenDetailTask(
                     Spacer(modifier = Modifier.height(16.dp))
                     ListItem(
                         modifier = Modifier.clickable {
-                            datePickerUseCase.show()
+                            commit {
+                                copy(
+                                    showDialogPickDueDate = true
+                                )
+                            }
                         },
                         leadingContent = {
                             Icon(
@@ -383,7 +393,11 @@ internal fun ScreenDetailTask(
                 item {
                     ListItem(
                         modifier = Modifier.clickable {
-                            timPickerUseCase.show()
+                            commit {
+                                copy(
+                                    showDialogPickDueTime = true
+                                )
+                            }
                         },
                         leadingContent = {
                             Icon(

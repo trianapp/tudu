@@ -30,12 +30,14 @@ import app.trian.tudu.base.extensions.hideBottomSheet
 import app.trian.tudu.components.AppbarBasic
 import app.trian.tudu.components.BottomSheetPrivacyPolicy
 import app.trian.tudu.components.DialogDateFormat
+import app.trian.tudu.components.DialogSelectTheme
 import app.trian.tudu.components.DialogTimeFormat
 import app.trian.tudu.components.ItemParentSetting
 import app.trian.tudu.components.ItemSetting
 import app.trian.tudu.components.SubItemSetting
 import app.trian.tudu.data.dateTime.DateFormat
 import app.trian.tudu.data.dateTime.TimeFormat
+import app.trian.tudu.data.theme.ThemeData
 import app.trian.tudu.feature.auth.changePassword.ChangePassword
 import app.trian.tudu.feature.editProfile.EditProfile
 
@@ -148,22 +150,24 @@ internal fun ScreenAppSetting(
             )
         }
     }
-    DialogDateFormat(
-        show = state.showDialogDateFormat,
-        dateFormat = state.dateFormat.ifEmpty { DateFormat.YYYYMMDD.value },
-        onConfirm = {},
+    DialogSelectTheme(
+        show = state.showDialogTheme,
+        title = stringResource(id = R.string.title_dialog_select_theme),
+        caption = stringResource(id = R.string.caption_dialog_select_theme),
+        items = listOf(
+            ThemeData.DEFAULT,
+            ThemeData.DARK,
+            ThemeData.LIGHT
+        ),
+        selectedItem = appState.theme,
+        onSelected = {
+            dispatch(AppSettingEvent.SelectedTheme(it))
+        },
         onDismiss = {
-            dispatch(AppSettingEvent.ShowDateFormat(false))
+            commit { copy(showDialogTheme = false) }
         }
     )
-    DialogTimeFormat(
-        show = state.showDialogTimeFormat,
-        timeFormat = state.timeFormat.ifEmpty { TimeFormat.TWENTY.value },
-        onConfirm = {},
-        onDismiss = {
-            dispatch(AppSettingEvent.ShowTimeFormat(false))
-        }
-    )
+
     LazyColumn(content = {
         items(menus) { menu ->
             ItemParentSetting(
@@ -171,31 +175,15 @@ internal fun ScreenAppSetting(
                 appSetting = state,
                 onClick = {
                     when (it) {
-                        "time_format" -> {
-                            dispatch(AppSettingEvent.ShowTimeFormat(true))
-                        }
-
-                        "date_format" -> {
-                            dispatch(AppSettingEvent.ShowDateFormat(true))
-                        }
-
-                        "privacy_policy" -> {
-                            showBottomSheet()
-                        }
-
-                        "send_feedback" -> {
-                            ctx.emailTo(
-                                from = "",
-                                to = ctx.getString(R.string.email_feedback),
-                                subject = ctx.getString(R.string.subject_feedback)
-                            )
-                        }
-
-                        "rate_app" -> {
-                            ctx.gotoApp()
-                        }
-
-                        else -> {}
+                        "privacy_policy" -> showBottomSheet()
+                        "send_feedback" -> ctx.emailTo(
+                            from = "",
+                            to = ctx.getString(R.string.email_feedback),
+                            subject = ctx.getString(R.string.subject_feedback)
+                        )
+                        "rate_app" -> ctx.gotoApp()
+                        "theme" -> commit { copy(showDialogTheme = true) }
+                        else -> Unit
                     }
                 },
                 onNavigate = {

@@ -1,1 +1,4 @@
 ALTER TABLE Task ADD COLUMN isUploaded INTEGER;
+ALTER TABLE AppSetting DROP COLUMN lastSync;
+ALTER TABLE AppSetting DROP COLUMN dateFormat;
+ALTER TABLE AppSetting DROP COLUMN timeFormat;

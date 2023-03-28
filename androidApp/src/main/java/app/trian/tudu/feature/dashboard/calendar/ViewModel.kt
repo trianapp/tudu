@@ -42,7 +42,7 @@ class CalendarViewModel @Inject constructor(
     private fun saveTask() = asyncWithState {
         createTaskUseCase(
             taskModel = TaskModel(
-                taskReminder = hasDueTime,
+                taskReminder = dueTime != null,
                 taskName = taskName,
                 taskDueDate = dueDate?.toString().orEmpty(),
                 taskDueTime = dueTime?.toString().orEmpty(),
@@ -143,13 +143,13 @@ class CalendarViewModel @Inject constructor(
                 getListTask()
                 getListCategory()
             }
+
             CalendarEvent.SubmitTask -> saveTask()
             is CalendarEvent.UpdatePlainTodo -> updatePlainTodo(it.todo)
             is CalendarEvent.GetTask -> {
                 commit { copy(selectedDate = it.date) }
                 getListTask()
             }
-
         }
     }
 

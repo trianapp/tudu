@@ -35,8 +35,10 @@ import app.trian.tudu.base.extensions.navigateSingleTop
 import app.trian.tudu.components.AppbarHome
 import app.trian.tudu.components.BottomSheetInputNewTask
 import app.trian.tudu.components.DialogConfirmation
+import app.trian.tudu.components.DialogDatePicker
 import app.trian.tudu.components.DialogLoading
 import app.trian.tudu.components.DialogPickCategory
+import app.trian.tudu.components.DialogTimePicker
 import app.trian.tudu.components.ItemTaskRow
 import app.trian.tudu.components.ScreenEmptyTask
 import app.trian.tudu.components.TuduBottomNavigation
@@ -63,9 +65,6 @@ internal fun ScreenHome(
     val state by uiState.collectAsState()
     val dataState by uiDataState.collectAsState()
     val ctx = LocalContext.current
-    val datePickerUseCase = rememberUseCaseState()
-    val timPickerUseCase = rememberUseCaseState()
-
 
     LaunchedEffect(key1 = this, block = {
         dispatch(HomeEvent.GetData)
@@ -98,9 +97,9 @@ internal fun ScreenHome(
                 taskName = state.taskName,
                 todos = state.todos,
                 categories = state.categories,
-                hasCategory = state.hasCategory,
-                hasDueDate = state.hasDueDate,
-                hasReminder = state.hasDueTime,
+                hasCategory = state.categories.isNotEmpty(),
+                hasDueDate = state.dueDate != null,
+                hasReminder = state.dueTime != null,
                 onChangeTaskName = {
                     commit { copy(taskName = it) }
                 },
@@ -108,10 +107,10 @@ internal fun ScreenHome(
                     commit { copy(showDialogPickCategory = true) }
                 },
                 onAddDate = {
-                    datePickerUseCase.show()
+                    commit { copy(showDialogPickDueDate = true) }
                 },
                 onAddTime = {
-                    timPickerUseCase.show()
+                    commit { copy(showDialogPickDueTime = true) }
                 },
                 onAddTodo = {
                     dispatch(HomeEvent.AddPlainTodo(""))
@@ -161,8 +160,7 @@ internal fun ScreenHome(
             commit {
                 copy(
                     categories = it.filter { it.categoryId != "all" },
-                    showDialogPickCategory = false,
-                    hasCategory = it.isNotEmpty()
+                    showDialogPickCategory = false
                 )
             }
         },
@@ -170,26 +168,23 @@ internal fun ScreenHome(
             commit { copy(showDialogPickCategory = false) }
         }
     )
-    DateTimeDialog(
-        state = datePickerUseCase,
-        selection = DateTimeSelection.Date {
-            commit {
-                copy(
-                    dueDate = it,
-                    hasDueDate = true
-                )
-            }
+    DialogDatePicker(
+        show = state.showDialogPickDueDate,
+        onSubmit = {
+            commit { copy(showDialogPickDueDate = false, dueDate = it) }
+        },
+        onDismiss = {
+            commit { copy(showDialogPickDueDate = false) }
         }
     )
-    DateTimeDialog(
-        state = timPickerUseCase,
-        selection = DateTimeSelection.Time {
-            commit {
-                copy(
-                    dueTime = it,
-                    hasDueTime = true
-                )
-            }
+
+    DialogTimePicker(
+        show = state.showDialogPickDueTime,
+        onSubmit = {
+            commit { copy(showDialogPickDueTime = false, dueTime = it) }
+        },
+        onDismiss = {
+            commit { copy(showDialogPickDueTime = false) }
         }
     )
     Box(
@@ -260,7 +255,9 @@ internal fun ScreenHome(
             shape = MaterialTheme.shapes.medium,
         ) {
             Icon(
-                imageVector = Outlined.Add, contentDescription = "", tint = MaterialTheme.colorScheme.onPrimaryContainer
+                imageVector = Outlined.Add,
+                contentDescription = "",
+                tint = MaterialTheme.colorScheme.onPrimaryContainer
             )
         }
     }

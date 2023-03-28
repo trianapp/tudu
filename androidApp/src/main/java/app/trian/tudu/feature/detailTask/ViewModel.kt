@@ -101,7 +101,12 @@ class DetailTaskViewModel @Inject constructor(
     }
 
     private fun updateTaskDueDate(taskDueDate: LocalDate) = async {
-        commit { copy(taskDueDate = taskDueDate) }
+        commit {
+            copy(
+                taskDueDate = taskDueDate,
+                showDialogPickDueDate = false
+            )
+        }
         updateTaskDueDateUseCase(
             taskId = getTaskId(),
             taskDueDate = taskDueDate
@@ -109,7 +114,12 @@ class DetailTaskViewModel @Inject constructor(
     }
 
     private fun updateTaskDueTime(taskDueTime: LocalTime) = async {
-        commit { copy(taskDueTime = taskDueTime) }
+        commit {
+            copy(
+                taskDueTime = taskDueTime,
+                showDialogPickDueTime = false
+            )
+        }
         updateTaskDueTimeUseCase(
             taskId = getTaskId(),
             taskDueTime = taskDueTime
@@ -168,17 +178,20 @@ class DetailTaskViewModel @Inject constructor(
     private fun updateTaskCategory(newCategories: List<CategoryModel>) = asyncWithData {
         val taskId = getTaskId()
         val oldCategory = this.categories
+        val savedNewCategory = newCategories.filter {
+            it.categoryId != "all"
+        }
 
         //save to state first, save to db then
-        commitData { copy(categories = newCategories) }
+        commitData { copy(categories = savedNewCategory) }
         commit { copy(showDialogPickCategory = false) }
         updateTaskCategoryUseCase(
             taskId = taskId,
             oldCategories = oldCategory,
-            newCategories = newCategories
-                .filter {
-                    it.categoryId != "all"
-                }.map { TaskCategoryModel(taskId = taskId, categoryId = it.categoryId) }
+            newCategories = savedNewCategory
+                .map {
+                    TaskCategoryModel(taskId = taskId, categoryId = it.categoryId)
+                }
         ).collect {}
     }
 

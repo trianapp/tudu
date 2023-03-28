@@ -19,10 +19,6 @@ data class HomeState(
     val showDropdownMoreOption: Boolean = false,
     val isLoading:Boolean=false,
     val message:String="Sync...",
-    override val hasCategory: Boolean = false,
-    override val hasDueDate: Boolean = false,
-    override val hasDueTime: Boolean = false,
-    override val hasTodos: Boolean = false,
     override val showDialogPickCategory: Boolean = false,
     override val taskName: String = "",
     override val categories: @RawValue List<CategoryModel> = listOf(),
@@ -30,6 +26,8 @@ data class HomeState(
     override val dueDate: LocalDate? = null,
     override val dueTime: LocalTime? = null,
     override val taskId: String = "",
+    override val showDialogPickDueDate: Boolean=false,
+    override val showDialogPickDueTime: Boolean=false,
 ) : BaseDashboardState(), Parcelable
 
 @Parcelize
@@ -48,6 +46,7 @@ sealed class HomeEvent {
     object GetData : HomeEvent()
     data class UpdatePlainTodo(val todo: TodoModel) : HomeEvent()
     data class DeletePlainTodo(val todoId: String) : HomeEvent()
+
     object DeleteTask : HomeEvent()
     object SubmitTask : HomeEvent()
     data class DoneTask(val isDone: Boolean, val taskId: String) : HomeEvent()

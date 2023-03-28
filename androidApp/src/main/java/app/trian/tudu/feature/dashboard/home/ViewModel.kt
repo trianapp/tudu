@@ -70,7 +70,7 @@ class HomeViewModel @Inject constructor(
         with(uiState.value) {
             createTaskUseCase(
                 taskModel = TaskModel(
-                    taskReminder = hasDueTime,
+                    taskReminder = dueTime != null,
                     taskName = taskName,
                     taskDueDate = dueDate?.toString().orEmpty(),
                     taskDueTime = dueTime?.toString().orEmpty(),

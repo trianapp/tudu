@@ -13,18 +13,20 @@ import java.time.LocalTime
 @Parcelize
 @Immutable
 data class DetailTaskState(
-    val titleApp:String="",
+    val titleApp: String = "",
 
     val taskId: String = "",
-    val taskName: String="",
+    val taskName: String = "",
     val taskDueDate: LocalDate = LocalDate.now(),
     val taskDueTime: LocalTime = LocalTime.now(),
     val taskReminder: Boolean = false,
     val taskNote: String = "",
-    val taskDone:Boolean=false,
+    val taskDone: Boolean = false,
 
     val showDialogPickCategory: Boolean = false,
-    val showDialogDeleteConfirmation: Boolean = false
+    val showDialogDeleteConfirmation: Boolean = false,
+    val showDialogPickDueDate: Boolean = false,
+    val showDialogPickDueTime: Boolean = false,
 ) : Parcelable
 
 @Parcelize
@@ -39,19 +41,19 @@ data class DetailTaskDataState(
 sealed class DetailTaskEvent {
     object CheckBackPressed : DetailTaskEvent()
 
-    object GetDetailTask: DetailTaskEvent()
+    object GetDetailTask : DetailTaskEvent()
 
     data class UpdateTaskName(val taskName: String) : DetailTaskEvent()
     data class UpdateTaskDueDate(val dueDate: LocalDate) : DetailTaskEvent()
     data class UpdateTaskDueTime(val dueTime: LocalTime) : DetailTaskEvent()
     data class UpdateTaskReminder(val reminder: Boolean) : DetailTaskEvent()
     data class UpdateTaskCategory(val categories: List<CategoryModel>) : DetailTaskEvent()
-    data class UpdateTaskDone(val taskDone:Boolean) : DetailTaskEvent()
+    data class UpdateTaskDone(val taskDone: Boolean) : DetailTaskEvent()
 
     object SubmitTask : DetailTaskEvent()
     object DeleteTask : DetailTaskEvent()
     object CreateTodo : DetailTaskEvent()
-    data class UpdateTodoDone(val todoId: String,val isDone: Boolean) : DetailTaskEvent()
+    data class UpdateTodoDone(val todoId: String, val isDone: Boolean) : DetailTaskEvent()
     data class UpdateTodoName(val todoId: String, val todoName: String) : DetailTaskEvent()
     data class DeleteTodo(val todoId: String) : DetailTaskEvent()
 
