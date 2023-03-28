@@ -1,5 +1,6 @@
 package app.trian.tudu.data.domain.user;
 
+import app.trian.tudu.R
 import app.trian.tudu.data.utils.Response
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -19,8 +20,14 @@ class SignInWithEmailAndPasswordUseCase @Inject constructor(private val auth: Fi
             ).await().user
 
             when {
-                user == null -> emit(Response.Error("Sign in failed"))
-                !user.isEmailVerified -> emit(Response.Error("Your account note verified, Please check your email for verification"))
+                user == null -> emit(Response.Error(stringId = R.string.signin_failed))
+                !user.isEmailVerified ->
+                    emit(
+                        Response.Error(
+                            stringId = R.string.text_message_failed_email_not_verified
+                        )
+                    )
+
                 else -> emit(Response.Result(user))
             }
         } catch (e: Exception) {

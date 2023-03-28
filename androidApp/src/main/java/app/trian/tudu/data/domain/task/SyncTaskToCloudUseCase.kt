@@ -29,7 +29,7 @@ class SyncTaskToCloudUseCase @Inject constructor(
             val user = auth.currentUser
             if (user == null) emit(ResponseWithProgress.Error("User not logged in!"))
             else {
-                val USER_DATA = firestore
+                val userDataCollection = firestore
                     .collection("USER_DATA")
                     .document(user.uid)
                     .collection("TASK")
@@ -71,7 +71,7 @@ class SyncTaskToCloudUseCase @Inject constructor(
                     taskWithCategoryAndTodoList
                         .forEach {
                             batch.set(
-                                USER_DATA.document(it.task.taskId),
+                                userDataCollection.document(it.task.taskId),
                                 it,
                                 SetOptions.merge()
                             )
@@ -91,7 +91,7 @@ class SyncTaskToCloudUseCase @Inject constructor(
                 }
                 emit(ResponseWithProgress.Progress(40))
 
-                val listTask = USER_DATA.get()
+                val listTask = userDataCollection.get()
                     .await()
                     .map {
                         it.toObject(TaskWithCategoryAndTodo::class.java)

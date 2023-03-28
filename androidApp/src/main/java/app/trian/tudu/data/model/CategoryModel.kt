@@ -3,7 +3,6 @@ package app.trian.tudu.data.model
 import app.trian.tudu.table.category.Category
 import com.google.errorprone.annotations.Keep
 import java.time.LocalDateTime
-import java.util.UUID
 
 @Keep
 data class CategoryModel(

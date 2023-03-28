@@ -10,7 +10,7 @@ package app.trian.tudu.data.utils
 sealed class Response<out R>{
     object Loading: Response<Nothing>()
     data class Result<out Result>(val data:Result): Response<Result>()
-    data class Error(val message:String="",val code:Int=0): Response<Nothing>()
+    data class Error(val message:String="",val code:Int=0,val stringId:Int=0): Response<Nothing>()
 }
 
 sealed class ResponseWithProgress<out R>{
