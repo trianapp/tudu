@@ -11,7 +11,9 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-class SignInWithEmailAndPasswordUseCase @Inject constructor(private val auth: FirebaseAuth) {
+class SignInWithEmailAndPasswordUseCase @Inject constructor(
+    private val auth: FirebaseAuth
+) {
     operator fun invoke(email: String, password: String): Flow<Response<FirebaseUser>> = flow {
         emit(Response.Loading)
         try {
@@ -22,17 +24,12 @@ class SignInWithEmailAndPasswordUseCase @Inject constructor(private val auth: Fi
             when {
                 user == null -> emit(Response.Error(stringId = R.string.signin_failed))
                 !user.isEmailVerified ->
-                    emit(
-                        Response.Error(
-                            stringId = R.string.text_message_failed_email_not_verified
-                        )
-                    )
+                    emit(Response.Error(stringId = R.string.text_message_failed_email_not_verified))
 
                 else -> emit(Response.Result(user))
             }
         } catch (e: Exception) {
             emit(Response.Error(e.message.orEmpty()))
         }
-
     }.flowOn(Dispatchers.IO)
 }

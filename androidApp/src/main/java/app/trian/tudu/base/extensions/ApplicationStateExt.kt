@@ -189,3 +189,8 @@ fun ApplicationState.hideBottomSheet(){
         bottomSheetState.hide()
     }
 }
+
+//region string
+fun ApplicationState.getString(res:Int):String = context.getString(res)
+fun ApplicationState.getString(res:Int,vararg params:String):String = context.getString(res,*params)
+//end region

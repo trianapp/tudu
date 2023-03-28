@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.trian.tudu.ApplicationState
 import app.trian.tudu.base.extensions.backPressedAndClose
+import app.trian.tudu.base.extensions.getString
 import app.trian.tudu.base.extensions.hideBottomSheet
 import app.trian.tudu.base.extensions.navigate
 import app.trian.tudu.base.extensions.navigateAndReplace
@@ -21,6 +22,7 @@ import app.trian.tudu.base.extensions.navigateUp
 import app.trian.tudu.base.extensions.runSuspend
 import app.trian.tudu.base.extensions.showBottomSheet
 import app.trian.tudu.data.theme.ThemeData
+import app.trian.tudu.data.utils.Response
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -103,7 +105,15 @@ abstract class BaseViewModel<State : Parcelable, Action>(
     }
 
     //region snakcbar
+    protected fun Response.Error.showErrorSnackbar() =  showSnackbar(this.message, this.stringId)
+
     fun showSnackbar(message: String) = _app.showSnackbar(message)
+    fun showSnackbar(message: String, res: Int) =
+        _app.showSnackbar(message.ifEmpty { getString(res) })
+
+    fun showSnackbar(message: String, res: Int, vararg params: String) =
+        _app.showSnackbar(message.ifEmpty { getString(res, *params) })
+
     fun showSnackbar(message: Int) = _app.showSnackbar(message)
     fun showSnackbar(message: Int, vararg params: String) = _app.showSnackbar(message, *params)
     //
@@ -123,6 +133,11 @@ abstract class BaseViewModel<State : Parcelable, Action>(
         _app.navigateAndReplaceAll(routeName, *args)
 
     fun navigateAndReplaceAll(routeName: String) = _app.navigateAndReplaceAll(routeName)
+
+    //end region
+    //region string
+    fun getString(res: Int) = _app.getString(res)
+    fun getString(res: Int, vararg params: String) = _app.getString(res, *params)
     //end region
 
     //region bottom sheet
