@@ -1,0 +1,9 @@
+1. Rewrite App from ground up
+2. Dynamic Theme(Android 13)
+3. Now you can use more than 1 Category
+4. Edit profile(Avatar,Display Name)
+5. Support Dark And Light Mode
+6. Sync Data to cloud
+
+Bug Fix & Improvements:
+1. Bug Fixing and Performance Improvement
