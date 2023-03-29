@@ -23,9 +23,10 @@ class SignInWithEmailAndPasswordUseCase @Inject constructor(
 
             when {
                 user == null -> emit(Response.Error(stringId = R.string.signin_failed))
-                !user.isEmailVerified ->
+                !user.isEmailVerified -> {
+                    auth.signOut()
                     emit(Response.Error(stringId = R.string.text_message_failed_email_not_verified))
-
+                }
                 else -> emit(Response.Result(user))
             }
         } catch (e: Exception) {
