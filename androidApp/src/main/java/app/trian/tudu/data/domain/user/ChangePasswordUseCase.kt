@@ -14,9 +14,14 @@ class ChangePasswordUseCase @Inject constructor(
 ) {
     operator fun invoke(newPassword: String): Flow<Response<Boolean>> = flow {
         emit(Response.Loading)
-        val user = auth.currentUser
-        user?.updatePassword(newPassword)
-            ?.await()
-        emit(Response.Result(true))
+        try {
+            val user = auth.currentUser
+            user?.updatePassword(newPassword)
+                ?.await()
+            emit(Response.Result(true))
+        } catch (e: Exception) {
+            emit(Response.Error(e.message.orEmpty()))
+        }
+
     }.flowOn(Dispatchers.IO)
 }

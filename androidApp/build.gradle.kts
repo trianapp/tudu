@@ -99,10 +99,6 @@ dependencies {
     implementation(AndroidChart.mpAndroidChart)
     implementation(DateTimePicker.wheelPicker)
 
-    with(SheetComposeDialog){
-        implementation(core)
-        implementation(dateTime)
-    }
     with(SQLDelight.Sqldelight){
         implementation(androidDriver)
     }

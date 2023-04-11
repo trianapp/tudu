@@ -12,7 +12,7 @@ data class TaskModel(
     val taskDone: Boolean = false,
     val taskReminder: Boolean = false,
     val taskNote: String = "",
-    val isUoloaded: Boolean = false,
+    val isUploaded: Boolean = false,
     val createdAt: String = "",
     val updatedAt: String = ""
 )
@@ -38,7 +38,7 @@ fun Task.toModel() = TaskModel(
     taskDone = taskDone?.toInt() == 1,
     taskReminder = taskReminder?.toInt() == 1,
     taskNote = taskNote.orEmpty(),
-    isUoloaded = isUploaded?.toInt() == 1,
+    isUploaded = isUploaded?.toInt() == 1,
     createdAt = createdAt.orEmpty(),
     updatedAt = updatedAt.orEmpty()
 )

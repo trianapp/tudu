@@ -5,6 +5,7 @@ import app.trian.tudu.data.model.toModel
 import app.trian.tudu.data.utils.ResponseWithProgress
 import app.trian.tudu.sqldelight.Database
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.crashlytics.internal.model.CrashlyticsReport
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.Dispatchers
@@ -40,34 +41,27 @@ class SyncTaskToCloudUseCase @Inject constructor(
                         .executeAsList()
                         .map { it.toModel() }
                         .map { task ->
-                            val caegories = db.taskCategoryQueries
+                            val categories = db.taskCategoryQueries
                                 .getAllTaskCategoryByTaskId(task.taskId)
                                 .executeAsList()
                                 .map {
-                                    db.categoryQueries
-                                        .getById(it.categoryId)
-                                        .executeAsOne()
+                                    db.categoryQueries.getById(it.categoryId).executeAsOne()
                                         .toModel()
                                 }
 
-                            val todos = db.todoQueries
-                                .getListTodoByTask(task.taskId)
+                            val todos = db.todoQueries.getListTodoByTask(task.taskId)
                                 .executeAsList()
                                 .map { it.toModel() }
 
                             TaskWithCategoryAndTodo(
                                 task = task,
-                                category = caegories,
+                                category = categories,
                                 todos = todos
                             )
                         }
                 }
-
-
                 emit(ResponseWithProgress.Progress(20))
                 firestore.runBatch { batch ->
-
-
                     taskWithCategoryAndTodoList
                         .forEach {
                             batch.set(
