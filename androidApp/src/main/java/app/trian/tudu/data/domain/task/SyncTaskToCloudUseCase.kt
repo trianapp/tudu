@@ -5,7 +5,6 @@ import app.trian.tudu.data.model.toModel
 import app.trian.tudu.data.utils.ResponseWithProgress
 import app.trian.tudu.sqldelight.Database
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.crashlytics.internal.model.CrashlyticsReport
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.Dispatchers
