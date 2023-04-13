@@ -18,6 +18,7 @@ data class CategoryWithCount(
     val count: Int = 0
 )
 
+@Keep
 fun CategoryModel.toEntity() = Category(
     categoryId = categoryId,
     categoryName = categoryName,
@@ -25,6 +26,7 @@ fun CategoryModel.toEntity() = Category(
     updatedAt = updatedAt
 )
 
+@Keep
 fun Category.toModel() = CategoryModel(
     categoryId = categoryId,
     categoryName = categoryName,

@@ -11,6 +11,7 @@ data class TaskCategoryModel(
 )
 
 
+@Keep
 fun TaskCategory.toModel() = TaskCategoryModel(
     taskCategoryId = taskCategoryId,
     taskId = taskId,

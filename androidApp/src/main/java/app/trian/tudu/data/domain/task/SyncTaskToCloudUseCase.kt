@@ -5,6 +5,7 @@ import app.trian.tudu.data.model.toModel
 import app.trian.tudu.data.utils.ResponseWithProgress
 import app.trian.tudu.sqldelight.Database
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.Dispatchers
@@ -146,6 +147,7 @@ class SyncTaskToCloudUseCase @Inject constructor(
 
             }
         } catch (e: Exception) {
+            FirebaseCrashlytics.getInstance().recordException(e)
             emit(ResponseWithProgress.Error(e.message.orEmpty()))
         }
 

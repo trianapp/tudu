@@ -12,6 +12,7 @@ data class AppSettingModel(
     val updatedAt:String=""
 )
 
+@Keep
 fun AppSetting.toModel()= AppSettingModel(
     settingId = settingId,
     theme = ThemeData.valueOf(theme),

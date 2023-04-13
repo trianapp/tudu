@@ -30,6 +30,7 @@ data class TaskWithCategoryAndTodo(
     val todos: List<TodoModel> = listOf()
 )
 
+@Keep
 fun Task.toModel() = TaskModel(
     taskId = taskId,
     taskName = taskName,
