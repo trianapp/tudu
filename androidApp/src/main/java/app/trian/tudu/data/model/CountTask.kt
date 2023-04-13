@@ -11,6 +11,7 @@ data class CountTask(
     val pendingTask: Int = 0
 )
 
+@Keep
 data class ChartModelData(
     val items:List<BarEntry> = listOf(),
     val labels:List<String> = listOf(),

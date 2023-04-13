@@ -12,6 +12,7 @@ data class TodoModel(
     val createdAt: String = ""
 )
 
+@Keep
 fun Todo.toModel() = TodoModel(
     todoId = todoId,
     todoName = todoName.orEmpty(),
