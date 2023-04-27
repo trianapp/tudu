@@ -7,11 +7,12 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.22.0" apply false
     kotlin("android") version "1.8.0"  apply false
     kotlin("multiplatform") version "1.8.0" apply false
+    kotlin("plugin.serialization") version "1.8.21" apply false
 }
 buildscript {
     dependencies{
         classpath("com.google.gms:google-services:4.3.15")
-        classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.4")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.5")
     }
 }
 extensions.findByName("buildScan")?.withGroovyBuilder {

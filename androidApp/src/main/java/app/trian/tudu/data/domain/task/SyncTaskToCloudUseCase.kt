@@ -63,10 +63,10 @@ class SyncTaskToCloudUseCase @Inject constructor(
                 emit(ResponseWithProgress.Progress(20))
                 firestore.runBatch { batch ->
                     taskWithCategoryAndTodoList
-                        .forEach {
+                        .forEach { task->
                             batch.set(
-                                userDataCollection.document(it.task.taskId),
-                                it,
+                                userDataCollection.document(task.task.taskId),
+                                task,
                                 SetOptions.merge()
                             )
                         }

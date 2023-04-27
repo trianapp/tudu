@@ -25,8 +25,8 @@ android {
         applicationId = AppConfig.applicationId
         minSdk = 24
         targetSdk = 33
-        versionCode = 45
-        versionName = "2.0.202304131724"
+        versionCode = 46
+        versionName = "2.0.202304280108"
         multiDexEnabled = true
         vectorDrawables {
             useSupportLibrary = true
@@ -87,6 +87,7 @@ android {
 dependencies {
     coreLibraryDesugaring(DesugarJdkLibs.desugarJdkLib)
 
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
     implementation ("com.google.android.material:material:1.8.0")
     implementation(AndroidX.Core.coreKtx)
     implementation(AndroidX.Lifecycle.runtimeLifecycleKtx)

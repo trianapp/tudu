@@ -1,20 +1,31 @@
 package app.trian.tudu.data.model
 
+import app.trian.tudu.base.extensions.Empty
 import app.trian.tudu.table.category.Category
 import com.google.errorprone.annotations.Keep
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 
 @Keep
+@Serializable
 data class CategoryModel(
-    val categoryId: String = "",
-    val categoryName: String = "",
-    val createdAt: String = "",
-    val updatedAt: String = ""
+    @SerialName("categoryId")
+    val categoryId: String = String.Empty,
+    @SerialName("categoryName")
+    val categoryName: String = String.Empty,
+    @SerialName("createdAt")
+    val createdAt: String = String.Empty,
+    @SerialName("updatedAt")
+    val updatedAt: String = String.Empty
 )
 
 @Keep
+@Serializable
 data class CategoryWithCount(
+    @SerialName("category")
     val category: CategoryModel = CategoryModel(),
+    @SerialName("count")
     val count: Int = 0
 )
 
