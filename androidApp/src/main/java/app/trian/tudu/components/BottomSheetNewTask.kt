@@ -145,11 +145,11 @@ fun BottomSheetInputNewTask(
                 value = taskName,
                 onValueChange = onChangeTaskName,
                 shape = RoundedCornerShape(10.dp),
-                colors = TextFieldDefaults.textFieldColors(
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    cursorColor = MaterialTheme.colorScheme.onSurface,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                    cursorColor = MaterialTheme.colorScheme.onSurface
                 ),
                 placeholder = {
                     Text(

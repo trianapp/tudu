@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2023 trian.app.
+ *
+ *  Unauthorized copying, publishing of this file, via any medium is strictly prohibited
+ *  Proprietary and confidential
+ *
+ */
+
 package app.trian.tudu.theme
 
 import android.app.Activity
@@ -23,7 +31,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import app.trian.tudu.R
 
 val fontFamily = FontFamily(
@@ -42,7 +50,7 @@ val fontFamily = FontFamily(
     Font(R.font.poppins_thinitalic, FontWeight.Thin, FontStyle.Italic),
 )
 
-private val LightColors = lightColorScheme(
+private val lightColors = lightColorScheme(
     primary = md_theme_light_primary,
     onPrimary = md_theme_light_onPrimary,
     primaryContainer = md_theme_light_primaryContainer,
@@ -75,7 +83,7 @@ private val LightColors = lightColorScheme(
 )
 
 
-private val DarkColors = darkColorScheme(
+private val darkColors = darkColorScheme(
     primary = md_theme_dark_primary,
     onPrimary = md_theme_dark_onPrimary,
     primaryContainer = md_theme_dark_primaryContainer,
@@ -119,14 +127,18 @@ fun MyApplicationTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColors
-        else -> LightColors
+        darkTheme -> darkColors
+        else -> lightColors
     }
     val view = LocalView.current
     if (!view.isInEditMode) {
+        /* getting the current window by tapping into the Activity */
+        val currentWindow = (view.context as? Activity)?.window
+            ?: throw Exception("Not in an activity - unable to get Window reference")
+
         SideEffect {
             (view.context as Activity).window.statusBarColor = colorScheme.primary.toArgb()
-            ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = darkTheme
+            WindowCompat.getInsetsController(currentWindow,view).isAppearanceLightStatusBars = darkTheme
         }
     }
 

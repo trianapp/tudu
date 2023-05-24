@@ -1,6 +1,7 @@
 package app.trian.tudu.feature.dashboard.profile
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Build.VERSION_CODES
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -96,7 +97,7 @@ internal fun ScreenProfile(
 ) = UIWrapper<ProfileViewModel>(appState = appState) {
     val ctx = LocalContext.current
     fun version(): String = try {
-        ctx.packageManager.getPackageInfo(ctx.packageName, 0).versionName
+        ctx.packageManager.getPackageInfo(ctx.packageName, PackageManager.PackageInfoFlags.of(0)).versionName
     } catch (e: Exception) {
         "0"
     }

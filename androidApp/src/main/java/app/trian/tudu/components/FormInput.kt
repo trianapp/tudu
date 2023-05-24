@@ -16,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -38,7 +39,6 @@ import app.trian.tudu.base.BaseMainApp
  * created_at 30/01/22 - 09.02
  * site https://trian.app
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FormInput(
     modifier: Modifier = Modifier,
@@ -75,9 +75,9 @@ fun FormInput(
             onValueChange = {
                 onChange(it)
             },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
+            colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = MaterialTheme.colorScheme.primary,
-                unfocusedBorderColor = MaterialTheme.colorScheme.onSurface
+                unfocusedBorderColor = MaterialTheme.colorScheme.onSurface,
             ),
             shape = MaterialTheme.shapes.medium,
             trailingIcon = {

@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2023 trian.app.
+ *
+ *  Unauthorized copying, publishing of this file, via any medium is strictly prohibited
+ *  Proprietary and confidential
+ *
+ */
+
+
 package app.trian.tudu.feature.detailTask
 
 import androidx.activity.compose.BackHandler
@@ -250,11 +259,13 @@ internal fun ScreenDetailTask(
                         textStyle = MaterialTheme.typography.displaySmall.copy(
                             fontWeight = FontWeight.Bold
                         ),
-                        colors = TextFieldDefaults.textFieldColors(
+                        colors = TextFieldDefaults.colors(
+                            focusedTextColor = MaterialTheme.colorScheme.primary,
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            disabledContainerColor = Color.Transparent,
                             focusedIndicatorColor = Color.Transparent,
                             unfocusedIndicatorColor = Color.Transparent,
-                            focusedTextColor = MaterialTheme.colorScheme.primary,
-                            containerColor = Color.Transparent,
                         )
                     )
                 }
