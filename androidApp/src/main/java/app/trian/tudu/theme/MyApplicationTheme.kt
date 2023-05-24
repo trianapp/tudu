@@ -134,11 +134,10 @@ fun MyApplicationTheme(
     if (!view.isInEditMode) {
         /* getting the current window by tapping into the Activity */
         val currentWindow = (view.context as? Activity)?.window
-            ?: throw Exception("Not in an activity - unable to get Window reference")
 
         SideEffect {
             (view.context as Activity).window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(currentWindow,view).isAppearanceLightStatusBars = darkTheme
+            WindowCompat.getInsetsController(currentWindow!!,view).isAppearanceLightStatusBars = darkTheme
         }
     }
 
