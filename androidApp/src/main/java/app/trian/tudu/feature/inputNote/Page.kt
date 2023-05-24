@@ -173,11 +173,13 @@ internal fun ScreenInputNote(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary
                 ),
-                colors = TextFieldDefaults.textFieldColors(
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    disabledContainerColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    textColor = MaterialTheme.colorScheme.onBackground,
-                    containerColor = Color.Transparent,
                 )
             )
         }

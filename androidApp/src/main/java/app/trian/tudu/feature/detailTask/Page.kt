@@ -253,14 +253,14 @@ internal fun ScreenDetailTask(
                         colors = TextFieldDefaults.textFieldColors(
                             focusedIndicatorColor = Color.Transparent,
                             unfocusedIndicatorColor = Color.Transparent,
-                            textColor = MaterialTheme.colorScheme.primary,
+                            focusedTextColor = MaterialTheme.colorScheme.primary,
                             containerColor = Color.Transparent,
                         )
                     )
                 }
                 item {
                     ListItem(
-                        headlineText = {
+                        headlineContent = {
                             Text(
                                 text = stringResource(R.string.label_incomplete_todo),
                                 style = TextStyle(
@@ -340,7 +340,7 @@ internal fun ScreenDetailTask(
                 }
                 item {
                     ListItem(
-                        headlineText = {
+                        headlineContent = {
                             Text(
                                 text = stringResource(R.string.label_detail_task_item),
                                 style = TextStyle(
@@ -369,7 +369,7 @@ internal fun ScreenDetailTask(
                                 tint = MaterialTheme.colorScheme.tertiary
                             )
                         },
-                        headlineText = {
+                        headlineContent = {
                             Text(
                                 text = stringResource(R.string.label_due_date),
                                 style = MaterialTheme.typography.bodyLarge,
@@ -377,7 +377,7 @@ internal fun ScreenDetailTask(
                             )
 
                         },
-                        supportingText = {
+                        supportingContent = {
                             Text(
                                 text = state.taskDueDate.toString(),
                                 style = MaterialTheme.typography.bodyMedium,
@@ -402,7 +402,7 @@ internal fun ScreenDetailTask(
                                 tint = MaterialTheme.colorScheme.tertiary
                             )
                         },
-                        headlineText = {
+                        headlineContent = {
                             Text(
                                 text = stringResource(R.string.label_due_time),
                                 style = MaterialTheme.typography.bodyLarge,
@@ -410,7 +410,7 @@ internal fun ScreenDetailTask(
                             )
 
                         },
-                        supportingText = {
+                        supportingContent = {
                             Text(
                                 text = state.taskDueTime.toString(),
                                 style = MaterialTheme.typography.bodyMedium,
@@ -428,7 +428,7 @@ internal fun ScreenDetailTask(
                                 tint = MaterialTheme.colorScheme.tertiary
                             )
                         },
-                        headlineText = {
+                        headlineContent = {
                             Text(
                                 text = stringResource(R.string.label_reminder),
                                 style = MaterialTheme.typography.bodyLarge,
@@ -436,7 +436,7 @@ internal fun ScreenDetailTask(
                             )
 
                         },
-                        supportingText = {
+                        supportingContent = {
                             Text(
                                 text = if (state.taskReminder) stringResource(R.string.reminder_yes)
                                 else stringResource(R.string.reminder_no),
@@ -463,7 +463,7 @@ internal fun ScreenDetailTask(
                                 tint = MaterialTheme.colorScheme.tertiary
                             )
                         },
-                        headlineText = {
+                        headlineContent = {
                             Text(
                                 text = stringResource(R.string.label_note),
                                 style = MaterialTheme.typography.bodyLarge.copy(
@@ -472,7 +472,7 @@ internal fun ScreenDetailTask(
                             )
 
                         },
-                        supportingText = {
+                        supportingContent = {
                             Text(
                                 text = state.taskNote.ifEmpty { stringResource(R.string.text_no_note) },
                                 style = MaterialTheme.typography.bodyMedium.copy(
@@ -508,14 +508,14 @@ internal fun ScreenDetailTask(
                                 tint = MaterialTheme.colorScheme.tertiary
                             )
                         },
-                        headlineText = {
+                        headlineContent = {
                             Text(
                                 text = stringResource(R.string.label_category),
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.tertiary
                             )
                         },
-                        supportingText = {
+                        supportingContent = {
                             FlowRow(
                                 mainAxisSize = SizeMode.Wrap,
                                 mainAxisAlignment = MainAxisAlignment.Start,

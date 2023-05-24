@@ -148,7 +148,7 @@ fun BottomSheetInputNewTask(
                 colors = TextFieldDefaults.textFieldColors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    textColor = MaterialTheme.colorScheme.onSurface,
+                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
                     cursorColor = MaterialTheme.colorScheme.onSurface
                 ),
                 placeholder = {

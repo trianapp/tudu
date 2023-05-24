@@ -1,17 +1,19 @@
 @file:Suppress("UnstableApiUsage")
+
+import com.android.build.api.dsl.ApkSigningConfig
 import java.util.Properties
 import java.io.FileInputStream
 
 plugins {
-    id("com.android.application")
-    id("com.google.dagger.hilt.android")
-    id("io.gitlab.arturbosch.detekt")
-    id("app.cash.sqldelight")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
+    alias(libs.plugins.com.android.application)
+    alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.org.jetbrains.kotlin.kapt)
+    alias(libs.plugins.com.google.dagger.hilt.android)
+    alias(libs.plugins.app.cash.sqldelight)
+    alias(libs.plugins.io.gitlab.arthubosch.detekt)
+    alias(libs.plugins.com.google.services)
+    alias(libs.plugins.com.google.crashanalytics)
     id("kotlin-parcelize")
-    kotlin("android")
-    kotlin("kapt")
 }
 
 val keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -19,14 +21,14 @@ val keystoreProperties = Properties()
 keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
 android {
-    namespace = AppConfig.nameSpace
+    namespace = libs.versions.namespace.get()
     compileSdk = 33
     defaultConfig {
-        applicationId = AppConfig.applicationId
+        applicationId =libs.versions.application.id.get()
         minSdk = 24
         targetSdk = 33
-        versionCode = 47
-        versionName = "2.0.202304280720"
+        versionCode = 48
+        versionName = "2.0.202305220608"
         multiDexEnabled = true
         vectorDrawables {
             useSupportLibrary = true
@@ -51,19 +53,15 @@ android {
 
     signingConfigs {
         create("release") {
-            val filePath = keystoreProperties.getProperty("storeFile")
-            keyAlias = keystoreProperties.getProperty("keyAlias")
-            keyPassword = keystoreProperties.getProperty("keyPassword")
-            storeFile = file(filePath)
-            storePassword = keystoreProperties.getProperty("storePassword")
+            setupKeystore()
         }
     }
     buildTypes {
         getByName("release") {
             signingConfig = signingConfigs.getByName("release")
             isShrinkResources = true
-            isMinifyEnabled=true
-            isDebuggable=false
+            isMinifyEnabled = true
+            isDebuggable = false
         }
     }
     compileOptions {
@@ -85,92 +83,100 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring(DesugarJdkLibs.desugarJdkLib)
+    coreLibraryDesugaring(libs.desugar.jdk.lib)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
-    implementation ("com.google.android.material:material:1.8.0")
-    implementation(AndroidX.Core.coreKtx)
-    implementation(AndroidX.Lifecycle.runtimeLifecycleKtx)
-    implementation(AndroidX.Activity.activityCompose)
-    implementation(AndroidX.Multidex.multidex)
-    implementation(AndroidX.Navigation.navigationCompose)
-    implementation(CoilKt.coilCompose)
-    implementation(ComposeMarkdown.composeMarkdown)
-    implementation(ComposeCalendar.composeCalendar)
-    implementation(AndroidChart.mpAndroidChart)
-    implementation(DateTimePicker.wheelPicker)
+    implementation(libs.android.material)
+    implementation(libs.compose.markdown)
 
-    with(SQLDelight.Sqldelight){
-        implementation(androidDriver)
-    }
+    implementation(libs.mp.android.chart)
 
-    with(Firebase){
-        implementation(platform(firebaseBom))
-        implementation(auth)
-        implementation(storage)
-        implementation(firestore)
-        implementation(analytics)
-        implementation(crashAnalytics)
-    }
+    implementation(libs.core.ktx)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.activity.compose)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.ui)
+    implementation(libs.compose.icon.extended)
+    implementation(libs.ui.graphics)
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.compose.material)
+    implementation(libs.compose.calendar)
+    implementation(libs.wheel.picker.compose)
+    implementation(libs.coil.compose)
+    implementation(libs.navigation.compose)
+    implementation(libs.multidex)
 
-
-    with(Jetbrains.Kotlinx){
-        implementation(googlePlayKotlinCoroutine)
-        testImplementation(kotlinxCoroutinesTest)
-    }
-    with(JetpackCompose) {
-        implementation(platform(composeBom))
-        androidTestImplementation(
-            platform(
-                composeBom
-            )
-        )
-        implementation(material3)
-        implementation(ui)
-        implementation(uiToolingPreview)
-        debugImplementation(uiTooling)
-        androidTestImplementation(uiTestJunit4)
-        debugImplementation(uiTestManifest)
-        implementation(materialIconExtended)
-        implementation(materialWindowSizeClass)
-    }
-    with(Accompanist) {
+    with(libs.accompanist) {
         implementation(pager)
-        implementation(pagerIndicator)
-        implementation(flowLayout)
+        implementation(pager.indicator)
+        implementation(flow.layout)
         implementation(shimmer)
     }
-    with(Hilt) {
-        implementation(hiltNavigationCompose)
-        implementation(hiltWork)
-        implementation(hiltAndroid)
-        kapt(hiltAndroidCompiler)
-        kapt(hiltCompiler)
+    with(libs.hilt) {
+        implementation(navigation.compose)
+        implementation(android)
+        implementation(work)
+        androidTestImplementation(android.test)
+        kapt(android.compiler)
+        kaptTest(android.compiler)
+        kapt(compiler)
+    }
+    with(libs.gms.play.service) {
+        implementation(auth)
+        implementation(base)
     }
 
-    with(Google.Android.Gms){
-        implementation(playServicesAuth)
-        implementation(playServiceBase)
-    }
-    with(Worker) {
-        implementation(workRuntime)
-    }
-    implementation(Jetbrains.Kotlinx.kotlinxCoroutineAndroid)
+    implementation(libs.sqldelight.android.driver)
 
-    debugImplementation(LeakCanary.leakCanary)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.storage)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashanalytics)
 
-    testImplementation("junit:junit:4.13.2")
-}
-sqldelight{
-    databases{
-        create("Database"){
-            packageName.set("app.trian.tudu.sqldelight")
-        }
+    implementation(libs.kotlinx.coroutine.play.services)
+    testImplementation(libs.kotlinx.coroutine.test)
+
+    implementation(libs.gms.play.service.auth)
+    implementation(libs.gms.play.service.base)
+
+    implementation(libs.work.runtime)
+    implementation(libs.kotlinx.serialization)
+    with(libs.kotlinx.coroutine) {
+        implementation(android)
+        implementation(core)
+        implementation(play.services)
+        testImplementation(test)
     }
+
+    with(libs.composeIcons) {
+        implementation(feather)
+    }
+
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.ui.test.junit4)
+    testImplementation(libs.ui.test.junit4)
+    debugImplementation(libs.ui.tooling)
+    debugImplementation(libs.ui.test.manifest)
+    testImplementation(libs.robolectric)
+
+    debugImplementation(libs.leak.canary)
+
 }
 kapt {
     correctErrorTypes = true
 }
+sqldelight {
+    databases {
+        create("Database") {
+            packageName.set("app.trian.tudu.sqldelight")
+        }
+    }
+}
+
 tasks.create<Copy>("installGitHook") {
     var suffix = "macos"
     if (org.apache.tools.ant.taskdefs.condition.Os.isFamily(org.apache.tools.ant.taskdefs.condition.Os.FAMILY_WINDOWS)) {
@@ -188,4 +194,12 @@ tasks.create<Copy>("installGitHook") {
         rename("pre-commit-$suffix", "pre-commit")
     }
     fileMode = "775".toInt(8)
+}
+
+fun ApkSigningConfig.setupKeystore(){
+    val filePath = keystoreProperties.getProperty("storeFile")
+    keyAlias = keystoreProperties.getProperty("keyAlias")
+    keyPassword = keystoreProperties.getProperty("keyPassword")
+    storeFile = file(filePath)
+    storePassword = keystoreProperties.getProperty("storePassword")
 }

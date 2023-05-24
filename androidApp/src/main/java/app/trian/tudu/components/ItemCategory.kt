@@ -56,7 +56,7 @@ fun ItemCategory(
                 )
             }
         },
-        headlineText = {
+        headlineContent = {
             Text(
                 text = categoryName,
                 style = MaterialTheme.typography.bodyLarge.copy(
@@ -64,8 +64,8 @@ fun ItemCategory(
                 )
             )
         },
-        overlineText = {},
-        supportingText = {
+        overlineContent = {},
+        supportingContent = {
             Text(
                 text = if (categoryCount > 0) {
                     "Used $categoryCount times"
