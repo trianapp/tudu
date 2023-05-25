@@ -15,8 +15,13 @@ dependencyResolutionManagement {
         mavenCentral()
         maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
         maven(url = "https://jitpack.io")
-
     }
+    versionCatalogs {
+        create("libs"){
+            from(files("libs.versions.toml"))
+        }
+    }
+
 }
 rootProject.name = "Tudu"
 include(":androidApp")

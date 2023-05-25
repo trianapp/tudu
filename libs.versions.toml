@@ -1,0 +1,164 @@
+[versions]
+com-android-application = "7.4.2"
+detekt = "1.22.0"
+hilt = "2.44"
+kotlin = "1.8.0"
+core-ktx = "1.10.1"
+junit = "4.13.2"
+androidx-test-ext-junit = "1.1.5"
+espresso-core = "3.5.1"
+lifecycle-runtime-ktx = "2.6.1"
+activity-compose = "1.7.1"
+compose-bom = "2023.05.01"
+namespace = "app.trian.tudu"
+namespacedata = "app.trian.tudu.data"
+application-id = "app.trian.tudu"
+ktor = "2.2.3"
+sqldelight = "2.0.0-alpha05"
+accompanist-pager = "0.28.0"
+accompanist-flow = "0.28.0"
+accompanist-shimmer = "0.30.0"
+chucker = "3.5.2"
+coil-compose = "2.2.2"
+compose-calendar = "1.1.1"
+wheel-picker-compose = "1.1.10"
+desugar-lib = "2.0.3"
+firebase-bom = "32.0.0"
+kotlinx = "1.6.4"
+mockk = "1.13.4"
+composeIcons = "1.1.0"
+
+
+[libraries]
+android-material={group="com.google.android.material",name="material",version="1.9.0"}
+
+compose-markdown ={group="com.github.jeziellago",name="compose-markdown",version="0.3.1"}
+
+#Compose
+compose-icon-extended = {group="androidx.compose.material",name="material-icons-extended"}
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+compose-material = { group = "androidx.compose.material3", name = "material3" }
+navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version = "2.5.3" }
+ui = { group = "androidx.compose.ui", name = "ui" }
+ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+
+#Robolectric
+robolectric ={group="org.robolectric",name="robolectric",version="4.7.3"}
+
+
+#Accompanist
+accompanist-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanist-pager" }
+accompanist-pager-indicator = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref = "accompanist-pager" }
+accompanist-flow-layout = { group = "com.google.accompanist", name = "accompanist-flowlayout", version.ref = "accompanist-flow" }
+accompanist-shimmer = { group = "com.google.accompanist", name = "accompanist-placeholder-material", version.ref = "accompanist-shimmer" }
+
+#Coil
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil-compose" }
+
+#ComposeCalendar
+compose-calendar = { group = "io.github.boguszpawlowski.composecalendar", name = "composecalendar", version.ref = "compose-calendar" }
+
+#WheelPicker
+wheel-picker-compose = { group = "com.github.commandiron", name = "WheelPickerCompose", version.ref = "wheel-picker-compose" }
+
+#hilt
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version = "1.0.0" }
+hilt-work = { group = "androidx.hilt", name = "hilt-work", version = "1.0.0" }
+hilt-compiler = { group = "androidx.hilt", name = "hilt-compiler", version = "1.0.0" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version = "2.44" }
+hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version = "2.44" }
+hilt-android-test = {group="com.google.dagger",name="hilt-android-testing",version="2.44"}
+
+
+#androidx
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
+activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+multidex = { group = "androidx.multidex", name = "multidex", version = "2.0.1" }
+
+#Worker
+work-runtime = { group = "androidx.work", name = "work-runtime-ktx", version = "2.8.1" }
+
+#Firebase
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth-ktx" }
+firebase-storage = { group = "com.google.firebase", name = "firebase-storage-ktx" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore-ktx" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
+firebase-crashanalytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx",version="18.3.7"}
+
+#GMS
+gms-play-service-auth = { group = "com.google.android.gms", name = "play-services-auth", version = "20.5.0" }
+gms-play-service-base = { group = "com.google.android.gms", name = "play-services-base", version = "18.2.0" }
+
+#Ktor
+ktor-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktor-android-client = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
+ktor-gson = { group = "io.ktor", name = "ktor-serialization-gson", version.ref = "ktor" }
+ktor-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-resource = { group = "io.ktor", name = "ktor-client-resources", version.ref = "ktor" }
+
+#Sqldelight
+sqldelight-android-driver = { group = "app.cash.sqldelight", name = "android-driver", version.ref = "sqldelight" }
+
+#Chucker
+chuker-debug = { group = "com.github.chuckerteam.chucker", name = "library", version.ref = "chucker" }
+chuker-release = { group = "com.github.chuckerteam.chucker", name = "library-no-op", version.ref = "chucker" }
+
+#Android Mp Chart
+mp-android-chart = { group = "com.github.PhilJay", name = "MPAndroidChart", version = "v3.1.0" }
+
+#DesugarLib
+desugar-jdk-lib = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar-lib" }
+
+#Kotlinx
+kotlinx-coroutine-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinx" }
+kotlinx-coroutine-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx" }
+kotlinx-coroutine-play-services = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version="1.6.4" }
+kotlinx-coroutine-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version="1.6.4" }
+kotlinx-serialization = {group="org.jetbrains.kotlinx",name="kotlinx-serialization-json",version="1.5.0"}
+
+#Test
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+
+#Leak canary
+leak-canary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version = "2.10" }
+
+#MOckk
+mock = { group = "io.mock", name = "mockk", version.ref = "mockk" }
+mock-android = { group = "io.mock", name = "mockk-android", version.ref = "mockk" }
+
+#Icons
+composeIcons-cssGg = { module = "br.com.devsrsouza.compose.icons:css-gg", version.ref = "composeIcons" }
+composeIcons-weatherIcons = { module = "br.com.devsrsouza.compose.icons:erikflowers-weather-icons", version.ref = "composeIcons" }
+composeIcons-evaIcons = { module = "br.com.devsrsouza.compose.icons:eva-icons", version.ref = "composeIcons" }
+composeIcons-feather = { module = "br.com.devsrsouza.compose.icons:feather", version.ref = "composeIcons" }
+composeIcons-fontAwesome = { module = "br.com.devsrsouza.compose.icons:font-awesome", version.ref = "composeIcons" }
+composeIcons-lineAwesome = { module = "br.com.devsrsouza.compose.icons:line-awesome", version.ref = "composeIcons" }
+composeIcons-linea = { module = "br.com.devsrsouza.compose.icons:linea", version.ref = "composeIcons" }
+composeIcons-octicons = { module = "br.com.devsrsouza.compose.icons:octicons", version.ref = "composeIcons" }
+composeIcons-simpleIcons = { module = "br.com.devsrsouza.compose.icons:simple-icons", version.ref = "composeIcons" }
+composeIcons-tablerIcons = { module = "br.com.devsrsouza.compose.icons:tabler-icons", version.ref = "composeIcons" }
+
+[plugins]
+com-android-application = { id = "com.android.application", version.ref = "com-android-application" }
+com-google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+org-jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+com-android-library = { id = "com.android.library", version.ref = "com-android-application" }
+app-cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
+io-gitlab-arthubosch-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+com-google-services = {id="com.google.gms.google-services", version="4.3.15"}
+
+com-google-crashanalytics = {id="com.google.firebase.crashlytics",version="2.9.5"}
+
+
+[bundles]

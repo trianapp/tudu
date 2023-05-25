@@ -87,7 +87,7 @@ fun ItemChildSetting(
                 onClick(itemSetting.route)
             }
         },
-        headlineText = {
+        headlineContent = {
             Text(
                 text = itemSetting.name,
                 maxLines = 1,
@@ -99,7 +99,7 @@ fun ItemChildSetting(
                 color = MaterialTheme.colorScheme.tertiary
             )
         },
-        supportingText = {
+        supportingContent = {
             Text(
                 text = when (itemSetting.route) {
                     "date_format" -> getNowMillis().toReadableDate(appSetting.dateFormat)

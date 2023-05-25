@@ -1,17 +1,18 @@
 plugins {
     //trick: for the same plugin versions in all sub-modules
-    id("com.android.application") version "7.4.2"  apply false
-    id("com.android.library") version "7.4.2" apply false
-    id("com.google.dagger.hilt.android") version "2.44" apply false
-    id("app.cash.sqldelight") version "2.0.0-alpha05" apply false
-    id("io.gitlab.arturbosch.detekt") version "1.22.0" apply false
-    kotlin("android") version "1.8.0"  apply false
-    kotlin("multiplatform") version "1.8.0" apply false
-    kotlin("plugin.serialization") version "1.8.0" apply false
+    alias(libs.plugins.org.jetbrains.kotlin.serialization) apply false
+    alias(libs.plugins.io.gitlab.arthubosch.detekt) apply false
+    alias(libs.plugins.com.android.application) apply false
+    alias(libs.plugins.org.jetbrains.kotlin.android) apply false
+    alias(libs.plugins.org.jetbrains.kotlin.kapt) apply false
+    alias(libs.plugins.com.google.dagger.hilt.android) apply false
+    alias(libs.plugins.com.android.library) apply false
+    alias(libs.plugins.com.google.services) apply false
+    alias(libs.plugins.com.google.crashanalytics) apply false
 }
+
 buildscript {
     dependencies{
-        classpath("com.google.gms:google-services:4.3.15")
         classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.5")
     }
 }

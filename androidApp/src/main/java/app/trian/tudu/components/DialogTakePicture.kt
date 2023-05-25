@@ -56,8 +56,8 @@ fun DialogTakePicture(
                                 imageVector = Icons.Outlined.CameraAlt, contentDescription = ""
                             )
                         },
-                        supportingText = {},
-                        headlineText = {
+                        supportingContent = {},
+                        headlineContent = {
                             Text(text = "Camera")
                         },
                         modifier = Modifier.clickable { openCamera() }
@@ -66,8 +66,8 @@ fun DialogTakePicture(
                         leadingContent = {
                             Icon(imageVector = Icons.Outlined.BrowseGallery, contentDescription = "")
                         },
-                        supportingText = {},
-                        headlineText = {
+                        supportingContent = {},
+                        headlineContent = {
                             Text(text = "Gallery")
                         },
                         modifier = Modifier.clickable { openGallery() }
