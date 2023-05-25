@@ -1,5 +1,4 @@
 @file:Suppress("UnstableApiUsage")
-
 import com.android.build.api.dsl.ApkSigningConfig
 import java.util.Properties
 import java.io.FileInputStream
@@ -126,7 +125,6 @@ dependencies {
     }
 
     implementation(libs.sqldelight.android.driver)
-
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.storage)

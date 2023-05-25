@@ -62,7 +62,6 @@ class DetailTaskViewModel @Inject constructor(
 
     private fun getTaskId() = savedStateHandle.get<String>(DetailTask.keyArgs).orEmpty()
 
-
     private fun getDetailTask(taskId: String) = async {
         getDetailTaskUseCase(taskId).collect {
             when (it) {
@@ -128,7 +127,10 @@ class DetailTaskViewModel @Inject constructor(
 
     private fun updateTaskReminder(taskReminder: Boolean) = async {
         commit { copy(taskReminder = taskReminder) }
-        updateTaskReminderUseCase(taskId = getTaskId(), taskReminder = taskReminder).collect {}
+        updateTaskReminderUseCase(
+            taskId = getTaskId(),
+            taskReminder = taskReminder
+        ).collect {}
     }
 
     private fun updateTaskDone(taskDone: Boolean) = async {

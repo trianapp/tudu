@@ -19,6 +19,7 @@ class SignInViewModel @Inject constructor(
         handleActions()
     }
 
+
     private fun showLoading() = commit { copy(isLoading = true) }
     private fun hideLoading() = commit { copy(isLoading = false) }
 
@@ -54,7 +55,6 @@ class SignInViewModel @Inject constructor(
             SignInEvent.SignInWithEmail -> validateData { email, password ->
                 signInWithEmailUseCase(email, password).collect(::handleResponse)
             }
-
             is SignInEvent.SignInWithGoogle -> signInWithGoogleUseCase(event.result).collect(::handleResponse)
         }
     }
