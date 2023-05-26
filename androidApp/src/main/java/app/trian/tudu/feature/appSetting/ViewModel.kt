@@ -17,8 +17,8 @@ class AppSettingViewModel @Inject constructor(
     private fun updateTheme(theme: ThemeData) = async {
         commit { copy(showDialogTheme = false) }
         setTheme(theme)
-        changeThemeUseCase(theme).collect{}
-
+        changeThemeUseCase(theme).collect{
+        }
     }
 
     override fun handleActions() = onEvent {

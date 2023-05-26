@@ -22,24 +22,26 @@ class MainActivity : ComponentActivity() {
             appState = rememberApplicationState(
                 event = eventListener
             )
-            LaunchedEffect(key1 = appState.router, block = {
-                appState.listenChanges()
-                listen()
-
-            })
+            LaunchedEffect(
+                key1 = null,
+                block = {
+                    appState.listenChanges()
+                    listen()
+                }
+            )
             BaseMainApp(appState = appState) {
                 AppNavigation(applicationState = it)
             }
         }
-
     }
 
-    private fun listen(){
-        appState.addOnEventListener{
-            if(it == "EXIT"){
+    private fun listen() {
+        appState.addOnEventListener {
+            if (it == "EXIT") {
                 finish()
             }
         }
     }
 }
+
 
