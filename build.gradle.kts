@@ -1,5 +1,4 @@
 plugins {
-    //trick: for the same plugin versions in all sub-modules
     alias(libs.plugins.org.jetbrains.kotlin.serialization) apply false
     alias(libs.plugins.io.gitlab.arthubosch.detekt) apply false
     alias(libs.plugins.com.android.application) apply false
